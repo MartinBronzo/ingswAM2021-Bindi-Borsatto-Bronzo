@@ -3,24 +3,27 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalParameterException;
 import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
+import it.polimi.ingsw.leaderEffects.ExtraSlotLeaderEffect;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Depot {
-    private HashMap<ResourceType, Integer> depotLevel;
-    private ResourceType[] shelves;
-    private HashMap<ResourceType, Integer> leaderDepot;
-    private HashMap<ResourceType, Integer> depotLimit;
+    private final HashMap<ResourceType, Integer> depotLevel;
+    private final ResourceType[] shelves;
+    private final HashMap<ResourceType, Integer> leaderDepot;
+    private final List<ExtraSlotLeaderEffect> depotLimit;
 
     public Depot() {
         depotLevel = new HashMap<>();
         leaderDepot = new HashMap<>();
-        depotLimit = new HashMap<>();
+        depotLimit = new ArrayList<>();
 
         for (ResourceType resource : ResourceType.values()) {
             if (!resource.isFaithPoint()) {
                 depotLevel.put(resource, 0);
-                depotLimit.put(resource, 0);
+                leaderDepot.put(resource, 0);
             }
 
         }
@@ -206,6 +209,46 @@ public class Depot {
     }
 
     /**
+     * Control if the parameters are valid and if the action can be performed
+     *
+     * @param effect: the effect of the leader card that you want to activate
+     * @return true if there are no illegal parameters and the action can be performed
+     * @throws IllegalParameterException if the type of the resource of the effect is faith point and if the number of resources of the effect is negative
+     * @throws IllegalActionException if the maximum number of active leader cards has been already reached
+     */
+    private boolean canAddExtraSlot(ExtraSlotLeaderEffect effect) throws IllegalParameterException, IllegalActionException {
+        final int maxLeaderCards = 2;
+        if(effect.getType() == ResourceType.FAITHPOINT)
+            throw new  IllegalParameterException("Can't add FaithPoints");
+
+        if(effect.getResourceNumber() < 0)
+            throw new IllegalParameterException("Negative quantity");
+
+        if(depotLimit.size() == maxLeaderCards)
+            throw new IllegalActionException("Can't add more leader cards");
+        return true;
+    }
+
+    /**
+     * Activate the effect of a new LeaderCard with effect ExtraSlotLeaderEffect
+     *
+     * @param effect: the effect of the leaderCard
+     * @return true if the action in performed without errors
+     * @throws IllegalParameterException if the effect has non valid values
+     * @throws IllegalActionException if the maximum number of active leader cards ha been already reached
+     */
+    public boolean addExtraSolt(ExtraSlotLeaderEffect effect) throws IllegalParameterException, IllegalActionException {
+        boolean canAdd;
+
+        canAdd = canAddExtraSlot(effect);
+        if(canAdd){
+            depotLimit.add(effect);
+        }
+
+        return true;
+    }
+
+    /**
      * @param resource: the resource you want to know the value
      * @return the value of the resource
      * @throws IllegalParameterException if resource is a faithPoint
@@ -230,6 +273,36 @@ public class Depot {
         return shelves[shelfNum];
     }
 
+    /**
+     * Returns the maximum number of a certain type of resource that can be stored in leaderDepot
+     *
+     * @param resoruce: the resourceType of which you want to know the limit
+     * @return the maximum number of resources of the selected type that can be stored in leaderDepot
+     */
+    int getExtraDepotLimit(ResourceType resoruce){
+        int size, limit;
+
+        limit = 0;
+        size = depotLimit.size();
+        for(int i = 0; i < size; i++){
+            if(depotLimit.get(i).getType() == resoruce)
+                limit = limit + depotLimit.get(i).getResourceNumber();
+        }
+        return limit;
+    }
+
+    /**
+     * Returns the actual number of resources stored in the ExtraSlotLeaderCard
+     *
+     * @param resource: the type of the resource
+     * @return the actual number of resources stored in the ExtraSlotLeaderCard
+     * @throws IllegalParameterException if the resource is faith point
+     */
+    int getExtraDepotValue(ResourceType resource) throws IllegalParameterException {
+        if(resource == ResourceType.FAITHPOINT)
+            throw new IllegalParameterException("Faith Point aren't stored in extraSlot");
+        return leaderDepot.get(resource);
+    }
 
 }
 
