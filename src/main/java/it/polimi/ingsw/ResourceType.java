@@ -1,8 +1,9 @@
 package it.polimi.ingsw;
 
-/*enum class to manage base Resource*/
-/*every constant has his method which returns true only if is used for the same constant
-* can be used also equals method, but this is specific for every constant*/
+/** enum class to manage base Resources
+* every constant has his method which returns true only if it's used for the same constant
+* can be used also equals method, but this is specific for every constant
+* */
 public enum ResourceType {
     COIN {
         @Override
@@ -35,7 +36,10 @@ public enum ResourceType {
         }
     };
 
-    /*enum base methods: return false, because they're not the overrided metods*/
+    /**
+     * enum base methods:
+     * @return false by default
+     * */
     public boolean isCoin(){
         return false;
     }
