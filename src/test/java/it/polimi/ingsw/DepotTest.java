@@ -70,20 +70,20 @@ class DepotTest {
     }
 
     @Test
-    public void negativeQuantity(){
+    public void addNegativeQuantity(){
         Depot depot = new Depot();
         assertThrows(IllegalParameterException.class, () -> depot.addToShelf(coin, -1, 1));
     }
 
     @Test
-    public void shelfOutOfBound(){
+    public void shelfAddOutOfBound(){
         Depot depot = new Depot();
         assertThrows(IllegalParameterException.class, () -> depot.addToShelf(stone, 1, 4));
         assertThrows(IllegalParameterException.class, () -> depot.addToShelf(stone, 1, 0));
     }
 
     @Test
-    public void alreadyInDepot() throws IllegalParameterException, NotEnoughSpaceException, IllegalActionException {
+    public void addAlreadyInDepot() throws IllegalParameterException, NotEnoughSpaceException, IllegalActionException {
         Depot depot = new Depot();
 
         depot.addToShelf(shield, 1, 1);
@@ -103,7 +103,7 @@ class DepotTest {
     }
 
     @Test
-    public void notEnoughSpace1() {
+    public void notEnoughSpace1Add() {
         NotEnoughSpaceException exception;
         Depot depot = new Depot();
 
@@ -112,7 +112,7 @@ class DepotTest {
     }
 
     @Test
-    public void notEnoughSpace2() {
+    public void notEnoughSpace2Add() {
         NotEnoughSpaceException exception;
         Depot depot = new Depot();
 
@@ -121,7 +121,7 @@ class DepotTest {
     }
 
     @Test
-    public void notEnoughSpace3() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+    public void notEnoughSpace3Add() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
         NotEnoughSpaceException exception;
         Depot depot = new Depot();
 
@@ -130,7 +130,275 @@ class DepotTest {
         assertEquals(exception.getAvailableSpace(), 1);
     }
 
+    @Test
+    public void removeRes1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
 
+        depot.addToShelf(servant, 2, 2);
+        assertTrue(depot.removeFromDepot(2,1));
+        assertEquals(depot.getResource(servant), 1);
+        assertEquals(depot.getShelfType(2), servant);
+    }
+
+    @Test
+    public void removeRes2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(stone, 2, 3);
+        depot.removeFromDepot(3,1);
+        assertEquals(depot.getResource(stone), 1);
+        assertEquals(depot.getShelfType(3), stone);
+    }
+
+    @Test
+    public void removeRes3() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(stone, 1, 1);
+        depot.addToShelf(coin, 2, 2);
+        depot.addToShelf(shield, 3, 3);
+
+        assertEquals(depot.getShelfType(1), stone);
+        assertEquals(depot.getShelfType(2), coin);
+        assertEquals(depot.getShelfType(3), shield);
+
+        depot.removeFromDepot(1,1);
+        depot.removeFromDepot(2, 1);
+        depot.removeFromDepot(3,2);
+
+        assertEquals(depot.getResource(stone), 0);
+        assertEquals(depot.getResource(coin), 1);
+        assertEquals(depot.getResource(shield), 1);
+
+        assertNull(depot.getShelfType(1));
+        assertEquals(depot.getShelfType(2), coin);
+        assertEquals(depot.getShelfType(3), shield);
+    }
+
+    @Test
+    public void multipleRemoves() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(coin, 3, 3);
+
+        depot.removeFromDepot(3,1);
+        assertEquals(depot.getResource(coin), 2);
+        assertEquals(depot.getShelfType(3), coin);
+
+        depot.removeFromDepot(3, 1);
+        assertEquals(depot.getResource(coin), 1);
+        assertEquals(depot.getShelfType(3), coin);
+
+        depot.removeFromDepot(3, 1);
+        assertEquals(depot.getResource(coin), 0);
+        assertNull(depot.getShelfType(3));
+    }
+
+    @Test
+    public void shelfRemoveOutOfBound1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 3 , 3);
+        assertThrows(IllegalParameterException.class, () -> depot.removeFromDepot(0, 3));
+    }
+
+    @Test
+    public void shelfRemoveOutOfBound2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 3 , 3);
+        assertThrows(IllegalParameterException.class, () -> depot.removeFromDepot(4, 3));
+    }
+
+    @Test
+    public void removeNegativeQuantity() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 3 , 3);
+        assertThrows(IllegalParameterException.class, () -> depot.removeFromDepot(3, -1));
+    }
+
+    @Test
+    public void removeNotInDepot() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 3 , 3);
+        assertThrows(IllegalParameterException.class, () -> depot.removeFromDepot(1, 3));
+    }
+
+    @Test
+    public void removeZeroQuantity() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 3 , 3);
+        assertTrue(depot.removeFromDepot(3, 0));
+        assertEquals(depot.getResource(servant), 3);
+        assertEquals(depot.getShelfType(3), servant);
+    }
+
+    @Test
+    public void notEnouthResourcesRemove() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(shield, 2 , 3);
+        assertThrows(IllegalActionException.class, () -> depot.removeFromDepot(3, 3));
+    }
+
+    @Test
+    public void move1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(coin, 2, 2);
+        depot.addToShelf(stone, 2, 3);
+
+        assertEquals(depot.getShelfType(2), coin);
+        assertEquals(depot.getShelfType(3), stone);
+
+        assertTrue(depot.moveBetweenShelves(2, 3));
+        assertEquals(depot.getShelfType(2), stone);
+        assertEquals(depot.getShelfType(3), coin);
+
+        assertEquals(depot.getResource(coin), 2);
+        assertEquals(depot.getResource(stone), 2);
+
+    }
+
+    @Test
+    public void move2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 1, 1);
+        depot.addToShelf(stone, 1, 2);
+
+        assertEquals(depot.getShelfType(1), servant);
+        assertEquals(depot.getShelfType(2), stone);
+
+        assertTrue(depot.moveBetweenShelves(1, 2));
+
+        assertEquals(depot.getShelfType(1), stone);
+        assertEquals(depot.getShelfType(2), servant);
+    }
+
+    @Test
+    public void move3() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 1, 1);
+        depot.addToShelf(stone, 1, 3);
+
+        assertEquals(depot.getShelfType(1), servant);
+        assertEquals(depot.getShelfType(3), stone);
+
+        assertTrue(depot.moveBetweenShelves(1, 3));
+
+        assertEquals(depot.getShelfType(3), servant);
+        assertEquals(depot.getShelfType(1), stone);
+    }
+
+    @Test
+    public void move4() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 1, 1);
+        depot.addToShelf(stone, 1, 3);
+
+        assertEquals(depot.getShelfType(1), servant);
+        assertEquals(depot.getShelfType(3), stone);
+
+        assertTrue(depot.moveBetweenShelves(3, 1));
+
+        assertEquals(depot.getShelfType(3), servant);
+        assertEquals(depot.getShelfType(1), stone);
+    }
+
+    @Test
+    public void move5() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(stone, 1, 3);
+
+        assertNull(depot.getShelfType(1));
+        assertEquals(depot.getShelfType(3), stone);
+
+        assertTrue(depot.moveBetweenShelves(3, 1));
+
+        assertNull(depot.getShelfType(3));
+        assertEquals(depot.getShelfType(1), stone);
+    }
+
+
+    @Test
+    public void sourceShelfOutOfBound1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(coin, 2, 3);
+        depot.addToShelf(shield, 2, 2);
+
+        assertThrows(IllegalParameterException.class, () -> depot.moveBetweenShelves(0, 2));
+    }
+
+    @Test
+    public void sourceShelfOutOfBound2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(coin, 2, 3);
+        depot.addToShelf(shield, 2, 2);
+
+        assertThrows(IllegalParameterException.class, () -> depot.moveBetweenShelves(4, 2));
+    }
+
+    @Test
+    public void destShelfOutOfBound1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(coin, 2, 3);
+        depot.addToShelf(shield, 2, 2);
+
+        assertThrows(IllegalParameterException.class, () -> depot.moveBetweenShelves(1, 0));
+    }
+
+    @Test
+    public void destShelfOutOfBound2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(coin, 2, 3);
+        depot.addToShelf(shield, 2, 2);
+
+        assertThrows(IllegalParameterException.class, () -> depot.moveBetweenShelves(1, 4));
+    }
+
+    @Test
+    public void noResourceToMove() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(shield, 2, 2);
+
+        assertThrows(IllegalActionException.class, () -> depot.moveBetweenShelves(1, 2));
+    }
+
+    @Test
+    public void notEnoughSpaceMove1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Exception exception;
+        Depot depot = new Depot();
+
+        depot.addToShelf(stone, 1, 1);
+        depot.addToShelf(shield, 3, 3);
+
+        exception = assertThrows(IllegalActionException.class, () -> depot.moveBetweenShelves(3, 1));
+        assertEquals(exception.getMessage(), "Not enough space in destination shelf");
+    }
+
+    @Test
+    public void notEnoughSpaceMove2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Exception exception;
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 2, 2);
+        depot.addToShelf(shield, 1, 1);
+
+        exception = assertThrows(IllegalActionException.class, () -> depot.moveBetweenShelves(1, 2));
+        assertEquals(exception.getMessage(), "Not enough space in source shelf");
+    }
 
 
 }
