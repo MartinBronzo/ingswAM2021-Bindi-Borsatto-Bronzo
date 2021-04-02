@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.IllegalParameterException;
-import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.marble.*;
 import org.junit.jupiter.api.Test;
 
