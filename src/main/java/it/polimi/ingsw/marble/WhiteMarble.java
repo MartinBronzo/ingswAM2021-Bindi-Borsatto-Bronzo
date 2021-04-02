@@ -8,8 +8,15 @@ import java.util.HashMap;
 
 /*Warning: this class is not thread safe*/
 public class WhiteMarble extends Marble {
-     boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException{
+     public boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException, NullPointerException{
+         if(effect==null) throw new NullPointerException("onActivate WhiteMarble: not expected NULL effect");
+
          effect.whiteMarbleEffect(resourceMap);
          return true;
+    }
+
+    @Override
+    public String toString() {
+        return "WhiteMarble{}";
     }
 }

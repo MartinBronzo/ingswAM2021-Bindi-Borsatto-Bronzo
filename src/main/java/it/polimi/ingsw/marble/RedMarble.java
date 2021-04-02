@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /*Warning: this class is not thread safe*/
 public class RedMarble extends Marble {
-     boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException{
+     public boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException{
          ResourceType resource=ResourceType.FAITHPOINT;
          Integer resourceNumber;
 
@@ -18,5 +18,10 @@ public class RedMarble extends Marble {
         resourceNumber++;
         resourceMap.put(resource,resourceNumber);
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "RedMarble{}";
     }
 }

@@ -16,6 +16,8 @@ class BlueMarbleTest {
     final ResourceType stone = ResourceType.STONE;
     final ResourceType faith = ResourceType.FAITHPOINT;
 
+
+
     @Test
     void onActivateLegalTest() throws NegativeQuantityException {
         HashMap<ResourceType, Integer> resourceMap = new HashMap<>();

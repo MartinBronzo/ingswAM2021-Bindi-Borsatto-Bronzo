@@ -1,1 +1,5 @@
-it\polimi\ingsw\Strongbox.class
+it/polimi/ingsw/exceptions/IllegalActionException.class
+it/polimi/ingsw/Market.class
+it/polimi/ingsw/exceptions/NotEnoughSpaceException.class
+it/polimi/ingsw/Depot.class
+it/polimi/ingsw/exceptions/IllegalParameterException.class

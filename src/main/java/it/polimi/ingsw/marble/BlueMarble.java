@@ -7,8 +7,9 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import java.util.HashMap;
 
 /*Warning: this class is not thread safe*/
+
 public class BlueMarble extends Marble {
-     boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException{
+     public boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException{
          ResourceType resource=ResourceType.SHIELD;
          Integer resourceNumber;
 
@@ -18,5 +19,10 @@ public class BlueMarble extends Marble {
         resourceNumber++;
         resourceMap.put(resource,resourceNumber);
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "BlueMarble{}";
     }
 }
