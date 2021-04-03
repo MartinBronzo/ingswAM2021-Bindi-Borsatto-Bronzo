@@ -248,6 +248,46 @@ public class Depot {
         return true;
     }
 
+    private boolean canAddToLeaderDepot(ResourceType resource, int quantity) throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        int resLimit, actualValue, newValue;
+
+        if(resource == ResourceType.FAITHPOINT)
+            throw new IllegalParameterException("Can't add faith points");
+
+        if(quantity < 0)
+            throw new IllegalParameterException("Negative quantity");
+
+        resLimit = getExtraDepotLimit(resource);
+        if(resLimit == 0)
+            throw new IllegalActionException("No existing extra slot for this resource");
+
+        actualValue = leaderDepot.get(resource);
+        if(actualValue == resLimit)
+            throw new IllegalActionException("Extra slot is full");
+
+        newValue = actualValue + quantity;
+        if(newValue > resLimit)
+            throw new NotEnoughSpaceException("Not enough space in extra slot", resLimit - actualValue);
+
+        return true;
+    }
+
+    public boolean addToLeaderDepot(ResourceType resource, int quantity) throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        boolean canAdd;
+        int actualValue, newValue;
+
+        canAdd = canAddToLeaderDepot(resource, quantity);
+        if(canAdd){
+            if(quantity == 0)
+                return true;
+            actualValue = leaderDepot.get(resource);
+            newValue = actualValue + quantity;
+            leaderDepot.put(resource, newValue);
+        }
+
+        return true;
+    }
+
     /**
      * @param resource: the resource you want to know the value
      * @return the value of the resource
