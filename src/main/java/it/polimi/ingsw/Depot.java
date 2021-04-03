@@ -42,11 +42,8 @@ public class Depot {
      * @throws IllegalActionException    if the resource to be added is already in the depot in another position
      */
     private boolean canAddToShelf(ResourceType resource, int quantity, int shelfNum) throws IllegalParameterException, IllegalActionException {
-        if (resource == ResourceType.FAITHPOINT)
-            throw new IllegalParameterException("Can't add FaithPoints");
-
-        if (quantity < 0)
-            throw new IllegalParameterException("Negative quantity");
+        isFaithPoint(resource);
+        isNegativeQuantity(quantity);
 
         if (shelfNum < 1 || shelfNum > 3)
             throw new IllegalParameterException("ShelfNum out of bound");
@@ -76,9 +73,6 @@ public class Depot {
 
         canAdd = canAddToShelf(resource, quantity, shelfNum);
         if (canAdd) {
-            if (quantity == 0)
-                return true;
-
             actualValue = depotLevel.get(resource);
             newValue = actualValue + quantity;
             if (newValue > shelfNum) {
@@ -87,7 +81,7 @@ public class Depot {
             } else {
                 depotLevel.put(resource, newValue);
                 shelfNum--;
-                if (actualValue == 0) {
+                if (actualValue == 0 && newValue != 0) {
                     shelves[shelfNum] = resource;
                 }
                 return true;
@@ -108,8 +102,7 @@ public class Depot {
        if(shelfNum < 1 || shelfNum > 3)
            throw new IllegalParameterException("ShelfNum out of bound");
 
-        if(quantity < 0)
-            throw new IllegalParameterException("Negative quantity");
+        isNegativeQuantity(quantity);
 
         if(shelves[shelfNum - 1] == null)
             throw new IllegalParameterException("Resource not in depot");
@@ -133,9 +126,6 @@ public class Depot {
 
         canRemove = canRemoveFromDepot(shelfNum, quantity);
         if(canRemove) {
-            if(quantity == 0)
-                return true;
-
             shelfNum --;
             resourceType = shelves[shelfNum];
             actualValue = depotLevel.get(resourceType);
@@ -218,11 +208,9 @@ public class Depot {
      */
     private boolean canAddExtraSlot(ExtraSlotLeaderEffect effect) throws IllegalParameterException, IllegalActionException {
         final int maxLeaderCards = 2;
-        if(effect.getType() == ResourceType.FAITHPOINT)
-            throw new  IllegalParameterException("Can't add FaithPoints");
 
-        if(effect.getResourceNumber() < 0)
-            throw new IllegalParameterException("Negative quantity");
+        isFaithPoint(effect.getType());
+        isNegativeQuantity(effect.getResourceNumber() );
 
         if(depotLimit.size() == maxLeaderCards)
             throw new IllegalActionException("Can't add more leader cards");
@@ -248,14 +236,21 @@ public class Depot {
         return true;
     }
 
+    /**
+     * Controls if there are illegal parameter and if the action can be performed
+     *
+     * @param resource: the resource to add
+     * @param quantity: the quantity to add
+     * @return true if all the parameters are legal and if the action can be performed
+     * @throws IllegalParameterException: if the resource is a faith point and if the quantity is negative
+     * @throws IllegalActionException: if the resource to remove doesn't have an extra slot and if the extra slot is already full of resources
+     * @throws NotEnoughSpaceException: if the resources to be added are more than the available space in the extra slot
+     */
     private boolean canAddToLeaderDepot(ResourceType resource, int quantity) throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
         int resLimit, actualValue, newValue;
 
-        if(resource == ResourceType.FAITHPOINT)
-            throw new IllegalParameterException("Can't add faith points");
-
-        if(quantity < 0)
-            throw new IllegalParameterException("Negative quantity");
+        isFaithPoint(resource);
+        isNegativeQuantity(quantity);
 
         resLimit = getExtraDepotLimit(resource);
         if(resLimit == 0)
@@ -272,19 +267,74 @@ public class Depot {
         return true;
     }
 
-    public boolean addToLeaderDepot(ResourceType resource, int quantity) throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+    /**
+     * Controls if all the parameters are legal and if yes, performs the action
+     *
+     * @param resource: the resource to add
+     * @param quantity: the quantity to add
+     * @return true if the action is performed without errors
+     * @throws IllegalParameterException if the resource is a faith point and if the quantity is negative
+     * @throws IllegalActionException if the resource to remove doesn't have an extra slot and if the extra slot is already full of resources
+     * @throws NotEnoughSpaceException if the resources to be added are more than the available space in the extra slot
+     */
+    public boolean addToLeader(ResourceType resource, int quantity) throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
         boolean canAdd;
         int actualValue, newValue;
 
         canAdd = canAddToLeaderDepot(resource, quantity);
         if(canAdd){
-            if(quantity == 0)
-                return true;
             actualValue = leaderDepot.get(resource);
             newValue = actualValue + quantity;
             leaderDepot.put(resource, newValue);
         }
 
+        return true;
+    }
+
+    /**
+     * Controls if there are illegal parameter and if the action can be performed
+     *
+     * @param resource: the resource to remove
+     * @param quantity: the quantity to remove
+     * @return true if all the parameters are legal and if the action can be performed
+     * @throws IllegalParameterException if the resource is a faith point and if the quantity is negative
+     * @throws IllegalActionException if the resource to remove doesn't have an extra slot
+     */
+    private boolean canRemoveFromLeader(ResourceType resource, int quantity) throws IllegalParameterException, IllegalActionException {
+        int resLimit;
+
+        isFaithPoint(resource);
+        isNegativeQuantity(quantity);
+
+        resLimit = getExtraDepotLimit(resource);
+        if(resLimit == 0)
+            throw new IllegalActionException("No existing extra slot for this resource");
+
+        return true;
+    }
+
+    /**
+     * Controls if all the parameters are legal and if yes, performs the action
+     *
+     * @param resource: the resource to remove
+     * @param quantity: the quantity to remove
+     * @return true if all the parameters are legal and if the action can be performed
+     * @throws IllegalParameterException if the resource is a faith point and if the quantity is negative
+     * @throws IllegalActionException if the resource to remove doesn't have an extra slot
+     */
+    public boolean removeFromLeader(ResourceType resource, int quantity) throws IllegalParameterException, IllegalActionException {
+        boolean canRemove;
+        int actualValue, newValue;
+
+        canRemove = canRemoveFromLeader(resource, quantity);
+        if(canRemove){
+            actualValue = leaderDepot.get(resource);
+            newValue = actualValue - quantity;
+
+            if(newValue < 0)
+                throw new IllegalActionException("Not enough resources to remove");
+            leaderDepot.put(resource, newValue);
+        }
         return true;
     }
 
@@ -344,6 +394,27 @@ public class Depot {
         return leaderDepot.get(resource);
     }
 
+    /**
+     * Controls if the resource passed is a faith point
+     *
+     * @param resourceType: the resource to control
+     * @throws IllegalParameterException if the resource is a faith point
+     */
+    private void isFaithPoint(ResourceType resourceType) throws IllegalParameterException {
+        if(resourceType == ResourceType.FAITHPOINT)
+            throw new IllegalParameterException("Can't add faith points");
+    }
+
+    /**
+     * Controls if the quantity passed is negative
+     *
+     * @param quantity: the quantity to control
+     * @throws IllegalParameterException if the quantoty is negative
+     */
+    private void isNegativeQuantity(int quantity) throws IllegalParameterException {
+        if(quantity < 0)
+            throw new IllegalParameterException("Negative quantity");
+    }
 }
 
 
