@@ -1,8 +1,9 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.FaithTrackTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.FaithTrack.*;
+import it.polimi.ingsw.Observer;
 import org.junit.jupiter.api.Test;
 
 public class CellTest {

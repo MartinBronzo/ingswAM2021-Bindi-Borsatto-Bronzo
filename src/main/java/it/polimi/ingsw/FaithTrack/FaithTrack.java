@@ -1,0 +1,159 @@
+package it.polimi.ingsw.FaithTrack;
+
+import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * FaithTrack class represents the FaithTrack. It is a singleton because it is shared between all players. It consists of a list of the cells the Faith track in the board is made of.
+ * It has many methods whose goal is to simply forward the requests to the right Cell (the given position of the Cell is for sure in the range of correct values because the FaithLevels
+ * make sure of that).
+ */
+public class FaithTrack {
+    /**
+     * Contains the only instance of this class
+     */
+    private static FaithTrack instance;
+    /**
+     * Contains all the Cells which make up the Faith track in the board
+     */
+    private List<Cell> track;
+
+    /**
+     * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern.
+     */
+    private FaithTrack(){
+        this.track = new ArrayList<>();
+    }
+
+    /**
+     * Constructs the only instance of the FaithTrack class. It constructs the object the first time this method is called. The other times it simply returns
+     * the instance of FaithTrack already constructed.
+     * @return the only instance of the class
+     */
+    public static FaithTrack instance(){
+        if(instance == null)
+            instance = new FaithTrack();
+        return instance;
+    }
+
+    /**
+     * Constructs the ensemble of cells which constitute the track
+     */
+    // Right now, I fill the list one cell at the time. Maybe in the future we can read from an XML file how the track is designed.
+    public void initTrack(){
+        //If we have already designed the Track, we can't change it here
+        if(!track.isEmpty())
+            return;
+        track.add(new Cell(0, ReportNum.REPORT1));
+        track.add(new Cell(0, ReportNum.REPORT1));
+        track.add(new Cell(0, ReportNum.REPORT1));
+        track.add(new Cell(1, ReportNum.REPORT1));
+        track.add(new Cell(0, ReportNum.REPORT1));
+        track.add(new ReportCell(0, ReportNum.REPORT1));
+        track.add(new ReportCell(2, ReportNum.REPORT1));
+        track.add(new ReportCell(0, ReportNum.REPORT1));
+        PopeCell popeCell1 = new PopeCell(0, ReportNum.REPORT1);
+        track.add(popeCell1);
+        track.add(new Cell(4, ReportNum.REPORT2));
+        track.add(new Cell(0, ReportNum.REPORT2));
+        track.add(new Cell(0, ReportNum.REPORT2));
+        track.add(new ReportCell(6, ReportNum.REPORT2));
+        track.add(new ReportCell(0, ReportNum.REPORT2));
+        track.add(new ReportCell(0, ReportNum.REPORT2));
+        track.add(new ReportCell(9, ReportNum.REPORT2));
+        PopeCell popeCell2 = new PopeCell(0, ReportNum.REPORT2);
+        track.add(popeCell2);
+        track.add(new Cell(0, ReportNum.REPORT3));
+        track.add(new Cell(12, ReportNum.REPORT3));
+        track.add(new ReportCell(0, ReportNum.REPORT3));
+        track.add(new ReportCell(0, ReportNum.REPORT3));
+        track.add(new ReportCell(16, ReportNum.REPORT3));
+        track.add(new ReportCell(0, ReportNum.REPORT3));
+        track.add(new ReportCell(0, ReportNum.REPORT3));
+        PopeCell popeCell3 = new PopeCell(20, ReportNum.REPORT3);
+        track.add(popeCell3);
+
+        Observer observer1 = new ControllerStub(popeCell1);
+        Observer observer2 = new ControllerStub(popeCell2);
+        Observer observer3 = new ControllerStub(popeCell3);
+        popeCell1.attach(observer1);
+        popeCell2.attach(observer2);
+        popeCell3.attach(observer3);
+    }
+
+    /**
+     * Calls the effect of the cell whose position is given as a parameter
+     * @param position the position of the cell
+     */
+    //This method was only used for testing purposes
+    public boolean callCellEffectBasic(int position){
+        return track.get(position).effect();
+    }
+
+    /**
+     * Calls the effect of the cell whose position is given as a parameter
+     * @param position the position of the cell
+     * @return the effect of the cell
+     * @throws LastVaticanReportException if the last cell (a PopeCell) was reached activating the last Vatican Report
+     */
+    public boolean callCellEffect(int position) throws LastVaticanReportException{
+        if(position < track.size() - 1)
+            return track.get(position).effect();
+        throw new LastVaticanReportException("Last Vatican Report was activated!", track.get(position).effect());
+    }
+
+    /**
+     * Returns the victory points of the cell whose position is given as a parameter
+     * @param position the position of the cell
+     * @return the victory points of the cell
+     */
+    public int getCellVicoryPoints(int position){
+        return track.get(position).getVicoryPoints();
+    }
+
+    /**
+     * Returns the ReportNum of the cell whose position is given as a parameter
+     * @param position the position of the cell
+     * @return the ReportNum of the cell
+     */
+    public ReportNum getCellReportNum(int position){
+        return track.get(position).getReportNum();
+    }
+
+    /**
+     * States whether the cell whose position is given as a parameter activates the Pope Tile in a Vatican Report whose corresponding ReportNum is given as a parameter
+     * @param position the position of the cell
+     * @param reportNum the ReportNum of the activated Vatican Report
+     * @return true if the PopeTile must be activated, false otherwise
+     */
+    public boolean callCellActivateTile(int position, ReportNum reportNum){
+        return track.get(position).activatePopeTile(reportNum);
+    }
+
+    /**
+     * Returns the size of the track
+     * @return the size of the track
+     */
+    public int getTrackSize(){
+        return track.size();
+    }
+
+    //Method used for testing purposes
+    public static void main(String args[]){
+        FaithTrack ft = FaithTrack.instance();
+        ft.initTrack();
+
+        int i = 0;
+        while(i < ft.track.size()){
+            Cell tmp = ft.track.get(i);
+            System.out.println(tmp.getReportNum() + " " +  tmp.getVicoryPoints() + " at position " + i);
+            i++;
+        }
+        System.out.print("Cella ultima posizione: " + ft.getCellVicoryPoints(25 - 1));
+    }
+
+
+}
