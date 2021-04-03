@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalParameterException;
 import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
+import it.polimi.ingsw.leaderEffects.ExtraSlotLeaderEffect;
 import org.junit.jupiter.api.Test;
 
 class DepotTest {
@@ -399,6 +400,90 @@ class DepotTest {
         exception = assertThrows(IllegalActionException.class, () -> depot.moveBetweenShelves(1, 2));
         assertEquals(exception.getMessage(), "Not enough space in source shelf");
     }
+
+    @Test
+    public void init() throws IllegalParameterException {
+        Depot depot = new Depot();
+        assertEquals(depot.getExtraDepotValue(coin), 0);
+        assertEquals(depot.getExtraDepotValue(shield), 0);
+        assertEquals(depot.getExtraDepotValue(servant), 0);
+        assertEquals(depot.getExtraDepotValue(stone), 0);
+
+        assertEquals(depot.getExtraDepotLimit(coin), 0);
+        assertEquals(depot.getExtraDepotLimit(shield), 0);
+        assertEquals(depot.getExtraDepotLimit(servant), 0);
+        assertEquals(depot.getExtraDepotLimit(stone), 0);
+    }
+
+    @Test
+    public void addExtraSlot() throws IllegalParameterException, IllegalActionException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
+
+        assertTrue(depot.addExtraSolt(extraSlotLeaderEffect));
+        assertEquals(depot.getExtraDepotValue(coin), 0);
+        assertEquals(depot.getExtraDepotLimit(coin), 2);
+    }
+
+    @Test
+    public void addExtraSlot2() throws IllegalParameterException, IllegalActionException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect1 = new ExtraSlotLeaderEffect(servant, 2);
+        ExtraSlotLeaderEffect extraSlotLeaderEffect2 = new ExtraSlotLeaderEffect(shield, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect1);
+        assertEquals(depot.getExtraDepotLimit(servant), 2);
+        assertEquals(depot.getExtraDepotValue(servant), 0);
+
+        depot.addExtraSolt(extraSlotLeaderEffect2);
+        assertEquals(depot.getExtraDepotLimit(shield), 2);
+        assertEquals(depot.getExtraDepotValue(shield), 0);
+    }
+
+    @Test
+    public void addExtraSlot3() throws IllegalParameterException, IllegalActionException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        assertEquals(depot.getExtraDepotLimit(stone), 2);
+        assertEquals(depot.getExtraDepotValue(stone), 0);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        assertEquals(depot.getExtraDepotLimit(stone), 4);
+        assertEquals(depot.getExtraDepotValue(stone), 0);
+    }
+
+    @Test
+    public void addFaithPointExtra(){
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(faithPoint, 2);
+
+        assertThrows(IllegalParameterException.class, () -> depot.addExtraSolt(extraSlotLeaderEffect));
+    }
+
+    @Test
+    public void negativeQuantityExtra(){
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, -1);
+
+        assertThrows(IllegalParameterException.class, () -> depot.addExtraSolt(extraSlotLeaderEffect));
+    }
+
+    @Test
+    public void tooManyExtra() throws IllegalParameterException, IllegalActionException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        assertEquals(depot.getExtraDepotLimit(servant), 2);
+        assertEquals(depot.getExtraDepotValue(servant), 0);
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        assertEquals(depot.getExtraDepotLimit(servant), 4);
+        assertEquals(depot.getExtraDepotValue(servant), 0);
+        assertThrows(IllegalActionException.class, () -> depot.addExtraSolt(extraSlotLeaderEffect));
+    }
+
 
 
 }
