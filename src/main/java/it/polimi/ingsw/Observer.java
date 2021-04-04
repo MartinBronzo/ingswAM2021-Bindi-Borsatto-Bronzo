@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.FaithTrack.ReportNum;
+
 /**
  * This interfaces is used to implement the Observer Pattern. It is used by the objects which want to observe the Subject in order to be notified of their change
  */
@@ -11,5 +13,5 @@ public interface Observer {
     public String update();
 
     //Usato solo a fine di testing
-    public boolean update(boolean tmp);
+    public boolean update(boolean tmp, ReportNum reportNum);
 }

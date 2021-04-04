@@ -46,10 +46,11 @@ public class Cell {
     /**
      * States whether this cell lets the player turn the PopeTile for the activated Vatican Report
      * @param currentReportNum the activated Vatican Report
-     * @return false because normal cells because they never belong to Vatican Report sections
+     * @return true if the Tile needs to be turned, false otherwise
      */
-    public boolean activatePopeTile(ReportNum currentReportNum){
-
+    public boolean activatePopeTile(ReportNum currentReportNum, ReportNumOrder reportNumOrder){
+        if(reportNumOrder.stateOrder(currentReportNum, this.reportNum))
+            return true;
         return false;
     }
 }

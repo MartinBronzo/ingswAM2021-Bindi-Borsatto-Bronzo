@@ -15,15 +15,23 @@ public class PopeTileTest {
     public void ctrlTileCreation(){
         PopeTile popeTile= new PopeTile(-1, ReportNum.REPORT1);
 
-        assertEquals(popeTile.getPoints(), -1);
+        assertEquals(popeTile.getPoints(), 0);
         assertEquals(popeTile.getReportNum(), ReportNum.REPORT1);
         assertFalse(popeTile.isActivated());
         assertFalse(popeTile.isDiscarded());
+        assertFalse(popeTile.isChanged());
+
+        try {
+            popeTile.dealWithVaticanReport(ReportNum.REPORT1, true);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+        assertEquals(popeTile.getPoints(), -1);
     }
 
     @Test
     //Tests the activation and the discard of the PopeTile
-    public void ctrlTileActivationAndDiscar(){
+    public void ctrlTileActivationAndDiscard(){
         PopeTile popeTile1 = new PopeTile(0, ReportNum.REPORT1);
         PopeTile popeTile2a = new PopeTile(0, ReportNum.REPORT1);
         PopeTile popeTile2b = new PopeTile(0, ReportNum.REPORT1);

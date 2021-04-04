@@ -4,6 +4,7 @@ public class LastVaticanReportException extends Exception{
     private boolean lastValueReturnedByCell;
 
     public LastVaticanReportException(String s, boolean b){
+        super(s);
         this.lastValueReturnedByCell = b;
     }
 

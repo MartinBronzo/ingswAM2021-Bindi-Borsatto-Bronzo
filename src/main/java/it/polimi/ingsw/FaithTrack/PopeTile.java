@@ -104,4 +104,16 @@ public class PopeTile {
     public boolean isChanged() {
         return changed;
     }
+
+    /**
+     * Clones this tile
+     * @return a clone of this tile
+     */
+    public PopeTile cloneTile(){
+        PopeTile tmp = new PopeTile(this.points, this.reportNum);
+        tmp.activated = this.activated;
+        tmp.discarded = this.discarded;
+        tmp.changed = this.changed;
+        return tmp;
+    }
 }

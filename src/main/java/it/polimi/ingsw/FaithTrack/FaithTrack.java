@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * FaithTrack class represents the FaithTrack. It is a singleton because it is shared between all players. It consists of a list of the cells the Faith track in the board is made of.
  * It has many methods whose goal is to simply forward the requests to the right Cell (the given position of the Cell is for sure in the range of correct values because the FaithLevels
- * make sure of that).
+ * make sure of that). This class knows the order of the ReportNum.
  */
 public class FaithTrack {
     /**
@@ -20,33 +20,41 @@ public class FaithTrack {
      * Contains all the Cells which make up the Faith track in the board
      */
     private List<Cell> track;
+    /**
+     * Contains the order of the ReportNum
+     */
+    private ReportNumOrder reportNumOrder;
 
     /**
-     * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern.
+     * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. It saves the order of the Vatican Reports
+     * @param reportNumOrder the order of the ReportNum of the Faith track
      */
-    private FaithTrack(){
+    private FaithTrack(ReportNumOrder reportNumOrder){
         this.track = new ArrayList<>();
+        this.reportNumOrder = reportNumOrder;
     }
 
     /**
      * Constructs the only instance of the FaithTrack class. It constructs the object the first time this method is called. The other times it simply returns
      * the instance of FaithTrack already constructed.
+     * @param reportNumOrder the order of the Reports Num needed to build the instance of the class
      * @return the only instance of the class
      */
-    public static FaithTrack instance(){
+    public static FaithTrack instance(ReportNumOrder reportNumOrder){
         if(instance == null)
-            instance = new FaithTrack();
+            instance = new FaithTrack(reportNumOrder);
         return instance;
     }
 
     /**
-     * Constructs the ensemble of cells which constitute the track
+     * Constructs the ensemble of cells which constitute the track. The initiation of the track can only be done one
+     * @return true if the first initiation, false otherwise
      */
     // Right now, I fill the list one cell at the time. Maybe in the future we can read from an XML file how the track is designed.
-    public void initTrack(){
+    public boolean initTrack(){
         //If we have already designed the Track, we can't change it here
         if(!track.isEmpty())
-            return;
+            return false;
         track.add(new Cell(0, ReportNum.REPORT1));
         track.add(new Cell(0, ReportNum.REPORT1));
         track.add(new Cell(0, ReportNum.REPORT1));
@@ -82,6 +90,8 @@ public class FaithTrack {
         popeCell1.attach(observer1);
         popeCell2.attach(observer2);
         popeCell3.attach(observer3);
+
+        return true;
     }
 
     /**
@@ -110,7 +120,7 @@ public class FaithTrack {
      * @param position the position of the cell
      * @return the victory points of the cell
      */
-    public int getCellVicoryPoints(int position){
+    public int getCellVictoryPoints(int position){
         return track.get(position).getVicoryPoints();
     }
 
@@ -130,7 +140,7 @@ public class FaithTrack {
      * @return true if the PopeTile must be activated, false otherwise
      */
     public boolean callCellActivateTile(int position, ReportNum reportNum){
-        return track.get(position).activatePopeTile(reportNum);
+        return track.get(position).activatePopeTile(reportNum, this.reportNumOrder);
     }
 
     /**
@@ -142,7 +152,7 @@ public class FaithTrack {
     }
 
     //Method used for testing purposes
-    public static void main(String args[]){
+    /*public static void main(String args[]){
         FaithTrack ft = FaithTrack.instance();
         ft.initTrack();
 
@@ -152,7 +162,27 @@ public class FaithTrack {
             System.out.println(tmp.getReportNum() + " " +  tmp.getVicoryPoints() + " at position " + i);
             i++;
         }
-        System.out.print("Cella ultima posizione: " + ft.getCellVicoryPoints(25 - 1));
+        System.out.print("Cella ultima posizione: " + ft.getCellVictoryPoints(25 - 1));
+    }*/
+
+    //This method is only used for testing purposes
+    public ReportNumOrder getReportNumOrder(){
+        return this.reportNumOrder;
+    }
+
+    //This method is only used for testing purposes
+    //NOT TO BE USED IN THE GAME
+    public static void deleteState(){
+        instance = null;
+    }
+
+    public int getPopeTileIndex(ReportNum reportNum){
+        return reportNumOrder.getOrder(reportNum);
+    }
+
+    //This method is only used for testing purposes
+    public Cell getCell(int position){
+        return this.track.get(position);
     }
 
 

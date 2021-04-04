@@ -47,6 +47,7 @@ public class PopeCell extends ReportCell implements Subject {
      * It also changes the value in the activated attribute
      * @return true
      */
+    //The boolean here tells if everything went fine in the process of updating all the observers
     @Override
     public boolean effect() {
         this.setActivatedTrue();
@@ -64,10 +65,12 @@ public class PopeCell extends ReportCell implements Subject {
     }
 
     @Override
+    //This method may be changed in the future, it depends on what messages are shared between the Subject and the
+    //Observers
     public boolean notifyObservers() {
         int tmp = 0;
         for(Observer o: observersList)
-            if(o.update(true) == true)
+            if(o.update(true, this.getReportNum()) == true)
                 tmp++;
         if(tmp == observersList.size())
             return true;
@@ -88,7 +91,7 @@ public class PopeCell extends ReportCell implements Subject {
             return "Error!";
     }
 
-    //This method is only used for testing puposes
+    //This method is only used for testing purposes
     public List<Observer> getObserversList() {
         return observersList;
     }
