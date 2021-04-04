@@ -38,6 +38,7 @@ public class Cell {
      * Activates the effect of the cell. Normal cells have no effect
      * @return false
      */
+    //We have this method returning a boolean because we need the boolean for testing purposes
     public boolean effect(){
         return false;
     }
