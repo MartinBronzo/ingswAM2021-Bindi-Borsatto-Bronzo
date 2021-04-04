@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="DevCardConfig" type="DevCardConfigType"/>
+  <xs:complexType name="ResourceType">
+    <xs:sequence>
+      <xs:element name="Type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="COIN"/>
+            <xs:enumeration value="STONE"/>
+            <xs:enumeration value="SERVANT"/>
+            <xs:enumeration value="FAITHPOINT"/>
+            <xs:enumeration value="SHIELD"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Quantity" type="xs:nonNegativeInteger"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ProductionInputType">
+    <xs:sequence>
+      <xs:element type="ResourceType" name="Resource" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ProductionOutputType">
+    <xs:sequence>
+      <xs:element type="ResourceType" name="Resource" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CostType">
+    <xs:sequence>
+      <xs:element type="ResourceType" name="Resource" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DevCardType">
+    <xs:sequence>
+      <xs:element name="Level">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Colour">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="GREEN"/>
+            <xs:enumeration value="BLUE"/>
+            <xs:enumeration value="PURPLE"/>
+            <xs:enumeration value="YELLOW"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="VictoryPoints" type="xs:nonNegativeInteger"/>
+      <xs:element type="ProductionInputType" name="ProductionInput"/>
+      <xs:element type="ProductionOutputType" name="ProductionOutput"/>
+      <xs:element type="CostType" name="Cost"/>
+      <xs:element type="xs:string" name="url"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DevCardConfigType">
+    <xs:sequence>
+      <xs:element type="DevCardType" name="DevCard" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,78 @@
+<DevCardConfig>
+
+  <!--DEVCARD-->
+  <DevCard>
+
+    <!--LEVEL-->
+    <Level>1</Level>
+    <!--COLOUR-->
+    <Colour>GREEN</Colour>
+    <!--VICTORYPOINTS-->
+    <VictoryPoints>1</VictoryPoints>
+
+    <!--INPUT-->
+    <ProductionInput>
+      <Resource>
+        <Type>COIN</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionInput>
+
+    <!--OUTPUT-->
+    <ProductionOutput>
+      <Resource>
+        <Type>FAITHPOINT</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionOutput>
+
+    <!--COST-->
+    <Cost>
+      <Resource>
+        <Type>SHIELD</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+    </Cost>
+
+    <!--URL-->
+    <url>string</url>
+  </DevCard>
+
+  <!--DEVCARD-->
+  <DevCard>
+
+    <!--LEVEL-->
+    <Level>1</Level>
+    <!--COLOUR-->
+    <Colour>PURPLE</Colour>
+    <!--VICTORYPOINTS-->
+    <VictoryPoints>1</VictoryPoints>
+
+    <!--INPUT-->
+    <ProductionInput>
+      <Resource>
+        <Type>STONE</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionInput>
+
+    <!--OUTPUT-->
+    <ProductionOutput>
+      <Resource>
+        <Type>FAITHPOINT</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionOutput>
+
+    <!--COST-->
+    <Cost>
+      <Resource>
+        <Type>SERVANT</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+    </Cost>
+
+    <!--URL-->
+    <url>string</url>
+  </DevCard>
+</DevCardConfig>
