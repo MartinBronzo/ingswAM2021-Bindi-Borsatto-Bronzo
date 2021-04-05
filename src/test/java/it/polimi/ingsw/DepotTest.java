@@ -18,10 +18,10 @@ class DepotTest {
     @Test
     public void ctrlInit() throws IllegalParameterException {
         Depot depot = new Depot();
-        assertEquals(depot.getResource(coin),0);
-        assertEquals(depot.getResource(stone),0);
-        assertEquals(depot.getResource(shield),0);
-        assertEquals(depot.getResource(servant),0);
+        assertEquals(depot.getResourceFromDepot(coin),0);
+        assertEquals(depot.getResourceFromDepot(stone),0);
+        assertEquals(depot.getResourceFromDepot(shield),0);
+        assertEquals(depot.getResourceFromDepot(servant),0);
     }
 
     @Test
@@ -29,7 +29,7 @@ class DepotTest {
         Depot depot = new Depot();
 
         depot.addToShelf(coin, 2, 3);
-        assertEquals(depot.getResource(coin),2);
+        assertEquals(depot.getResourceFromDepot(coin),2);
         assertEquals(depot.getShelfType(3), coin);
     }
 
@@ -42,9 +42,9 @@ class DepotTest {
         depot.addToShelf(shield, 2, 2);
 
 
-        assertEquals(depot.getResource(stone),1);
-        assertEquals(depot.getResource(shield),2);
-        assertEquals(depot.getResource(servant),3);
+        assertEquals(depot.getResourceFromDepot(stone),1);
+        assertEquals(depot.getResourceFromDepot(shield),2);
+        assertEquals(depot.getResourceFromDepot(servant),3);
         assertEquals(depot.getShelfType(1), stone);
         assertEquals(depot.getShelfType(2), shield);
         assertEquals(depot.getShelfType(3), servant);
@@ -57,8 +57,8 @@ class DepotTest {
         depot.addToShelf(coin, 2, 3);
         depot.addToShelf(stone, 1, 2);
 
-        assertEquals(depot.getResource(coin),2);
-        assertEquals(depot.getResource(stone),1);
+        assertEquals(depot.getResourceFromDepot(coin),2);
+        assertEquals(depot.getResourceFromDepot(stone),1);
 
         assertEquals(depot.getShelfType(3), coin);
         assertEquals(depot.getShelfType(2), stone);
@@ -90,7 +90,7 @@ class DepotTest {
         depot.addToShelf(shield, 1, 1);
         assertThrows(IllegalActionException.class, () -> depot.addToShelf(shield, 2, 2));
 
-        assertEquals(depot.getResource(shield),1);
+        assertEquals(depot.getResourceFromDepot(shield),1);
         assertEquals(depot.getShelfType(1), shield);
     }
 
@@ -100,7 +100,7 @@ class DepotTest {
 
         assertTrue(depot.addToShelf(servant, 0, 1));
         assertNull(depot.getShelfType(1));
-        assertEquals(depot.getResource(servant), 0);
+        assertEquals(depot.getResourceFromDepot(servant), 0);
     }
 
     @Test
@@ -137,7 +137,7 @@ class DepotTest {
 
         depot.addToShelf(servant, 2, 2);
         assertTrue(depot.removeFromDepot(2,1));
-        assertEquals(depot.getResource(servant), 1);
+        assertEquals(depot.getResourceFromDepot(servant), 1);
         assertEquals(depot.getShelfType(2), servant);
     }
 
@@ -147,7 +147,7 @@ class DepotTest {
 
         depot.addToShelf(stone, 2, 3);
         depot.removeFromDepot(3,1);
-        assertEquals(depot.getResource(stone), 1);
+        assertEquals(depot.getResourceFromDepot(stone), 1);
         assertEquals(depot.getShelfType(3), stone);
     }
 
@@ -167,9 +167,9 @@ class DepotTest {
         depot.removeFromDepot(2, 1);
         depot.removeFromDepot(3,2);
 
-        assertEquals(depot.getResource(stone), 0);
-        assertEquals(depot.getResource(coin), 1);
-        assertEquals(depot.getResource(shield), 1);
+        assertEquals(depot.getResourceFromDepot(stone), 0);
+        assertEquals(depot.getResourceFromDepot(coin), 1);
+        assertEquals(depot.getResourceFromDepot(shield), 1);
 
         assertNull(depot.getShelfType(1));
         assertEquals(depot.getShelfType(2), coin);
@@ -183,15 +183,15 @@ class DepotTest {
         depot.addToShelf(coin, 3, 3);
 
         depot.removeFromDepot(3,1);
-        assertEquals(depot.getResource(coin), 2);
+        assertEquals(depot.getResourceFromDepot(coin), 2);
         assertEquals(depot.getShelfType(3), coin);
 
         depot.removeFromDepot(3, 1);
-        assertEquals(depot.getResource(coin), 1);
+        assertEquals(depot.getResourceFromDepot(coin), 1);
         assertEquals(depot.getShelfType(3), coin);
 
         depot.removeFromDepot(3, 1);
-        assertEquals(depot.getResource(coin), 0);
+        assertEquals(depot.getResourceFromDepot(coin), 0);
         assertNull(depot.getShelfType(3));
     }
 
@@ -233,7 +233,7 @@ class DepotTest {
 
         depot.addToShelf(servant, 3 , 3);
         assertTrue(depot.removeFromDepot(3, 0));
-        assertEquals(depot.getResource(servant), 3);
+        assertEquals(depot.getResourceFromDepot(servant), 3);
         assertEquals(depot.getShelfType(3), servant);
     }
 
@@ -259,8 +259,8 @@ class DepotTest {
         assertEquals(depot.getShelfType(2), stone);
         assertEquals(depot.getShelfType(3), coin);
 
-        assertEquals(depot.getResource(coin), 2);
-        assertEquals(depot.getResource(stone), 2);
+        assertEquals(depot.getResourceFromDepot(coin), 2);
+        assertEquals(depot.getResourceFromDepot(stone), 2);
 
     }
 
@@ -542,7 +542,7 @@ class DepotTest {
 
         depot.addExtraSolt(extraSlotLeaderEffect);
         exception = assertThrows(IllegalParameterException.class, () -> depot.addToLeader(faithPoint, 1));
-        assertEquals(exception.getMessage(), "Can't add faith points");
+        assertEquals(exception.getMessage(), "Depot can't handle faith points");
     }
 
     @Test
@@ -593,6 +593,16 @@ class DepotTest {
     }
 
     @Test
+    public void addZeroToLeader() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        assertTrue(depot.addToLeader(stone, 0));
+        assertEquals(depot.getExtraDepotValue(stone), 0);
+    }
+
+    @Test
     public void removeFromLeader1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
@@ -640,7 +650,7 @@ class DepotTest {
         Depot depot = new Depot();
 
         exception = assertThrows(IllegalParameterException.class, () -> depot.removeFromLeader(faithPoint, 1));
-        assertEquals(exception.getMessage(), "Can't add faith points");
+        assertEquals(exception.getMessage(), "Depot can't handle faith points");
     }
 
     @Test
@@ -678,6 +688,241 @@ class DepotTest {
         assertEquals(exception.getMessage(), "Not enough resources to remove");
     }
 
+    @Test
+    public void removeZeroFromLeader() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(coin, 2);
+
+        assertTrue(depot.removeFromLeader(coin, 0));
+        assertEquals(depot.getExtraDepotValue(coin), 2);
+    }
+
+    @Test
+    public void moveToLeader1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToShelf(coin, 2, 2);
+        assertTrue(depot.moveToLeader(2, 1));
+        assertEquals(depot.getExtraDepotValue(coin), 1);
+        assertEquals(depot.getResourceFromDepot(coin), 1);
+    }
+
+    @Test
+    public void moveToLeader2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToShelf(coin, 2, 2);
+        assertTrue(depot.moveToLeader(2, 2));
+        assertEquals(depot.getExtraDepotValue(coin), 2);
+        assertEquals(depot.getResourceFromDepot(coin), 0);
+        assertNull(depot.getShelfType(2));
+    }
+
+    @Test
+    public void moveToLeader3() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToShelf(coin, 2, 3);
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToShelf(coin, 1, 3);
+
+        depot.moveToLeader(3, 3);
+        assertEquals(depot.getExtraDepotValue(coin), 3);
+        assertEquals(depot.getResourceFromDepot(coin), 0);
+    }
+
+    @Test
+    public void moveTooManyResToLeader() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Exception exception;
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToShelf(coin, 2, 3);
+
+        exception = assertThrows(IllegalActionException.class, () -> depot.moveToLeader(3, 3));
+        assertEquals(exception.getMessage(), "Not enough resources to remove");
+    }
+
+    @Test
+    public void moveTooManyResToLeader2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        NotEnoughSpaceException exception;
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToShelf(coin, 3, 3);
+
+        exception = assertThrows(NotEnoughSpaceException.class, () -> depot.moveToLeader(3, 3));
+        assertEquals(exception.getMessage(), "Not enough space in extra slot");
+        assertEquals(exception.getAvailableSpace(), 2);
+    }
+
+    @Test
+    public void moveToLeaderNegativeQuantity() {
+        Exception exception;
+        Depot depot = new Depot();
+
+        exception = assertThrows(IllegalParameterException.class, () -> depot.moveToLeader(3, -1));
+        assertEquals(exception.getMessage(), "Negative quantity");
+    }
+
+    @Test
+    public void moveToLeaderShelfOutOfBound1() {
+        Exception exception;
+        Depot depot = new Depot();
+
+        exception = assertThrows(IllegalParameterException.class, () -> depot.moveToLeader(4, 2));
+        assertEquals(exception.getMessage(), "ShelfNum out of bound");
+    }
+
+    @Test
+    public void moveToLeaderShelfOutOfBound2() {
+        Exception exception;
+        Depot depot = new Depot();
+
+        exception = assertThrows(IllegalParameterException.class, () -> depot.moveToLeader(0, 2));
+        assertEquals(exception.getMessage(), "ShelfNum out of bound");
+    }
+
+    @Test
+    public void moveZeroToLeader() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToShelf(coin, 2, 2);
+        assertTrue(depot.moveToLeader(2, 0));
+        assertEquals(depot.getExtraDepotValue(coin), 0);
+        assertEquals(depot.getResourceFromDepot(coin), 2);
+    }
+
+    @Test
+    public void moveToShelf1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        assertTrue(depot.moveToShelf(servant, 1, 1));
+        assertEquals(depot.getExtraDepotValue(servant), 1);
+        assertEquals(depot.getResourceFromDepot(servant), 1);
+    }
+
+    @Test
+    public void moveToShelf2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        assertTrue(depot.moveToShelf(servant, 2, 2));
+        assertEquals(depot.getExtraDepotValue(servant), 0);
+        assertEquals(depot.getResourceFromDepot(servant), 2);
+    }
+
+    @Test
+    public void moveToShelf3() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        assertTrue(depot.moveToShelf(servant, 1, 3));
+        assertEquals(depot.getExtraDepotValue(servant), 1);
+        assertEquals(depot.getResourceFromDepot(servant), 1);
+    }
+
+    @Test
+    public void moveTooManyResToShelf1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Exception exception;
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        exception = assertThrows(IllegalActionException.class, () ->depot.moveToShelf(servant, 3, 3));
+        assertEquals(exception.getMessage(), "Not enough resources to remove");
+    }
+
+    @Test
+    public void moveTooManyResToShelf2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        NotEnoughSpaceException exception;
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        exception = assertThrows(NotEnoughSpaceException.class, () -> depot.moveToShelf(servant, 2, 1));
+        assertEquals(exception.getMessage(), "Not enought space in depot");
+        assertEquals(exception.getAvailableSpace(), 1);
+    }
+
+    @Test
+    public void moveFaithPointToShelf(){
+        Exception exception;
+        Depot depot = new Depot();
+
+        exception = assertThrows(IllegalParameterException.class, () -> depot.moveToShelf(faithPoint, 1, 1));
+        assertEquals(exception.getMessage(), "Depot can't handle faith points");
+    }
+
+    @Test
+    public void moveNegativeQuantityToShelf() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Exception exception;
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        exception = assertThrows(IllegalParameterException.class, () -> depot.moveToShelf(coin, -5, 1));
+        assertEquals(exception.getMessage(), "Negative quantity");
+    }
+
+    @Test
+    public void moveResToWrongShelf1() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Exception exception;
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        exception = assertThrows(IllegalParameterException.class, () -> depot.moveToShelf(servant, 2, 0));
+        assertEquals(exception.getMessage(), "ShelfNum out of bound");
+    }
+
+    @Test
+    public void moveResToWrongShelf2() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Exception exception;
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        exception = assertThrows(IllegalParameterException.class, () -> depot.moveToShelf(servant, 2, 4));
+        assertEquals(exception.getMessage(), "ShelfNum out of bound");
+    }
+
+    @Test
+    public void moveZeroToShelf() throws IllegalParameterException, IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addToLeader(servant, 2);
+        assertTrue(depot.moveToShelf(servant, 0, 1));
+        assertEquals(depot.getExtraDepotValue(servant), 2);
+        assertEquals(depot.getResourceFromDepot(servant), 0);
+    }
 
 
 
