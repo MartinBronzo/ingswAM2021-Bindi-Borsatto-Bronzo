@@ -5,4 +5,5 @@ public interface Deck {
     Object getFirst();
     boolean shuffle();
     boolean isEmpty();
+    int size();
 }

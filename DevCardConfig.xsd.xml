@@ -35,7 +35,7 @@
     </Cost>
 
     <!--URL-->
-    <url>string</url>
+    <url>url1</url>
   </DevCard>
 
   <!--DEVCARD-->
@@ -73,6 +73,200 @@
     </Cost>
 
     <!--URL-->
-    <url>string</url>
+    <url>url2</url>
+  </DevCard>
+
+  <DevCard>
+
+    <!--LEVEL-->
+    <Level>1</Level>
+    <!--COLOUR-->
+    <Colour>GREEN</Colour>
+    <!--VICTORYPOINTS-->
+    <VictoryPoints>2</VictoryPoints>
+
+    <!--INPUT-->
+    <ProductionInput>
+      <Resource>
+        <Type>STONE</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionInput>
+
+    <!--OUTPUT-->
+    <ProductionOutput>
+      <Resource>
+        <Type>SERVANT</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionOutput>
+
+    <!--COST-->
+    <Cost>
+      <Resource>
+        <Type>SHIELD</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+      <Resource>
+        <Type>STONE</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+      <Resource>
+        <Type>SERVANT</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </Cost>
+
+    <!--URL-->
+    <url>url5</url>
+  </DevCard>
+
+  <DevCard>
+
+    <!--LEVEL-->
+    <Level>1</Level>
+    <!--COLOUR-->
+    <Colour>GREEN</Colour>
+    <!--VICTORYPOINTS-->
+    <VictoryPoints>3</VictoryPoints>
+
+    <!--INPUT-->
+    <ProductionInput>
+      <Resource>
+        <Type>SERVANT</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+    </ProductionInput>
+
+    <!--OUTPUT-->
+    <ProductionOutput>
+      <Resource>
+        <Type>COIN</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+      <Resource>
+        <Type>SHIELD</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+      <Resource>
+        <Type>STONE</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionOutput>
+
+    <!--COST-->
+    <Cost>
+      <Resource>
+        <Type>SHIELD</Type>
+        <Quantity>3</Quantity>
+      </Resource>
+    </Cost>
+
+    <!--URL-->
+    <url>url9</url>
+  </DevCard>
+
+  <DevCard>
+
+    <!--LEVEL-->
+    <Level>1</Level>
+    <!--COLOUR-->
+    <Colour>GREEN</Colour>
+    <!--VICTORYPOINTS-->
+    <VictoryPoints>4</VictoryPoints>
+
+    <!--INPUT-->
+    <ProductionInput>
+      <Resource>
+        <Type>STONE</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+      <Resource>
+        <Type>SERVANT</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionInput>
+
+    <!--OUTPUT-->
+    <ProductionOutput>
+      <Resource>
+        <Type>COIN</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+      <Resource>
+        <Type>FAITHPOINT</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionOutput>
+
+    <!--COST-->
+    <Cost>
+      <Resource>
+        <Type>SHIELD</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+      <Resource>
+        <Type>COIN</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+    </Cost>
+
+    <!--URL-->
+    <url>url13</url>
+  </DevCard>
+
+
+  <DevCard>
+
+    <!--LEVEL-->
+    <Level>3</Level>
+    <!--COLOUR-->
+    <Colour>BLUE</Colour>
+    <!--VICTORYPOINTS-->
+    <VictoryPoints>10</VictoryPoints>
+
+    <!--INPUT-->
+    <ProductionInput>
+      <Resource>
+        <Type>SHIELD</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+      <Resource>
+        <Type>COIN</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+    </ProductionInput>
+
+    <!--OUTPUT-->
+    <ProductionOutput>
+      <Resource>
+        <Type>FAITHPOINT</Type>
+        <Quantity>1</Quantity>
+      </Resource>
+      <Resource>
+        <Type>SERVANT</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+      <Resource>
+        <Type>STONE</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+    </ProductionOutput>
+
+    <!--COST-->
+    <Cost>
+      <Resource>
+        <Type>COIN</Type>
+        <Quantity>5</Quantity>
+      </Resource>
+      <Resource>
+        <Type>STONE</Type>
+        <Quantity>2</Quantity>
+      </Resource>
+    </Cost>
+
+    <!--URL-->
+    <url>url39</url>
+
   </DevCard>
 </DevCardConfig>

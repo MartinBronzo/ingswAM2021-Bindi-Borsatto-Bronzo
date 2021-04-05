@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.EmptyDeckException;
 import it.polimi.ingsw.exceptions.IllegalParameterException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.w3c.dom.Document;
@@ -21,12 +22,21 @@ public class DevGrid {
     private final DevDeck[][] devDecksGrid;
 
 
+    /**
+     * This method distributes the devCards described the xml file passed as parameter according to gameRules in DecCardDecks on a grid
+     * @param config xml File containing DevCard configurations.
+     * @throws ParserConfigurationException when it is present an error configuration in xml file
+     * @throws IOException if config File is impossible to read
+     * @throws SAXException if an error appeared parsing xmlFile
+     * @throws IllegalParameterException if it's present a devCard configuration bad syntax in xml config File
+     * @throws NegativeQuantityException if it's present a devCard configuration bad syntax in xml config File. Resource tag contains a negative quantity tag associated
+     * */
     public DevGrid(File config) throws ParserConfigurationException, IOException, SAXException, IllegalParameterException, NegativeQuantityException {
         this.devDecksGrid = new DevDeck[3][4];
         ArrayList<DevCard> devCards = createConfigurationList(config);
         for (int i=0; i<devDecksGrid.length; i++){
             for (int j=0; j<devDecksGrid[i].length; j++){
-                int level = i;
+                int level = devDecksGrid.length - i;
                 int color = j;
                 devDecksGrid[i][j] = new DevDeck(devCards.stream().filter(card -> level == card.getLevel() && color == card.getColour().ordinal()).collect(Collectors.toList()));
                 devDecksGrid[i][j].shuffle();
@@ -35,11 +45,13 @@ public class DevGrid {
 
     }
 
-    public DevGrid() {
-        this.devDecksGrid = null;
-    }
 
-    public ArrayList<DevCard> createConfigurationList(File config) throws ParserConfigurationException, IOException, SAXException, IllegalParameterException, NegativeQuantityException {
+    /**
+     * This method reads from the xml file passed as parameter and it creates a list of the all DevCards described in the xml file
+     * @param config xml File containing DevCard configurations.
+     * @return The List of DevCards described in the xml File
+     * */
+    private ArrayList<DevCard> createConfigurationList(File config) throws ParserConfigurationException, IOException, SAXException, IllegalParameterException, NegativeQuantityException {
         ArrayList<DevCard> devCards= new ArrayList<>();
         DevCard devCard;
 
@@ -69,48 +81,15 @@ public class DevGrid {
 
                 productionInput = new HashMap<>();
                 Node productionInputNode = baseElement.getElementsByTagName("ProductionInput").item(0);
-                Element productionInputElement = (Element) productionInputNode;
-                NodeList productionInputResources = productionInputElement.getElementsByTagName("Resource");
-                for (int c=0; c< productionInputResources.getLength(); c++) {
-                    Node node2 = productionInputResources.item(c);
-
-                    if (node2.getNodeType() == Node.ELEMENT_NODE) {
-                        Element subElement = (Element) node2;
-                        ResourceType resourceType = ResourceType.valueOf(subElement.getElementsByTagName("Type").item(0).getTextContent());
-                        Integer quantity = Integer.parseInt(subElement.getElementsByTagName("Quantity").item(0).getTextContent());
-                        productionInput.put(resourceType,quantity);
-                    }
-                }
+                addNodeResourcesToHashMap(productionInput, productionInputNode);
 
                 productionOutput = new HashMap<>();
                 Node productionOutputNode = baseElement.getElementsByTagName("ProductionOutput").item(0);
-                Element productionOutputElement = (Element) productionOutputNode;
-                NodeList productionOutputResources = productionOutputElement.getElementsByTagName("Resource");
-                for (int c=0; c< productionOutputResources.getLength(); c++) {
-                    Node node2 = productionOutputResources.item(c);
-
-                    if (node2.getNodeType() == Node.ELEMENT_NODE) {
-                        Element subElement = (Element) node2;
-                        ResourceType resourceType = ResourceType.valueOf(subElement.getElementsByTagName("Type").item(0).getTextContent());
-                        Integer quantity = Integer.parseInt(subElement.getElementsByTagName("Quantity").item(0).getTextContent());
-                        productionOutput.put(resourceType,quantity);
-                    }
-                }
+                addNodeResourcesToHashMap(productionOutput, productionOutputNode);
 
                 cost = new HashMap<>();
                 Node costNode = baseElement.getElementsByTagName("Cost").item(0);
-                Element costElement = (Element) costNode;
-                NodeList costResources = costElement.getElementsByTagName("Resource");
-                for (int c=0; c< costResources.getLength(); c++) {
-                    Node node2 = costResources.item(c);
-
-                    if (node2.getNodeType() == Node.ELEMENT_NODE) {
-                        Element subElement = (Element) node2;
-                        ResourceType resourceType = ResourceType.valueOf(subElement.getElementsByTagName("Type").item(0).getTextContent());
-                        Integer quantity = Integer.parseInt(subElement.getElementsByTagName("Quantity").item(0).getTextContent());
-                        cost.put(resourceType,quantity);
-                    }
-                }
+                addNodeResourcesToHashMap(cost, costNode);
 
                 devCard =new DevCard(level,devCardColour,victoryPoints,productionInput,productionOutput,cost,url);
                 devCards.add(devCard);
@@ -118,5 +97,82 @@ public class DevGrid {
         }
 
         return devCards;
+    }
+
+    /**
+     * add resources to hashMap from the node read in the xml File
+     * this method is used exclusively in createConfigurationList because each devCard is composed by 3 different hashMap
+     * */
+    private void addNodeResourcesToHashMap(HashMap<ResourceType, Integer> hashMap, Node node) {
+        Element element = (Element) node;
+        NodeList resources = element.getElementsByTagName("Resource");
+        for (int c = 0; c < resources.getLength(); c++) {
+            Node node2 = resources.item(c);
+
+            if (node2.getNodeType() == Node.ELEMENT_NODE) {
+                Element subElement = (Element) node2;
+                ResourceType resourceType = ResourceType.valueOf(subElement.getElementsByTagName("Type").item(0).getTextContent());
+                Integer quantity = Integer.parseInt(subElement.getElementsByTagName("Quantity").item(0).getTextContent());
+                hashMap.put(resourceType, quantity);
+            }
+        }
+    }
+
+    /**
+     * get DevDeck on the grid in a specific position
+     * @param row is the chosen row of the grid starting from 0
+     * @param column is the chosen column of the grid starting from 0
+     * @throws IllegalParameterException when the chosen position in the grid is not valid [0...2]x[0...3]
+     * @return the chosen DevDeck on the grid
+     * */
+    public DevDeck getDevDeckInTheGrid(int row, int column) throws IllegalParameterException {
+        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalParameterException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
+        return devDecksGrid[row][column];
+    }
+
+    /**
+     * get DevCard on the grid in a specific position
+     * @param row is the chosen row of the grid starting from 0
+     * @param column is the chosen column of the grid starting from 0
+     * @throws IllegalParameterException when the chosen position in the grid is not valid [0...2]x[0...3]
+     * @return the first DevCard in the chosen DevDeck on the grid. The Card is not Removed From the deck or NULL if devDeck is Empty
+     * */
+    public DevCard getDevCardFromDeck(int row, int column) throws IllegalParameterException {
+        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalParameterException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
+        if (devDecksGrid[row][column].isEmpty()) return null;
+        return devDecksGrid[row][column].getFirst();
+    }
+
+    /**
+     * draw DevCard on the grid in a specific position
+     * @param row is the chosen row of the grid starting from 0
+     * @param column is the chosen column of the grid starting from 0
+     * @throws IllegalParameterException when the chosen position in the grid is not valid [0...2]x[0...3]
+     * @throws EmptyDeckException if devDeck is Empty;
+     * @return the first DevCard in the chosen DevDeck on the grid. The Card is Removed From the deck.
+     * */
+    public DevCard drawDevCardFromDeck(int row, int column) throws IllegalParameterException, EmptyDeckException {
+        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalParameterException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
+        if (devDecksGrid[row][column].isEmpty()) throw new EmptyDeckException("drawDevCardFromDeck: deck is empty");
+        return devDecksGrid[row][column].drawFromDeck();
+    }
+
+    @Override
+    public String toString() {
+        String devDecksGridString;
+        devDecksGridString = "";
+        for (int i=0; i<devDecksGrid.length; i++){
+            for (int j=0; j<devDecksGrid[i].length; j++){
+                devDecksGridString=devDecksGridString.concat(i + "," + j + ":\t");
+                devDecksGridString=devDecksGridString.concat(devDecksGrid[i][j].toString());
+                devDecksGridString=devDecksGridString.concat("\n");
+            }
+            devDecksGridString=devDecksGridString.concat("\n");
+        }
+
+        return "DevGrid{\n" +
+                "devDeckGrid=\n" +
+                devDecksGridString +
+                '}';
     }
 }
