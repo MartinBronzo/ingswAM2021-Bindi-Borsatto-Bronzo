@@ -11,7 +11,7 @@ public class FaithLevelBasicTest {
     public void ctrlCreation(){
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
         FaithLevelBasic faithLevelBasic = new FaithLevelBasic(ft);
 
         assertEquals(faithLevelBasic.getFaithTrack(), ft);
@@ -23,7 +23,7 @@ public class FaithLevelBasicTest {
     public void ctrlPositionsBasic(){
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
         FaithLevelBasic faithLevelBasic = new FaithLevelBasic(ft);
 
         //the range of the track is [0 ft.getTrackSize()]
@@ -52,7 +52,7 @@ public class FaithLevelBasicTest {
     public void ctrlPositionFull(){
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
         FaithLevelBasic faithLevelBasic = new FaithLevelBasic(ft);
 
         //Landing on a normal Cell

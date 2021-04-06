@@ -50,6 +50,12 @@ public class PopeCell extends ReportCell implements Subject {
     //The boolean here tells if everything went fine in the process of updating all the observers
     @Override
     public boolean effect() {
+        //If the Vatican Report has already been activated, then we can't activate it again
+        if(this.activated == true){
+            System.out.println("The Vatican Report " + this.getReportNum() + " has already been activated!");
+            return false;
+        }
+
         this.setActivatedTrue();
         return this.notifyObservers();
     }
