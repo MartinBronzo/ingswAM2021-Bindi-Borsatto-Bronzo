@@ -12,7 +12,21 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
+
+/**Market Factory Class used to Create Farmer using parameters from xml File*/
 public class MarketFactory {
+
+    /**
+     * @return Market Entity with the parameters described in the xmlFile
+     * @param config is the xml File containing Market Config tag well formatted:
+     * in the xmlFile WHITEMARBLE,REDMARBLE,GREYMARBLE,BLUEMARBLE,YELLOWMARBLE,PURPLEMARBLE tags must appear and the test Content must be a non negative integer
+     * @throws NullPointerException when one the marble tags is missing
+     * @throws ParserConfigurationException when it is present an error configuration in xml file
+     * @throws IOException if config File is impossible to read
+     * @throws SAXException if an error appeared parsing xmlFile
+     * @throws IllegalParameterException if a negative number of a marble is used in the xmlFile
+     * @throws IllegalParameterException if the sum of the marbles is not 13
+     * */
     public Market getMarket(File config) throws IllegalParameterException, ParserConfigurationException, IOException, SAXException {
         int nWhite=0;
         int nRed=0;

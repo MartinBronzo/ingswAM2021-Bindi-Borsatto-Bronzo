@@ -8,12 +8,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class MarketFactoryTest {
     MarketFactory marketFactory = new MarketFactory();
     File xmlMarketConfig = new File("MarketConfig.xsd.xml");
 
+    /*This Test is Used to see if the xmlFile is correctly Read
+    * To se the correct implementation of Market see MarketTest
+    * */
     @Test
     void getMarket() throws IllegalParameterException, ParserConfigurationException, SAXException, IOException {
         Market market = marketFactory.getMarket(xmlMarketConfig);
