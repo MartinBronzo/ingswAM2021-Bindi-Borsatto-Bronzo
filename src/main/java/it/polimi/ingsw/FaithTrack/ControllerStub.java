@@ -1,7 +1,7 @@
 package it.polimi.ingsw.FaithTrack;
 
-import it.polimi.ingsw.Observer;
-import it.polimi.ingsw.Subject;
+import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.Interfaces.Subject;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 
 public class ControllerStub implements Observer {

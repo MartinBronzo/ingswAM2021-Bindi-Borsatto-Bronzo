@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.IllegalParameterException;
+import it.polimi.ingsw.DevCards.DevCard;
+import it.polimi.ingsw.DevCards.DevCardColour;
+import it.polimi.ingsw.DevCards.DevDeck;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +52,7 @@ class DevDeckTest {
     }
 
     @BeforeEach
-    void setUp() throws IllegalParameterException, NegativeQuantityException {
+    void setUp() throws IllegalArgumentException, NegativeQuantityException {
         devCards = new LinkedList<>();
         for (int i=0; i<10; i++){
             devCards.add(new DevCard(i%3+1, DevCardColour.GREEN, i, new HashMap<>(), new HashMap<>(), new HashMap<>(), "abc"));

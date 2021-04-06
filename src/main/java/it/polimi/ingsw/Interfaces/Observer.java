@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Interfaces;
 
 import it.polimi.ingsw.FaithTrack.ReportNum;
 

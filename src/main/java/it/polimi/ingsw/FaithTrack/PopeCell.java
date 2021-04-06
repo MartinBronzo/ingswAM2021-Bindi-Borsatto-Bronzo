@@ -1,7 +1,7 @@
 package it.polimi.ingsw.FaithTrack;
 
-import it.polimi.ingsw.Observer;
-import it.polimi.ingsw.Subject;
+import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.Interfaces.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +18,13 @@ public class PopeCell extends ReportCell implements Subject {
     /**
      * Constructs a not-yet-activated PopeCell. This type cell is said to be activated when a Player crosses for the first time this cell and, therefore, the corresponding Vatican Report is set into action.
      * It also creates the list to take note of all the Observers which are interested in the Subject
-     * @param vicoryPoints the victoryPoints of the cell
+     * @param victoryPoints the victoryPoints of the cell
      * @param reportNum the Vatican Report this cell activates
      */
-    public PopeCell(int vicoryPoints, ReportNum reportNum) {
-        super(vicoryPoints, reportNum);
+    public PopeCell(int victoryPoints, ReportNum reportNum) {
+        super(victoryPoints, reportNum);
         this.activated = false;
-        this.observersList = new ArrayList<Observer>();
+        this.observersList = new ArrayList<>();
     }
 
     /**

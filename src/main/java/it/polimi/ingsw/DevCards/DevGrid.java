@@ -1,7 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.DevCards;
 
+import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.EmptyDeckException;
-import it.polimi.ingsw.exceptions.IllegalParameterException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,10 +28,10 @@ public class DevGrid {
      * @throws ParserConfigurationException when it is present an error configuration in xml file
      * @throws IOException if config File is impossible to read
      * @throws SAXException if an error appeared parsing xmlFile
-     * @throws IllegalParameterException if it's present a devCard configuration bad syntax in xml config File
+     * @throws IllegalArgumentException if it's present a devCard configuration bad syntax in xml config File
      * @throws NegativeQuantityException if it's present a devCard configuration bad syntax in xml config File. Resource tag contains a negative quantity tag associated
      * */
-    public DevGrid(File config) throws ParserConfigurationException, IOException, SAXException, IllegalParameterException, NegativeQuantityException {
+    public DevGrid(File config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
         this.devDecksGrid = new DevDeck[3][4];
         ArrayList<DevCard> devCards = createConfigurationList(config);
         for (int i=0; i<devDecksGrid.length; i++){
@@ -51,7 +51,7 @@ public class DevGrid {
      * @param config xml File containing DevCard configurations.
      * @return The List of DevCards described in the xml File
      * */
-    private ArrayList<DevCard> createConfigurationList(File config) throws ParserConfigurationException, IOException, SAXException, IllegalParameterException, NegativeQuantityException {
+    private ArrayList<DevCard> createConfigurationList(File config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
         ArrayList<DevCard> devCards= new ArrayList<>();
         DevCard devCard;
 
@@ -122,11 +122,11 @@ public class DevGrid {
      * get DevDeck on the grid in a specific position
      * @param row is the chosen row of the grid starting from 0
      * @param column is the chosen column of the grid starting from 0
-     * @throws IllegalParameterException when the chosen position in the grid is not valid [0...2]x[0...3]
+     * @throws IllegalArgumentException when the chosen position in the grid is not valid [0...2]x[0...3]
      * @return the chosen DevDeck on the grid
      * */
-    public DevDeck getDevDeckInTheGrid(int row, int column) throws IllegalParameterException {
-        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalParameterException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
+    public DevDeck getDevDeckInTheGrid(int row, int column) throws IllegalArgumentException {
+        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
         return devDecksGrid[row][column];
     }
 
@@ -134,11 +134,11 @@ public class DevGrid {
      * get DevCard on the grid in a specific position
      * @param row is the chosen row of the grid starting from 0
      * @param column is the chosen column of the grid starting from 0
-     * @throws IllegalParameterException when the chosen position in the grid is not valid [0...2]x[0...3]
+     * @throws IllegalArgumentException when the chosen position in the grid is not valid [0...2]x[0...3]
      * @return the first DevCard in the chosen DevDeck on the grid. The Card is not Removed From the deck or NULL if devDeck is Empty
      * */
-    public DevCard getDevCardFromDeck(int row, int column) throws IllegalParameterException {
-        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalParameterException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
+    public DevCard getDevCardFromDeck(int row, int column) throws IllegalArgumentException {
+        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
         if (devDecksGrid[row][column].isEmpty()) return null;
         return devDecksGrid[row][column].getFirst();
     }
@@ -147,12 +147,12 @@ public class DevGrid {
      * draw DevCard on the grid in a specific position
      * @param row is the chosen row of the grid starting from 0
      * @param column is the chosen column of the grid starting from 0
-     * @throws IllegalParameterException when the chosen position in the grid is not valid [0...2]x[0...3]
+     * @throws IllegalArgumentException when the chosen position in the grid is not valid [0...2]x[0...3]
      * @throws EmptyDeckException if devDeck is Empty;
      * @return the first DevCard in the chosen DevDeck on the grid. The Card is Removed From the deck.
      * */
-    public DevCard drawDevCardFromDeck(int row, int column) throws IllegalParameterException, EmptyDeckException {
-        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalParameterException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
+    public DevCard drawDevCardFromDeck(int row, int column) throws IllegalArgumentException, EmptyDeckException {
+        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
         if (devDecksGrid[row][column].isEmpty()) throw new EmptyDeckException("drawDevCardFromDeck: deck is empty");
         return devDecksGrid[row][column].drawFromDeck();
     }

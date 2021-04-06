@@ -1,8 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.exceptions.IllegalParameterException;
-import it.polimi.ingsw.exceptions.NegativeQuantityException;
+
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ public class StrongboxTest {
     final ResourceType faithPoint = ResourceType.FAITHPOINT;
 
     @Test
-    public void addRes1() throws IllegalParameterException, IllegalActionException {
+    public void addRes1() throws IllegalArgumentException, IllegalActionException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         addMap.put(coin, 5);
         addMap.put(stone, 0);
@@ -30,7 +29,7 @@ public class StrongboxTest {
     }
 
     @Test
-    public void addRes2() throws IllegalParameterException, IllegalActionException {
+    public void addRes2() throws IllegalArgumentException, IllegalActionException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         addMap.put(coin, 2);
         addMap.put(stone, 0);
@@ -45,7 +44,7 @@ public class StrongboxTest {
     }
 
     @Test
-    public void multipleAdds() throws IllegalParameterException, IllegalActionException {
+    public void multipleAdds() throws IllegalArgumentException, IllegalActionException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         Strongbox strongbox = new Strongbox();
 
@@ -61,7 +60,7 @@ public class StrongboxTest {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         addMap.put(coin, -3);
         Strongbox strongbox = new Strongbox();
-        assertThrows(IllegalParameterException.class, () -> strongbox.addResource(addMap));
+        assertThrows(IllegalArgumentException.class, () -> strongbox.addResource(addMap));
     }
 
     @Test
@@ -74,7 +73,7 @@ public class StrongboxTest {
 
 
     @Test
-    public void removeResource() throws IllegalParameterException, IllegalActionException {
+    public void removeResource() throws IllegalArgumentException, IllegalActionException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
 
@@ -87,7 +86,7 @@ public class StrongboxTest {
     }
 
     @Test
-    public void removeResources2() throws IllegalParameterException, IllegalActionException {
+    public void removeResources2() throws IllegalArgumentException, IllegalActionException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         Strongbox strongbox = new Strongbox();
 
@@ -122,11 +121,11 @@ public class StrongboxTest {
         Strongbox strongbox = new Strongbox();
 
         removeMap.put(stone, -5);
-        exception = assertThrows(IllegalParameterException.class, () -> strongbox.removeResource(removeMap));
+        exception = assertThrows(IllegalArgumentException.class, () -> strongbox.removeResource(removeMap));
         assertEquals("Negative quantity",exception.getMessage());
     }
     @Test
-    public void multipleRemoves() throws IllegalParameterException, IllegalActionException {
+    public void multipleRemoves() throws IllegalArgumentException, IllegalActionException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
         Strongbox strongbox = new Strongbox();

@@ -1,6 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Market;
 
-import it.polimi.ingsw.exceptions.IllegalParameterException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -24,10 +23,10 @@ public class MarketFactory {
      * @throws ParserConfigurationException when it is present an error configuration in xml file
      * @throws IOException if config File is impossible to read
      * @throws SAXException if an error appeared parsing xmlFile
-     * @throws IllegalParameterException if a negative number of a marble is used in the xmlFile
-     * @throws IllegalParameterException if the sum of the marbles is not 13
+     * @throws IllegalArgumentException if a negative number of a marble is used in the xmlFile
+     * @throws IllegalArgumentException if the sum of the marbles is not 13
      * */
-    public Market getMarket(File config) throws IllegalParameterException, ParserConfigurationException, IOException, SAXException {
+    public Market getMarket(File config) throws IllegalArgumentException, ParserConfigurationException, IOException, SAXException {
         int nWhite=0;
         int nRed=0;
         int nGrey=0;

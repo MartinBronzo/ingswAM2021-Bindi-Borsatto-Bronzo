@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.IllegalParameterException;
+import it.polimi.ingsw.Market.Market;
+import it.polimi.ingsw.Market.MarketFactory;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
@@ -17,7 +18,7 @@ class MarketFactoryTest {
     * To se the correct implementation of Market see MarketTest
     * */
     @Test
-    void getMarket() throws IllegalParameterException, ParserConfigurationException, SAXException, IOException {
+    void getMarket() throws IllegalArgumentException, ParserConfigurationException, SAXException, IOException {
         Market market = marketFactory.getMarket(xmlMarketConfig);
         System.out.println(market.toString());
     }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.marble;
 
-import it.polimi.ingsw.Effect;
+import it.polimi.ingsw.leaderEffects.Effect;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.*;
 import java.util.HashMap;

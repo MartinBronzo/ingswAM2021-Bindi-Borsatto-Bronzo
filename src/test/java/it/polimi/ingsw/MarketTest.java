@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.IllegalParameterException;
+import it.polimi.ingsw.Market.Market;
+import it.polimi.ingsw.leaderEffects.Effect;
 import it.polimi.ingsw.marble.*;
 import org.junit.jupiter.api.Test;
 
@@ -21,13 +22,13 @@ class MarketTest {
     final ResourceType stone = ResourceType.STONE;
     final ResourceType faith = ResourceType.FAITHPOINT;
 
-    MarketTest() throws IllegalParameterException {
+    MarketTest() throws IllegalArgumentException {
     }
 
     @Test
     void IllegalBuilderTest() {
-        assertThrows(IllegalParameterException.class, () -> new Market(2,2,2,2,2,2));
-        assertThrows(IllegalParameterException.class, () -> new Market(2,2,-3,6,3,3));
+        assertThrows(IllegalArgumentException.class, () -> new Market(2,2,2,2,2,2));
+        assertThrows(IllegalArgumentException.class, () -> new Market(2,2,-3,6,3,3));
     }
 
     /*used to test not classic number of marbles in the game */
@@ -40,14 +41,14 @@ class MarketTest {
     /*Testing the known illegal calls to the moveRow Method*/
     @Test
     void moveRowExceptionsTest() {
-        assertThrows(IllegalParameterException.class, () -> market.moveRow(-1,effect));
-        assertThrows(IllegalParameterException.class, () -> market.moveRow(3,effect));
+        assertThrows(IllegalArgumentException.class, () -> market.moveRow(-1,effect));
+        assertThrows(IllegalArgumentException.class, () -> market.moveRow(3,effect));
         assertThrows(NullPointerException.class, () -> market.moveRow(1,null));
     }
 
 
     @Test
-    void moveRowTest() throws IllegalParameterException {
+    void moveRowTest() throws IllegalArgumentException {
         int i =rnd.nextInt(3);
         Marble[] marbles = {market.getMarbleInTheGrid(i ,0), market.getMarbleInTheGrid(i ,1), market.getMarbleInTheGrid(i ,2), market.getMarbleInTheGrid(i ,3)};
         int blueCounter=0;
@@ -81,13 +82,13 @@ class MarketTest {
     /*Testing the known illegal calls to the moveColumn Method*/
     @Test
     void moveColumnExceptionsTest() {
-        assertThrows(IllegalParameterException.class, () -> market.moveColumn(-1,effect));
-        assertThrows(IllegalParameterException.class, () -> market.moveColumn(4,effect));
+        assertThrows(IllegalArgumentException.class, () -> market.moveColumn(-1,effect));
+        assertThrows(IllegalArgumentException.class, () -> market.moveColumn(4,effect));
         assertThrows(NullPointerException.class, () -> market.moveColumn(1,null));
     }
 
     @Test
-    void moveColumnTest() throws IllegalParameterException {
+    void moveColumnTest() throws IllegalArgumentException {
         int i =rnd.nextInt(4);
         Marble[] marbles = {market.getMarbleInTheGrid(0 ,i), market.getMarbleInTheGrid(1,i), market.getMarbleInTheGrid(2,i)};
         int blueCounter=0;
@@ -120,7 +121,7 @@ class MarketTest {
 
     /*to string test is used to study the correct behaviour of the market due the initial configuration of the market grid is randomized*/
     @Test
-    void toStringTest() throws IllegalParameterException {
+    void toStringTest() throws IllegalArgumentException {
         System.out.println(market.toString());
         System.out.println(market.moveColumn(1, effect).toString());
         System.out.println(market.toString());

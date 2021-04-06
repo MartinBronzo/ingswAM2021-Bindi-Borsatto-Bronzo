@@ -1,8 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.exceptions.IllegalParameterException;
-
 import java.util.HashMap;
 
 /**
@@ -27,10 +25,10 @@ public class Strongbox {
      * The method adds all the resources inside resMap to strongBoxResources, adding them to the previous value
      * @param resMap: is an HashMap that contains all the resources to be stored in the strongbox
      * @return true if the action is performed without errors
-     * @throws IllegalParameterException if a value in resMap is negative
+     * @throws IllegalArgumentException if a value in resMap is negative
      * @throws IllegalActionException if resMap contains faithPoints
      */
-    public boolean addResource(HashMap<ResourceType, Integer> resMap) throws IllegalParameterException, IllegalActionException {
+    public boolean addResource(HashMap<ResourceType, Integer> resMap) throws IllegalArgumentException, IllegalActionException {
         int actualValue;
         int addValue;
         int newValue;
@@ -42,7 +40,7 @@ public class Strongbox {
             addValue = resMap.get(resource);
 
             if(addValue < 0)
-                throw new IllegalParameterException("Negative quantity");
+                throw new IllegalArgumentException("Negative quantity");
 
             if(addValue > 0) {
                 actualValue = strongBoxResources.get(resource);
@@ -59,9 +57,9 @@ public class Strongbox {
      * @param resMap: is an HashMap that contains all the resources to be removed from the strongbox
      * return true if the action is performed without errors
      * @throws IllegalActionException if resMap contains faithPoints or if there are not enough resources to remove
-     * @throws IllegalParameterException if a value in resMap is negative
+     * @throws IllegalArgumentException if a value in resMap is negative
      */
-    public boolean removeResource(HashMap<ResourceType, Integer> resMap) throws IllegalActionException, IllegalParameterException {
+    public boolean removeResource(HashMap<ResourceType, Integer> resMap) throws IllegalActionException, IllegalArgumentException {
         int actualValue;
         int removeValue;
         int newValue;
@@ -73,7 +71,7 @@ public class Strongbox {
                 throw new IllegalActionException("Can't add Faith point");
 
             if(removeValue < 0)
-                throw new IllegalParameterException("Negative quantity");
+                throw new IllegalArgumentException("Negative quantity");
 
             if (removeValue > 0) {
                 actualValue = strongBoxResources.get(resource);

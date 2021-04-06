@@ -1,6 +1,6 @@
 package it.polimi.ingsw.FaithTrack;
 
-import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.Interfaces.Observer;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 
 import java.util.ArrayList;

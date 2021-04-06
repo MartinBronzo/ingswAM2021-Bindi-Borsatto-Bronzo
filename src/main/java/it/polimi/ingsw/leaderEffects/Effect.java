@@ -1,5 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.leaderEffects;
 
+import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 
 import java.util.HashMap;

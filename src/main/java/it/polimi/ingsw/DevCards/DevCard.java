@@ -1,6 +1,5 @@
-package it.polimi.ingsw;
-
-import it.polimi.ingsw.exceptions.IllegalParameterException;
+package it.polimi.ingsw.DevCards;
+import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 
 import java.util.Collection;
@@ -24,11 +23,11 @@ public class DevCard {
  * @param cost is the reference to the Resources, that can be used to buy the DevCard
  * @param productionInput is the reference to the Resources, that can be used to produce other resources
  * @param productionOutput is the reference to the Resources produced after consuming the resources in productionInput
- * @throws IllegalParameterException when the Card Level is not 1 or 2 or 3, or when Victory points are negative
+ * @throws IllegalArgumentException when the Card Level is not 1 or 2 or 3, or when Victory points are negative
  * @throws NegativeQuantityException when one or more of the resources maps contain a negative quantity, which is impossible.
  * */
-    public DevCard(int level, DevCardColour colour, int victoryPoints, HashMap<ResourceType, Integer> productionInput, HashMap<ResourceType, Integer> productionOutput, HashMap<ResourceType, Integer> cost, String url) throws IllegalParameterException, NegativeQuantityException {
-        if (level<1 || level>3 || victoryPoints<0) throw new IllegalParameterException("DevCard Builder: Illegal int parameter");
+    public DevCard(int level, DevCardColour colour, int victoryPoints, HashMap<ResourceType, Integer> productionInput, HashMap<ResourceType, Integer> productionOutput, HashMap<ResourceType, Integer> cost, String url) throws IllegalArgumentException, NegativeQuantityException {
+        if (level<1 || level>3 || victoryPoints<0) throw new IllegalArgumentException("DevCard Builder: Illegal int parameter");
 
         Collection<Integer> hashMapValues;
 

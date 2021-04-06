@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.DevCards;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;

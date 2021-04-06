@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.IllegalParameterException;
+import it.polimi.ingsw.DevCards.DevCard;
+import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.Test;
 
@@ -16,16 +17,16 @@ class DevCardTest {
 
     DevCard card;
 
-    DevCardTest() throws IllegalParameterException, NegativeQuantityException {
+    DevCardTest() throws IllegalArgumentException, NegativeQuantityException {
         HashMap<ResourceType,Integer> map = new HashMap<>();
         map.put(ResourceType.COIN, 3);
-        card=new DevCard(1,DevCardColour.PURPLE, 5, map,map,map,"abc");
+        card=new DevCard(1, DevCardColour.PURPLE, 5, map,map,map,"abc");
     }
 
     @Test
     void IllegalParametersTest() {
-        assertThrows(IllegalParameterException.class, () -> new DevCard(4,DevCardColour.GREEN,2,new HashMap<>(),new HashMap<>(),new HashMap<>(), "abc"));
-        assertThrows(IllegalParameterException.class, () -> new DevCard(3,DevCardColour.PURPLE,-3,new HashMap<>(),new HashMap<>(),new HashMap<>(), "abc"));
+        assertThrows(IllegalArgumentException.class, () -> new DevCard(4,DevCardColour.GREEN,2,new HashMap<>(),new HashMap<>(),new HashMap<>(), "abc"));
+        assertThrows(IllegalArgumentException.class, () -> new DevCard(3,DevCardColour.PURPLE,-3,new HashMap<>(),new HashMap<>(),new HashMap<>(), "abc"));
         assertDoesNotThrow( () -> new DevCard(2,DevCardColour.BLUE,2,new HashMap<>(),new HashMap<>(),new HashMap<>(), "abc"));
     }
 

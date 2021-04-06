@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Interfaces;
 
 /**
  * This interfaces is used to implement the Observer Pattern. It is used by the objects others wants to observe and which notify their Observers of their change

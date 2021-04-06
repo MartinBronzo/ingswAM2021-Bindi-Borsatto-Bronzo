@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.DevCards;
+
+import it.polimi.ingsw.Interfaces.Deck;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,7 +10,7 @@ import java.util.NoSuchElementException;
 /**
  * This class implements a List of not Ordered DevCard
  * */
-public class DevDeck implements Deck{
+public class DevDeck implements Deck {
     private LinkedList<DevCard> devCards;
 
     @Override
