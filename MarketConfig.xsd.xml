@@ -1,26 +1,8 @@
 <MarketConfig>
-  <marble>
-    <Type>WHITEMARBLE</Type>
-    <quantity>4</quantity>
-  </marble>
-  <marble>
-    <Type>BLUEMARBLE</Type>
-    <quantity>2</quantity>
-  </marble>
-  <marble>
-    <Type>GREYMARBLE</Type>
-    <quantity>2</quantity>
-  </marble>
-  <marble>
-    <Type>YELLOWMARBLE</Type>
-    <quantity>2</quantity>
-  </marble>
-  <marble>
-    <Type>PURPLEMARBLE</Type>
-    <quantity>2</quantity>
-  </marble>
-  <marble>
-    <Type>REDMARBLE</Type>
-    <quantity>1</quantity>
-  </marble>
+  <WHITEMARBLE>4</WHITEMARBLE>
+  <BLUEMARBLE>2</BLUEMARBLE>
+  <GREYMARBLE>2</GREYMARBLE>
+  <YELLOWMARBLE>2</YELLOWMARBLE>
+  <PURPLEMARBLE>2</PURPLEMARBLE>
+  <REDMARBLE>1</REDMARBLE>
 </MarketConfig>

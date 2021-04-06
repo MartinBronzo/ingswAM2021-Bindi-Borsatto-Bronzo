@@ -12,7 +12,6 @@ public class Market {
     private final Marble[][] marketMatrix;
     private Marble marbleOnSlide;
 
-
     /**Builder which instantiated the marbles on the grid and on the slide according with Classic Rules*/
     public Market() throws IllegalParameterException, IndexOutOfBoundsException{
         this(4,1,2,2,2,2);
