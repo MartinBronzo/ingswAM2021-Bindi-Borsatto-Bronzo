@@ -1,6 +1,6 @@
 package it.polimi.ingsw.LeaderCard;
 
-import it.polimi.ingsw.DevCardColour;
+import it.polimi.ingsw.DevCards.DevCardColour;
 
 /**
  * This class represents a requirement of a particular DevCards which may be necessary for some LeaderCard. It can be required either two things:
