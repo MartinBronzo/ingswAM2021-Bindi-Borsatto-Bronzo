@@ -130,13 +130,16 @@ public class DevGrid {
         return devDecksGrid[row][column];
     }
 
+
     /**
      * get DevCard on the grid in a specific position
      * @param row is the chosen row of the grid starting from 0
      * @param column is the chosen column of the grid starting from 0
      * @throws IllegalArgumentException when the chosen position in the grid is not valid [0...2]x[0...3]
      * @return the first DevCard in the chosen DevDeck on the grid. The Card is not Removed From the deck or NULL if devDeck is Empty
+     * @deprecated because is highly recommended use the methods to gain access exclusively to the first card in the deck
      * */
+    @Deprecated
     public DevCard getDevCardFromDeck(int row, int column) throws IllegalArgumentException {
         if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
         if (devDecksGrid[row][column].isEmpty()) return null;

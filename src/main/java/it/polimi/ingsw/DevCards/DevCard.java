@@ -33,12 +33,15 @@ public class DevCard {
 
         hashMapValues=productionInput.values();
         if (hashMapValues.stream().anyMatch(i -> i<0))throw new NegativeQuantityException("DevCard Builder: Illegal value in InputHashMap");
+        if (productionInput.getOrDefault(ResourceType.FAITHPOINT,0)!=0)throw new IllegalArgumentException("DevCard Builder: production input cannot contains FAITHPOINTS");
 
         hashMapValues=productionOutput.values();
         if (hashMapValues.stream().anyMatch(i -> i<0))throw new NegativeQuantityException("DevCard Builder: Illegal value in OutputHashMap");
 
         hashMapValues=cost.values();
         if (hashMapValues.stream().anyMatch(i -> i<0))throw new NegativeQuantityException("DevCard Builder: Illegal value in CostHashMap");
+        if (cost.getOrDefault(ResourceType.FAITHPOINT,0)!=0)throw new IllegalArgumentException("DevCard Builder: Cost cannot contains FAITHPOINTS");
+
 
         this.level = level;
         this.colour = colour;

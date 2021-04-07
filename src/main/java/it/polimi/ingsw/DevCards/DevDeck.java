@@ -2,16 +2,13 @@ package it.polimi.ingsw.DevCards;
 
 import it.polimi.ingsw.Interfaces.Deck;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * This class implements a List of not Ordered DevCard
  * */
 public class DevDeck implements Deck {
-    private LinkedList<DevCard> devCards;
+    private List<DevCard> devCards;
 
     @Override
     public String toString() {
@@ -38,7 +35,7 @@ public class DevDeck implements Deck {
      * */
     @Override
     public DevCard drawFromDeck() throws NoSuchElementException{
-        return devCards.removeFirst();
+        return devCards.remove(0);
     }
 
     /**@return the first card in the deck
@@ -46,7 +43,7 @@ public class DevDeck implements Deck {
      * */
     @Override
     public DevCard getFirst() throws NoSuchElementException {
-        return devCards.getFirst();
+        return devCards.get(0);
     }
 
     /** This Methods shuffles the deck

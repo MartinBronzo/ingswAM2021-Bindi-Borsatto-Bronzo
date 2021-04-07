@@ -26,9 +26,9 @@ public class BlueMarble extends Marble {
          resourceNumber = resourceMap.getOrDefault(resource, 0);
          if (resourceNumber<0) throw new NegativeQuantityException("onActivate BlueMarble: Negative numbers of resources in hashmap");
 
-        resourceNumber++;
-        resourceMap.put(resource,resourceNumber);
-        return true;
+         resourceNumber++;
+         resourceMap.put(resource,resourceNumber);
+         return true;
     }
 
     @Override

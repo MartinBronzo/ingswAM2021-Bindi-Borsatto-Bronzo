@@ -1,5 +1,6 @@
 package it.polimi.ingsw.DevCards;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
@@ -62,6 +63,22 @@ public class DevSlot {
      * */
     public DevCard getLastDevCard() throws NoSuchElementException{
         return devCards.getLast();
+    }
+
+    /**
+     * Gets A Collection containing the DevCard in the Slot. This Collection doesn't affect the cards in the DevSlot
+     * @return a collection of Cards
+     */
+    public Collection<DevCard> getDevCards(){
+        return new LinkedList<>(devCards);
+    }
+
+    /**
+     * Gets the number of Cards in the DevSlot
+     * @return is the number of Cards in the DevSlot
+     */
+    public int size(){
+        return devCards.size();
     }
 
 }
