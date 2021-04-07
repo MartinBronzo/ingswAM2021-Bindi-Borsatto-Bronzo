@@ -68,8 +68,13 @@ public class FaithLevelBasic {
         else
             this.position = end;
 
-        for(int i = start; i <= position - 1; i++)
-            this.faithTrack.callCellEffect(i);
+        if(end == start)
+            return true;
+        if(end > start) {
+            for (int i = start + 1; i <= position - 1; i++)
+                this.faithTrack.callCellEffect(i);
+        }
+        //TODO: controllare casi con end == start e cosa fare con end < start
         return this.faithTrack.callCellEffect(position);
     }
 }

@@ -700,6 +700,11 @@ public class FaithLevelTest {
         } catch (LastVaticanReportException e) {
             e.printStackTrace();
         }
+        try {
+            assertFalse(faithLevel1.moveFaithMarker(1));
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
 
         //Controlling all tiles are exactly as they were before
         assertTrue(pT1.get(0).isDiscarded());
