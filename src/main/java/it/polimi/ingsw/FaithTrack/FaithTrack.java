@@ -26,12 +26,13 @@ public class FaithTrack {
     private ReportNumOrder reportNumOrder;
 
     /**
-     * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. It saves the order of the Vatican Reports
+     * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. It saves the order of the Vatican Reports and it initiates the track
      * @param reportNumOrder the order of the ReportNum of the Faith track
      */
     private FaithTrack(ReportNumOrder reportNumOrder){
         this.track = new ArrayList<>();
         this.reportNumOrder = reportNumOrder;
+        this.initTrack();
     }
 
     /**
@@ -47,14 +48,15 @@ public class FaithTrack {
     }
 
     /**
-     * Constructs the ensemble of cells which constitute the track. The initiation of the track can only be done one
+     * Constructs the ensemble of cells which constitute the track. The initiation of the track is only done one: that's why the method is private and it is only called in
+     * the private constructor
      * @return true if the first initiation, false otherwise
      */
     // Right now, I fill the list one cell at the time. Maybe in the future we can read from an XML file how the track is designed.
-    public boolean initTrack(){
+
+    private boolean initTrack(){
         //If we have already designed the Track, we can't change it here
-        if(!track.isEmpty())
-            return false;
+        //if(!track.isEmpty()) return false;
         track.add(new Cell(0, ReportNum.REPORT1));
         track.add(new Cell(0, ReportNum.REPORT1));
         track.add(new Cell(0, ReportNum.REPORT1));
@@ -112,6 +114,7 @@ public class FaithTrack {
     public boolean callCellEffect(int position) throws LastVaticanReportException{
         if(position < track.size() - 1)
             return track.get(position).effect();
+        //TODO: come estendere in modo tale che non è sempre detto l'ultima cella è la ultima cella papale
         throw new LastVaticanReportException("Last Vatican Report was activated!", track.get(position).effect());
     }
 

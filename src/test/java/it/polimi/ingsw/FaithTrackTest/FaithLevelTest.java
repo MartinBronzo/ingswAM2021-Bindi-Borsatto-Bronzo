@@ -21,7 +21,7 @@ public class FaithLevelTest {
 
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
 
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(0, ReportNum.REPORT1));
@@ -61,7 +61,7 @@ public class FaithLevelTest {
 
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
 
         List<PopeTile> popeTiles = new ArrayList<>();
         FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
@@ -92,7 +92,7 @@ public class FaithLevelTest {
 
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
 
         //We manually force the PopeTiles to change their status to try some combinations of discarded, active and not changed tiles
 
@@ -175,7 +175,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
 
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
@@ -244,7 +244,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
 
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
@@ -313,7 +313,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
 
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
@@ -371,8 +371,8 @@ public class FaithLevelTest {
     }
 
     @Test
-    //Tests a Vatican Report
-    public void ctrlVaticanReport(){
+    //Tests a Vatican Report basic version: the player lands on the PopeTiles
+    public void ctrlVaticanReportBasic(){
         //The first two lines are needed to make sure that in this method the first and only instances of these two classes are created
         FaithTrack.deleteState();
         ReportNumOrder.deleteState();
@@ -382,7 +382,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
 
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
@@ -473,5 +473,285 @@ public class FaithLevelTest {
         assertTrue(pT1.get(2).isDiscarded());
         assertTrue(pT2.get(2).isActivated());
         assertTrue(pT3.get(2).isActivated());
+    }
+
+    @Test
+    //Tests that the Vatican Repport full version: it is activated because the player lands at the end of all of their steps after a PopeTile
+    //Tests with three "human" players
+    public void ctrlVaticanReportFull(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+        //ft.initTrack();
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3, ReportNum.REPORT3));
+        FaithLevel faithLevel1 = new FaithLevel(ft, popeTiles);
+        List<PopeTile> pT1 = faithLevel1.getPopeTiles();
+        popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1*2, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2*2, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3*2, ReportNum.REPORT3));
+        FaithLevel faithLevel2 = new FaithLevel(ft, popeTiles);
+        List<PopeTile> pT2 = faithLevel2.getPopeTiles();
+        popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1*3, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2*3, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3*3, ReportNum.REPORT3));
+        FaithLevel faithLevel3 = new FaithLevel(ft, popeTiles);
+        List<PopeTile> pT3 = faithLevel3.getPopeTiles();
+        PopeCell tmp = (PopeCell) ft.getCell(8);
+        tmp.detach(tmp.getObserversList().get(0));
+        ControllerStub controllerStub = new ControllerStub(tmp, faithLevel1, faithLevel2, faithLevel3);
+        tmp.attach(controllerStub);
+        tmp = (PopeCell) ft.getCell(16);
+        tmp.detach(tmp.getObserversList().get(0));
+        tmp.attach(controllerStub);
+        tmp = (PopeCell) ft.getCell(24);
+        tmp.detach(tmp.getObserversList().get(0));
+        tmp.attach(controllerStub);
+
+        try {
+            faithLevel1.moveFaithMarker(2);
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+        try {
+            faithLevel2.moveFaithMarker(5);
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+        try {
+            faithLevel3.moveFaithMarker(9);
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        //First VaticanReport
+        assertTrue(pT1.get(0).isDiscarded());
+        assertFalse(pT1.get(1).isChanged());
+        assertFalse((pT1.get(2).isChanged()));
+        assertTrue(pT2.get(0).isActivated());
+        assertFalse(pT2.get(1).isChanged());
+        assertFalse((pT2.get(2).isChanged()));
+        assertTrue(pT3.get(0).isActivated());
+        assertFalse(pT3.get(1).isChanged());
+        assertFalse((pT3.get(2).isChanged()));
+        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+
+        //Let's cross again the PopeTile
+        try {
+            faithLevel2.moveFaithMarker(8); //Player2 crosses the PopeTile which already activated the Vatican Report
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        //Controlling all tiles are exactly as they were before
+        assertTrue(pT1.get(0).isDiscarded());
+        assertFalse(pT1.get(1).isChanged());
+        assertFalse((pT1.get(2).isChanged()));
+        assertTrue(pT2.get(0).isActivated());
+        assertFalse(pT2.get(1).isChanged());
+        assertFalse((pT2.get(2).isChanged()));
+        assertTrue(pT3.get(0).isActivated());
+        assertFalse(pT3.get(1).isChanged());
+        assertFalse((pT3.get(2).isChanged()));
+
+        //Let's land on the PopeTile
+        try {
+            assertFalse(faithLevel1.moveFaithMarker(6)); //Player3 lands on the PopeTile which already activated the Vatican Report
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        //Controlling all tiles are exactly as they were before
+        assertTrue(pT1.get(0).isDiscarded());
+        assertFalse(pT1.get(1).isChanged());
+        assertFalse((pT1.get(2).isChanged()));
+        assertTrue(pT2.get(0).isActivated());
+        assertFalse(pT2.get(1).isChanged());
+        assertFalse((pT2.get(2).isChanged()));
+        assertTrue(pT3.get(0).isActivated());
+        assertFalse(pT3.get(1).isChanged());
+        assertFalse((pT3.get(2).isChanged()));
+
+        //Let's activate the remaining two VaticanReport together
+        LastVaticanReportException exception = assertThrows(LastVaticanReportException.class, () -> faithLevel3.moveFaithMarker(+ft.getTrackSize() + 10));
+        assertTrue(exception.getLastValue());
+        //Controlling the tiles
+        assertTrue(pT1.get(0).isDiscarded());
+        assertTrue(pT1.get(1).isDiscarded());
+        assertTrue((pT1.get(2).isDiscarded()));
+        assertTrue(pT2.get(0).isActivated());
+        assertTrue(pT2.get(1).isActivated()); //Player 2 is in a ReportCell fot the Second Vatican Report
+        assertTrue((pT2.get(2).isDiscarded()));
+        assertTrue(pT3.get(0).isActivated());
+        assertTrue(pT3.get(1).isActivated());
+        assertTrue(pT3.get(2).isActivated());
+    }
+
+    //TODO: Valgono le regole semplici => non ci dovrebbe essere più necessità del ReportNumOrder nei metodi effetti delle celle MA serve ancora per calcolare l'indice delle PopeTile nel DealWithVaticanReport del FaithLevel
+    //Non serve più il metodo di stateOrder ma serve ancora per segnarsi qual è l'ordine delle celle!
+
+    @Test
+    //Tests that the Vatican Report full version: it is activated because the player lands at the end of all of their steps after a PopeTile
+    //Tests with three "human" players and Lorenzo
+    public void ctrlVaticanReportFullWithLorenzo(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+        //ft.initTrack();
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3, ReportNum.REPORT3));
+        FaithLevel faithLevel1 = new FaithLevel(ft, popeTiles);
+        List<PopeTile> pT1 = faithLevel1.getPopeTiles();
+        popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1*2, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2*2, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3*2, ReportNum.REPORT3));
+        FaithLevel faithLevel2 = new FaithLevel(ft, popeTiles);
+        List<PopeTile> pT2 = faithLevel2.getPopeTiles();
+        popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1*3, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2*3, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3*3, ReportNum.REPORT3));
+        FaithLevel faithLevel3 = new FaithLevel(ft, popeTiles);
+        List<PopeTile> pT3 = faithLevel3.getPopeTiles();
+        PopeCell tmp = (PopeCell) ft.getCell(8);
+        tmp.detach(tmp.getObserversList().get(0));
+        ControllerStub controllerStub = new ControllerStub(tmp, faithLevel1, faithLevel2, faithLevel3);
+        tmp.attach(controllerStub);
+        tmp = (PopeCell) ft.getCell(16);
+        tmp.detach(tmp.getObserversList().get(0));
+        tmp.attach(controllerStub);
+        tmp = (PopeCell) ft.getCell(24);
+        tmp.detach(tmp.getObserversList().get(0));
+        tmp.attach(controllerStub);
+
+        FaithLevelBasic lorenzoFaithLevel = new FaithLevelBasic(ft);
+
+        try {
+            faithLevel1.moveFaithMarker(2);
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+        try {
+            faithLevel2.moveFaithMarker(5);
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+        try {
+            faithLevel3.moveFaithMarker(9);
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        //First VaticanReport
+        assertTrue(pT1.get(0).isDiscarded());
+        assertFalse(pT1.get(1).isChanged());
+        assertFalse((pT1.get(2).isChanged()));
+        assertTrue(pT2.get(0).isActivated());
+        assertFalse(pT2.get(1).isChanged());
+        assertFalse((pT2.get(2).isChanged()));
+        assertTrue(pT3.get(0).isActivated());
+        assertFalse(pT3.get(1).isChanged());
+        assertFalse((pT3.get(2).isChanged()));
+        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+
+        //Let's cross again the PopeTile
+        try {
+            faithLevel2.moveFaithMarker(8); //Player2 crosses the PopeTile which already activated the Vatican Report
+            //"The Vatican Report REPORT1 has already been activated!";
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        //Controlling all tiles are exactly as they were before
+        assertTrue(pT1.get(0).isDiscarded());
+        assertFalse(pT1.get(1).isChanged());
+        assertFalse((pT1.get(2).isChanged()));
+        assertTrue(pT2.get(0).isActivated());
+        assertFalse(pT2.get(1).isChanged());
+        assertFalse((pT2.get(2).isChanged()));
+        assertTrue(pT3.get(0).isActivated());
+        assertFalse(pT3.get(1).isChanged());
+        assertFalse((pT3.get(2).isChanged()));
+        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+
+        //Let's land on the PopeTile
+        try {
+            assertFalse(faithLevel1.moveFaithMarker(6)); //Player1 lands on the PopeTile which already activated the Vatican Report
+            //"The Vatican Report REPORT1 has already been activated!";
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+        try {
+            assertFalse(faithLevel1.moveFaithMarker(1));
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        //Controlling all tiles are exactly as they were before
+        assertTrue(pT1.get(0).isDiscarded());
+        assertFalse(pT1.get(1).isChanged());
+        assertFalse((pT1.get(2).isChanged()));
+        assertTrue(pT2.get(0).isActivated());
+        assertFalse(pT2.get(1).isChanged());
+        assertFalse((pT2.get(2).isChanged()));
+        assertTrue(pT3.get(0).isActivated());
+        assertFalse(pT3.get(1).isChanged());
+        assertFalse((pT3.get(2).isChanged()));
+        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+
+        //Let Lorenzo activate the second Vatican Report by landing on it
+        try {
+            assertTrue(lorenzoFaithLevel.moveFaithMarker(16));
+            //"The Vatican Report REPORT1 has already been activated!";
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        //Controlling all tiles
+        assertTrue(pT1.get(0).isDiscarded()); //Player1 is on the 8th cell
+        assertTrue(pT1.get(1).isDiscarded());
+        assertFalse((pT1.get(2).isChanged()));
+        assertTrue(pT2.get(0).isActivated()); //Player2 is on the 13rd cell
+        assertTrue(pT2.get(1).isActivated());
+        assertFalse((pT2.get(2).isChanged()));
+        assertTrue(pT3.get(0).isActivated()); //Player3 is on the 9th cell
+        assertTrue(pT3.get(1).isDiscarded());
+        assertFalse((pT3.get(2).isChanged()));
+        assertTrue(((PopeCell) ft.getCell(16)).isActivated());
+
+        //Let's activate the remaining VaticanReport together by crossing also the second Vatican Report
+        LastVaticanReportException exception = assertThrows(LastVaticanReportException.class, () -> faithLevel3.moveFaithMarker(+ft.getTrackSize() + 10));
+        //"The Vatican Report REPORT2 has already been activated!";
+        assertTrue(exception.getLastValue());
+        assertTrue(((PopeCell) ft.getCell(24)).isActivated());
+        //Controlling the tiles
+        assertTrue(pT1.get(0).isDiscarded()); //Player1 is on the 8th cell
+        assertTrue(pT1.get(1).isDiscarded());
+        assertTrue((pT1.get(2).isDiscarded()));
+        assertTrue(pT2.get(0).isActivated()); //Player2 is on the 13rd cell
+        assertTrue(pT2.get(1).isActivated());
+        assertTrue((pT2.get(2).isDiscarded()));
+        assertTrue(pT3.get(0).isActivated()); //Player3 is on the 24th cell
+        assertTrue(pT3.get(1).isDiscarded());
+        assertTrue((pT3.get(2).isActivated()));
     }
 }
