@@ -5,6 +5,7 @@ import it.polimi.ingsw.ResourceType;
 /**
  * This class has the goal of implementing the extra effect which gives extra slot where the player can store their resources.
  */
+//
 public class ExtraSlotLeaderEffect extends Effect{
     private final ResourceType slotType;
     private final int slotNumber;

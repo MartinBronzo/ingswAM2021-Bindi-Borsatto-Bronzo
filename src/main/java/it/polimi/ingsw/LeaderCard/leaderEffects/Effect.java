@@ -11,6 +11,7 @@ import java.util.Map;
  * discounting the cost of a DevCard, adding extra slots to the Depot, making WhiteMarbles be worth some Resources,
  * and increasing the production power.
  */
+//
 public class Effect {
 
     /**

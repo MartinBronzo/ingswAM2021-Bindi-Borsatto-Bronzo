@@ -8,6 +8,7 @@ import java.util.HashMap;
  * This class aims to implement the effect of adding a new Production Power to the ones available to the player. If the player pays the required resources,
  * they can get back whatever resource they desire and some extra output
  */
+//
 public class ExtraProductionLeaderEffect extends Effect{
     private final ResourceType requiredInputType;
     private final int requiredInputNumber;

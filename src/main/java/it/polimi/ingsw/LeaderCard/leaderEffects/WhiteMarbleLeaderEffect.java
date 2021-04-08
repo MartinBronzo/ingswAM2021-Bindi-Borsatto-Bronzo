@@ -10,6 +10,7 @@ import java.util.HashMap;
 /**
  * This class implements the extra effect which enables the player to gain some resources when they get a WhiteMarble from the market
  */
+//
 public class WhiteMarbleLeaderEffect extends Effect{
     private final ResourceType extraResourceType;
     private final int extraResourceAmount;

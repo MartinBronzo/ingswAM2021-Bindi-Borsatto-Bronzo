@@ -7,6 +7,7 @@ import java.util.HashMap;
 /**
  * This class implements the effect of a LeaderCard which let the player buy a DevCard at a discounted price. This class computes the discount on a specified cost.
  */
+//
 public class DiscountLeaderEffect extends Effect{
     private final ResourceType discountType;
     private final int discountAmount;
