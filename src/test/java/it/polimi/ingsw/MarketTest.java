@@ -1,10 +1,15 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.Market.Market;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.leaderEffects.Effect;
 import it.polimi.ingsw.marble.*;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -14,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 test the correct behaviour of the HashMap and to string to see the correct transition of the grid*/
 class MarketTest {
     Effect effect = new Effect();
-    Market market = new Market();
+    File MarketConfigFile = new File("MarketConfig.xsd.xml");
+    Market market = new Market(MarketConfigFile);
     Random rnd=new Random();
     final ResourceType coin = ResourceType.COIN;
     final ResourceType shield = ResourceType.SHIELD;
@@ -22,7 +28,7 @@ class MarketTest {
     final ResourceType stone = ResourceType.STONE;
     final ResourceType faith = ResourceType.FAITHPOINT;
 
-    MarketTest() throws IllegalArgumentException {
+    MarketTest() throws IllegalArgumentException, ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
     }
 
     @Test

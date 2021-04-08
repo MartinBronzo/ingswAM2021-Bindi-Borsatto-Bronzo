@@ -12,7 +12,9 @@ import java.io.File;
 import java.io.IOException;
 
 
-/**Market Factory Class used to Create Farmer using parameters from xml File*/
+/**Market Factory Class used to Create Farmer using parameters from xml File
+* @deprecated this class use the old xsd schema of the configurationFile, you can use constructor in Market Class to use the new xml File*/
+@Deprecated
 public class MarketFactory {
 
     /**
@@ -25,7 +27,9 @@ public class MarketFactory {
      * @throws SAXException if an error appeared parsing xmlFile
      * @throws IllegalArgumentException if a negative number of a marble is used in the xmlFile
      * @throws IllegalArgumentException if the sum of the marbles is not 13
+     * @deprecated this Method use the old xsd schema of the configurationFile, you can use constructor in Market Class to use the new xml File
      * */
+    @Deprecated
     public Market getMarket(File config) throws IllegalArgumentException, ParserConfigurationException, IOException, SAXException {
         int nWhite=0;
         int nRed=0;

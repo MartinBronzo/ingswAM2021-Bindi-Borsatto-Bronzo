@@ -14,4 +14,5 @@ public interface Observer {
 
     //Usato solo a fine di testing
     public boolean update(boolean tmp, ReportNum reportNum);
+    //TODO: l'update dovrebbe non avere parametri, semmai è il concrete observer che chiede lo stato
 }

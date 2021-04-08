@@ -9,9 +9,11 @@ public class FaithLevelBasicTest {
     @Test
     //Tests the creation
     public void ctrlCreation(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
         FaithLevelBasic faithLevelBasic = new FaithLevelBasic(ft);
 
         assertEquals(faithLevelBasic.getFaithTrack(), ft);
@@ -21,9 +23,11 @@ public class FaithLevelBasicTest {
     @Test
     //Tests the increasing of the position, controlling it is not going out of bound (here the changing of the position does not call the cells)
     public void ctrlPositionsBasic(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
         FaithLevelBasic faithLevelBasic = new FaithLevelBasic(ft);
 
         //the range of the track is [0 ft.getTrackSize()]
@@ -50,17 +54,22 @@ public class FaithLevelBasicTest {
     @Test
     //Tests the increasing of the position, checking what the cell
     public void ctrlPositionFull(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        ft.initTrack();
+        //ft.initTrack();
         FaithLevelBasic faithLevelBasic = new FaithLevelBasic(ft);
 
+        assertFalse(((PopeCell) ft.getCell(8)).isActivated());
         //Landing on a normal Cell
         try {
             assertFalse(faithLevelBasic.moveFaithMarker(4));
         } catch (LastVaticanReportException e) {
             e.printStackTrace();
         }
+
+        assertFalse(((PopeCell) ft.getCell(8)).isActivated());
 
         //Landing on a ReportCell
         try {
@@ -69,12 +78,16 @@ public class FaithLevelBasicTest {
             e.printStackTrace();
         }
 
+        assertFalse(((PopeCell) ft.getCell(8)).isActivated());
+
         //Landing on a PopeCell but not the last one
         try {
             assertTrue(faithLevelBasic.moveFaithMarker(2));
         } catch (LastVaticanReportException e) {
             e.printStackTrace();
         }
+        assertEquals(faithLevelBasic.getPosition(), 8);
+        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
 
         //Landing on the last PopeCell which activates the last Vatican Report
         LastVaticanReportException exception = assertThrows(LastVaticanReportException.class, () -> faithLevelBasic.moveFaithMarker(+ft.getTrackSize() + 10));

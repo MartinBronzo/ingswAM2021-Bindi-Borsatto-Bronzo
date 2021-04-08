@@ -16,15 +16,15 @@ public class FaithTrackTest {
         FaithTrack.deleteState();
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack faithTrack1 = FaithTrack.instance(reportNumOrder);
-        assertTrue(faithTrack1.initTrack());
+        //assertTrue(faithTrack1.initTrack());
 
         FaithTrack faithTrack2 = FaithTrack.instance(reportNumOrder);
         assertSame(faithTrack1, faithTrack2);
-        assertFalse(faithTrack2.initTrack());
+        //assertFalse(faithTrack2.initTrack());
 
         FaithTrack faithTrack3 = FaithTrack.instance(reportNumOrder);
         assertSame(faithTrack1, faithTrack3);
-        assertFalse(faithTrack3.initTrack());
+        //assertFalse(faithTrack3.initTrack());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class FaithTrackTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
 
         FaithTrack faithTrack = FaithTrack.instance(reportNumOrder);
-        faithTrack.initTrack();
+        //faithTrack.initTrack();
 
         //Control the saved ReportNumOrder
         ReportNumOrder tmp = faithTrack.getReportNumOrder();
@@ -128,7 +128,7 @@ public class FaithTrackTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack faithTrack = FaithTrack.instance(reportNumOrder);
-        faithTrack.initTrack();
+        //faithTrack.initTrack();
 
         //Normal Cell
         try {

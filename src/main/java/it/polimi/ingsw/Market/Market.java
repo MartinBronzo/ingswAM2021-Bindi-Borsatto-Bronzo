@@ -1,9 +1,22 @@
 package it.polimi.ingsw.Market;
 
+import it.polimi.ingsw.DevCards.DevCard;
+import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.leaderEffects.Effect;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.marble.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /*NOT YET IMPLEMENTED: Builder which read from xml Config File*/
@@ -28,7 +41,9 @@ public class Market {
      * @param nRed refers the number of RedMarbles to be added in the Market
      * @param nWhite refers the number of WhiteMarbles to be added in the Market
      * @param nYellow refers the number of YellowMarbles to be added in the Market
+     * @deprecated Use Constructor public Market(File config), it's more extendable
      * */
+    @Deprecated
     public Market(int nWhite, int nRed, int nGrey, int nBlue, int nYellow, int nPurple) throws IllegalArgumentException {
 
         if (nWhite + nRed + nGrey + nBlue + nYellow + nPurple != 13) throw new IllegalArgumentException("Market: number of Marbles is not 13");
@@ -46,6 +61,30 @@ public class Market {
 
         this.marbleOnSlide = configurationList.get(configurationList.size()-1);
     }
+
+    /**
+     * Creates a Market containing the marbles described in a xmlFile
+     * @param config is the xmlFile containing the description of tye market
+     * @throws ParserConfigurationException when it is present an error configuration in xml file
+     * @throws IOException if config File is impossible to read
+     * @throws SAXException if an error appeared parsing xmlFile
+     * @throws IllegalArgumentException if a negative number of a marble is used in the xmlFile
+     * @throws NegativeQuantityException if the sum of the marbles is not 13
+     */
+    public Market(File config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
+        List<Marble> configurationList = createConfigurationList(config);
+        if (configurationList.size()!=13) throw new IllegalArgumentException("Market: number of Marbles is "+ configurationList.size());
+
+        this.marketMatrix = new Marble[3][4];
+        for (int i=0; i<marketMatrix.length; i++){
+            for (int j=0; j<marketMatrix[i].length; j++){
+                this.setMarbleInTheGrid(configurationList.get(marketMatrix[i].length*i + j), i, j);
+            }
+        }
+        this.marbleOnSlide = configurationList.get(configurationList.size()-1);
+
+    }
+
 
     /**
      * Method used when buying from market and selecting 1 of the 3 rows.
@@ -135,6 +174,37 @@ public class Market {
 
         Collections.shuffle(configurationList);
         return configurationList;
+    }
+
+    private List<Marble> createConfigurationList(File config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
+        LinkedList<Marble> marbles= new LinkedList<>();
+        Marble marble;
+        int quantity;
+
+        DocumentBuilderFactory documentBuilderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder= documentBuilderFactory.newDocumentBuilder();
+        Document doc= docBuilder.parse(config);
+        doc.getDocumentElement().normalize();
+
+        Node marketConfigNode=doc.getElementsByTagName("MarketConfig").item(0);
+        if (marketConfigNode.getNodeType() == Node.ELEMENT_NODE){
+        Element rootElement=(Element) marketConfigNode;
+            NodeList marbleNodes=rootElement.getElementsByTagName("marble");
+            for (int i=0; i< marbleNodes.getLength(); i++){
+                Node node = marbleNodes.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE){
+                    Element baseElement= (Element) node;
+                    marble = MarbleType.valueOf(baseElement.getElementsByTagName("Type").item(0).getTextContent()).getMarble();
+                    quantity=Integer.parseInt(baseElement.getElementsByTagName("quantity").item(0).getTextContent());
+                    if (quantity<0) throw new NegativeQuantityException("Market: negative quantity in xml File");
+                    for (;quantity>0;quantity--){
+                        marbles.add(marble);
+                    }
+                }
+            }
+        }
+        Collections.shuffle(marbles);
+        return marbles;
     }
 
     @Override

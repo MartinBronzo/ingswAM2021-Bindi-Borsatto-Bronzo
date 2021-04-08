@@ -12,7 +12,7 @@ import java.io.IOException;
 
 class MarketFactoryTest {
     MarketFactory marketFactory = new MarketFactory();
-    File xmlMarketConfig = new File("MarketConfig.xsd.xml");
+    File xmlMarketConfig = new File("MarketConfigOld.xsd.xml");
 
     /*This Test is Used to see if the xmlFile is correctly Read
     * To se the correct implementation of Market see MarketTest
