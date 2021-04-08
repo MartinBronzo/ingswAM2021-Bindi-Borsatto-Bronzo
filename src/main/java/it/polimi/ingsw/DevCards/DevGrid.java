@@ -100,7 +100,7 @@ public class DevGrid {
     }
 
     /**
-     * add resources to hashMap from the node read in the xml File
+     * adds resources to hashMap from the node read in the xml File
      * this method is used exclusively in createConfigurationList because each devCard is composed by 3 different hashMap
      * */
     private void addNodeResourcesToHashMap(HashMap<ResourceType, Integer> hashMap, Node node) {
@@ -119,12 +119,14 @@ public class DevGrid {
     }
 
     /**
-     * get DevDeck on the grid in a specific position
+     * gets DevDeck on the grid in a specific position
      * @param row is the chosen row of the grid starting from 0
      * @param column is the chosen column of the grid starting from 0
      * @throws IllegalArgumentException when the chosen position in the grid is not valid [0...2]x[0...3]
      * @return the chosen DevDeck on the grid
+     * @deprecated because is highly recommended use the methods to gain access exclusively to the first card in the deck
      * */
+    @Deprecated
     public DevDeck getDevDeckInTheGrid(int row, int column) throws IllegalArgumentException {
         if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
         return devDecksGrid[row][column];
@@ -132,22 +134,20 @@ public class DevGrid {
 
 
     /**
-     * get DevCard on the grid in a specific position
+     * gets DevCard on the grid in a specific position
      * @param row is the chosen row of the grid starting from 0
      * @param column is the chosen column of the grid starting from 0
      * @throws IllegalArgumentException when the chosen position in the grid is not valid [0...2]x[0...3]
      * @return the first DevCard in the chosen DevDeck on the grid. The Card is not Removed From the deck or NULL if devDeck is Empty
-     * @deprecated because is highly recommended use the methods to gain access exclusively to the first card in the deck
      * */
-    @Deprecated
     public DevCard getDevCardFromDeck(int row, int column) throws IllegalArgumentException {
-        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
+        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("getDevCardFromDeck:Not valid position in the grid 3x4");
         if (devDecksGrid[row][column].isEmpty()) return null;
         return devDecksGrid[row][column].getFirst();
     }
 
     /**
-     * draw DevCard on the grid in a specific position
+     * draws DevCard on the grid in a specific position
      * @param row is the chosen row of the grid starting from 0
      * @param column is the chosen column of the grid starting from 0
      * @throws IllegalArgumentException when the chosen position in the grid is not valid [0...2]x[0...3]
@@ -155,9 +155,34 @@ public class DevGrid {
      * @return the first DevCard in the chosen DevDeck on the grid. The Card is Removed From the deck.
      * */
     public DevCard drawDevCardFromDeck(int row, int column) throws IllegalArgumentException, EmptyDeckException {
-        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("getDevDeckInTheGrid:Not valid position in the grid 3x4");
+        if (row<0 || column<0 || row>=3 || column>=4) throw new IllegalArgumentException("drawDevCardFromDeck:Not valid position in the grid 3x4");
         if (devDecksGrid[row][column].isEmpty()) throw new EmptyDeckException("drawDevCardFromDeck: deck is empty");
         return devDecksGrid[row][column].drawFromDeck();
+    }
+
+    /**
+     * gets DevCard on the grid in a specific position
+     * @param level is the chosen level of the desired card
+     * @param colour is the chosen colour of the desired card
+     * @throws IllegalArgumentException when the level is not between 1 and 3 or colour null
+     * @return the first DevCard in the chosen DevDeck on the grid. The Card is not Removed From the deck or NULL if devDeck is Empty
+     * */
+    public DevCard getDevCardFromDeck(int level, DevCardColour colour) throws IllegalArgumentException {
+        if (level<=0 || level>3 || colour==null) throw new IllegalArgumentException("getDevCardFromDeck:Not valid color or level");
+        return this.getDevCardFromDeck(devDecksGrid.length-level, colour.ordinal());
+    }
+
+    /**
+     * draws DevCard on the grid in a specific position
+     * @param level is the chosen level of the desired card
+     * @param colour is the chosen colour of the desired card
+     * @throws IllegalArgumentException when the chosen position in the grid is not valid [0...2]x[0...3]
+     * @throws EmptyDeckException if devDeck is Empty;
+     * @return the first DevCard in the chosen DevDeck on the grid. The Card is Removed From the deck.
+     * */
+    public DevCard drawDevCardFromDeck(int level, DevCardColour colour) throws IllegalArgumentException, EmptyDeckException {
+        if (level<=0 || level>3 || colour==null) throw new IllegalArgumentException("drawDevCardFromDeck:Not valid color or level");
+        return this.drawDevCardFromDeck(devDecksGrid.length-level, colour.ordinal());
     }
 
     @Override
