@@ -19,7 +19,7 @@ public class FaithLevel extends FaithLevelBasic{
     /**
      * The PopeTiles the player can activate or discard throughout the game
      */
-    List<PopeTile> popeTiles;
+    private List<PopeTile> popeTiles;
 
     /**
      * Constructs a FaithLevel. Since it represents the position of a player at the beginning of the game, its position is set to 0 (the first Cell of the track).

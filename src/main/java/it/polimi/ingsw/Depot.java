@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
-import it.polimi.ingsw.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -215,8 +215,8 @@ public class Depot {
     private boolean canAddExtraSlot(ExtraSlotLeaderEffect effect) throws IllegalArgumentException, IllegalActionException {
         final int maxLeaderCards = 2;
 
-        isFaithPoint(effect.getType());
-        ctrlQuantity(effect.getResourceNumber());
+        isFaithPoint(effect.extraSlotGetType());
+        ctrlQuantity(effect.extraSlotGetResourceNumber());
 
         if (depotLimit.size() == maxLeaderCards)
             throw new IllegalActionException("Can't add more leader cards");
@@ -473,8 +473,8 @@ public class Depot {
         limit = 0;
         size = depotLimit.size();
         for (int i = 0; i < size; i++) {
-            if (depotLimit.get(i).getType() == resoruce)
-                limit = limit + depotLimit.get(i).getResourceNumber();
+            if (depotLimit.get(i).extraSlotGetType() == resoruce)
+                limit = limit + depotLimit.get(i).extraSlotGetResourceNumber();
         }
         return limit;
     }

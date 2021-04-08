@@ -2,7 +2,7 @@ package it.polimi.ingsw.Market;
 
 import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevCardColour;
-import it.polimi.ingsw.leaderEffects.Effect;
+import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.marble.*;

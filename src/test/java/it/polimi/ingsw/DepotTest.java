@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
-import it.polimi.ingsw.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import org.junit.jupiter.api.Test;
 
 class DepotTest {
