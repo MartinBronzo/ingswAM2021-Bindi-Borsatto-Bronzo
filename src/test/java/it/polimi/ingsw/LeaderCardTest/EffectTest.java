@@ -53,9 +53,6 @@ public class EffectTest {
     public void ctrlWhiteMarbleEffect(){
         WhiteMarbleLeaderEffect effect;
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new WhiteMarbleLeaderEffect(ResourceType.FAITHPOINT));
-        assertEquals(exception.getMessage(),"The WhiteMarble can't give extra FaithPoints!");
-
         HashMap<ResourceType, Integer> input = new HashMap<>();
         for(ResourceType tP: resources)
             input.put(tP, 1);
@@ -63,23 +60,17 @@ public class EffectTest {
 
 
         for(int j = 0; j < resources.length; j++){
-            if(!resources[j].equals(ResourceType.FAITHPOINT)) {
-                effect = new WhiteMarbleLeaderEffect(resources[j]);
-                try {
-                    assertTrue(effect.whiteMarbleEffect(input));
-                    for (int i = 0; i <= j; i++)
-                        if(!resources[i].equals(ResourceType.FAITHPOINT))
-                            assertEquals(input.get(resources[i]), inputClone.get(resources[i]) + 1);
-                        else
-                            assertEquals(input.get(resources[i]), inputClone.get(resources[i]));
-                    for (int t = j + 1; t < resources.length; t++)
-                        assertEquals(input.get(resources[t]), inputClone.get(resources[t]));
-                    ;
-                } catch (NegativeQuantityException e) {
-                    e.printStackTrace();
-                }
-            }else
-                assertThrows(IllegalArgumentException.class, () -> new WhiteMarbleLeaderEffect(ResourceType.FAITHPOINT));
+            effect = new WhiteMarbleLeaderEffect(resources[j]);
+            try {
+                assertTrue(effect.whiteMarbleEffect(input));
+                for (int i = 0; i <= j; i++)
+                    assertEquals(input.get(resources[i]), inputClone.get(resources[i]) + 1);
+                for (int t = j + 1; t < resources.length; t++)
+                    assertEquals(input.get(resources[t]), inputClone.get(resources[t]));
+                ;
+            } catch (NegativeQuantityException e) {
+                e.printStackTrace();
+            }
         }
 
         WhiteMarbleLeaderEffect finalEffect = new WhiteMarbleLeaderEffect(resources[0]);
