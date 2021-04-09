@@ -65,6 +65,6 @@ public class CardRequirementColorAndLevel extends Requirement{
 
     @Override
     public boolean checkRequirement(PlayerBoard playerBoard) {
-        return playerBoard.getDevSlots().getAllDevCards().stream().filter(card -> cardColour == card.getColour() && level == getLevel()).count() >= quantity;
+        return playerBoard.getDevSlots().getAllDevCards().stream().filter(card -> cardColour == card.getColour() && level == card.getLevel()).count() >= quantity;
     }
 }
