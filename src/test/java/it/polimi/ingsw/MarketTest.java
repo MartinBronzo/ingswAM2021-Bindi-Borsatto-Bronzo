@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.Market.Market;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.leaderEffects.Effect;
+import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.marble.*;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;

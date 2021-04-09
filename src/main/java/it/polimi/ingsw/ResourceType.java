@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.marble.Marble;
+import it.polimi.ingsw.marble.MarbleTypeTMP;
+
 /** enum class to manage base Resources
 * every constant has his method which returns true only if it's used for the same constant
 * can be used also equals method, but this is specific for every constant
@@ -10,11 +13,21 @@ public enum ResourceType {
         public boolean isCoin() {
             return true;
         }
+
+        @Override
+        public MarbleTypeTMP getCorrespondingMarble() {
+            return MarbleTypeTMP.YELLOWMARBLE;
+        }
     },
     STONE {
         @Override
         public boolean isStone() {
             return true;
+        }
+
+        @Override
+        public MarbleTypeTMP getCorrespondingMarble() {
+            return MarbleTypeTMP.GREYMARBLE;
         }
     },
     SERVANT {
@@ -22,11 +35,21 @@ public enum ResourceType {
         public boolean isServant() {
             return true;
         }
+
+        @Override
+        public MarbleTypeTMP getCorrespondingMarble() {
+            return MarbleTypeTMP.PURPLEMARBLE;
+        }
     },
     SHIELD {
         @Override
         public boolean isShield() {
             return true;
+        }
+
+        @Override
+        public MarbleTypeTMP getCorrespondingMarble() {
+            return MarbleTypeTMP.BLUEMARBLE;
         }
     },
     FAITHPOINT {
@@ -34,7 +57,14 @@ public enum ResourceType {
         public boolean isFaithPoint() {
             return true;
         }
+
+        @Override
+        public MarbleTypeTMP getCorrespondingMarble() {
+            return MarbleTypeTMP.REDMARBLE;
+        }
     };
+
+//poi fare da lì il getMarble();
 
     /**
      * enum base methods:
@@ -55,4 +85,5 @@ public enum ResourceType {
     public boolean isFaithPoint(){
         return false;
     }
+    public MarbleTypeTMP getCorrespondingMarble(){return null;}
 }

@@ -3,9 +3,15 @@ package it.polimi.ingsw.DevCards;
 import java.util.Collection;
 import java.util.LinkedList;
 
+/**
+ * Groups more DevSlot in a SingleObject
+ */
 public class DevSlots {
     private final DevSlot[] devSlots;
 
+    /**
+     * Creates 3 Empty DevSlots
+     */
     public DevSlots() {
         this.devSlots = new DevSlot[3];
         for (int i=0; i<devSlots.length; i++) {
@@ -13,6 +19,11 @@ public class DevSlots {
         }
     }
 
+    /**
+     * @param index is the DevSlot number starting from 0
+     * @return the DevSlot at te specified Index
+     * @throws IndexOutOfBoundsException if index is not valid [0...2]
+     */
     public DevSlot getDevSlot(int index) throws IndexOutOfBoundsException {
         if (index<0 || index>=devSlots.length) throw new IndexOutOfBoundsException("getDevSlots: Index must be between 0 and 2");
         return devSlots[index];
