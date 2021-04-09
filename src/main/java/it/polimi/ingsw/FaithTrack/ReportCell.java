@@ -32,12 +32,7 @@ public class ReportCell extends Cell{
      */
 
     @Override
-    public boolean activatePopeTile(ReportNum currentReportNum, ReportNumOrder reportNumOrder) {
-       /* if(reportNumOrder.stateOrder(currentReportNum, this.getReportNum()))
-            return true;
-        if(currentReportNum.equals(this.getReportNum()))
-            return true;
-        return false;*/
+    public boolean activatePopeTile(ReportNum currentReportNum) {
         if(currentReportNum.equals(this.getReportNum()))
             return true;
         return false;

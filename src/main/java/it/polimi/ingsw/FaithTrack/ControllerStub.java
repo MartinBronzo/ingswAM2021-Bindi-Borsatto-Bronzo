@@ -48,7 +48,6 @@ public class ControllerStub implements Observer {
         if (neededToTryTheVaticanReport == true) {
             if(x == false) {
                 try {
-                    System.out.println("Lol!");
                     this.fakeVaticanReport(reportNum);
                 } catch (IllegalActionException e) {
                     e.printStackTrace();
@@ -75,7 +74,6 @@ public class ControllerStub implements Observer {
     }
 
     public void fakeVaticanReportOnePlayer(ReportNum rN) throws IllegalActionException {
-        System.out.println("AHAHAHHA!");
         fT1.dealWithVaticanReport(rN);
     }
 }

@@ -60,76 +60,64 @@ public class CellTest {
     @Test
     //Tests whether the Cells communicate to turn and not to turn the PopeTile as needed
     public void ctrlActivationCell(){
-        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
-        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
-        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
-        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
 
         Cell cell1 = new Cell(0, ReportNum.REPORT1);
         Cell cell2 = new Cell(0, ReportNum.REPORT2);
         Cell cell3 = new Cell(0, ReportNum.REPORT3);
 
-        assertFalse(cell1.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertFalse(cell1.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertFalse(cell1.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertFalse(cell1.activatePopeTile(ReportNum.REPORT1));
+        assertFalse(cell1.activatePopeTile(ReportNum.REPORT2));
+        assertFalse(cell1.activatePopeTile(ReportNum.REPORT3));
 
-        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertFalse(cell2.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertFalse(cell2.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT2));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT3));
 
-        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertFalse(cell3.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT3));
     }
 
     @Test
     //Tests whether the ReportCells communicate to turn and not to turn the PopeTile as needed
     public void ctrlActivationReportCell(){
-        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
-        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
-        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
-        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
 
         Cell cell1 = new ReportCell(0, ReportNum.REPORT1);
         Cell cell2 = new ReportCell(0, ReportNum.REPORT2);
         Cell cell3 = new ReportCell(0, ReportNum.REPORT3);
 
-        assertTrue(cell1.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertFalse(cell1.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertFalse(cell1.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertTrue(cell1.activatePopeTile(ReportNum.REPORT1));
+        assertFalse(cell1.activatePopeTile(ReportNum.REPORT2));
+        assertFalse(cell1.activatePopeTile(ReportNum.REPORT3));
 
-        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertTrue(cell2.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertFalse(cell2.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1));
+        assertTrue(cell2.activatePopeTile(ReportNum.REPORT2));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT3));
 
-        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertTrue(cell3.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2));
+        assertTrue(cell3.activatePopeTile(ReportNum.REPORT3));
     }
 
     @Test
     //Tests whether the PopeCells communicate to turn and not to turn the PopeTile as needed
     public void ctrlActivationPopeCell(){
-        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
-        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
-        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
-        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
 
         Cell cell1 = new PopeCell(0, ReportNum.REPORT1);
         Cell cell2 = new PopeCell(0, ReportNum.REPORT2);
         Cell cell3 = new PopeCell(0, ReportNum.REPORT3);
 
-        assertTrue(cell1.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertFalse(cell1.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertFalse(cell1.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertTrue(cell1.activatePopeTile(ReportNum.REPORT1));
+        assertFalse(cell1.activatePopeTile(ReportNum.REPORT2));
+        assertFalse(cell1.activatePopeTile(ReportNum.REPORT3));
 
-        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertTrue(cell2.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertFalse(cell2.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1));
+        assertTrue(cell2.activatePopeTile(ReportNum.REPORT2));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT3));
 
-        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
-        assertTrue(cell3.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2));
+        assertTrue(cell3.activatePopeTile(ReportNum.REPORT3));
     }
 
 

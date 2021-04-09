@@ -59,24 +59,6 @@ public class FaithLevelBasic {
     //For extendability purposes, we are assuming the step can be any relative integer
     //We have this method returning a boolean for testing purposes
     public boolean moveFaithMarker(int step) throws LastVaticanReportException {
-        /*int start = this.position;
-        int end;
-        end = this.position + step;
-        if(end < 0)
-            this.position = 0;
-        else if(end > this.faithTrack.getTrackSize() - 1)
-            this.position = this.faithTrack.getTrackSize() - 1;
-        else
-            this.position = end;
-
-        if(end == start)
-            return true;
-        if(end > start) {
-            for (int i = start + 1; i <= position - 1; i++)
-                this.faithTrack.callCellEffect(i);
-        }
-        //TODO: controllare casi con end == start e cosa fare con end < start
-        return this.faithTrack.callCellEffect(position);*/
         int start = this.position;
         int end = this.position + step;
         if(end < 0)
@@ -90,7 +72,6 @@ public class FaithLevelBasic {
             return true;
         }else if(end > start){
             for(int i = start + 1; i <= end - 1; i++){
-                System.out.println(i);
                 this.position = i;
                 this.faithTrack.callCellEffect(i);
             }
@@ -98,6 +79,7 @@ public class FaithLevelBasic {
             return this.faithTrack.callCellEffect(end);
         }
         //If the player moves back no effect is called
+        this.position = end;
         return true;
     }
 }

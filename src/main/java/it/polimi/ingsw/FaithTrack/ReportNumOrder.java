@@ -54,6 +54,8 @@ public class ReportNumOrder {
      * @return true if x comes first, false otherwise (y comes first or the two have the same priority)
      * @throws IllegalArgumentException if one of the ReportNum is not in the list
      */
+    @Deprecated
+    //This method right now is only used for testing purposes
     public boolean stateOrder(ReportNum x, ReportNum y) throws IllegalArgumentException{
         if(!this.order.contains(x))
             throw new IllegalArgumentException("The first element given as a parameter is not in the list");

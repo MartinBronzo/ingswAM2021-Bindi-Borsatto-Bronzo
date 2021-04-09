@@ -739,4 +739,71 @@ public class FaithLevelTest {
         assertTrue(pT3.get(1).isDiscarded());
         assertTrue((pT3.get(2).isActivated()));
     }
+
+    @Test
+    //Tests particular values for the steps the Marker takes
+    public void ctrlMarkerSteps(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+        //ft.initTrack();
+        PopeCell tmp = (PopeCell) ft.getCell(8);
+        tmp.detach(tmp.getObserversList().get(0));
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3, ReportNum.REPORT3));
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
+        popeTiles = faithLevel.getPopeTiles();
+        tmp.attach(new ControllerStub(tmp, faithLevel));
+
+        assertFalse(popeTiles.get(0).isChanged());
+        assertFalse(popeTiles.get(1).isChanged());
+        assertFalse(popeTiles.get(2).isChanged());
+
+
+        try {
+            assertFalse(faithLevel.moveFaithMarker(9));
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(faithLevel.getPosition(), 9);
+
+        assertTrue(popeTiles.get(0).isActivated());
+        assertFalse(popeTiles.get(1).isChanged());
+        assertFalse(popeTiles.get(2).isChanged());
+
+        try {
+            assertTrue(faithLevel.moveFaithMarker(0));
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(faithLevel.getPosition(), 9);
+
+        //The tiles haven't changed
+        assertTrue(popeTiles.get(0).isActivated());
+        assertFalse(popeTiles.get(1).isChanged());
+        assertFalse(popeTiles.get(2).isChanged());
+
+        try {
+            assertTrue(faithLevel.moveFaithMarker(-4));
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(faithLevel.getPosition(), 5);
+
+        //The tiles haven't changed
+        assertTrue(popeTiles.get(0).isActivated());
+        assertFalse(popeTiles.get(1).isChanged());
+        assertFalse(popeTiles.get(2).isChanged());
+    }
 }

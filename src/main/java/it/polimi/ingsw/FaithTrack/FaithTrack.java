@@ -143,7 +143,7 @@ public class FaithTrack {
      * @return true if the PopeTile must be activated, false otherwise
      */
     public boolean callCellActivateTile(int position, ReportNum reportNum){
-        return track.get(position).activatePopeTile(reportNum, this.reportNumOrder);
+        return track.get(position).activatePopeTile(reportNum);
     }
 
     /**
@@ -179,6 +179,11 @@ public class FaithTrack {
         instance = null;
     }
 
+    /**
+     * Returns the index of the specified ReportNum in the ordered list of ReportNums stored in the FaithTrack
+     * @param reportNum the ReportNum
+     * @return the index of the specified ReportNum
+     */
     public int getPopeTileIndex(ReportNum reportNum){
         return reportNumOrder.getOrder(reportNum);
     }

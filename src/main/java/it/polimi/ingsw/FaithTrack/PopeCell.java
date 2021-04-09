@@ -52,10 +52,10 @@ public class PopeCell extends ReportCell implements Subject {
     public boolean effect() {
         //If the Vatican Report has already been activated, then we can't activate it again
         if(this.activated == true){
-            System.out.println("The Vatican ReportXXX " + this.getReportNum() + " has already been activated!");
+            //System.out.println("The Vatican ReportXXX " + this.getReportNum() + " has already been activated!");
             return false;
         }
-        System.out.println("HEI");
+
         this.setActivatedTrue();
         return this.notifyObservers();
     }
