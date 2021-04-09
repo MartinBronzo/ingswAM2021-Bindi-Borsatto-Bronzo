@@ -11,8 +11,7 @@ public class PlayerBoard {
     private Depot depot;
     private Strongbox strongbox;
     private DevSlots devSlots;
-    //private List<LeaderCard> InactiveLeaderCards;
-    //private List<LeaderCard> ActiveLeaderCards;
+    //private LeaderCards leaderCards;
 
     public PlayerBoard() {
         //this.playerFaithLevel = new FaithLevel();

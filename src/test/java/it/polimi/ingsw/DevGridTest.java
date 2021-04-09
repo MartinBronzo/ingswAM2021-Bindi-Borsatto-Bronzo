@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.DevCards.DevCard;
+import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.DevCards.DevDeck;
 import it.polimi.ingsw.DevCards.DevGrid;
 import it.polimi.ingsw.exceptions.EmptyDeckException;
@@ -61,10 +62,14 @@ class DevGridTest {
 
         deckGreen1=devGrid.getDevDeckInTheGrid(2,0);
         int actualSize = deckGreen1.size();
-        if (actualSize==0)
-            assertNull(devGrid.getDevCardFromDeck(2,0));
-        else
-            assertEquals(devGrid.getDevCardFromDeck(2,0),deckGreen1.getFirst());
+        if (actualSize==0) {
+            assertNull(devGrid.getDevCardFromDeck(2, 0));
+            assertNull(devGrid.getDevCardFromDeck(1, DevCardColour.GREEN));
+        }else {
+            assertEquals(devGrid.getDevCardFromDeck(2, 0), deckGreen1.getFirst());
+            assertEquals(devGrid.getDevCardFromDeck(1, DevCardColour.GREEN), deckGreen1.getFirst());
+
+        }
     }
 
     @Test
@@ -88,6 +93,20 @@ class DevGridTest {
         }
         assertThrows(EmptyDeckException.class, ()->devGrid.drawDevCardFromDeck(2,0));
     }
+    @Test
+    void drawCardTestByColorAndLevel() throws IllegalArgumentException, EmptyDeckException {
+
+        DevCard actualDevCard;
+        int actualSize = devGrid.getDevDeckInTheGrid(2,0).size();
+        while (actualSize>0){
+            actualDevCard = devGrid.getDevCardFromDeck(1,DevCardColour.GREEN);
+            assertEquals(actualDevCard,devGrid.drawDevCardFromDeck(1,DevCardColour.GREEN));
+            assertEquals(actualSize-1,devGrid.getDevDeckInTheGrid(2,0).size());
+            actualSize = devGrid.getDevDeckInTheGrid(2,0).size();
+        }
+        assertThrows(EmptyDeckException.class, ()->devGrid.drawDevCardFromDeck(1,DevCardColour.GREEN));
+    }
+
 
     @BeforeEach
     void setUp() throws ParserConfigurationException, NegativeQuantityException, SAXException, IllegalArgumentException, IOException {
