@@ -9,11 +9,11 @@ public class ReportCell extends Cell{
     /**
      * Constructs a cell
      *
-     * @param vicoryPoints the points of the cell
+     * @param victoryPoints the points of the cell
      * @param reportNum    the vatican report the cell belongs to
      */
-    public ReportCell(int vicoryPoints, ReportNum reportNum) {
-        super(vicoryPoints, reportNum);
+    public ReportCell(int victoryPoints, ReportNum reportNum) {
+        super(victoryPoints, reportNum);
     }
 
     /**
@@ -33,8 +33,11 @@ public class ReportCell extends Cell{
 
     @Override
     public boolean activatePopeTile(ReportNum currentReportNum, ReportNumOrder reportNumOrder) {
-        if(reportNumOrder.stateOrder(currentReportNum, this.getReportNum()))
+       /* if(reportNumOrder.stateOrder(currentReportNum, this.getReportNum()))
             return true;
+        if(currentReportNum.equals(this.getReportNum()))
+            return true;
+        return false;*/
         if(currentReportNum.equals(this.getReportNum()))
             return true;
         return false;

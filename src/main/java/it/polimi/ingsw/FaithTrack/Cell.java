@@ -49,8 +49,9 @@ public class Cell {
      * @return true if the Tile needs to be turned, false otherwise
      */
     public boolean activatePopeTile(ReportNum currentReportNum, ReportNumOrder reportNumOrder){
-        if(reportNumOrder.stateOrder(currentReportNum, this.reportNum))
+        /*if(reportNumOrder.stateOrder(currentReportNum, this.reportNum))
             return true;
+        return false;*/
         return false;
     }
 }

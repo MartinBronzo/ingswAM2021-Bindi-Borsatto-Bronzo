@@ -30,7 +30,7 @@ public class PopeCell extends ReportCell implements Subject {
     /**
      * Sets the activated attribute to true because the Vatican Report has been called
      */
-    public void setActivatedTrue() {
+    private void setActivatedTrue() {
         this.activated = true;
     }
 
@@ -55,7 +55,7 @@ public class PopeCell extends ReportCell implements Subject {
             System.out.println("The Vatican ReportXXX " + this.getReportNum() + " has already been activated!");
             return false;
         }
-
+        System.out.println("HEI");
         this.setActivatedTrue();
         return this.notifyObservers();
     }

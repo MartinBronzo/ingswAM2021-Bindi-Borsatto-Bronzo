@@ -33,6 +33,7 @@ public class FaithLevelBasic {
      */
     //For extendability purposes, we are assuming the step can be any relative integer
     //This method was used for testing purposes, the final version is the method called moveFaithMarker()
+    //It was used to make sure that the final position of the Markers was right
     public void moveFaithMarkerBasicVersion(int step){
         int tmp;
         tmp = this.position + step;
@@ -52,13 +53,13 @@ public class FaithLevelBasic {
     /**
      * Changes the position of the player according to the number of steps the player takes, given as a input of the method
      * @param step the number of the steps the player takes
-     * @return true
+     * @return the boolean given return by the effect method of the final cell the player lands on
      * @throws LastVaticanReportException if the last Vatican Report was reached by this player
      */
     //For extendability purposes, we are assuming the step can be any relative integer
     //We have this method returning a boolean for testing purposes
     public boolean moveFaithMarker(int step) throws LastVaticanReportException {
-        int start = this.position;
+        /*int start = this.position;
         int end;
         end = this.position + step;
         if(end < 0)
@@ -75,6 +76,28 @@ public class FaithLevelBasic {
                 this.faithTrack.callCellEffect(i);
         }
         //TODO: controllare casi con end == start e cosa fare con end < start
-        return this.faithTrack.callCellEffect(position);
+        return this.faithTrack.callCellEffect(position);*/
+        int start = this.position;
+        int end = this.position + step;
+        if(end < 0)
+            end = 0;
+        else if(end > this.faithTrack.getTrackSize() - 1)
+            end = this.faithTrack.getTrackSize() - 1;
+
+        if(end == start){
+            //The player hasn't changed their position, therefore the effect of the cell isn't called
+            this.position = end;
+            return true;
+        }else if(end > start){
+            for(int i = start + 1; i <= end - 1; i++){
+                System.out.println(i);
+                this.position = i;
+                this.faithTrack.callCellEffect(i);
+            }
+            this.position = end;
+            return this.faithTrack.callCellEffect(end);
+        }
+        //If the player moves back no effect is called
+        return true;
     }
 }

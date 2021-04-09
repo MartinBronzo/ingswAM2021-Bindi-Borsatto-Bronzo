@@ -137,7 +137,7 @@ public class FaithTrackTest {
             e.printStackTrace();
         }
         assertFalse(faithTrack.callCellActivateTile(4, ReportNum.REPORT1));
-        assertTrue(faithTrack.callCellActivateTile(9, ReportNum.REPORT1));
+        assertFalse(faithTrack.callCellActivateTile(9, ReportNum.REPORT1));
         //ReportCell
         try {
             assertFalse(faithTrack.callCellEffect(5));

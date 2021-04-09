@@ -10,10 +10,19 @@ public class ControllerStub implements Observer {
     private FaithLevel fT2;
     private FaithLevel fT3;
     private boolean neededToTryTheVaticanReport;
+    private boolean x;
 
     public ControllerStub(Subject subject) {
         this.subject = subject;
         neededToTryTheVaticanReport = false;
+        x = false;
+    }
+
+    public ControllerStub(Subject subject, FaithLevel fT1){
+        this.subject = subject;
+        this.fT1 = fT1;
+        neededToTryTheVaticanReport = true;
+        x = true;
     }
 
     public ControllerStub(Subject subject, FaithLevel fT1, FaithLevel fT2, FaithLevel fT3) {
@@ -22,6 +31,7 @@ public class ControllerStub implements Observer {
         this.fT2 = fT2;
         this.fT3 = fT3;
         neededToTryTheVaticanReport = true;
+        x = false;
     }
 
 
@@ -30,12 +40,25 @@ public class ControllerStub implements Observer {
         return "Activate Vatican Report: " + ((PopeCell) subject).getReportNum();
     }
 
+    public void setNeededToTryTheVaticanReport(boolean neededToTryTheVaticanReport) {
+        this.neededToTryTheVaticanReport = neededToTryTheVaticanReport;
+    }
+
     public boolean update(boolean tmp, ReportNum reportNum){
         if (neededToTryTheVaticanReport == true) {
-            try {
-                this.fakeVaticanReport(reportNum);
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
+            if(x == false) {
+                try {
+                    System.out.println("Lol!");
+                    this.fakeVaticanReport(reportNum);
+                } catch (IllegalActionException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                try {
+                    this.fakeVaticanReportOnePlayer(reportNum);
+                } catch (IllegalActionException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return true;
@@ -49,5 +72,10 @@ public class ControllerStub implements Observer {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public void fakeVaticanReportOnePlayer(ReportNum rN) throws IllegalActionException {
+        System.out.println("AHAHAHHA!");
+        fT1.dealWithVaticanReport(rN);
     }
 }

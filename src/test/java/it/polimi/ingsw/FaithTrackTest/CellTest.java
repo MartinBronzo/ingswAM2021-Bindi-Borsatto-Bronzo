@@ -73,12 +73,12 @@ public class CellTest {
         assertFalse(cell1.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertFalse(cell1.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
 
-        assertTrue(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
         assertFalse(cell2.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertFalse(cell2.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
 
-        assertTrue(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertTrue(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertFalse(cell3.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
     }
 
@@ -98,12 +98,12 @@ public class CellTest {
         assertFalse(cell1.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertFalse(cell1.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
 
-        assertTrue(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
         assertTrue(cell2.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertFalse(cell2.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
 
-        assertTrue(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertTrue(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertTrue(cell3.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
     }
 
@@ -123,12 +123,12 @@ public class CellTest {
         assertFalse(cell1.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertFalse(cell1.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
 
-        assertTrue(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
+        assertFalse(cell2.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
         assertTrue(cell2.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertFalse(cell2.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
 
-        assertTrue(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
-        assertTrue(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT1, reportNumOrder));
+        assertFalse(cell3.activatePopeTile(ReportNum.REPORT2, reportNumOrder));
         assertTrue(cell3.activatePopeTile(ReportNum.REPORT3, reportNumOrder));
     }
 

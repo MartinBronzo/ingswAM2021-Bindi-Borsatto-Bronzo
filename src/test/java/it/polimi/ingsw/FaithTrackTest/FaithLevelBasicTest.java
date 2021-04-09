@@ -52,7 +52,7 @@ public class FaithLevelBasicTest {
     }
 
     @Test
-    //Tests the increasing of the position, checking what the cell
+    //Tests the increasing of the position, checking what the cell effect returns
     public void ctrlPositionFull(){
         FaithTrack.deleteState();
         ReportNumOrder.deleteState();

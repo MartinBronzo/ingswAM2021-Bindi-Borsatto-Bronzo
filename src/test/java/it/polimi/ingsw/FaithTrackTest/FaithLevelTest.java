@@ -176,6 +176,8 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
         //ft.initTrack();
+        PopeCell tmp = (PopeCell) ft.getCell(8);
+        tmp.detach(tmp.getObserversList().get(0));
 
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
@@ -183,20 +185,15 @@ public class FaithLevelTest {
         popeTiles.add(new PopeTile(3, ReportNum.REPORT3));
         FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
         List<PopeTile> myPT = faithLevel.getPopeTiles();
+        tmp.attach(new ControllerStub(tmp, faithLevel));
 
         //Controlling the behavior of normal Cell
         try {
-            faithLevel.moveFaithMarker(11); //Player is in a normal Cell whose ReportNum is REPORTNUM2
+            assertFalse(faithLevel.moveFaithMarker(11)); //Player is in a normal Cell whose ReportNum is REPORTNUM2
         } catch (LastVaticanReportException e) {
             e.printStackTrace();
         }
 
-        //VaticanReport with a lower ReportNum than the one of the Cell the player is inn
-        try {
-            faithLevel.dealWithVaticanReport(ReportNum.REPORT1);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
         //The PopeTile with ReportNum1 is active, the others are still unchanged
         assertTrue(myPT.get(0).isActivated());
         assertFalse(myPT.get(1).isChanged());
@@ -245,6 +242,9 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
         //ft.initTrack();
+        PopeCell tmp = (PopeCell) ft.getCell(8);
+        tmp.detach(tmp.getObserversList().get(0));
+
 
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
@@ -252,6 +252,7 @@ public class FaithLevelTest {
         popeTiles.add(new PopeTile(3, ReportNum.REPORT3));
         FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
         List<PopeTile> myPT = faithLevel.getPopeTiles();
+        tmp.attach(new ControllerStub(tmp, faithLevel));
 
         //Controlling the behavior of normal Cell
         try {
@@ -260,12 +261,6 @@ public class FaithLevelTest {
             e.printStackTrace();
         }
 
-        //VaticanReport with a lower ReportNum than the one of the Cell the player is inn
-        try {
-            faithLevel.dealWithVaticanReport(ReportNum.REPORT1);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
         //The PopeTile with ReportNum1 is active, the others are still unchanged
         assertTrue(myPT.get(0).isActivated());
         assertFalse(myPT.get(1).isChanged());
@@ -314,6 +309,8 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
         //ft.initTrack();
+        PopeCell tmp = (PopeCell) ft.getCell(8);
+        tmp.detach(tmp.getObserversList().get(0));
 
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
@@ -321,6 +318,11 @@ public class FaithLevelTest {
         popeTiles.add(new PopeTile(3, ReportNum.REPORT3));
         FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
         List<PopeTile> myPT = faithLevel.getPopeTiles();
+        tmp.attach(new ControllerStub(tmp, faithLevel));
+
+        tmp = (PopeCell) ft.getCell(16);
+        tmp.detach(tmp.getObserversList().get(0));
+        tmp.attach(new ControllerStub(tmp, faithLevel));
 
         //Controlling the behavior of normal Cell
         try {
@@ -329,23 +331,6 @@ public class FaithLevelTest {
             e.printStackTrace();
         }
 
-        //VaticanReport with a lower ReportNum than the one of the Cell the player is inn
-        try {
-            faithLevel.dealWithVaticanReport(ReportNum.REPORT1);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
-        //The PopeTile with ReportNum1 is active, the others are still unchanged
-        assertTrue(myPT.get(0).isActivated());
-        assertFalse(myPT.get(1).isChanged());
-        assertFalse(myPT.get(2).isChanged());
-
-        //VaticanReport with the same ReportNum as the one of the Cell
-        try {
-            faithLevel.dealWithVaticanReport(ReportNum.REPORT2);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
         //The PopeTile with ReportNum1 is still active, the one with ReportNum2 is active, the last one is unchanged
         assertTrue(myPT.get(0).isActivated());
         assertTrue(myPT.get(1).isActivated());
@@ -566,7 +551,7 @@ public class FaithLevelTest {
 
         //Let's land on the PopeTile
         try {
-            assertFalse(faithLevel1.moveFaithMarker(6)); //Player3 lands on the PopeTile which already activated the Vatican Report
+            assertFalse(faithLevel1.moveFaithMarker(6)); //Player1 lands on the PopeTile which already activated the Vatican Report
         } catch (LastVaticanReportException e) {
             e.printStackTrace();
         }
