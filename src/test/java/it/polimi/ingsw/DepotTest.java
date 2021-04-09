@@ -910,7 +910,7 @@ class DepotTest {
     }
 
     @Test
-    public void getAllResources() throws IllegalActionException, NotEnoughSpaceException {
+    public void getAllResources1() throws IllegalActionException, NotEnoughSpaceException {
         Depot depot = new Depot();
         HashMap<ResourceType, Integer> returnedRes;
 
@@ -929,6 +929,61 @@ class DepotTest {
         assertEquals(returnedRes.get(servant),1);
         assertEquals(returnedRes.get(stone),0);
         assertEquals(returnedRes.get(shield),1);
+    }
+
+    @Test
+    public void getAllResources2() throws IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        HashMap<ResourceType, Integer> returnedRes;
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+
+        returnedRes = depot.getAllResources();
+        assertEquals(returnedRes.get(coin),0);
+        assertEquals(returnedRes.get(servant),0);
+        assertEquals(returnedRes.get(stone),0);
+        assertEquals(returnedRes.get(shield),0);
+
+        depot.addToShelf(coin, 3, 3);
+        depot.addToShelf(shield, 1, 1);
+        depot.addToShelf(servant, 1, 2);
+        depot.addToLeader(stone, 1);
+
+        returnedRes = depot.getAllResources();
+        assertEquals(returnedRes.get(coin),3);
+        assertEquals(returnedRes.get(servant),1);
+        assertEquals(returnedRes.get(stone),1);
+        assertEquals(returnedRes.get(shield),1);
+    }
+
+    @Test
+    public void getAllResources3() throws IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        HashMap<ResourceType, Integer> returnedRes;
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
+        ExtraSlotLeaderEffect extraSlotLeaderEffect2 = new ExtraSlotLeaderEffect(shield, 2);
+
+        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSolt(extraSlotLeaderEffect2);
+
+        returnedRes = depot.getAllResources();
+        assertEquals(returnedRes.get(coin),0);
+        assertEquals(returnedRes.get(servant),0);
+        assertEquals(returnedRes.get(stone),0);
+        assertEquals(returnedRes.get(shield),0);
+
+        depot.addToShelf(coin, 2, 3);
+        depot.addToShelf(shield, 1, 1);
+        depot.addToShelf(servant, 2, 2);
+        depot.addToLeader(stone, 1);
+        depot.addToLeader(shield, 2);
+
+        returnedRes = depot.getAllResources();
+        assertEquals(returnedRes.get(coin),2);
+        assertEquals(returnedRes.get(servant),2);
+        assertEquals(returnedRes.get(stone),1);
+        assertEquals(returnedRes.get(shield),3);
     }
 
 

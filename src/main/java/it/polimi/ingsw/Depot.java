@@ -494,7 +494,18 @@ public class Depot {
      * @return returns all the resources in the depot in a copy of the hashmap
      */
     public HashMap<ResourceType, Integer> getAllResources(){
-        return new HashMap<>(depotLevel);
+        int resNum;
+        HashMap<ResourceType, Integer> depotCopy;
+        depotCopy = new HashMap<>(depotLevel);
+
+        for(ResourceType resource : ResourceType.values()) {
+            if (!resource.isFaithPoint()) {
+                resNum = depotCopy.get(resource);
+                resNum += getExtraDepotValue(resource);
+                depotCopy.put(resource, resNum);
+            }
+        }
+        return depotCopy;
     }
 
     /**
