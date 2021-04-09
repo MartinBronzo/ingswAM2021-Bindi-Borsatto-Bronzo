@@ -3,7 +3,7 @@ package it.polimi.ingsw.LeaderCard.leaderEffects;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.marble.Marble;
-import it.polimi.ingsw.marble.MarbleTypeTMP;
+import it.polimi.ingsw.marble.MarbleType;
 
 import java.util.HashMap;
 
@@ -20,9 +20,7 @@ public class WhiteMarbleLeaderEffect extends Effect{
      * @param extraResourceType the type of the resources the WhiteMarble will be worth
      * @throws InterruptedException if the amount isn't a positive integer greater than 0
      */
-    public WhiteMarbleLeaderEffect(ResourceType extraResourceType) throws IllegalArgumentException{
-       if(extraResourceType.equals(ResourceType.FAITHPOINT))
-            throw new IllegalArgumentException("The WhiteMarble can't give extra FaithPoints!");
+    public WhiteMarbleLeaderEffect(ResourceType extraResourceType){
         this.extraResourceType = extraResourceType;
         this.extraResourceAmount = 1;
     }
@@ -31,7 +29,7 @@ public class WhiteMarbleLeaderEffect extends Effect{
 
     public boolean whiteMarbleEffect(HashMap<ResourceType, Integer> resourceMap) throws NegativeQuantityException {
         //Gets the MarbleType corresponding to the ResourceType
-        MarbleTypeTMP tmp = this.extraResourceType.getCorrespondingMarble();
+        MarbleType tmp = this.extraResourceType.getCorrespondingMarble();
         //Gets the Marbe of the just-found MarbleType
         Marble marble = tmp.getMarble();
         //Calls the onActivate method of the Marble because the WhiteMarble "acts like" that marble thanks to this effect

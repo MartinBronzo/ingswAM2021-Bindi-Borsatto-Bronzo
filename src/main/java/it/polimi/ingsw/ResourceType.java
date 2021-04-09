@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.marble.Marble;
-import it.polimi.ingsw.marble.MarbleTypeTMP;
+import it.polimi.ingsw.marble.MarbleType;
 
 /** enum class to manage base Resources
 * every constant has his method which returns true only if it's used for the same constant
@@ -15,8 +15,8 @@ public enum ResourceType {
         }
 
         @Override
-        public MarbleTypeTMP getCorrespondingMarble() {
-            return MarbleTypeTMP.YELLOWMARBLE;
+        public MarbleType getCorrespondingMarble() {
+            return MarbleType.YELLOWMARBLE;
         }
     },
     STONE {
@@ -26,8 +26,8 @@ public enum ResourceType {
         }
 
         @Override
-        public MarbleTypeTMP getCorrespondingMarble() {
-            return MarbleTypeTMP.GREYMARBLE;
+        public MarbleType getCorrespondingMarble() {
+            return MarbleType.GREYMARBLE;
         }
     },
     SERVANT {
@@ -37,8 +37,8 @@ public enum ResourceType {
         }
 
         @Override
-        public MarbleTypeTMP getCorrespondingMarble() {
-            return MarbleTypeTMP.PURPLEMARBLE;
+        public MarbleType getCorrespondingMarble() {
+            return MarbleType.PURPLEMARBLE;
         }
     },
     SHIELD {
@@ -48,8 +48,8 @@ public enum ResourceType {
         }
 
         @Override
-        public MarbleTypeTMP getCorrespondingMarble() {
-            return MarbleTypeTMP.BLUEMARBLE;
+        public MarbleType getCorrespondingMarble() {
+            return MarbleType.BLUEMARBLE;
         }
     },
     FAITHPOINT {
@@ -59,8 +59,8 @@ public enum ResourceType {
         }
 
         @Override
-        public MarbleTypeTMP getCorrespondingMarble() {
-            return MarbleTypeTMP.REDMARBLE;
+        public MarbleType getCorrespondingMarble() {
+            return MarbleType.REDMARBLE;
         }
     };
 
@@ -85,5 +85,5 @@ public enum ResourceType {
     public boolean isFaithPoint(){
         return false;
     }
-    public MarbleTypeTMP getCorrespondingMarble(){return null;}
+    public MarbleType getCorrespondingMarble(){return null;}
 }
