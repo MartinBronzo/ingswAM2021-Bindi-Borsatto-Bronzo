@@ -1,4 +1,4 @@
-package it.polimi.ingsw.LeaderCard;
+package it.polimi.ingsw.LeaderCardRequirementsTests;
 
 import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.PlayerBoard;
@@ -9,7 +9,7 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
  * it requires 1 or more DevCards with a specified color. To meet this requirement, the player must
  * hold at least one DevCard with the specified attributes
  */
-public class CardRequirementColor extends Requirement{
+public class CardRequirementColor extends Requirement {
 
     /**
      * The required color of the DevCard

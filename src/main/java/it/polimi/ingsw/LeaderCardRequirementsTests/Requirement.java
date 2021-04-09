@@ -1,4 +1,4 @@
-package it.polimi.ingsw.LeaderCard;
+package it.polimi.ingsw.LeaderCardRequirementsTests;
 
 import it.polimi.ingsw.PlayerBoard;
 

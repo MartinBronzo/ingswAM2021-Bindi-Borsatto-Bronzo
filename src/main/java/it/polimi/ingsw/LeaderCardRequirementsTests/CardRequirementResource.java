@@ -1,5 +1,6 @@
-package it.polimi.ingsw.LeaderCard;
+package it.polimi.ingsw.LeaderCardRequirementsTests;
 
+import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.ResourceType;
 
 /**
@@ -7,7 +8,7 @@ import it.polimi.ingsw.ResourceType;
  * The player must have at least the amount of the resources specified inside the object to meet this requirement.
  */
 
-public class ResourceRequirement {
+public class CardRequirementResource extends Requirement {
     /**
      * The type of the required resources.
      */
@@ -18,14 +19,14 @@ public class ResourceRequirement {
     private int quantity;
 
     /**
-     * Constructs a ResourceRequirement of the specified ResourceType and quantity
+     * Constructs a CardRequirementResource of the specified ResourceType and quantity
      * @param resourceType the required type of the resources
      * @param quantity the required amount of the resources
      * @throws IllegalArgumentException if the given quantity is not a positive integer greater than 0
      */
-    public ResourceRequirement(ResourceType resourceType, int quantity) throws IllegalArgumentException{
+    public CardRequirementResource(ResourceType resourceType, int quantity) throws IllegalArgumentException{
         if(quantity <= 0)
-            throw new IllegalArgumentException("The quantity must be a postive integer greater than 0!");
+            throw new IllegalArgumentException("The quantity must be a positive integer greater than 0!");
         this.resourceType = resourceType;
         this.quantity = quantity;
     }
@@ -44,5 +45,10 @@ public class ResourceRequirement {
      */
     public int getQuantity() {
         return quantity;
+    }
+
+    @Override
+    public boolean checkRequirement(PlayerBoard playerBoard) {
+        return playerBoard.getAllResources().getOrDefault(resourceType,0) >= quantity;
     }
 }

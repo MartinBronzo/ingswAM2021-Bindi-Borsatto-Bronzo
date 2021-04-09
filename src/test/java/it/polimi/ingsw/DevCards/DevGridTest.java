@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.DevCards;
 
 import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevCardColour;
@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -105,6 +106,12 @@ class DevGridTest {
             actualSize = devGrid.getDevDeckInTheGrid(2,0).size();
         }
         assertThrows(EmptyDeckException.class, ()->devGrid.drawDevCardFromDeck(1,DevCardColour.GREEN));
+    }
+
+    @Test
+    void getDrawableCardsTest() throws IllegalArgumentException {
+        List<DevCard> devCards=devGrid.getDrawableCards();
+        assertTrue(devCards.stream().allMatch(card -> card.equals(devGrid.getDevCardFromDeck(card.getLevel(), card.getColour()))));
     }
 
 

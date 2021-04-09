@@ -1,5 +1,6 @@
 package it.polimi.ingsw.LeaderCard;
 
+import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.ResourceType;

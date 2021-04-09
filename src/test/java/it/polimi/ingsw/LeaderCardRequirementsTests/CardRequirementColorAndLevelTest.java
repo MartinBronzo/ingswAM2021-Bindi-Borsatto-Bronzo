@@ -1,4 +1,4 @@
-package it.polimi.ingsw.LeaderCard;
+package it.polimi.ingsw.LeaderCardRequirementsTests;
 
 import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevCardColour;
@@ -13,9 +13,10 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CardRequirementColorTest {
-    CardRequirementColor requirement1;
-    CardRequirementColor requirement2;
+class CardRequirementColorAndLevelTest {
+    CardRequirementColorAndLevel requirement1;
+    CardRequirementColorAndLevel requirement2;
+    CardRequirementColorAndLevel requirement3;
     PlayerBoard playerBoard;
     HashMap<ResourceType,Integer> hashMap;
     DevCard cardLevel1;
@@ -25,8 +26,10 @@ class CardRequirementColorTest {
 
     @BeforeEach
     void setUp() throws NegativeQuantityException {
-        requirement1 = new CardRequirementColor(DevCardColour.GREEN,2);
-        requirement2 = new CardRequirementColor(DevCardColour.BLUE,1);
+        requirement1 = new CardRequirementColorAndLevel(3, DevCardColour.GREEN, 2);
+        requirement2 = new CardRequirementColorAndLevel(1, DevCardColour.BLUE, 1);
+        requirement3 = new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2);
+
         playerBoard = new PlayerBoard();
         hashMap=new HashMap<>();
         cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
@@ -49,6 +52,12 @@ class CardRequirementColorTest {
     }
 
     @Test
+    void getLevel() {
+        assertEquals(3,requirement1.getLevel());
+        assertEquals(1,requirement2.getLevel());
+    }
+
+    @Test
     void getCardColour() {
         assertEquals(DevCardColour.GREEN,requirement1.getCardColour());
         assertEquals(DevCardColour.BLUE,requirement2.getCardColour());
@@ -56,7 +65,8 @@ class CardRequirementColorTest {
 
     @Test
     void checkRequirement() {
-        assertTrue(requirement1.checkRequirement(playerBoard));
+        assertFalse(requirement1.checkRequirement(playerBoard));
         assertFalse(requirement2.checkRequirement(playerBoard));
+        assertTrue(requirement3.checkRequirement(playerBoard));
     }
 }

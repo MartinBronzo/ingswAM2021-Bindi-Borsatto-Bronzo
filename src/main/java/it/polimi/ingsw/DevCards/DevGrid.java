@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class DevGrid {
@@ -183,6 +185,23 @@ public class DevGrid {
     public DevCard drawDevCardFromDeck(int level, DevCardColour colour) throws IllegalArgumentException, EmptyDeckException {
         if (level<=0 || level>3 || colour==null) throw new IllegalArgumentException("drawDevCardFromDeck:Not valid color or level");
         return this.drawDevCardFromDeck(devDecksGrid.length-level, colour.ordinal());
+    }
+
+
+    /**
+     * @return a list of the uncovered DevCard in the Gris
+     */
+    public List<DevCard> getDrawableCards() {
+        List<DevCard> devCards = new LinkedList<>();
+        DevCard devCard;
+        for (int i = 0; i < devDecksGrid.length; i++) {
+            for (int j = 0; j < devDecksGrid[i].length; j++) {
+                devCard=getDevCardFromDeck(i,j);
+                if (devCard!=null)
+                    devCards.add(getDevCardFromDeck(i, j));
+            }
+        }
+        return devCards;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.exceptions;
 
-import it.polimi.ingsw.LeaderCard.Requirement;
+import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 
 /**
  * This exception is thrown by the LeaderCard if the player doesn't meet a requirement which is then saved in this exception.

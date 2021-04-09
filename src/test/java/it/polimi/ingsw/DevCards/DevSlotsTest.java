@@ -30,6 +30,16 @@ class DevSlotsTest {
     void getIllegalDevSlotTest() {
         assertThrows(IndexOutOfBoundsException.class, ()->devSlots.getDevSlot(-1));
         assertThrows(IndexOutOfBoundsException.class, ()->devSlots.getDevSlot(3));
+    }
+    @Test
+    void AddDevCardTest() throws NegativeQuantityException {
+        DevCard newCard=new DevCard(3, DevCardColour.BLUE,7,hashMap,hashMap,hashMap,"abc");
+        assertThrows(IndexOutOfBoundsException.class, ()->devSlots.addDevCard(-1, newCard));
+        assertThrows(IndexOutOfBoundsException.class, ()->devSlots.addDevCard(3, newCard));
+        assertThrows(NullPointerException.class, ()->devSlots.addDevCard(1, null));
+        assertThrows(IllegalArgumentException.class, ()->devSlots.addDevCard(1, cardLevel3));
+        devSlots.addDevCard(1, newCard);
+        assertEquals(newCard,devSlots.getDevSlot(1).getLastDevCard());
 
     }
 

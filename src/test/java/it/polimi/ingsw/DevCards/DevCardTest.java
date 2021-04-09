@@ -1,7 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.DevCards;
 
 import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevCardColour;
+import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.Test;
 
