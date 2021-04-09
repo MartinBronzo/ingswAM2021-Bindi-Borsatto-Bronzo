@@ -93,5 +93,12 @@ public class Strongbox {
         return strongBoxResources.get(resource);
     }
 
+    /**
+     * Returns all the resources in the strongbox in a copy of the hashmap
+     * @return returns all the resources in the strongbox in a copy of the hashmap
+     */
+    public HashMap<ResourceType, Integer> getAllResources(){
+        return new HashMap<>(strongBoxResources);
+    }
 
 }

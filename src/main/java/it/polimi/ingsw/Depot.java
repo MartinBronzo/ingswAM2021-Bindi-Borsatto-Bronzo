@@ -37,8 +37,8 @@ public class Depot {
      * @param shelfNum: the number of the shelf on which you want to add the resource
      * @return true if there are no illegal parameters
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
-     * @throws IllegalActionException    if the resource to be added is already in the depot in another position
-     * @throws NotEnoughSpaceException   if the resources to be added are more than the available space in the shelf
+     * @throws IllegalActionException   if the resource to be added is already in the depot in another position
+     * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the shelf
      */
     private boolean canAddToShelf(ResourceType resource, int quantity, int shelfNum) throws IllegalArgumentException, IllegalActionException, NotEnoughSpaceException {
         int actualValue, newValue, availableSpace;
@@ -70,8 +70,8 @@ public class Depot {
      * @param shelfNum: the number of the shelf on which you want to add the resource
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
-     * @throws IllegalActionException    if the resource to be added is already in the depot in another position
-     * @throws NotEnoughSpaceException   if the resources to be added are more than the available space in the shelf
+     * @throws IllegalActionException   if the resource to be added is already in the depot in another position
+     * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the shelf
      */
     public boolean addToShelf(ResourceType resource, int quantity, int shelfNum) throws IllegalArgumentException, NotEnoughSpaceException, IllegalActionException {
         boolean canAdd;
@@ -98,7 +98,7 @@ public class Depot {
      * @param quantity: the quantity of resources to remove
      * @return true if there are no illegal parameters and the action can be performed
      * @throws IllegalArgumentException : if shelfNum isn't between 1 and 3, if quantity is < 0 and if the shelf is already empty
-     * @throws IllegalActionException:    if there aren't enough resources to be removed from the depot
+     * @throws IllegalActionException:  if there aren't enough resources to be removed from the depot
      */
     private boolean canRemoveFromDepot(int shelfNum, int quantity) throws IllegalArgumentException, IllegalActionException {
         int actualValue, newValue;
@@ -127,7 +127,7 @@ public class Depot {
      * @param quantity: the quantity of the resource to remove
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException : if at least one parameter is illegal
-     * @throws IllegalActionException:    if there aren't enough resources to be removed from the depot
+     * @throws IllegalActionException:  if there aren't enough resources to be removed from the depot
      */
     public boolean removeFromDepot(int shelfNum, int quantity) throws IllegalArgumentException, IllegalActionException {
         int actualValue, newValue;
@@ -156,7 +156,7 @@ public class Depot {
      * @param destShelf:   the final position of the resource
      * @return true if there are no illegal parameters and if the action can be performed
      * @throws IllegalArgumentException : if sourceShelf or destShelf aren't between 1 and 3; if in sourceShelf position there aren't any resources
-     * @throws IllegalActionException:    if the source shelf contains more resources than the max allowed in the destination shelf, or vice versa
+     * @throws IllegalActionException:  if the source shelf contains more resources than the max allowed in the destination shelf, or vice versa
      */
     private boolean canMoveBetweenShelves(int sourceShelf, int destShelf) throws IllegalArgumentException, IllegalActionException {
         int sourceValue, destValue;
@@ -186,7 +186,7 @@ public class Depot {
      * @param destShelf:   the final position of the resource
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException : if at least one parameter is illegal
-     * @throws IllegalActionException:    if the source shelf contains more resources than the max allowed in the destination shelf, or vice versa
+     * @throws IllegalActionException:  if the source shelf contains more resources than the max allowed in the destination shelf, or vice versa
      */
     public boolean moveBetweenShelves(int sourceShelf, int destShelf) throws IllegalArgumentException, IllegalActionException {
         ResourceType resourceHolder;
@@ -210,13 +210,11 @@ public class Depot {
      * @param effect: the effect of the leader card that you want to activate
      * @return true if there are no illegal parameters and the action can be performed
      * @throws IllegalArgumentException if the type of the resource of the effect is faith point and if the number of resources of the effect is negative
-     * @throws IllegalActionException    if the maximum number of active leader cards has been already reached
+     * @throws IllegalActionException   if the maximum number of active leader cards has been already reached
+     * @deprecated for updating extraSlotLeaderEffect class
      */
     private boolean canAddExtraSlot(ExtraSlotLeaderEffect effect) throws IllegalArgumentException, IllegalActionException {
         final int maxLeaderCards = 2;
-
-        isFaithPoint(effect.extraSlotGetType());
-        ctrlQuantity(effect.extraSlotGetResourceNumber());
 
         if (depotLimit.size() == maxLeaderCards)
             throw new IllegalActionException("Can't add more leader cards");
@@ -229,15 +227,15 @@ public class Depot {
      * @param effect: the effect of the leaderCard
      * @return true if the action in performed without errors
      * @throws IllegalArgumentException if the effect has non valid values
-     * @throws IllegalActionException    if the maximum number of active leader cards ha been already reached
+     * @throws IllegalActionException   if the maximum number of active leader cards ha been already reached
      */
     public boolean addExtraSolt(ExtraSlotLeaderEffect effect) throws IllegalArgumentException, IllegalActionException {
-        boolean canAdd;
+        final int maxLeaderCards = 2;
 
-        canAdd = canAddExtraSlot(effect);
-        if (canAdd) {
-            depotLimit.add(effect);
-        }
+        if (depotLimit.size() == maxLeaderCards)
+            throw new IllegalActionException("Can't add more leader cards");
+
+        depotLimit.add(effect);
 
         return true;
     }
@@ -249,8 +247,8 @@ public class Depot {
      * @param quantity: the quantity to add
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException : if the resource is a faith point and if the quantity is negative
-     * @throws IllegalActionException:    if the resource to remove doesn't have an extra slot and if the extra slot is already full of resources
-     * @throws NotEnoughSpaceException:   if the resources to be added are more than the available space in the extra slot
+     * @throws IllegalActionException:  if the resource to remove doesn't have an extra slot and if the extra slot is already full of resources
+     * @throws NotEnoughSpaceException: if the resources to be added are more than the available space in the extra slot
      */
     private boolean canAddToLeaderDepot(ResourceType resource, int quantity) throws IllegalArgumentException, IllegalActionException, NotEnoughSpaceException {
         int resLimit, actualValue, newValue;
@@ -280,8 +278,8 @@ public class Depot {
      * @param quantity: the quantity to add
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException if the resource is a faith point and if the quantity is negative
-     * @throws IllegalActionException    if the resource to remove doesn't have an extra slot and if the extra slot is already full of resources
-     * @throws NotEnoughSpaceException   if the resources to be added are more than the available space in the extra slot
+     * @throws IllegalActionException   if the resource to remove doesn't have an extra slot and if the extra slot is already full of resources
+     * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the extra slot
      */
     public boolean addToLeader(ResourceType resource, int quantity) throws IllegalArgumentException, IllegalActionException, NotEnoughSpaceException {
         boolean canAdd;
@@ -304,7 +302,7 @@ public class Depot {
      * @param quantity: the quantity to remove
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resource is a faith point and if the quantity is negative
-     * @throws IllegalActionException    if the resource to remove doesn't have an extra slot
+     * @throws IllegalActionException   if the resource to remove doesn't have an extra slot
      */
     private boolean canRemoveFromLeader(ResourceType resource, int quantity) throws IllegalArgumentException, IllegalActionException {
         int resLimit;
@@ -333,7 +331,7 @@ public class Depot {
      * @param quantity: the quantity to remove
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resource is a faith point and if the quantity is negative
-     * @throws IllegalActionException    if the resource to remove doesn't have an extra slot
+     * @throws IllegalActionException   if the resource to remove doesn't have an extra slot
      */
     public boolean removeFromLeader(ResourceType resource, int quantity) throws IllegalArgumentException, IllegalActionException {
         boolean canRemove;
@@ -355,8 +353,8 @@ public class Depot {
      * @param quantity: the number of resources to move
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resources can't be removed from the shelf and if they can't be added to de extra slot
-     * @throws IllegalActionException if the resources can't be removed from the shelf and if they can't be added to de extra slot
-     * @throws NotEnoughSpaceException if the number of moved resources is greater than the available space
+     * @throws IllegalActionException   if the resources can't be removed from the shelf and if they can't be added to de extra slot
+     * @throws NotEnoughSpaceException  if the number of moved resources is greater than the available space
      */
     private boolean canMoveToLeader(int shelfNum, int quantity) throws IllegalArgumentException, IllegalActionException, NotEnoughSpaceException {
         ResourceType resourceType;
@@ -378,8 +376,8 @@ public class Depot {
      * @param quantity: the number of resources to move
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resources can't be removed from the shelf and if they can't be added to de extra slot
-     * @throws IllegalActionException if the resources can't be removed from the shelf and if they can't be added to de extra slot
-     * @throws NotEnoughSpaceException if the number of moved resources is greater than the available space
+     * @throws IllegalActionException   if the resources can't be removed from the shelf and if they can't be added to de extra slot
+     * @throws NotEnoughSpaceException  if the number of moved resources is greater than the available space
      */
     public boolean moveToLeader(int shelfNum, int quantity) throws IllegalArgumentException, IllegalActionException, NotEnoughSpaceException {
         boolean canMove;
@@ -403,8 +401,8 @@ public class Depot {
      * @param shelfNum: the  number of the shelf on which move the resources
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resources can't be removed from the extra slot and if they can't be added to the shelf
-     * @throws IllegalActionException if the resources can't be removed from the extra slot and if they can't be added to the shelf
-     * @throws NotEnoughSpaceException if the number of moved resources is greater than the available space
+     * @throws IllegalActionException   if the resources can't be removed from the extra slot and if they can't be added to the shelf
+     * @throws NotEnoughSpaceException  if the number of moved resources is greater than the available space
      */
     private boolean canMoveToShelf(ResourceType resource, int quantity, int shelfNum) throws IllegalArgumentException, IllegalActionException, NotEnoughSpaceException {
         canRemoveFromLeader(resource, quantity);
@@ -420,8 +418,8 @@ public class Depot {
      * @param shelfNum: the  number of the shelf on which move the resources
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resources can't be removed from the extra slot and if they can't be added to the shelf
-     * @throws IllegalActionException if the resources can't be removed from the extra slot and if they can't be added to the shelf
-     * @throws NotEnoughSpaceException if the number of moved resources is greater than the available space
+     * @throws IllegalActionException   if the resources can't be removed from the extra slot and if they can't be added to the shelf
+     * @throws NotEnoughSpaceException  if the number of moved resources is greater than the available space
      */
     public boolean moveToShelf(ResourceType resource, int quantity, int shelfNum) throws IllegalArgumentException, IllegalActionException, NotEnoughSpaceException {
         boolean canMove;
@@ -489,6 +487,14 @@ public class Depot {
     int getExtraDepotValue(ResourceType resource) throws IllegalArgumentException {
         isFaithPoint(resource);
         return leaderDepot.get(resource);
+    }
+
+    /**
+     * Returns all the resources in the depot in a copy of the hashmap
+     * @return returns all the resources in the depot in a copy of the hashmap
+     */
+    public HashMap<ResourceType, Integer> getAllResources(){
+        return new HashMap<>(depotLevel);
     }
 
     /**

@@ -7,6 +7,8 @@ import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
 import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 class DepotTest {
     final ResourceType coin = ResourceType.COIN;
     final ResourceType shield = ResourceType.SHIELD;
@@ -451,22 +453,6 @@ class DepotTest {
         depot.addExtraSolt(extraSlotLeaderEffect);
         assertEquals(depot.getExtraDepotLimit(stone), 4);
         assertEquals(depot.getExtraDepotValue(stone), 0);
-    }
-
-    @Test
-    public void addFaithPointExtra(){
-        Depot depot = new Depot();
-        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(faithPoint, 2);
-
-        assertThrows(IllegalArgumentException.class, () -> depot.addExtraSolt(extraSlotLeaderEffect));
-    }
-
-    @Test
-    public void negativeQuantityExtra(){
-        Depot depot = new Depot();
-        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, -1);
-
-        assertThrows(IllegalArgumentException.class, () -> depot.addExtraSolt(extraSlotLeaderEffect));
     }
 
     @Test
@@ -921,6 +907,28 @@ class DepotTest {
         assertTrue(depot.moveToShelf(servant, 0, 1));
         assertEquals(depot.getExtraDepotValue(servant), 2);
         assertEquals(depot.getResourceFromDepot(servant), 0);
+    }
+
+    @Test
+    public void getAllResources() throws IllegalActionException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+        HashMap<ResourceType, Integer> returnedRes;
+
+        returnedRes = depot.getAllResources();
+        assertEquals(returnedRes.get(coin),0);
+        assertEquals(returnedRes.get(servant),0);
+        assertEquals(returnedRes.get(stone),0);
+        assertEquals(returnedRes.get(shield),0);
+
+        depot.addToShelf(coin, 3, 3);
+        depot.addToShelf(shield, 1, 1);
+        depot.addToShelf(servant, 1, 2);
+
+        returnedRes = depot.getAllResources();
+        assertEquals(returnedRes.get(coin),3);
+        assertEquals(returnedRes.get(servant),1);
+        assertEquals(returnedRes.get(stone),0);
+        assertEquals(returnedRes.get(shield),1);
     }
 
 

@@ -148,5 +148,29 @@ public class StrongboxTest {
         assertThrows(IllegalActionException.class, () -> strongbox.addResource(removeMap));
     }
 
+    @Test
+    public void getAllResources() throws IllegalActionException {
+        Strongbox strongbox = new Strongbox();
+        HashMap<ResourceType, Integer> addMap = new HashMap<>();
+        HashMap<ResourceType, Integer> returnedRes;
+
+        addMap.put(coin, 3);
+        addMap.put(stone, 1);
+        addMap.put(shield, 15);
+
+        returnedRes = strongbox.getAllResources();
+        assertEquals(returnedRes.get(coin),0);
+        assertEquals(returnedRes.get(servant),0);
+        assertEquals(returnedRes.get(stone),0);
+        assertEquals(returnedRes.get(shield),0);
+
+        strongbox.addResource(addMap);
+
+        returnedRes = strongbox.getAllResources();
+        assertEquals(returnedRes.get(coin),3);
+        assertEquals(returnedRes.get(servant),0);
+        assertEquals(returnedRes.get(stone),1);
+        assertEquals(returnedRes.get(shield),15);
+    }
 
 }
