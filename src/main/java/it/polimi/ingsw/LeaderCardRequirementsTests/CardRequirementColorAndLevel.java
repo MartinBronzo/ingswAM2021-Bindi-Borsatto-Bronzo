@@ -2,6 +2,7 @@ package it.polimi.ingsw.LeaderCardRequirementsTests;
 
 import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.PlayerBoard;
+import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 
 /**
@@ -64,7 +65,7 @@ public class CardRequirementColorAndLevel extends Requirement {
     }
 
     @Override
-    public boolean checkRequirement(PlayerBoard playerBoard) {
-        return playerBoard.getDevSlots().getAllDevCards().stream().filter(card -> cardColour == card.getColour() && level == card.getLevel()).count() >= quantity;
+    public boolean checkRequirement(PlayerResourcesAndCards playerResourcesAndCards) {
+        return playerResourcesAndCards.getDevCards().stream().filter(card -> cardColour == card.getColour() && level == card.getLevel()).count() >= quantity;
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.LeaderCardRequirementsTests;
 
 import it.polimi.ingsw.PlayerBoard;
+import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
 
 /**
@@ -48,7 +49,7 @@ public class CardRequirementResource extends Requirement {
     }
 
     @Override
-    public boolean checkRequirement(PlayerBoard playerBoard) {
-        return playerBoard.getAllResources().getOrDefault(resourceType,0) >= quantity;
+    public boolean checkRequirement(PlayerResourcesAndCards playerResourcesAndCards) {
+        return playerResourcesAndCards.getResources().getOrDefault(resourceType,0) >= quantity;
     }
 }

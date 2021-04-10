@@ -3,6 +3,7 @@ package it.polimi.ingsw.LeaderCard;
 import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.PlayerBoard;
+import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
 
@@ -47,12 +48,12 @@ public class LeaderCards {
      * @param leaderCard the LeaderCard tha player wants to activate
      * @return true if the card was correctly activated, false if the card was already activate
      */
-    public boolean activateLeaderCard(LeaderCard leaderCard, PlayerBoard playerBoard) throws UnmetRequirementException {
+    public boolean activateLeaderCard(LeaderCard leaderCard, PlayerResourcesAndCards playerResourcesAndCards) throws UnmetRequirementException {
         if(activeCards.contains(leaderCard))
             return false;
         if(!notPlayedCards.contains(leaderCard))
             throw new IllegalArgumentException("The player doesn't have this card!");
-        if(leaderCard.checkRequirements(playerBoard)){
+        if(leaderCard.checkRequirements(playerResourcesAndCards)){
             notPlayedCards.remove(leaderCard);
             activeCards.add(leaderCard);
             return true;

@@ -4,29 +4,42 @@ import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevSlot;
 import it.polimi.ingsw.DevCards.DevSlots;
 import it.polimi.ingsw.FaithTrack.FaithLevel;
+import it.polimi.ingsw.FaithTrack.FaithTrack;
+import it.polimi.ingsw.FaithTrack.PopeTile;
+import it.polimi.ingsw.LeaderCard.LeaderCard;
+import it.polimi.ingsw.LeaderCard.LeaderCards;
+import it.polimi.ingsw.exceptions.UnmetRequirementException;
 
 import java.util.*;
 
 public class PlayerBoard {
-    private FaithLevel playerFaithLevel;
+    //private FaithLevel playerFaithLevel;
     private Depot depot;
     private Strongbox strongbox;
     private DevSlots devSlots;
-    //private LeaderCards leaderCards;
+    private LeaderCards leaderCards;
 
-    public PlayerBoard() {
-        //this.playerFaithLevel = new FaithLevel();
+    public PlayerBoard(List<PopeTile> popeTiles, List<LeaderCard> leaderCards) {
+        //this.playerFaithLevel = new FaithLevel(FaithTrack);
         this.depot = new Depot();
         this.strongbox = new Strongbox();
         this.devSlots = new DevSlots();
-        //InactiveLeaderCards = inactiveLeaderCards;
-        //ActiveLeaderCards = activeLeaderCards;
+        this.leaderCards = new LeaderCards(leaderCards);
     }
 
+    public PlayerBoard() {
+        //this.playerFaithLevel = new FaithLevel(FaithTrack);
+        this.depot = new Depot();
+        this.strongbox = new Strongbox();
+        this.devSlots = new DevSlots();
+        //this.leaderCards = new LeaderCards(leaderCards);
+    }
+
+    /*
     public FaithLevel getPlayerFaithLevel() {
         return playerFaithLevel;
     }
-
+    */
 
     public Depot getDepot() {
         return depot;
@@ -69,6 +82,19 @@ public class PlayerBoard {
         Collection<ResourceType> costKeys = cost.keySet();
         HashMap<ResourceType,Integer> allResources = getAllResources();
         return costKeys.stream().allMatch(key -> cost.getOrDefault(key,0) <= allResources.getOrDefault(key,0));
+    }
+
+    /**
+     * Gets A Collection containing all the DevCards in the Slots.
+     * @return a collection of Cards
+     */
+    public Collection<DevCard> getAllDevCards(){
+        return devSlots.getAllDevCards();
+    }
+
+    public boolean activeLeaderCard(LeaderCard leaderCard) throws UnmetRequirementException {
+        PlayerResourcesAndCards playerResourcesAndCards= new PlayerResourcesAndCards(getAllResources(),getAllDevCards());
+        return leaderCards.activateLeaderCard(leaderCard,playerResourcesAndCards);
     }
 
 }

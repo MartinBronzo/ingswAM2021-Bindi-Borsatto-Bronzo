@@ -3,6 +3,7 @@ package it.polimi.ingsw.LeaderCard;
 import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.PlayerBoard;
+import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
@@ -45,13 +46,13 @@ public class LeaderCard {
 
     /**
      * Checks if all the requirements are met
-     * @param playerBoard the board of the player this LeaderCard belongs to
+     * @param playerResourcesAndCards the Resources and the DevCards owned by the player in the PlayerBoard
      * @return true if the player meets all the requirements
      * @throws UnmetRequirementException if the player doesn't meet a requirement which is then stored in the exception itself
      */
-    public boolean checkRequirements(PlayerBoard playerBoard) throws UnmetRequirementException{
+    public boolean checkRequirements(PlayerResourcesAndCards playerResourcesAndCards) throws UnmetRequirementException{
         for(Requirement req: requirementsList)
-            if(!req.checkRequirement(playerBoard))
+            if(!req.checkRequirement(playerResourcesAndCards))
                 throw new UnmetRequirementException("The player can't activate the LeaderCard!", req);
         return true;
     }

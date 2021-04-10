@@ -7,6 +7,7 @@ import it.polimi.ingsw.LeaderCard.*;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
 import it.polimi.ingsw.PlayerBoard;
+import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
@@ -44,26 +45,26 @@ public class LeaderCardsTest {
     public void ctrlActivation() throws NegativeQuantityException {
         CardRequirementColor requirement1;
         CardRequirementColor requirement2;
-        PlayerBoard playerBoard;
+        PlayerResourcesAndCards playerResourcesAndCards;
         HashMap<ResourceType,Integer> hashMap;
         DevCard cardLevel1;
         DevCard cardLevel2;
         DevCard cardLevel3;
-        DevSlots devSlots;
+        List<DevCard> devCards;
         requirement1 = new CardRequirementColor(DevCardColour.GREEN,2); //Met
         requirement2 = new CardRequirementColor(DevCardColour.BLUE,1); //Unmet
-        playerBoard = new PlayerBoard();
         hashMap=new HashMap<>();
         cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
         cardLevel2=new DevCard(2,DevCardColour.GREEN,2,hashMap,hashMap,hashMap,"abc");
         cardLevel3=new DevCard(3,DevCardColour.GREEN,3,hashMap,hashMap,hashMap,"abc");
-        devSlots=playerBoard.getDevSlots();
-        devSlots.getDevSlot(0).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel1);
-        devSlots.getDevSlot(2).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel3);
+        devCards=new ArrayList<>();
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel3);
+        playerResourcesAndCards = new PlayerResourcesAndCards(new HashMap<>(),devCards);
 
         CardRequirementColorAndLevel req1;
         CardRequirementColorAndLevel req2;
@@ -88,11 +89,11 @@ public class LeaderCardsTest {
         int size = leaderCards.getNotPlayedCards().size();
 
         //The player doesn't hold the card
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> leaderCards.activateLeaderCard(new LeaderCard(5, new ArrayList<>(), new Effect()), playerBoard));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> leaderCards.activateLeaderCard(new LeaderCard(5, new ArrayList<>(), new Effect()), playerResourcesAndCards));
         assertEquals(exception.getMessage(), "The player doesn't have this card!");
 
         //The player doesn't have the requirements to activate the card they hold
-        UnmetRequirementException exception1 = assertThrows(UnmetRequirementException.class, () -> leaderCards.activateLeaderCard(unmet, playerBoard));
+        UnmetRequirementException exception1 = assertThrows(UnmetRequirementException.class, () -> leaderCards.activateLeaderCard(unmet, playerResourcesAndCards));
         assertEquals(exception1.getUnmetRequirement(), req1);
         assertTrue(leaderCards.getNotPlayedCards().contains(met));
         assertTrue(leaderCards.getNotPlayedCards().contains(unmet));
@@ -100,7 +101,7 @@ public class LeaderCardsTest {
 
         //The player has the requirements to activate the LeaderCard
         try {
-            assertTrue(leaderCards.activateLeaderCard(met, playerBoard));
+            assertTrue(leaderCards.activateLeaderCard(met, playerResourcesAndCards));
         } catch (UnmetRequirementException e) {
             e.printStackTrace();
         }
@@ -112,7 +113,7 @@ public class LeaderCardsTest {
 
         //The player tries to activate an already active card
         try {
-            assertFalse(leaderCards.activateLeaderCard(met, playerBoard));
+            assertFalse(leaderCards.activateLeaderCard(met, playerResourcesAndCards));
         } catch (UnmetRequirementException e) {
             e.printStackTrace();
         }
@@ -123,26 +124,26 @@ public class LeaderCardsTest {
     public void ctrlDiscard() throws NegativeQuantityException {
         CardRequirementColor requirement1;
         CardRequirementColor requirement2;
-        PlayerBoard playerBoard;
+        PlayerResourcesAndCards playerResourcesAndCards;
         HashMap<ResourceType,Integer> hashMap;
         DevCard cardLevel1;
         DevCard cardLevel2;
         DevCard cardLevel3;
-        DevSlots devSlots;
+        List<DevCard> devCards;
         requirement1 = new CardRequirementColor(DevCardColour.GREEN,2); //Met
         requirement2 = new CardRequirementColor(DevCardColour.BLUE,1); //Unmet
-        playerBoard = new PlayerBoard();
         hashMap=new HashMap<>();
         cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
         cardLevel2=new DevCard(2,DevCardColour.GREEN,2,hashMap,hashMap,hashMap,"abc");
         cardLevel3=new DevCard(3,DevCardColour.GREEN,3,hashMap,hashMap,hashMap,"abc");
-        devSlots=playerBoard.getDevSlots();
-        devSlots.getDevSlot(0).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel1);
-        devSlots.getDevSlot(2).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel3);
+        devCards=new ArrayList<>();
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel3);
+        playerResourcesAndCards = new PlayerResourcesAndCards(new HashMap<>(),devCards);
 
         CardRequirementColorAndLevel req1;
         CardRequirementColorAndLevel req2;
@@ -185,7 +186,7 @@ public class LeaderCardsTest {
         assertTrue(leaderCards.getActiveCards().isEmpty());
 
         try {
-            leaderCards.activateLeaderCard(met, playerBoard);
+            leaderCards.activateLeaderCard(met, playerResourcesAndCards);
         } catch (UnmetRequirementException e) {
             e.printStackTrace();
         }
@@ -200,26 +201,26 @@ public class LeaderCardsTest {
     public void ctrlEffect() throws NegativeQuantityException {
         CardRequirementColor requirement1;
         CardRequirementColor requirement2;
-        PlayerBoard playerBoard;
+        PlayerResourcesAndCards playerResourcesAndCards;
         HashMap<ResourceType,Integer> hashMap;
         DevCard cardLevel1;
         DevCard cardLevel2;
         DevCard cardLevel3;
-        DevSlots devSlots;
+        List<DevCard> devCards;
         requirement1 = new CardRequirementColor(DevCardColour.GREEN,2); //Met
         requirement2 = new CardRequirementColor(DevCardColour.BLUE,1); //Unmet
-        playerBoard = new PlayerBoard();
         hashMap=new HashMap<>();
         cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
         cardLevel2=new DevCard(2,DevCardColour.GREEN,2,hashMap,hashMap,hashMap,"abc");
         cardLevel3=new DevCard(3,DevCardColour.GREEN,3,hashMap,hashMap,hashMap,"abc");
-        devSlots=playerBoard.getDevSlots();
-        devSlots.getDevSlot(0).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel1);
-        devSlots.getDevSlot(2).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel3);
+        devCards=new ArrayList<>();
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel3);
+        playerResourcesAndCards = new PlayerResourcesAndCards(new HashMap<>(),devCards);
 
         CardRequirementColorAndLevel req1;
         CardRequirementColorAndLevel req2;
@@ -247,7 +248,7 @@ public class LeaderCardsTest {
         assertEquals(exception.getMessage(), "The player can't use the effect of a LeaderCard they haven't played yet!");
 
         try {
-            leaderCards.activateLeaderCard(met, playerBoard);
+            leaderCards.activateLeaderCard(met, playerResourcesAndCards);
         } catch (UnmetRequirementException e) {
             e.printStackTrace();
         }
@@ -269,26 +270,26 @@ public class LeaderCardsTest {
     public void ctrlPoints() throws NegativeQuantityException {
         CardRequirementColor requirement1;
         CardRequirementColor requirement2;
-        PlayerBoard playerBoard;
-        HashMap<ResourceType, Integer> hashMap;
+        PlayerResourcesAndCards playerResourcesAndCards;
+        HashMap<ResourceType,Integer> hashMap;
         DevCard cardLevel1;
         DevCard cardLevel2;
         DevCard cardLevel3;
-        DevSlots devSlots;
-        requirement1 = new CardRequirementColor(DevCardColour.GREEN, 2); //Met
-        requirement2 = new CardRequirementColor(DevCardColour.BLUE, 1); //Unmet
-        playerBoard = new PlayerBoard();
-        hashMap = new HashMap<>();
-        cardLevel1 = new DevCard(1, DevCardColour.GREEN, 1, hashMap, hashMap, hashMap, "abc");
-        cardLevel2 = new DevCard(2, DevCardColour.GREEN, 2, hashMap, hashMap, hashMap, "abc");
-        cardLevel3 = new DevCard(3, DevCardColour.GREEN, 3, hashMap, hashMap, hashMap, "abc");
-        devSlots = playerBoard.getDevSlots();
-        devSlots.getDevSlot(0).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel1);
-        devSlots.getDevSlot(2).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel3);
+        List<DevCard> devCards;
+        requirement1 = new CardRequirementColor(DevCardColour.GREEN,2); //Met
+        requirement2 = new CardRequirementColor(DevCardColour.BLUE,1); //Unmet
+        hashMap=new HashMap<>();
+        cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
+        cardLevel2=new DevCard(2,DevCardColour.GREEN,2,hashMap,hashMap,hashMap,"abc");
+        cardLevel3=new DevCard(3,DevCardColour.GREEN,3,hashMap,hashMap,hashMap,"abc");
+        devCards=new ArrayList<>();
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel3);
+        playerResourcesAndCards = new PlayerResourcesAndCards(new HashMap<>(),devCards);
 
         CardRequirementColorAndLevel req1;
         CardRequirementColorAndLevel req2;
@@ -320,8 +321,8 @@ public class LeaderCardsTest {
 
         //Both active
         try {
-            leaderCards.activateLeaderCard(met, playerBoard);
-            leaderCards.activateLeaderCard(met2, playerBoard);
+            leaderCards.activateLeaderCard(met, playerResourcesAndCards);
+            leaderCards.activateLeaderCard(met2, playerResourcesAndCards);
         } catch (UnmetRequirementException e) {
             e.printStackTrace();
         }
@@ -344,7 +345,7 @@ public class LeaderCardsTest {
         leaderCards = new LeaderCards(list);
         leaderCards.discardLeaderCard(met2);
         try {
-            leaderCards.activateLeaderCard(met, playerBoard);
+            leaderCards.activateLeaderCard(met, playerResourcesAndCards);
         } catch (UnmetRequirementException e) {
             e.printStackTrace();
         }
@@ -356,26 +357,26 @@ public class LeaderCardsTest {
     public void ctrlRequirementsReturn() throws NegativeQuantityException{
         CardRequirementColor requirement1;
         CardRequirementColor requirement2;
-        PlayerBoard playerBoard;
+        PlayerResourcesAndCards playerResourcesAndCards;
         HashMap<ResourceType,Integer> hashMap;
         DevCard cardLevel1;
         DevCard cardLevel2;
         DevCard cardLevel3;
-        DevSlots devSlots;
+        List<DevCard> devCards;
         requirement1 = new CardRequirementColor(DevCardColour.GREEN,2); //Met
         requirement2 = new CardRequirementColor(DevCardColour.BLUE,1); //Unmet
-        playerBoard = new PlayerBoard();
         hashMap=new HashMap<>();
         cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
         cardLevel2=new DevCard(2,DevCardColour.GREEN,2,hashMap,hashMap,hashMap,"abc");
         cardLevel3=new DevCard(3,DevCardColour.GREEN,3,hashMap,hashMap,hashMap,"abc");
-        devSlots=playerBoard.getDevSlots();
-        devSlots.getDevSlot(0).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel1);
-        devSlots.getDevSlot(1).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel1);
-        devSlots.getDevSlot(2).addDevCard(cardLevel2);
-        devSlots.getDevSlot(2).addDevCard(cardLevel3);
+        devCards=new ArrayList<>();
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel3);
+        playerResourcesAndCards = new PlayerResourcesAndCards(new HashMap<>(),devCards);
 
         CardRequirementColorAndLevel req1;
         CardRequirementColorAndLevel req2;
@@ -411,7 +412,7 @@ public class LeaderCardsTest {
 
         //It asks the requirements of played card
         try {
-            leaderCards.activateLeaderCard(met, playerBoard);
+            leaderCards.activateLeaderCard(met, playerResourcesAndCards);
         } catch (UnmetRequirementException e) {
             e.printStackTrace();
         }
