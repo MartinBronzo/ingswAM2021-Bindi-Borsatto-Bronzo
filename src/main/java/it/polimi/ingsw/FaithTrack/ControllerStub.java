@@ -63,6 +63,11 @@ public class ControllerStub implements Observer {
         return true;
     }
 
+    @Override
+    public boolean update(Object object) {
+        return false;
+    }
+
     public void fakeVaticanReport(ReportNum reportNum) throws IllegalActionException {
         fT1.dealWithVaticanReport(reportNum);
         fT2.dealWithVaticanReport(reportNum);

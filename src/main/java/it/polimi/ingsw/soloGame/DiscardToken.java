@@ -13,6 +13,8 @@ public class DiscardToken extends SoloActionToken implements Subject {
     private final int numCards;
 
     public DiscardToken(DevCardColour devCardColour, int numCards){
+        if(numCards < 0)
+            throw new IllegalArgumentException("Can't discard negative cards");
         observersList = new ArrayList<>();
         this.cardColour = devCardColour;
         this.numCards = numCards;
@@ -37,7 +39,7 @@ public class DiscardToken extends SoloActionToken implements Subject {
     @Override
     public boolean notifyObservers() {
         for(Observer o: observersList)
-            o.update();
+            o.update(this);
         return true;
     }
 

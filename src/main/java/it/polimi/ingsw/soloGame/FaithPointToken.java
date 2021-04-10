@@ -12,6 +12,8 @@ public class FaithPointToken extends SoloActionToken implements Subject {
     protected boolean shuffleToken;
 
     public FaithPointToken(int faithPoints){
+        if(faithPoints < 0)
+            throw new IllegalArgumentException("Can't have negative faith points");
         observersList = new ArrayList<>();
         this.faithPoints = faithPoints;
         shuffleToken = false;
@@ -36,7 +38,7 @@ public class FaithPointToken extends SoloActionToken implements Subject {
     @Override
     public boolean notifyObservers() {
         for(Observer o: observersList)
-            o.update();
+            o.update(this);
         return true;
     }
 

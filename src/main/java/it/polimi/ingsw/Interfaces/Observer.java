@@ -10,9 +10,11 @@ public interface Observer {
      * Updates the Observer that the state of the Subject has changed
      */
     //String è solo momentaneo, serve per controllare che l'Observer venga chiamato correttamente, normalmente dovrebbe essere void o al più un booleano
-    public String update();
+    String update();
 
     //Usato solo a fine di testing
-    public boolean update(boolean tmp, ReportNum reportNum);
+    boolean update(boolean tmp, ReportNum reportNum);
     //TODO: l'update dovrebbe non avere parametri, semmai è il concrete observer che chiede lo stato
+
+    boolean update(Object object);
 }

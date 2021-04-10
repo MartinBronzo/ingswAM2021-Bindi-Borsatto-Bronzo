@@ -1,49 +1,35 @@
 package it.polimi.ingsw.soloGame;
 
-import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevCardColour;
-import it.polimi.ingsw.DevCards.DevGrid;
 import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.Interfaces.Observer;
-import it.polimi.ingsw.exceptions.EmptyDeckException;
 
 public class DiscardTokenObserver implements Observer {
-    DiscardToken soloToken;
-    DevGrid devGrid;
+    private final SoloBoard soloBoard;
 
-    public DiscardTokenObserver(DevGrid devGrid, DiscardToken token){
-        this.soloToken = token;
-        this.devGrid = devGrid;
+    public DiscardTokenObserver(SoloBoard soloBoard){
+        this.soloBoard = soloBoard;
+    }
+
+    @Override
+    public boolean update(Object token) {
+        DiscardToken soloToken;
+        DevCardColour colour;
+        int numCards;
+
+        soloToken = (DiscardToken) token;
+
+        colour = soloToken.getCardColour();
+        numCards = soloToken.getNumCards();
+
+        soloBoard.discardDevCards(colour, numCards);
+
+        return true;
     }
 
     @Override
     public String update() {
-        DevCardColour colour;
-        int numCards, level;
-        DevCard card;
-
-        level = 1;
-        colour = soloToken.getCardColour();
-        numCards = soloToken.getNumCards();
-
-        for(int i = 0; i < numCards; i++){
-            card = devGrid.getDevCardFromDeck(level, colour);
-            while(card == null && level < 4){
-                level++;
-                card = devGrid.getDevCardFromDeck(level, colour);
-            }
-            if(level == 4)
-                return null;  //TODO: dovrebbe essere false per dire che non è andato a buon fine
-
-            try {
-                devGrid.drawDevCardFromDeck(level, colour);
-            } catch (EmptyDeckException e) {
-                e.printStackTrace();
-                return null; //TODO: dovrebbe essere false per dire che non è andato a buon fine
-            }
-        }
-
-        return null; //TODO: dovrebbe essere TRUE per dire che è andato a buon fine
+        return null;
     }
 
     //questo metodo sarà eliminato

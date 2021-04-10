@@ -34,7 +34,7 @@ public class Depot {
      *
      * @param resource: the resource to be added
      * @param quantity: the quantity of the resource
-     * @param shelfNum: the number of the shelf on which you want to add the resource
+     * @param shelfNum: the number of the shelf, the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return true if there are no illegal parameters
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
      * @throws IllegalActionException   if the resource to be added is already in the depot in another position
@@ -67,7 +67,7 @@ public class Depot {
      *
      * @param resource: the resource to be added
      * @param quantity: the quantity of the resource
-     * @param shelfNum: the number of the shelf on which you want to add the resource
+     * @param shelfNum: the number of the shelf, the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
      * @throws IllegalActionException   if the resource to be added is already in the depot in another position
@@ -94,7 +94,7 @@ public class Depot {
     /**
      * Controls if the parameters are valid and if the action can be performed
      *
-     * @param shelfNum: the num of the shelf from which to remove the resource
+     * @param shelfNum: the number of the shelf, the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @param quantity: the quantity of resources to remove
      * @return true if there are no illegal parameters and the action can be performed
      * @throws IllegalArgumentException : if shelfNum isn't between 1 and 3, if quantity is < 0 and if the shelf is already empty
@@ -123,7 +123,7 @@ public class Depot {
     /**
      * Controls if the remove action can be performed and if yes, perform the action
      *
-     * @param shelfNum: the number of the shelf to remove resources
+     * @param shelfNum: the number of the shelf, the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @param quantity: the quantity of the resource to remove
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException : if at least one parameter is illegal
@@ -152,8 +152,8 @@ public class Depot {
     /**
      * Controls if the parameters are valid and if the action can be performed
      *
-     * @param sourceShelf: the position of the resource to move
-     * @param destShelf:   the final position of the resource
+     * @param sourceShelf: the position of the resource to move; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
+     * @param destShelf:   the final position of the resource; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return true if there are no illegal parameters and if the action can be performed
      * @throws IllegalArgumentException : if sourceShelf or destShelf aren't between 1 and 3; if in sourceShelf position there aren't any resources
      * @throws IllegalActionException:  if the source shelf contains more resources than the max allowed in the destination shelf, or vice versa
@@ -182,8 +182,8 @@ public class Depot {
     /**
      * Controls if parameters are legal and if yes, move the resources
      *
-     * @param sourceShelf: the position of the resource to move
-     * @param destShelf:   the final position of the resource
+     * @param sourceShelf: the position of the resource to move; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
+     * @param destShelf:   the final position of the resource; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException : if at least one parameter is illegal
      * @throws IllegalActionException:  if the source shelf contains more resources than the max allowed in the destination shelf, or vice versa
@@ -349,8 +349,8 @@ public class Depot {
     /**
      * Controls if there are illegal parameter and if the action can be performed
      *
-     * @param shelfNum: the  number of the shelf on which move the resources
-     * @param quantity: the number of resources to move
+     * @param shelfNum: the  number of the shelf on which move the resources; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
+     * @param quantity: the number of resources to move; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resources can't be removed from the shelf and if they can't be added to de extra slot
      * @throws IllegalActionException   if the resources can't be removed from the shelf and if they can't be added to de extra slot
@@ -372,8 +372,8 @@ public class Depot {
     /**
      * Controls if all the parameters are legal and if yes, performs the action
      *
-     * @param shelfNum: the  number of the shelf on which move the resources
-     * @param quantity: the number of resources to move
+     * @param shelfNum: the  number of the shelf on which move the resources; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
+     * @param quantity: the number of resources to move; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resources can't be removed from the shelf and if they can't be added to de extra slot
      * @throws IllegalActionException   if the resources can't be removed from the shelf and if they can't be added to de extra slot
@@ -398,7 +398,7 @@ public class Depot {
      *
      * @param resource: the type of the resource to move to the shelf
      * @param quantity: the quantity to move
-     * @param shelfNum: the  number of the shelf on which move the resources
+     * @param shelfNum: the  number of the shelf on which move the resources; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resources can't be removed from the extra slot and if they can't be added to the shelf
      * @throws IllegalActionException   if the resources can't be removed from the extra slot and if they can't be added to the shelf
@@ -415,7 +415,7 @@ public class Depot {
      *
      * @param resource: the type of the resource to move to the shelf
      * @param quantity: the quantity to move
-     * @param shelfNum: the  number of the shelf on which move the resources
+     * @param shelfNum: the  number of the shelf on which move the resources; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return true if all the parameters are legal and if the action can be performed
      * @throws IllegalArgumentException if the resources can't be removed from the extra slot and if they can't be added to the shelf
      * @throws IllegalActionException   if the resources can't be removed from the extra slot and if they can't be added to the shelf
@@ -448,7 +448,7 @@ public class Depot {
     /**
      * Returns the type of the selected shelf
      *
-     * @param shelfNum: the number of the shelf you want to know the type
+     * @param shelfNum: the number of the shelf you want to know the type; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @return the ResourceType of that shelf
      * @throws IllegalArgumentException if shelf num isn't between 1 and 3
      */
@@ -498,6 +498,7 @@ public class Depot {
         HashMap<ResourceType, Integer> depotCopy;
         depotCopy = new HashMap<>(depotLevel);
 
+        //TODO: provare a farlo con map.keySet
         for(ResourceType resource : ResourceType.values()) {
             if (!resource.isFaithPoint()) {
                 resNum = depotCopy.get(resource);
@@ -533,7 +534,7 @@ public class Depot {
     /**
      * Controls if the number of the shelf selected is a valid number
      *
-     * @param shelfNum: the number of the shelf
+     * @param shelfNum: the number of the shelf; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
      * @throws IllegalArgumentException if shelfNum isn't between 1 and 3
      */
     private void controlShelfNum(int shelfNum) throws IllegalArgumentException {

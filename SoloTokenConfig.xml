@@ -1,0 +1,38 @@
+<SoloTokenConfig>
+
+    <!--TOKEN-->
+    <DiscardToken>
+        <Color>GREEN</Color>
+        <NumCards>2</NumCards>
+    </DiscardToken>
+
+    <!--TOKEN-->
+    <DiscardToken>
+        <Color>YELLOW</Color>
+        <NumCards>2</NumCards>
+    </DiscardToken>
+
+    <!--TOKEN-->
+    <DiscardToken>
+        <Color>PURPLE</Color>
+        <NumCards>2</NumCards>
+    </DiscardToken>
+
+    <!--TOKEN-->
+    <DiscardToken>
+        <Color>BLUE</Color>
+        <NumCards>2</NumCards>
+    </DiscardToken>
+
+    <!--TOKEN-->
+    <FaithPointToken>
+        <NumPoints>2</NumPoints>
+        <Shuffle>FALSE</Shuffle>
+    </FaithPointToken>
+
+    <!--TOKEN-->
+    <FaithPointToken>
+        <NumPoints>1</NumPoints>
+        <Shuffle>TRUE</Shuffle>
+    </FaithPointToken>
+</SoloTokenConfig>
