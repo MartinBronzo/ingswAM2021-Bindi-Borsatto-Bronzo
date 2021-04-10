@@ -10,6 +10,7 @@ import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
+import it.polimi.ingsw.LeaderCardRequirementsTests.*;
 import it.polimi.ingsw.marble.WhiteMarble;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
