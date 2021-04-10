@@ -24,7 +24,7 @@ public class LeaderCards {
      */
     public LeaderCards(List<LeaderCard> notPlayedCards) {
         this.activeCards = new ArrayList<>();
-        this.notPlayedCards = notPlayedCards;
+        this.notPlayedCards = new ArrayList<>(notPlayedCards);
     }
 
     /**
@@ -45,7 +45,6 @@ public class LeaderCards {
     /**
      * Activates the specified LeaderCard if the player meets all the requirements
      * @param leaderCard the LeaderCard tha player wants to activate
-     * @param playerBoard the PlayerBoard of said player
      * @return true if the card was correctly activated, false if the card was already activate
      */
     public boolean activateLeaderCard(LeaderCard leaderCard, PlayerBoard playerBoard) throws UnmetRequirementException {
@@ -99,4 +98,19 @@ public class LeaderCards {
         return leaderCard.getRequirementsList();
     }
 
+    /**
+     * Returns a copy of the active cards list
+     * @return a copy of the active cards list
+     */
+    public List<LeaderCard> getActiveCards() {
+        return new ArrayList<>(activeCards);
+    }
+
+    /**
+     * Returns a copy of the not-played card list
+     * @return a copy of the not-played card list
+     */
+    public List<LeaderCard> getNotPlayedCards() {
+        return new ArrayList<>(notPlayedCards);
+    }
 }

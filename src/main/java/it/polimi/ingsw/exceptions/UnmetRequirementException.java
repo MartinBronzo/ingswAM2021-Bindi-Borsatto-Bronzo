@@ -17,4 +17,12 @@ public class UnmetRequirementException extends Exception{
         super(message);
         this.unmetRequirement = unmetRequirement;
     }
+
+    /**
+     * Returns the unmet requirement saved in the exceptio
+     * @return the unmet requirement
+     */
+    public Requirement getUnmetRequirement() {
+        return unmetRequirement;
+    }
 }

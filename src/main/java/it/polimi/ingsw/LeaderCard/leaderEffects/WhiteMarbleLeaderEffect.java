@@ -40,4 +40,14 @@ public class WhiteMarbleLeaderEffect extends Effect{
         return result;
 
     }
+
+    //This method is used only for testing purposes
+    public ResourceType getExtraResourceType() {
+        return extraResourceType;
+    }
+
+    //This method is used only for testing purposes
+    public int getExtraResourceAmount() {
+        return extraResourceAmount;
+    }
 }

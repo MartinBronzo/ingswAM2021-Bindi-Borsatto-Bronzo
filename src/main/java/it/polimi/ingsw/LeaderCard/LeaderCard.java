@@ -4,6 +4,7 @@ import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.ResourceType;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
 
 import java.util.ArrayList;
@@ -28,10 +29,15 @@ public class LeaderCard {
      * @param victoryPoints the Victory points this card may gives the player at the end of the game if the player plays the card
      * @param requirementsList the requirements which must be met in order to be able to play this card
      * @param effect the extra effect this LeaderCard has
+     * @throws NullPointerException if either the requirementsList or the effect is a null pointer
      */
     public LeaderCard(int victoryPoints, List<Requirement> requirementsList, Effect effect) {
+        if(requirementsList == null)
+            throw new NullPointerException("The requirement list can't be a null pointer!");
+        if(effect == null)
+            throw new NullPointerException("The effect can't be a null pointer!");
         this.victoryPoints = victoryPoints;
-        this.requirementsList = requirementsList;
+        this.requirementsList = new ArrayList<>(requirementsList);
         this.effect = effect;
         this.outputTypeWhenDiscarded = ResourceType.FAITHPOINT;
         this.outputAmountWhenDiscarded = 1;
@@ -84,4 +90,5 @@ public class LeaderCard {
         output.put(this.outputTypeWhenDiscarded, this.outputAmountWhenDiscarded);
         return output;
     }
+
 }
