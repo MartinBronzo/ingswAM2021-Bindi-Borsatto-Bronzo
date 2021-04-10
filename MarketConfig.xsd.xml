@@ -1,4 +1,6 @@
-<MarketConfig>
+<MarketConfig
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="MarketConfig.xsd">
   <marble>
     <Type>WHITEMARBLE</Type>
     <quantity>4</quantity>

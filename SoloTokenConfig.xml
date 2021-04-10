@@ -1,4 +1,6 @@
-<SoloTokenConfig>
+<SoloTokenConfig
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="SoloTokenConfig.xsd">
 
     <!--TOKEN-->
     <DiscardToken>
@@ -27,12 +29,12 @@
     <!--TOKEN-->
     <FaithPointToken>
         <NumPoints>2</NumPoints>
-        <Shuffle>FALSE</Shuffle>
+        <Shuffle>false</Shuffle>
     </FaithPointToken>
 
     <!--TOKEN-->
     <FaithPointToken>
         <NumPoints>1</NumPoints>
-        <Shuffle>TRUE</Shuffle>
+        <Shuffle>true</Shuffle>
     </FaithPointToken>
 </SoloTokenConfig>
