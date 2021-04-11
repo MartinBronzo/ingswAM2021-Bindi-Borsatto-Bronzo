@@ -16,7 +16,7 @@ public class RedMarble extends Marble {
      *   @param resourceMap is modified in this Method
      *   */
     @Override
-    public boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException{
+    public synchronized boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException{
         if (resourceMap==null) throw new NullPointerException("onActivate PurpleMarble: not expected NULL resourceMap");
 
         ResourceType resource=ResourceType.FAITHPOINT;

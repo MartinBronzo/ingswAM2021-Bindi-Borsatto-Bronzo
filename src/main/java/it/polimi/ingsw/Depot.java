@@ -229,7 +229,7 @@ public class Depot {
      * @throws IllegalArgumentException if the effect has non valid values
      * @throws IllegalActionException   if the maximum number of active leader cards ha been already reached
      */
-    public boolean addExtraSolt(ExtraSlotLeaderEffect effect) throws IllegalArgumentException, IllegalActionException {
+    public boolean addExtraSlot(ExtraSlotLeaderEffect effect) throws IllegalArgumentException, IllegalActionException {
         final int maxLeaderCards = 2;
 
         if (depotLimit.size() == maxLeaderCards)

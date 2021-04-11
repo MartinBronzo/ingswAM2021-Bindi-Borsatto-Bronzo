@@ -72,8 +72,8 @@ public class DevSlots {
 
     /**Adds one devCard to the selected DevSlot according to GameRules
      * @param index is the DevSlot number starting from 0
-     * @param devCard id DevCard too be added, can't be in one of the DevSlots
-     * @return is the DevCard wanted to be added in the desired Slot
+     * @param devCard id DevCard to be added, can't be in one of the DevSlots
+     * @return true if the DevCard is added in the desired Slot
      * @throws IndexOutOfBoundsException if index is not valid: must be between 0 and 2
      * @throws NullPointerException if devCard is null
      * @throws IllegalArgumentException if this card can't be added in the desiredSlot
@@ -93,7 +93,9 @@ public class DevSlots {
             try {
                 lastCard = devSlot.getLastDevCard();
                 devCards.add(lastCard);
-            } catch (NoSuchElementException e){}
+            } catch (NoSuchElementException e){
+                /*There is no card in the devSlot, so there isn't any need to add or do something else*/
+            }
         }
         return devCards;
     }

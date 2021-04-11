@@ -421,7 +421,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        assertTrue(depot.addExtraSolt(extraSlotLeaderEffect));
+        assertTrue(depot.addExtraSlot(extraSlotLeaderEffect));
         assertEquals(depot.getExtraDepotValue(coin), 0);
         assertEquals(depot.getExtraDepotLimit(coin), 2);
     }
@@ -432,11 +432,11 @@ class DepotTest {
         ExtraSlotLeaderEffect extraSlotLeaderEffect1 = new ExtraSlotLeaderEffect(servant, 2);
         ExtraSlotLeaderEffect extraSlotLeaderEffect2 = new ExtraSlotLeaderEffect(shield, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect1);
+        depot.addExtraSlot(extraSlotLeaderEffect1);
         assertEquals(depot.getExtraDepotLimit(servant), 2);
         assertEquals(depot.getExtraDepotValue(servant), 0);
 
-        depot.addExtraSolt(extraSlotLeaderEffect2);
+        depot.addExtraSlot(extraSlotLeaderEffect2);
         assertEquals(depot.getExtraDepotLimit(shield), 2);
         assertEquals(depot.getExtraDepotValue(shield), 0);
     }
@@ -446,11 +446,11 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         assertEquals(depot.getExtraDepotLimit(stone), 2);
         assertEquals(depot.getExtraDepotValue(stone), 0);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         assertEquals(depot.getExtraDepotLimit(stone), 4);
         assertEquals(depot.getExtraDepotValue(stone), 0);
     }
@@ -460,13 +460,13 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         assertEquals(depot.getExtraDepotLimit(servant), 2);
         assertEquals(depot.getExtraDepotValue(servant), 0);
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         assertEquals(depot.getExtraDepotLimit(servant), 4);
         assertEquals(depot.getExtraDepotValue(servant), 0);
-        assertThrows(IllegalActionException.class, () -> depot.addExtraSolt(extraSlotLeaderEffect));
+        assertThrows(IllegalActionException.class, () -> depot.addExtraSlot(extraSlotLeaderEffect));
     }
 
     @Test
@@ -474,7 +474,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         assertTrue(depot.addToLeader(stone, 1));
         assertEquals(depot.getExtraDepotValue(stone), 1);
     }
@@ -484,8 +484,8 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         assertTrue(depot.addToLeader(stone, 3));
         assertEquals(depot.getExtraDepotValue(stone), 3);
     }
@@ -495,11 +495,11 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(stone, 2);
         assertEquals(depot.getExtraDepotValue(stone), 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(stone, 1);
         assertEquals(depot.getExtraDepotValue(stone), 3);
     }
@@ -510,11 +510,11 @@ class DepotTest {
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(shield, 2);
         ExtraSlotLeaderEffect extraSlotLeaderEffect2 = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(shield, 2);
         assertEquals(depot.getExtraDepotValue(shield), 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect2);
+        depot.addExtraSlot(extraSlotLeaderEffect2);
         depot.addToLeader(coin, 1);
         assertEquals(depot.getExtraDepotValue(coin), 1);
     }
@@ -525,7 +525,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         exception = assertThrows(IllegalArgumentException.class, () -> depot.addToLeader(faithPoint, 1));
         assertEquals(exception.getMessage(), "Depot can't handle faith points");
     }
@@ -536,7 +536,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         exception = assertThrows(IllegalArgumentException.class, () -> depot.addToLeader(servant, -1));
         assertEquals(exception.getMessage(), "Negative quantity");
     }
@@ -547,7 +547,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         exception = assertThrows(IllegalActionException.class, () -> depot.addToLeader(coin, 1));
         assertEquals(exception.getMessage(), "No existing extra slot for this resource");
     }
@@ -558,7 +558,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         exception = assertThrows(NotEnoughSpaceException.class, () -> depot.addToLeader(servant, 3));
         assertEquals(exception.getAvailableSpace(), 2);
         assertEquals(exception.getMessage(), "Not enough space in extra slot");
@@ -570,7 +570,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 1);
         exception = assertThrows(NotEnoughSpaceException.class, () -> depot.addToLeader(servant, 2));
         assertEquals(exception.getAvailableSpace(), 1);
@@ -582,7 +582,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         assertTrue(depot.addToLeader(stone, 0));
         assertEquals(depot.getExtraDepotValue(stone), 0);
     }
@@ -592,7 +592,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(coin, 2);
 
         assertTrue(depot.removeFromLeader(coin, 1));
@@ -604,7 +604,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(coin, 2);
 
         assertTrue(depot.removeFromLeader(coin, 2));
@@ -617,11 +617,11 @@ class DepotTest {
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
         ExtraSlotLeaderEffect extraSlotLeaderEffect2 = new ExtraSlotLeaderEffect(stone, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(coin, 2);
         depot.removeFromLeader(coin, 1);
 
-        depot.addExtraSolt(extraSlotLeaderEffect2);
+        depot.addExtraSlot(extraSlotLeaderEffect2);
         depot.addToLeader(stone, 1);
         depot.removeFromLeader(stone, 1);
 
@@ -653,7 +653,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(shield, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(shield, 2);
 
         exception = assertThrows(IllegalActionException.class, () -> depot.removeFromLeader(stone, 1));
@@ -666,7 +666,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(shield, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(shield, 2);
 
         exception = assertThrows(IllegalActionException.class, () -> depot.removeFromLeader(shield, 3));
@@ -678,7 +678,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(coin, 2);
 
         assertTrue(depot.removeFromLeader(coin, 0));
@@ -690,7 +690,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToShelf(coin, 2, 2);
         assertTrue(depot.moveToLeader(2, 1));
         assertEquals(depot.getExtraDepotValue(coin), 1);
@@ -702,7 +702,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToShelf(coin, 2, 2);
         assertTrue(depot.moveToLeader(2, 2));
         assertEquals(depot.getExtraDepotValue(coin), 2);
@@ -715,9 +715,9 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToShelf(coin, 2, 3);
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToShelf(coin, 1, 3);
 
         depot.moveToLeader(3, 3);
@@ -731,7 +731,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToShelf(coin, 2, 3);
 
         exception = assertThrows(IllegalActionException.class, () -> depot.moveToLeader(3, 3));
@@ -744,7 +744,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToShelf(coin, 3, 3);
 
         exception = assertThrows(NotEnoughSpaceException.class, () -> depot.moveToLeader(3, 3));
@@ -784,7 +784,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(coin, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToShelf(coin, 2, 2);
         assertTrue(depot.moveToLeader(2, 0));
         assertEquals(depot.getExtraDepotValue(coin), 0);
@@ -796,7 +796,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         assertTrue(depot.moveToShelf(servant, 1, 1));
         assertEquals(depot.getExtraDepotValue(servant), 1);
@@ -808,7 +808,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         assertTrue(depot.moveToShelf(servant, 2, 2));
         assertEquals(depot.getExtraDepotValue(servant), 0);
@@ -820,7 +820,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         assertTrue(depot.moveToShelf(servant, 1, 3));
         assertEquals(depot.getExtraDepotValue(servant), 1);
@@ -833,7 +833,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         exception = assertThrows(IllegalActionException.class, () ->depot.moveToShelf(servant, 3, 3));
         assertEquals(exception.getMessage(), "Not enough resources to remove");
@@ -845,7 +845,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         exception = assertThrows(NotEnoughSpaceException.class, () -> depot.moveToShelf(servant, 2, 1));
         assertEquals(exception.getMessage(), "Not enought space in depot");
@@ -867,7 +867,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         exception = assertThrows(IllegalArgumentException.class, () -> depot.moveToShelf(coin, -5, 1));
         assertEquals(exception.getMessage(), "Negative quantity");
@@ -879,7 +879,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         exception = assertThrows(IllegalArgumentException.class, () -> depot.moveToShelf(servant, 2, 0));
         assertEquals(exception.getMessage(), "ShelfNum out of bound");
@@ -891,7 +891,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         exception = assertThrows(IllegalArgumentException.class, () -> depot.moveToShelf(servant, 2, 4));
         assertEquals(exception.getMessage(), "ShelfNum out of bound");
@@ -902,7 +902,7 @@ class DepotTest {
         Depot depot = new Depot();
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(servant, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
         depot.addToLeader(servant, 2);
         assertTrue(depot.moveToShelf(servant, 0, 1));
         assertEquals(depot.getExtraDepotValue(servant), 2);
@@ -937,7 +937,7 @@ class DepotTest {
         HashMap<ResourceType, Integer> returnedRes;
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect);
 
         returnedRes = depot.getAllResources();
         assertEquals(returnedRes.get(coin),0);
@@ -964,8 +964,8 @@ class DepotTest {
         ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
         ExtraSlotLeaderEffect extraSlotLeaderEffect2 = new ExtraSlotLeaderEffect(shield, 2);
 
-        depot.addExtraSolt(extraSlotLeaderEffect);
-        depot.addExtraSolt(extraSlotLeaderEffect2);
+        depot.addExtraSlot(extraSlotLeaderEffect);
+        depot.addExtraSlot(extraSlotLeaderEffect2);
 
         returnedRes = depot.getAllResources();
         assertEquals(returnedRes.get(coin),0);
