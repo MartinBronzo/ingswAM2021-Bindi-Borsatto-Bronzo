@@ -1,7 +1,6 @@
 package it.polimi.ingsw.DevCards;
 
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Groups more DevSlot in a SingleObject
@@ -19,14 +18,25 @@ public class DevSlots {
         }
     }
 
+
+    /**Creates a copy of DevSlots
+     * @param devSlots to be copied
+     */
+    public DevSlots( DevSlots devSlots) {
+        this.devSlots = new DevSlot[3];
+        for (int i=0; i<this.devSlots.length; i++) {
+            this.devSlots[i] = new DevSlot(devSlots.devSlots[i]);
+        }
+    }
+
     /**
      * @param index is the DevSlot number starting from 0
-     * @return the DevSlot at te specified Index
+     * @return a copy the DevSlot at te specified Index
      * @throws IndexOutOfBoundsException if index is not valid [0...2]
      */
     public DevSlot getDevSlot(int index) throws IndexOutOfBoundsException {
         if (index<0 || index>=devSlots.length) throw new IndexOutOfBoundsException("getDevSlots: Index must be between 0 and 2");
-        return devSlots[index];
+        return new DevSlot(this.devSlots[index]);
     }
 
     /**
@@ -38,7 +48,7 @@ public class DevSlots {
         for (DevSlot devSlot:devSlots) {
             devCards.addAll(devSlot.getDevCards());
         }
-        return new LinkedList<>(devCards);
+        return devCards;
     }
 
     /** @return the sum of Points of the Cards in the Slots
@@ -74,5 +84,17 @@ public class DevSlots {
         if (!isCardAddable(devCard)) throw new IllegalArgumentException("addDevCard: this Card is duplicated");
         devSlots[index].addDevCard(devCard);
         return true;
+    }
+
+    public Collection<DevCard> getUsableDevCards(){
+        Collection<DevCard> devCards = new LinkedList<>();
+        DevCard lastCard;
+        for (DevSlot devSlot:devSlots) {
+            try {
+                lastCard = devSlot.getLastDevCard();
+                devCards.add(lastCard);
+            } catch (NoSuchElementException e){}
+        }
+        return devCards;
     }
 }

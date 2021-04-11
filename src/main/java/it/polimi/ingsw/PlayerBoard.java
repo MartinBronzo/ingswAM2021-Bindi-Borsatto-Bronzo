@@ -42,19 +42,11 @@ public class PlayerBoard {
     */
 
     public Depot getDepot() {
-        return depot;
-    }
-
-    public void setDepot(Depot depot) {
-        this.depot = depot;
+        return new Depot();
     }
 
     public Strongbox getStrongbox() {
         return strongbox;
-    }
-
-    public void setStrongbox(Strongbox strongbox) {
-        this.strongbox = strongbox;
     }
 
     public DevSlots getDevSlots() {
