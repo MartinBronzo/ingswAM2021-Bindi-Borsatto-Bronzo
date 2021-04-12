@@ -20,7 +20,7 @@ public class FaithLevel extends FaithLevelBasic{
      * The PopeTiles the player can activate or discard throughout the game
      */
     private List<PopeTile> popeTiles;
-
+    private boolean arePopeTilesSet;
     /**
      * Constructs a FaithLevel. Since it represents the position of a player at the beginning of the game, its position is set to 0 (the first Cell of the track).
      * @param faithTrack the FaithTrack the player plays in
@@ -30,6 +30,33 @@ public class FaithLevel extends FaithLevelBasic{
         super(faithTrack);
         //By doing this, only the FaithLevel is able to change the state of its PopeTiles
         this.popeTiles = this.cloneList(popeTiles);
+        this.arePopeTilesSet = true;
+    }
+
+    public FaithLevel(){
+        super();
+        this.popeTiles = null;
+        this.arePopeTilesSet = false;
+    }
+
+    /**
+     * Constructs a clone of a FaithLevel which is already set (it has a corresponding FaithTrack and a list of PopeTiles)
+     * @param original the FaithLevel to be cloned
+     */
+    public FaithLevel(FaithLevel original){
+        this(original.faithTrack, original.popeTiles);
+    }
+
+    /**
+     * Sets the PopeTiles this FaithLevel has if they haven't been set, yet
+     * @param popeTiles a list of PopeTiles
+     */
+    public void setPopeTiles(List<PopeTile> popeTiles) {
+        if(arePopeTilesSet == false){
+            this.popeTiles = popeTiles;
+            this.arePopeTilesSet = true;
+        }
+
     }
 
     /**

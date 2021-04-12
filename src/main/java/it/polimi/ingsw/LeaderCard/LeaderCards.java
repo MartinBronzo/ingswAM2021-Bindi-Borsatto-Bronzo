@@ -5,6 +5,7 @@ import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
 
 import java.util.ArrayList;
@@ -114,6 +115,25 @@ public class LeaderCards {
     public List<LeaderCard> getActiveCards() {
         return new ArrayList<>(activeCards);
     }
+
+    /*
+    public List<LeaderCard> getActiveCards() throws IllegalActionException{
+        if(this.activeCards.isEmpty() == true)
+            throw new IllegalActionException("The player has no active cards!");
+        List<LeaderCard> result = new ArrayList<>();
+        for(LeaderCard leaderCard: this.activeCards)
+            result.add(new LeaderCard(leaderCard));
+        return result;
+    }*/
+
+    /*public List<LeaderCard> getNotPlayedCards() throws IllegalActionException{
+        if(this.notPlayedCards.isEmpty() == true)
+            throw new IllegalActionException("The player has no not-played cards!");
+        List<LeaderCard> result = new ArrayList<>();
+        for(LeaderCard leaderCard: this.notPlayedCards)
+            result.add(new LeaderCard(leaderCard));
+        return result;
+    }*/
 
     /**
      * Returns a copy of the not-played card list

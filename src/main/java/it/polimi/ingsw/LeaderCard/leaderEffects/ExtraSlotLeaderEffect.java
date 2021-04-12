@@ -25,6 +25,19 @@ public class ExtraSlotLeaderEffect extends Effect{
         this.slotNumber = slotNumber;
     }
 
+    /**
+     * Construcst a clone of the specified ExtraSlotLeaderEffect
+     * @param original the effect to be cloned
+     */
+    public ExtraSlotLeaderEffect(ExtraSlotLeaderEffect original){
+        this(original.slotType, original.slotNumber);
+    }
+
+    @Override
+    public Effect getClone() {
+        return new ExtraSlotLeaderEffect(this);
+    }
+
     @Override
     public ResourceType extraSlotGetType() {
         return this.slotType;

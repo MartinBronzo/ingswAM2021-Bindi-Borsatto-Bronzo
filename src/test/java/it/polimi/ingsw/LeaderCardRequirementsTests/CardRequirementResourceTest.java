@@ -8,6 +8,7 @@ import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,5 +60,14 @@ class CardRequirementResourceTest {
         assertTrue(requirement2.checkRequirement(playerResourcesAndCards));
         assertTrue(requirement3.checkRequirement(playerResourcesAndCards));
         assertFalse(requirement4.checkRequirement(playerResourcesAndCards));
+    }
+
+    @Test
+    public void checkCloning() throws NegativeQuantityException {
+        CardRequirementResource clone = (CardRequirementResource) requirement1.getClone();
+
+        assertEquals(clone.getResourceType(), requirement1.getResourceType());
+        assertEquals(clone.getQuantity(), requirement1.getQuantity());
+        assertNotSame(clone, requirement1);
     }
 }

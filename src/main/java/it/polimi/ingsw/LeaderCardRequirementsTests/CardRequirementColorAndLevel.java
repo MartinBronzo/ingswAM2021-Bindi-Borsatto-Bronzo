@@ -68,4 +68,19 @@ public class CardRequirementColorAndLevel extends Requirement {
     public boolean checkRequirement(PlayerResourcesAndCards playerResourcesAndCards) {
         return playerResourcesAndCards.getDevCards().stream().filter(card -> cardColour == card.getColour() && level == card.getLevel()).count() >= quantity;
     }
+
+    /**
+     * Constructs a clone of the specified CardRequirementColorAndLevel
+     * @param original the requirement to be cloned
+     * @throws NegativeQuantityException if quantity is negative
+     */
+    public CardRequirementColorAndLevel(CardRequirementColorAndLevel original) throws NegativeQuantityException {
+        this(original.level, original.cardColour, original.quantity);
+    }
+
+    @Override
+    public Requirement getClone() throws NegativeQuantityException {
+        return new CardRequirementColorAndLevel(this);
+    }
+
 }

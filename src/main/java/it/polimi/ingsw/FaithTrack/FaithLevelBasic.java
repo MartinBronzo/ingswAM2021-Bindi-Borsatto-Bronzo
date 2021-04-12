@@ -9,6 +9,7 @@ import it.polimi.ingsw.exceptions.LastVaticanReportException;
 public class FaithLevelBasic {
     protected int position;
     protected FaithTrack faithTrack;
+    protected boolean isFaithTrackSet;
 
     /**
      * Constructs a FaithLevelBasic. Since it represents the position of a player at the beginning of the game, its position is set to 0 (the first Cell of the track).
@@ -17,6 +18,32 @@ public class FaithLevelBasic {
     public FaithLevelBasic(FaithTrack faithTrack) {
         this.faithTrack = faithTrack;
         this.position = 0;
+        this.isFaithTrackSet = true;
+    }
+
+    public FaithLevelBasic(){
+        this.position = 0;
+        this.faithTrack = null;
+        this.isFaithTrackSet = false;
+    }
+
+    /**
+     * Constructs a clone of a FaithLevelBasic which is already set (it has a corresponding FaithTrack)
+     * @param original the FaithLevelBasic to be cloned
+     */
+    public FaithLevelBasic(FaithLevelBasic original){
+        this(original.faithTrack);
+    }
+
+    /**
+     * Sets the FaithTrack this FaithLevelBasic belongs to if it hasn't been set, yet
+     * @param faithTrack a FaithTrack
+     */
+    public void setFaithTrack(FaithTrack faithTrack) {
+        if(isFaithTrackSet == false) {
+            this.faithTrack = faithTrack;
+            this.isFaithTrackSet = true;
+        }
     }
 
     /**
@@ -45,7 +72,10 @@ public class FaithLevelBasic {
             this.position = tmp;
     }
 
-    //This method is only used for testing purposes
+    /**
+     * Returns the FaithTrack this FaithLevelBasic belongs to
+     * @return the FaithTrack of the FaithLevelBasic
+     */
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }

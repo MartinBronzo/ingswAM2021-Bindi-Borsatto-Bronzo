@@ -175,4 +175,50 @@ public class EffectTest {
             if(!tP.equals(ResourceType.SERVANT) && !tP.equals(ResourceType.FAITHPOINT))
                 assertEquals(output.get(tP), null);
     }
+
+    //The following four tests test the cloning of effects
+
+    @Test
+    public void checkDiscountCloning(){
+        DiscountLeaderEffect original = new DiscountLeaderEffect(ResourceType.COIN, 3);
+        DiscountLeaderEffect clone = (DiscountLeaderEffect) original.getClone();
+
+        assertEquals(clone.getDiscountType(), original.getDiscountType());
+        assertEquals(clone.getDiscountAmount(), original.getDiscountAmount());
+        assertNotSame(clone, original);
+    }
+
+    @Test
+    public void checkProductionCloning(){
+        ExtraProductionLeaderEffect original = new ExtraProductionLeaderEffect(ResourceType.COIN, 3);
+        ExtraProductionLeaderEffect clone = (ExtraProductionLeaderEffect) original.getClone();
+
+        assertEquals(clone.getRequiredInputType(), original.getRequiredInputType());
+        assertEquals(clone.getRequiredInputNumber(), original.getRequiredInputNumber());
+        assertEquals(clone.getExtraOutputType(), original.getExtraOutputType());
+        assertEquals(clone.getExtraOutputQuantity(), original.getExtraOutputQuantity());
+        assertEquals(clone.getNormalOutputQuantity(), original.getNormalOutputQuantity());
+        assertNotSame(clone, original);
+    }
+
+    @Test
+    public void checkExtraSlotCloning(){
+        ExtraSlotLeaderEffect original = new ExtraSlotLeaderEffect(ResourceType.COIN, 3);
+        ExtraSlotLeaderEffect clone = (ExtraSlotLeaderEffect) original.getClone();
+
+        assertEquals(clone.extraSlotGetType(), original.extraSlotGetType());
+        assertEquals(clone.extraSlotGetResourceNumber(), original.extraSlotGetResourceNumber());
+        assertNotSame(clone, original);
+    }
+
+    @Test
+    public void checkWhiteMarbleCloning(){
+        WhiteMarbleLeaderEffect original = new WhiteMarbleLeaderEffect(ResourceType.COIN);
+        WhiteMarbleLeaderEffect clone = (WhiteMarbleLeaderEffect) original.getClone();
+
+        assertEquals(clone.getExtraResourceType(), original.getExtraResourceType());
+        assertEquals(clone.getExtraResourceAmount(), original.getExtraResourceAmount());
+        assertNotSame(clone, original);
+    }
+
 }

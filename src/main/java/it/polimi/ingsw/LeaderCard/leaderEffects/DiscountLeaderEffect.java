@@ -27,6 +27,19 @@ public class DiscountLeaderEffect extends Effect{
         this.discountAmount = discountAmount;
     }
 
+    /**
+     * Constructs a clone of the specified DiscountLeaderEffect
+     * @param original the effect to be cloned
+     */
+    public DiscountLeaderEffect(DiscountLeaderEffect original){
+        this(original.discountType, original.discountAmount);
+    }
+
+    @Override
+    public Effect getClone() {
+        return new DiscountLeaderEffect(this);
+    }
+
     public boolean discountEffect(HashMap<ResourceType, Integer> cost){
         if(cost == null)
             throw new NullPointerException("Cost is a null pointer!");
@@ -41,5 +54,13 @@ public class DiscountLeaderEffect extends Effect{
         //Updates the cost
         cost.put(this.discountType, futureCost);
         return true;
+    }
+
+    public ResourceType getDiscountType() {
+        return discountType;
+    }
+
+    public int getDiscountAmount() {
+        return discountAmount;
     }
 }

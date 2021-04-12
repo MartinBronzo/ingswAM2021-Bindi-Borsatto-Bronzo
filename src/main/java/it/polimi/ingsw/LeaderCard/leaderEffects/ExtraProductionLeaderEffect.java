@@ -34,6 +34,19 @@ public class ExtraProductionLeaderEffect extends Effect{
         this.normalOutputQuantity = 1;
     }
 
+    /**
+     * Constructs a clone of the specified ExtraProductionLeaderEffect
+     * @param original the effect to be cloned
+     */
+    public ExtraProductionLeaderEffect(ExtraProductionLeaderEffect original){
+        this(original.requiredInputType, original.requiredInputNumber);
+    }
+
+    @Override
+    public Effect getClone() {
+        return new ExtraProductionLeaderEffect(this);
+    }
+
     //With extra constructs (which enable to set the other attributes of the object as needed), we are able to implement a more custom effect
 
     public HashMap<ResourceType, Integer> extraProductionEffect(ResourceType desiredOutput) throws IllegalArgumentException{
@@ -59,6 +72,26 @@ public class ExtraProductionLeaderEffect extends Effect{
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(this.requiredInputType, this.requiredInputNumber);
         return input;
+    }
+
+    public ResourceType getRequiredInputType() {
+        return requiredInputType;
+    }
+
+    public int getRequiredInputNumber() {
+        return requiredInputNumber;
+    }
+
+    public ResourceType getExtraOutputType() {
+        return extraOutputType;
+    }
+
+    public int getExtraOutputQuantity() {
+        return extraOutputQuantity;
+    }
+
+    public int getNormalOutputQuantity() {
+        return normalOutputQuantity;
     }
 }
 //TODO: controllare che per tutti i metodi i cui input ricevo dall'utente ci siano gli opportuni controlli per lanciare eccezioni se gli input sono sbagliati

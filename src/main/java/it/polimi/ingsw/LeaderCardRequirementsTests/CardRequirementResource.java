@@ -3,6 +3,7 @@ package it.polimi.ingsw.LeaderCardRequirementsTests;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 
 /**
  * This class represents a requirement of a particular amount of a certain type of resources which may be necessary for some LeaderCard.
@@ -51,5 +52,18 @@ public class CardRequirementResource extends Requirement {
     @Override
     public boolean checkRequirement(PlayerResourcesAndCards playerResourcesAndCards) {
         return playerResourcesAndCards.getResources().getOrDefault(resourceType,0) >= quantity;
+    }
+
+    /**
+     * Constructs a clone of the specified CardRequirementResource
+     * @param original the CardRequirementResource to be cloned
+     */
+    public CardRequirementResource(CardRequirementResource original){
+        this(original.resourceType, original.quantity);
+    }
+
+    @Override
+    public Requirement getClone() throws NegativeQuantityException {
+        return new CardRequirementResource(this);
     }
 }

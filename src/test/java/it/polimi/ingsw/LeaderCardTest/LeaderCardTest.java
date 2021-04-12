@@ -3,6 +3,7 @@ package it.polimi.ingsw.LeaderCardTest;
 import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.DevCards.DevSlots;
+import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.LeaderCardRequirementsTests.*;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
@@ -48,11 +49,14 @@ public class LeaderCardTest {
         List<Requirement> tmp = leaderCard.getRequirementsList();
 
         assertNotSame(requirements, tmp);
-        for(Requirement req: requirements)
-            assertEquals(req, tmp.get(tmp.indexOf(req)));
+        assertEquals(((CardRequirementColor) tmp.get(0)).getQuantity(), 3);
+        assertEquals(((CardRequirementColor) tmp.get(0)).getCardColour(), DevCardColour.BLUE);
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getLevel(), 2);
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getCardColour(), DevCardColour.GREEN);
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getQuantity(),2);
 
         assertEquals(leaderCard.getVictoryPoints(), 3);
-        assertEquals(leaderCard.getEffect(), effect);
+        assertEquals(((WhiteMarbleLeaderEffect)leaderCard.getEffect()).getExtraResourceType(), ((WhiteMarbleLeaderEffect)effect).getExtraResourceType());
 
         HashMap<ResourceType, Integer> output = leaderCard.getOutputWhenDiscarded();
         assertFalse(output.isEmpty());
@@ -117,7 +121,11 @@ public class LeaderCardTest {
         leaderCard = new LeaderCard(3, requirements, effect);
         LeaderCard finalLeaderCard = leaderCard;
         UnmetRequirementException exception = assertThrows(UnmetRequirementException.class, () -> finalLeaderCard.checkRequirements(playerResourcesAndCards));
-        assertEquals(exception.getUnmetRequirement(), req1);
+        //assertEquals(exception.getUnmetRequirement(), req1);
+        CardRequirementColorAndLevel unmetReq = (CardRequirementColorAndLevel) exception.getUnmetRequirement();
+        assertEquals(unmetReq.getLevel(), req1.getLevel());
+        assertEquals(unmetReq.getCardColour(), req1.getCardColour());
+        assertEquals(unmetReq.getQuantity(), req1.getQuantity());
 
         //Two requirements are unmet
         requirements.add(requirement2);
@@ -125,7 +133,15 @@ public class LeaderCardTest {
         leaderCard = new LeaderCard(3, requirements, effect);
         LeaderCard finalLeaderCard1 = leaderCard;
         exception = assertThrows(UnmetRequirementException.class, () -> finalLeaderCard1.checkRequirements(playerResourcesAndCards));
-        assertTrue(exception.getUnmetRequirement().equals(req1) || exception.getUnmetRequirement().equals(requirement2));
+        Requirement tmp = exception.getUnmetRequirement();
+        if(tmp instanceof CardRequirementColorAndLevel ){
+            assertEquals(((CardRequirementColorAndLevel) tmp).getLevel(),req1.getLevel());
+            assertEquals( ((CardRequirementColorAndLevel) tmp).getCardColour(), req1.getCardColour());
+            assertEquals(((CardRequirementColorAndLevel) tmp).getQuantity(), req1.getQuantity());
+        } else{
+            assertEquals(((CardRequirementColor) tmp).getQuantity(), requirement2.getQuantity());
+            assertEquals(((CardRequirementColor) tmp).getCardColour(), requirement2.getCardColour());
+        }
 
         //All the requirements are unmet
         requirements = new ArrayList<>();
@@ -135,7 +151,83 @@ public class LeaderCardTest {
         Collections.shuffle(requirements);
         leaderCard = new LeaderCard(3, requirements, effect);
         exception = assertThrows(UnmetRequirementException.class, () -> finalLeaderCard1.checkRequirements(playerResourcesAndCards));
-        assertTrue(exception.getUnmetRequirement().equals(req1) || exception.getUnmetRequirement().equals(requirement2) || exception.getUnmetRequirement().equals(req2));
+        //assertTrue(exception.getUnmetRequirement().equals(req1) || exception.getUnmetRequirement().equals(requirement2) || exception.getUnmetRequirement().equals(req2));
+        if(tmp instanceof CardRequirementColorAndLevel ){
+            if(((CardRequirementColorAndLevel) tmp).getLevel() == 3) {
+                assertEquals(((CardRequirementColorAndLevel) tmp).getLevel(), req1.getLevel());
+                assertEquals(((CardRequirementColorAndLevel) tmp).getCardColour(), req1.getCardColour());
+                assertEquals(((CardRequirementColorAndLevel) tmp).getQuantity(), req1.getQuantity());
+            }else{
+                assertEquals(((CardRequirementColorAndLevel) tmp).getLevel(), req2.getLevel());
+                assertEquals(((CardRequirementColorAndLevel) tmp).getCardColour(), req2.getCardColour());
+                assertEquals(((CardRequirementColorAndLevel) tmp).getQuantity(), req2.getQuantity());
+            }
+
+        } else {
+            assertEquals(((CardRequirementColor) tmp).getQuantity(), requirement2.getQuantity());
+            assertEquals(((CardRequirementColor) tmp).getCardColour(), requirement2.getCardColour());
+        }
+    }
+
+    @Test
+    //Tests the cloning of LeaderCards
+    public void ctrlLeaderCardCloning() throws NegativeQuantityException {
+        List<Requirement> tmp = new ArrayList<>();
+        tmp.add(new CardRequirementResource(ResourceType.COIN, 3));
+        tmp.add(new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 4));
+        LeaderCard original = new LeaderCard(3, tmp, new WhiteMarbleLeaderEffect(ResourceType.SERVANT));
+
+        LeaderCard clone = new LeaderCard(original);
+
+        assertNotSame(clone, original);
+        assertEquals(clone.getVictoryPoints(), original.getVictoryPoints());
+
+        HashMap<ResourceType, Integer> outputOriginal = original.getOutputWhenDiscarded();
+        HashMap<ResourceType, Integer> outputClone = clone.getOutputWhenDiscarded();
+
+        for(ResourceType rT: resources)
+            assertEquals(outputClone.get(rT), outputOriginal.get(rT));
+        assertNotSame(outputClone, outputOriginal);
+
+        List<Requirement> reqOriginal = original.getRequirementsList();
+        List<Requirement> reqClone = original.getRequirementsList();
+        assertNotSame(reqClone, reqOriginal);
+
+        for(Requirement req: reqOriginal)
+            assertEquals(req, reqClone.get(reqClone.indexOf(req)));
+
+
+        WhiteMarbleLeaderEffect effectOriginal = (WhiteMarbleLeaderEffect) original.getEffect();
+        WhiteMarbleLeaderEffect effectClone = (WhiteMarbleLeaderEffect) clone.getEffect();
+
+        assertEquals(effectClone.getExtraResourceAmount(), effectOriginal.getExtraResourceAmount());
+        assertEquals(effectClone.getExtraResourceType(), effectOriginal.getExtraResourceType());
+        assertNotSame(effectClone, effectOriginal);
+
+    }
+
+    @Test
+    public void ctrlCloning() throws NegativeQuantityException {
+        List<Requirement> tmp = new ArrayList<>();
+        CardRequirementColorAndLevel pos0 = new CardRequirementColorAndLevel(1, DevCardColour.GREEN, 2);
+        tmp.add(pos0);
+        CardRequirementColor pos1 = new CardRequirementColor(DevCardColour.GREEN, 2);
+        tmp.add(pos1);
+        CardRequirementResource pos2 = new CardRequirementResource(ResourceType.COIN, 3);
+        tmp.add(pos2);
+        List<Requirement> newList = LeaderCard.getCloneList(tmp);
+
+        CardRequirementColorAndLevel npos0 = (CardRequirementColorAndLevel) newList.get(0);
+        assertEquals(pos0.getLevel(), npos0.getLevel());
+        assertEquals(pos0.getCardColour(), npos0.getCardColour());
+        assertEquals(pos0.getQuantity(), npos0.getQuantity());
+        CardRequirementColor npos1 = (CardRequirementColor) newList.get(1);
+        assertEquals(pos1.getCardColour(), npos1.getCardColour());
+        assertEquals(pos1.getQuantity(), npos1.getQuantity());
+        CardRequirementResource npos2 = (CardRequirementResource) newList.get(2);
+        assertEquals(pos2.getQuantity(), npos2.getQuantity());
+        assertEquals(pos2.getResourceType(), npos2.getResourceType());
+        assertEquals(newList.size(), tmp.size());
 
     }
 }

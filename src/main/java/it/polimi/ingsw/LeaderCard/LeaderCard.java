@@ -38,10 +38,34 @@ public class LeaderCard {
         if(effect == null)
             throw new NullPointerException("The effect can't be a null pointer!");
         this.victoryPoints = victoryPoints;
-        this.requirementsList = new ArrayList<>(requirementsList);
+        this.requirementsList = getCloneList(requirementsList);
         this.effect = effect;
         this.outputTypeWhenDiscarded = ResourceType.FAITHPOINT;
         this.outputAmountWhenDiscarded = 1;
+    }
+
+    /**
+     * Constructs a clone of the specified LeaderCard
+     * @param original the LeaderCard to be cloned
+     */
+    public LeaderCard(LeaderCard original){
+        this.victoryPoints = original.victoryPoints;
+        this.requirementsList = getCloneList(original.requirementsList);
+        this.effect = original.effect.getClone();
+        this.outputTypeWhenDiscarded = ResourceType.FAITHPOINT;
+        this.outputAmountWhenDiscarded = 1;
+    }
+
+    public static List<Requirement> getCloneList(List<Requirement> originalList){
+        List<Requirement> result = new ArrayList<>();
+        for(Requirement req: originalList) {
+            try {
+                result.add(req.getClone());
+            } catch (NegativeQuantityException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     /**
@@ -79,7 +103,7 @@ public class LeaderCard {
      * @return the effect of the LeaderCard
      */
     public Effect getEffect() {
-        return effect;
+        return effect.getClone();
     }
 
     /**

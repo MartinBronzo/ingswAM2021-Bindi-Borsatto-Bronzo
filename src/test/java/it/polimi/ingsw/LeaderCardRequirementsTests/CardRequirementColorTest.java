@@ -58,4 +58,13 @@ class CardRequirementColorTest {
         assertTrue(requirement1.checkRequirement(playerResourcesAndCards));
         assertFalse(requirement2.checkRequirement(playerResourcesAndCards));
     }
+
+    @Test
+    public void checkCloning() throws NegativeQuantityException {
+        CardRequirementColor clone = (CardRequirementColor) requirement1.getClone();
+
+        assertEquals(clone.getCardColour(), requirement1.getCardColour());
+        assertEquals(clone.getQuantity(), requirement1.getQuantity());
+        assertNotSame(clone, requirement1);
+    }
 }

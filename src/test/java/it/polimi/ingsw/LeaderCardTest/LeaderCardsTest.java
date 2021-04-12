@@ -94,7 +94,9 @@ public class LeaderCardsTest {
 
         //The player doesn't have the requirements to activate the card they hold
         UnmetRequirementException exception1 = assertThrows(UnmetRequirementException.class, () -> leaderCards.activateLeaderCard(unmet, playerResourcesAndCards));
-        assertEquals(exception1.getUnmetRequirement(), req1);
+        assertEquals(((CardRequirementColorAndLevel) exception1.getUnmetRequirement()).getLevel(),req1.getLevel());
+        assertEquals( ((CardRequirementColorAndLevel) exception1.getUnmetRequirement()).getCardColour(), req1.getCardColour());
+        assertEquals(((CardRequirementColorAndLevel) exception1.getUnmetRequirement()).getQuantity(), req1.getQuantity());
         assertTrue(leaderCards.getNotPlayedCards().contains(met));
         assertTrue(leaderCards.getNotPlayedCards().contains(unmet));
         assertTrue(leaderCards.getActiveCards().isEmpty());
@@ -391,7 +393,6 @@ public class LeaderCardsTest {
         metRequirements.add(req3);
         List<Requirement> unmetRequirements = new ArrayList<>();
         unmetRequirements.add(requirement1);
-        unmetRequirements.add(req3);
         unmetRequirements.add(req1);
         LeaderCard met = new LeaderCard(3, metRequirements, new WhiteMarbleLeaderEffect(ResourceType.SERVANT));
         LeaderCard unmet = new LeaderCard(4, unmetRequirements, new Effect());
@@ -405,10 +406,12 @@ public class LeaderCardsTest {
 
         //It asks the requirements of a not-played card
         List<Requirement> tmp = leaderCards.getLeaderCardRequirements(unmet);
-        for(Requirement req: tmp)
-            assertTrue(unmetRequirements.contains(req));
-        for(Requirement req: unmetRequirements)
-            assertTrue(tmp.contains(req));
+        assertTrue(tmp.size() == unmetRequirements.size());
+        assertEquals(((CardRequirementColor) tmp.get(0)).getQuantity(), requirement1.getQuantity());
+        assertEquals(((CardRequirementColor) tmp.get(0)).getCardColour(), requirement1.getCardColour());
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getLevel(), req1.getLevel());
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getCardColour(), req1.getCardColour());
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getQuantity(), req1.getQuantity());
 
         //It asks the requirements of played card
         try {
@@ -417,10 +420,12 @@ public class LeaderCardsTest {
             e.printStackTrace();
         }
         tmp = leaderCards.getLeaderCardRequirements(met);
-        for(Requirement req: tmp)
-            assertTrue(metRequirements.contains(req));
-        for(Requirement req: metRequirements)
-            assertTrue(tmp.contains(req));
+        assertEquals(((CardRequirementColor) tmp.get(0)).getQuantity(), requirement1.getQuantity());
+        assertEquals(((CardRequirementColor) tmp.get(0)).getCardColour(), requirement1.getCardColour());
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getLevel(), req3.getLevel());
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getCardColour(), req3.getCardColour());
+        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getQuantity(), req3.getQuantity());
+
 
     }
 }

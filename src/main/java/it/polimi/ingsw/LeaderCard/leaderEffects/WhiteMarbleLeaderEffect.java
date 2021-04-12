@@ -4,6 +4,7 @@ import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.marble.Marble;
 import it.polimi.ingsw.marble.MarbleType;
+import it.polimi.ingsw.marble.WhiteMarble;
 
 import java.util.HashMap;
 
@@ -25,8 +26,23 @@ public class WhiteMarbleLeaderEffect extends Effect{
         this.extraResourceAmount = 1;
     }
 
+    /**
+     * Constructs a clone of the specified WhiteMarbleLeaderEffect
+     * @param original the effect to be cloned
+     */
+    public WhiteMarbleLeaderEffect(WhiteMarbleLeaderEffect original){
+        this(original.extraResourceType);
+    }
+
+    @Override
+    public Effect getClone() {
+        return new WhiteMarbleLeaderEffect(this);
+    }
+
+
     //With extra constructs (which enable to set the extraResourceAmount attribute of the object as needed), we are able to implement a more custom effect
 
+    @Override
     public boolean whiteMarbleEffect(HashMap<ResourceType, Integer> resourceMap) throws NegativeQuantityException {
         //Gets the MarbleType corresponding to the ResourceType
         MarbleType tmp = this.extraResourceType.getCorrespondingMarble();

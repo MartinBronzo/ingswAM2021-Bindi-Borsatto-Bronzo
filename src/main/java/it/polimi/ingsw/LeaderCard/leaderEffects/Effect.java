@@ -57,4 +57,12 @@ public class Effect {
     public HashMap<ResourceType, Integer> extraProductionEffect(ResourceType desiredOutput){
         return new HashMap<>();
     }
+
+    /**
+     * Returns a clone of this Effect
+     * @return a clone
+     */
+    public Effect getClone(){
+        return new Effect();
+    }
 }
