@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Market;
 
-import it.polimi.ingsw.DevCards.DevCard;
-import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
@@ -19,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-/*NOT YET IMPLEMENTED: Builder which read from xml Config File*/
 
 /**Implements the the game structure of the market. when buying it use the marbles to give back the resources bought in a HashMap*/
 public class Market {
@@ -29,6 +26,20 @@ public class Market {
     /**Builder which instantiated the marbles on the grid and on the slide according with Classic Rules*/
     public Market() throws IllegalArgumentException, IndexOutOfBoundsException{
         this(4,1,2,2,2,2);
+    }
+
+    /**This constructor creates a copy of the actual state of the Market
+     * @param market  is the Market, which state is to be copied
+     */
+    public Market(Market market) throws NullPointerException {
+        if (market==null) throw new NullPointerException("market can't be null");
+        this.marbleOnSlide = market.marbleOnSlide;
+        this.marketMatrix = new Marble[3][4];
+        for (int i=0; i<this.marketMatrix.length; i++){
+            for (int j=0; j<this.marketMatrix[i].length; j++){
+                this.setMarbleInTheGrid(market.getMarbleInTheGrid(i,j),i,j);
+            }
+        }
     }
 
     /**Builder for every configuration; it needs exactly 13 marbles because the slots in the market are from the grid 4x3 + 1 on the slide
@@ -188,7 +199,7 @@ public class Market {
 
         Node marketConfigNode=doc.getElementsByTagName("MarketConfig").item(0);
         if (marketConfigNode.getNodeType() == Node.ELEMENT_NODE){
-        Element rootElement=(Element) marketConfigNode;
+            Element rootElement=(Element) marketConfigNode;
             NodeList marbleNodes=rootElement.getElementsByTagName("marble");
             for (int i=0; i< marbleNodes.getLength(); i++){
                 Node node = marbleNodes.item(i);

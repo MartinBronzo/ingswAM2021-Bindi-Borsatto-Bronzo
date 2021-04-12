@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**This class implements DevelopmentsCards, it needs to be immutable to not change the DevCard Attributes */
-public class DevCard {
+public class DevCard implements Comparable<DevCard>{
     private final int level;
     private final DevCardColour colour;
     private final int victoryPoints;
@@ -96,5 +96,24 @@ public class DevCard {
                 ", cost=" + cost +
                 ", url='" + url + '\'' +
                 '}';
+    }
+
+    /**
+     * Compares this devCard with the specified devCard for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     *
+     * @param devCard the devCard to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     */
+    @Override
+    public int compareTo(DevCard devCard) throws NullPointerException {
+        if (devCard==null) throw new NullPointerException("devCard can't be null");
+        int compareLevel = Integer.compare(this.level, devCard.level);
+        return compareLevel == 0 ? Integer.compare(this.colour.ordinal(), devCard.colour.ordinal()) : compareLevel;
     }
 }

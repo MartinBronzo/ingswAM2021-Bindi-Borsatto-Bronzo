@@ -18,6 +18,13 @@ public class DevSlot {
         this.devCards = new LinkedList<>();
     }
 
+    /** Creates a copy of the devSlot
+     * @param devSlot the DevSlot to be copied
+     * */
+    public DevSlot( DevSlot devSlot) {
+        this.devCards = new LinkedList<>(devSlot.devCards);
+    }
+
     /**if it's possible adds the devCard to the devSlot
      * @param devCard is the dev card to be added to devSlot
      * @throws NullPointerException if devCard is Null
@@ -57,8 +64,8 @@ public class DevSlot {
         return devCards.stream().filter(x->x.getLevel()==level).findFirst().orElse(null);
     }
 
-    /**
-     * @return the Card with the higher level in the Slot
+    /** Gets the LastDev Card in the Slot
+     * @return the Card with the higher level in the Slot, null if there is no Card in the devSlot
      * @throws NoSuchElementException if DevCard Is Empty
      * */
     public DevCard getLastDevCard() throws NoSuchElementException{

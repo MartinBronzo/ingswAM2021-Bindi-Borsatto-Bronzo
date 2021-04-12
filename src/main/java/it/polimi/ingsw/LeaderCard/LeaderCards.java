@@ -29,6 +29,14 @@ public class LeaderCards {
     }
 
     /**
+     * Constructs a LeaderCards which hold no Cards.
+     */
+    public LeaderCards() {
+        this.activeCards = new ArrayList<>();
+        this.notPlayedCards = new ArrayList<>();
+    }
+
+    /**
      * Discards the specified LeaderCard if it hasn't been played by the Player, yet
      * @param leaderCard the LeaderCard the player wants to discard
      * @return the resources the player gets when they discard the specified LeaderCard

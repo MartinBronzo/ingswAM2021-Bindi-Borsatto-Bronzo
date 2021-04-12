@@ -67,7 +67,16 @@ class DevSlotTest {
         assertThrows(java.lang.IllegalArgumentException.class, ()->devSlot.addDevCard(cardLevel1));
         assertThrows(java.lang.IllegalArgumentException.class, ()->devSlot.addDevCard(cardLevel2));
         assertThrows(java.lang.IllegalArgumentException.class, ()->devSlot.addDevCard(cardLevel3));
+    }
 
+    @Test
+    void newConstructorTest(){
+        devSlot=new DevSlot();
+        devSlot.addDevCard(cardLevel1);
+        devSlot.addDevCard(cardLevel2);
+        devSlot.addDevCard(cardLevel3);
+        DevSlot devSlot2 = new DevSlot(devSlot);
+        assertEquals(cardLevel3,devSlot2.getDevCard(3));
     }
 
     @BeforeEach
