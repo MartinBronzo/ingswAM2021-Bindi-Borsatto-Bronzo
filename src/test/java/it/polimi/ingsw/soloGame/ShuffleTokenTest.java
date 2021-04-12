@@ -51,8 +51,8 @@ class ShuffleTokenTest {
         ShuffleToken shuffleToken = new ShuffleToken(2);
 
         assertTrue(shuffleToken.attach(observer));
-        assertTrue(shuffleToken.detach(observer));
         assertTrue(shuffleToken.playEffect());
+        assertTrue(shuffleToken.detach(observer));
     }
 
 }

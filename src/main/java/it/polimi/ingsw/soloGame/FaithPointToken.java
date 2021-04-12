@@ -6,6 +6,12 @@ import it.polimi.ingsw.Interfaces.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents the FaithPointToken, that can be drew from the deck of token when you're playing a soloGame.
+ * This token makes you move your faith point marker ahead of faithPoints steps
+ * It calls an observer to make the SoloTable move the faith point marker
+ */
+
 public class FaithPointToken extends SoloActionToken implements Subject {
     private final List<Observer> observersList;
     private final int faithPoints;
@@ -19,22 +25,40 @@ public class FaithPointToken extends SoloActionToken implements Subject {
         shuffleToken = false;
     }
 
+    /**
+     * Activates the effect of the token notifying the observers to move the faith point marker
+     * @return true if the action is performed without errors
+     */
     @Override
     public boolean playEffect() {
         notifyObservers();
         return true;
     }
 
+    /**
+     * Attaches an observer to the token, waiting to be notified
+     * @param observer the Observer
+     * @return true if the observer is added wothout errors
+     */
     @Override
     public boolean attach(Observer observer) {
         return observersList.add(observer);
     }
 
+    /**
+     * Detaches the observer from the token
+     * @param observer the Observer
+     * @return true if the observer is removed wothout errors
+     */
     @Override
     public boolean detach(Observer observer) {
         return observersList.remove(observer);
     }
 
+    /**
+     * Notifies all the observers that they have to apply the effect of the token
+     * @return true if the action is performed without errors
+     */
     @Override
     public boolean notifyObservers() {
         for(Observer o: observersList)
@@ -42,10 +66,18 @@ public class FaithPointToken extends SoloActionToken implements Subject {
         return true;
     }
 
+    /**
+     * Returns the number of faith point of the token
+     * @return the number of faith point of the token
+     */
     public int getFaithPoints() {
         return faithPoints;
     }
 
+    /**
+     * Returns true if the token is a shuffle token, so you have to shuffle the soloActionDeck
+     * @return true if the token is a shuffle token, so you have to shuffle the soloActionDeck
+     */
     public boolean isShuffleToken() {
         return shuffleToken;
     }

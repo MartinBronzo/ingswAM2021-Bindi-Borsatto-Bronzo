@@ -52,8 +52,7 @@ class DiscardTokenTest {
         DiscardToken discardToken = new DiscardToken(DevCardColour.PURPLE, 1);
 
         assertTrue(discardToken.attach(observer));
-        assertTrue(discardToken.detach(observer));
         assertTrue(discardToken.playEffect());
+        assertTrue(discardToken.detach(observer));
     }
-
 }

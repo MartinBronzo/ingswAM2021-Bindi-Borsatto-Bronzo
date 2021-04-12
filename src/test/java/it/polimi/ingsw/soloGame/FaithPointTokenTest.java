@@ -51,8 +51,9 @@ class FaithPointTokenTest {
         FaithPointToken faithPointToken = new FaithPointToken(2);
 
         assertTrue(faithPointToken.attach(observer));
-        assertTrue(faithPointToken.detach(observer));
         assertTrue(faithPointToken.playEffect());
+        assertTrue(faithPointToken.detach(observer));
+
     }
 
 }

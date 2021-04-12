@@ -4,6 +4,10 @@ import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.Interfaces.Observer;
 
+/**
+ * This class is the observer of discardTokens that applies the effect when notified
+ */
+
 public class DiscardTokenObserver implements Observer {
     private final SoloBoard soloBoard;
 
@@ -11,6 +15,11 @@ public class DiscardTokenObserver implements Observer {
         this.soloBoard = soloBoard;
     }
 
+    /**
+     * Discards the DevCards with the characteristics described in the token
+     * @param token the token that activates the effect
+     * @return true if the action is performed without errors
+     */
     @Override
     public boolean update(Object token) {
         DiscardToken soloToken;

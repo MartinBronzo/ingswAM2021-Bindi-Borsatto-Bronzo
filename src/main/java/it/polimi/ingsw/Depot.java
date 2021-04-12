@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
-import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ public class Depot {
     private final HashMap<ResourceType, Integer> depotLevel;
     private final ResourceType[] shelves;
     private final HashMap<ResourceType, Integer> leaderDepot;
-    private final List<ExtraSlotLeaderEffect> depotLimit;
+    private final List<Effect> depotLimit;
 
     public Depot() {
         depotLevel = new HashMap<>();
@@ -211,9 +211,9 @@ public class Depot {
      * @return true if there are no illegal parameters and the action can be performed
      * @throws IllegalArgumentException if the type of the resource of the effect is faith point and if the number of resources of the effect is negative
      * @throws IllegalActionException   if the maximum number of active leader cards has been already reached
-     * @deprecated for updating extraSlotLeaderEffect class
+     * @deprecated after update of extraSlotLeaderEffect class
      */
-    private boolean canAddExtraSlot(ExtraSlotLeaderEffect effect) throws IllegalArgumentException, IllegalActionException {
+    private boolean canAddExtraSlot(Effect effect) throws IllegalArgumentException, IllegalActionException {
         final int maxLeaderCards = 2;
 
         if (depotLimit.size() == maxLeaderCards)
@@ -222,14 +222,14 @@ public class Depot {
     }
 
     /**
-     * Activate the effect of a new LeaderCard with effect ExtraSlotLeaderEffect
+     * Activate the effect of a new LeaderCard
      *
      * @param effect: the effect of the leaderCard
      * @return true if the action in performed without errors
      * @throws IllegalArgumentException if the effect has non valid values
      * @throws IllegalActionException   if the maximum number of active leader cards ha been already reached
      */
-    public boolean addExtraSlot(ExtraSlotLeaderEffect effect) throws IllegalArgumentException, IllegalActionException {
+    public boolean addExtraSlot(Effect effect) throws IllegalArgumentException, IllegalActionException {
         final int maxLeaderCards = 2;
 
         if (depotLimit.size() == maxLeaderCards)
