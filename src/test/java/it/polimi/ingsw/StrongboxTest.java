@@ -4,6 +4,8 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
+
+import it.polimi.ingsw.exceptions.NotEnoughResourcesException;
 import org.junit.jupiter.api.Test;
 
 public class StrongboxTest {
@@ -14,7 +16,7 @@ public class StrongboxTest {
     final ResourceType faithPoint = ResourceType.FAITHPOINT;
 
     @Test
-    public void addRes1() throws IllegalArgumentException, IllegalActionException {
+    public void addRes1() throws IllegalArgumentException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         addMap.put(coin, 5);
         addMap.put(stone, 0);
@@ -29,7 +31,7 @@ public class StrongboxTest {
     }
 
     @Test
-    public void addRes2() throws IllegalArgumentException, IllegalActionException {
+    public void addRes2() throws IllegalArgumentException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         addMap.put(coin, 2);
         addMap.put(stone, 0);
@@ -44,7 +46,7 @@ public class StrongboxTest {
     }
 
     @Test
-    public void multipleAdds() throws IllegalArgumentException, IllegalActionException {
+    public void multipleAdds() throws IllegalArgumentException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         Strongbox strongbox = new Strongbox();
 
@@ -68,12 +70,12 @@ public class StrongboxTest {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         addMap.put(faithPoint, 1);
         Strongbox strongbox = new Strongbox();
-        assertThrows(IllegalActionException.class, () -> strongbox.addResource(addMap));
+        assertThrows(IllegalArgumentException.class, () -> strongbox.addResource(addMap));
     }
 
 
     @Test
-    public void removeResource() throws IllegalArgumentException, IllegalActionException {
+    public void removeResource() throws IllegalArgumentException,  NotEnoughResourcesException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
 
@@ -86,7 +88,7 @@ public class StrongboxTest {
     }
 
     @Test
-    public void removeResources2() throws IllegalArgumentException, IllegalActionException {
+    public void removeResources2() throws IllegalArgumentException, NotEnoughResourcesException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         Strongbox strongbox = new Strongbox();
 
@@ -110,7 +112,7 @@ public class StrongboxTest {
         Strongbox strongbox = new Strongbox();
 
         removeMap.put(servant, 1);
-        exception = assertThrows(IllegalActionException.class, ()-> strongbox.removeResource(removeMap));
+        exception = assertThrows(NotEnoughResourcesException.class, ()-> strongbox.removeResource(removeMap));
         assertEquals("Not enough resources to remove",exception.getMessage());
     }
 
@@ -125,7 +127,7 @@ public class StrongboxTest {
         assertEquals("Negative quantity",exception.getMessage());
     }
     @Test
-    public void multipleRemoves() throws IllegalArgumentException, IllegalActionException {
+    public void multipleRemoves() throws IllegalArgumentException, NotEnoughResourcesException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
         Strongbox strongbox = new Strongbox();
@@ -145,11 +147,11 @@ public class StrongboxTest {
         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
         removeMap.put(faithPoint, 1);
         Strongbox strongbox = new Strongbox();
-        assertThrows(IllegalActionException.class, () -> strongbox.addResource(removeMap));
+        assertThrows(IllegalArgumentException.class, () -> strongbox.addResource(removeMap));
     }
 
     @Test
-    public void getAllResources() throws IllegalActionException {
+    public void getAllResources(){
         Strongbox strongbox = new Strongbox();
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         HashMap<ResourceType, Integer> returnedRes;

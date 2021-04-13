@@ -9,9 +9,7 @@ import it.polimi.ingsw.FaithTrack.PopeTile;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
 import it.polimi.ingsw.LeaderCard.LeaderCards;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
-import it.polimi.ingsw.exceptions.UnmetRequirementException;
+import it.polimi.ingsw.exceptions.*;
 
 import java.util.*;
 
@@ -113,7 +111,7 @@ public class PlayerBoard {
      * @throws IllegalActionException   if the resource to be added is already in the depot in another position
      * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the shelf
      */
-    public boolean addResourceToDepot(ResourceType resourceType, int quantity, int shelf) throws IllegalActionException, NotEnoughSpaceException, IllegalArgumentException {
+    public boolean addResourceToDepot(ResourceType resourceType, int quantity, int shelf) throws NotEnoughSpaceException, IllegalArgumentException, AlreadyInAnotherShelfException {
         this.depot.addToShelf(resourceType,quantity,shelf);
         return true;
     }
@@ -126,7 +124,7 @@ public class PlayerBoard {
      * @throws IllegalActionException   if the resource to remove doesn't have an extra slot and if the extra slot is already full of resources
      * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the extra slot
      */
-    public boolean addResourceToDepot(ResourceType resourceType, int quantity) throws IllegalActionException, NotEnoughSpaceException, IllegalArgumentException {
+    public boolean addResourceToDepot(ResourceType resourceType, int quantity) throws NotEnoughSpaceException, IllegalArgumentException, NoExtraSlotException, FullExtraSlotException {
         this.depot.addToLeader(resourceType,quantity);
         return true;
     }
@@ -139,7 +137,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
      * @throws IllegalActionException   f there aren't enough resources to be removed from the depot
      */
-    public boolean removeResourceFromDepot(int quantity, int shelf) throws IllegalActionException, IllegalArgumentException {
+    public boolean removeResourceFromDepot(int quantity, int shelf) throws IllegalArgumentException, NotEnoughResourcesException {
         this.depot.removeFromDepot(shelf, quantity);
         return true;
     }
@@ -151,7 +149,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative
      * @throws IllegalActionException if the resource to remove doesn't have an extra slot
      */
-    public boolean removeResourceFromDepot(ResourceType resourceType, int quantity) throws IllegalActionException, IllegalArgumentException {
+    public boolean removeResourceFromDepot(ResourceType resourceType, int quantity) throws IllegalArgumentException, NotEnoughResourcesException, NoExtraSlotException {
         this.depot.removeFromLeader(resourceType,quantity);
         return true;
     }

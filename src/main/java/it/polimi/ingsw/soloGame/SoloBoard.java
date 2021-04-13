@@ -31,7 +31,8 @@ public class SoloBoard extends MainBoard {
     public boolean moveLorenzosFaith(int steps) {
         try {
             lorenzosTrack.moveFaithMarker(steps);
-        } catch (LastVaticanReportException e) {
+        }
+        catch (LastVaticanReportException e){
             e.printStackTrace();
             //TODO: DO SOMETHING
         }
