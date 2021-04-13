@@ -158,6 +158,15 @@ public class LeaderCards {
         return result;
     }
 
+    public List<LeaderCard> getAlreadyUsedOneShotCard(){
+        if(this.alreadyUsedOneShotCard.isEmpty() == true)
+            return new ArrayList<>();
+        List<LeaderCard> result = new ArrayList<>();
+        for(LeaderCard leaderCard: this.alreadyUsedOneShotCard)
+            result.add(new LeaderCard(leaderCard));
+        return result;
+    }
+
     /**
      * Returns a copy of the one-shot LeaderCards which were used once before
      * @return a copy of the already used one-shot LeaderCards
