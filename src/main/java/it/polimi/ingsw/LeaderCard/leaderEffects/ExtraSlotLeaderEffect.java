@@ -48,4 +48,16 @@ public class ExtraSlotLeaderEffect extends Effect{
         return this.slotNumber;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof ExtraSlotLeaderEffect))
+            return false;
+        ExtraSlotLeaderEffect tmp = (ExtraSlotLeaderEffect) obj;
+        return this.slotType.equals(tmp.slotType) && this.slotNumber == tmp.slotNumber;
+    }
+
 }

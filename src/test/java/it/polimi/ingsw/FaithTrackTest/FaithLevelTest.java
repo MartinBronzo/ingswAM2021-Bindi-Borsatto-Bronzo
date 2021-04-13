@@ -806,4 +806,20 @@ public class FaithLevelTest {
         assertFalse(popeTiles.get(1).isChanged());
         assertFalse(popeTiles.get(2).isChanged());
     }
+
+    @Test
+    //Tests the cloning of FaithLevels
+    public void ctrlCloning(){
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+        List<PopeTile> popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3, ReportNum.REPORT3));
+        FaithLevel original = new FaithLevel(ft, popeTiles);
+
+        FaithLevel clone = new FaithLevel(original);
+        assertNotSame(clone, original);
+        assertEquals(clone, original);
+    }
 }

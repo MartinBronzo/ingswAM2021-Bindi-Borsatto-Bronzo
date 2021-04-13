@@ -96,4 +96,14 @@ public class FaithLevelBasicTest {
 
     }
 
+    @Test
+    //Tests the cloning of FaithLevelBasic
+    public void ctrlCloning(){
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+        FaithLevelBasic original = new FaithLevelBasic(ft);
+        FaithLevelBasic clone = new FaithLevelBasic(original);
+        assertEquals(clone, original);
+    }
+
 }

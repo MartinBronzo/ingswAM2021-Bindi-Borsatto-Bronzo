@@ -116,4 +116,17 @@ public class LeaderCard {
         return output;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof LeaderCard))
+            return false;
+        LeaderCard tmp = (LeaderCard) obj;
+        return this.victoryPoints == tmp.victoryPoints && this.outputTypeWhenDiscarded.equals(tmp.outputTypeWhenDiscarded) &&
+                this.outputAmountWhenDiscarded == tmp.outputAmountWhenDiscarded && this.requirementsList.equals(tmp.requirementsList) &&
+                this.effect.equals(effect);
+    }
 }

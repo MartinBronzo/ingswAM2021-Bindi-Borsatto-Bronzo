@@ -196,6 +196,7 @@ public class LeaderCardTest {
         for(Requirement req: reqOriginal)
             assertEquals(req, reqClone.get(reqClone.indexOf(req)));
 
+        assertEquals(reqClone, reqOriginal);
 
         WhiteMarbleLeaderEffect effectOriginal = (WhiteMarbleLeaderEffect) original.getEffect();
         WhiteMarbleLeaderEffect effectClone = (WhiteMarbleLeaderEffect) clone.getEffect();
@@ -204,10 +205,12 @@ public class LeaderCardTest {
         assertEquals(effectClone.getExtraResourceType(), effectOriginal.getExtraResourceType());
         assertNotSame(effectClone, effectOriginal);
 
+        assertEquals(clone, original);
+
     }
 
     @Test
-    public void ctrlCloning() throws NegativeQuantityException {
+    public void ctrlRequirementCloning() throws NegativeQuantityException {
         List<Requirement> tmp = new ArrayList<>();
         CardRequirementColorAndLevel pos0 = new CardRequirementColorAndLevel(1, DevCardColour.GREEN, 2);
         tmp.add(pos0);

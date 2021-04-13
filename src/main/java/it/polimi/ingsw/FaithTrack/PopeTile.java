@@ -116,4 +116,16 @@ public class PopeTile {
         tmp.changed = this.changed;
         return tmp;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof PopeTile))
+            return false;
+        PopeTile tmp = (PopeTile) obj;
+        return tmp.changed == this.changed && tmp.discarded == this.discarded && tmp.activated == this.activated && tmp.points == this.points && tmp.reportNum == this.reportNum;
+    }
 }

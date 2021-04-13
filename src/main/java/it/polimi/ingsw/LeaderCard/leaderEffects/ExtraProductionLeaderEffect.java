@@ -93,5 +93,21 @@ public class ExtraProductionLeaderEffect extends Effect{
     public int getNormalOutputQuantity() {
         return normalOutputQuantity;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof ExtraProductionLeaderEffect))
+            return false;
+        ExtraProductionLeaderEffect tmp = (ExtraProductionLeaderEffect) obj;
+        return this.requiredInputNumber == tmp.requiredInputNumber && this.requiredInputType.equals(tmp.requiredInputType) &&
+                this.extraOutputType.equals(tmp.extraOutputType) && this.extraOutputQuantity == tmp.extraOutputQuantity &&
+                this.normalOutputQuantity == tmp.normalOutputQuantity;
+    }
 }
+
+
 //TODO: controllare che per tutti i metodi i cui input ricevo dall'utente ci siano gli opportuni controlli per lanciare eccezioni se gli input sono sbagliati

@@ -19,6 +19,7 @@ import java.util.List;
 public class LeaderCards {
     private List<LeaderCard> activeCards;
     private List<LeaderCard> notPlayedCards;
+    private boolean areNotPlayedCardsSet;
 
     /**
      * Constructs a LeaderCards which hold only not-played cards. It is called at the beginning of the game
@@ -27,6 +28,7 @@ public class LeaderCards {
     public LeaderCards(List<LeaderCard> notPlayedCards) {
         this.activeCards = new ArrayList<>();
         this.notPlayedCards = new ArrayList<>(notPlayedCards);
+        this.areNotPlayedCardsSet = true;
     }
 
     /**
@@ -35,6 +37,14 @@ public class LeaderCards {
     public LeaderCards() {
         this.activeCards = new ArrayList<>();
         this.notPlayedCards = new ArrayList<>();
+        this.areNotPlayedCardsSet = false;
+    }
+
+    public void setNotPlayedCards(List<LeaderCard> notPlayedCards) {
+        if(this.areNotPlayedCardsSet == false) {
+            this.notPlayedCards = notPlayedCards;
+            this.areNotPlayedCardsSet = true;
+        }
     }
 
     /**
@@ -112,34 +122,34 @@ public class LeaderCards {
      * Returns a copy of the active cards list
      * @return a copy of the active cards list
      */
-    public List<LeaderCard> getActiveCards() {
+/*    public List<LeaderCard> getActiveCards() {
         return new ArrayList<>(activeCards);
     }
-
-    /*
-    public List<LeaderCard> getActiveCards() throws IllegalActionException{
+*/
+    public List<LeaderCard> getActiveCards() {
         if(this.activeCards.isEmpty() == true)
-            throw new IllegalActionException("The player has no active cards!");
+        //    throw new IllegalActionException("The player has no active cards!");
+            return new ArrayList<>();
         List<LeaderCard> result = new ArrayList<>();
         for(LeaderCard leaderCard: this.activeCards)
             result.add(new LeaderCard(leaderCard));
         return result;
-    }*/
+    }
 
-    /*public List<LeaderCard> getNotPlayedCards() throws IllegalActionException{
+    public List<LeaderCard> getNotPlayedCards(){
         if(this.notPlayedCards.isEmpty() == true)
-            throw new IllegalActionException("The player has no not-played cards!");
+            return new ArrayList<>();
         List<LeaderCard> result = new ArrayList<>();
         for(LeaderCard leaderCard: this.notPlayedCards)
             result.add(new LeaderCard(leaderCard));
         return result;
-    }*/
+    }
 
     /**
      * Returns a copy of the not-played card list
      * @return a copy of the not-played card list
      */
-    public List<LeaderCard> getNotPlayedCards() {
+/*    public List<LeaderCard> getNotPlayedCards() {
         return new ArrayList<>(notPlayedCards);
-    }
+    }*/
 }

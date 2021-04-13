@@ -83,4 +83,15 @@ public class CardRequirementColorAndLevel extends Requirement {
         return new CardRequirementColorAndLevel(this);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof CardRequirementColorAndLevel))
+            return false;
+        CardRequirementColorAndLevel tmp = (CardRequirementColorAndLevel) obj;
+        return this.level == tmp.level && this.cardColour.equals(tmp.cardColour) && this.quantity == tmp.quantity;
+    }
 }

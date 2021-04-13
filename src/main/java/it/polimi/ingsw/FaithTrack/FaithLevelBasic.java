@@ -112,4 +112,23 @@ public class FaithLevelBasic {
         this.position = end;
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof FaithLevelBasic))
+            return false;
+        if(obj instanceof FaithLevel)
+            return false;
+        FaithLevelBasic tmp = (FaithLevelBasic) obj;
+        if(tmp.isFaithTrackSet == false)
+            if(this.isFaithTrackSet == false)
+                return (tmp.position == this.position);
+            else
+                return false;
+        return (tmp.position == this.position) && tmp.faithTrack == this.faithTrack;
+    }
 }

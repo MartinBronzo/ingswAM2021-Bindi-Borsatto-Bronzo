@@ -69,5 +69,6 @@ class CardRequirementResourceTest {
         assertEquals(clone.getResourceType(), requirement1.getResourceType());
         assertEquals(clone.getQuantity(), requirement1.getQuantity());
         assertNotSame(clone, requirement1);
+        assertEquals(clone, requirement1);
     }
 }

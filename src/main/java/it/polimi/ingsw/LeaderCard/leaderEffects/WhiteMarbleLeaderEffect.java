@@ -66,4 +66,16 @@ public class WhiteMarbleLeaderEffect extends Effect{
     public int getExtraResourceAmount() {
         return extraResourceAmount;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof WhiteMarbleLeaderEffect))
+            return false;
+        WhiteMarbleLeaderEffect tmp = (WhiteMarbleLeaderEffect) obj;
+        return this.extraResourceType.equals(tmp.extraResourceType) && this.extraResourceAmount == tmp.extraResourceAmount;
+    }
 }

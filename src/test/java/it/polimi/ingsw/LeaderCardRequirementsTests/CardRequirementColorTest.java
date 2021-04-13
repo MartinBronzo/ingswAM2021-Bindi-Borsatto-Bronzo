@@ -66,5 +66,6 @@ class CardRequirementColorTest {
         assertEquals(clone.getCardColour(), requirement1.getCardColour());
         assertEquals(clone.getQuantity(), requirement1.getQuantity());
         assertNotSame(clone, requirement1);
+        assertEquals(clone, requirement1);
     }
 }

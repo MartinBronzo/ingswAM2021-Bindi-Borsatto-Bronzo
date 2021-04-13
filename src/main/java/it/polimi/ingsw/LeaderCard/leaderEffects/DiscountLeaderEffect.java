@@ -3,6 +3,7 @@ package it.polimi.ingsw.LeaderCard.leaderEffects;
 import it.polimi.ingsw.ResourceType;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * This class implements the effect of a LeaderCard which let the player buy a DevCard at a discounted price. This class computes the discount on a specified cost.
@@ -62,5 +63,17 @@ public class DiscountLeaderEffect extends Effect{
 
     public int getDiscountAmount() {
         return discountAmount;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof DiscountLeaderEffect))
+            return false;
+        DiscountLeaderEffect tmp = (DiscountLeaderEffect) obj;
+        return this.discountAmount == tmp.discountAmount && this.discountType.equals(tmp.discountType);
     }
 }

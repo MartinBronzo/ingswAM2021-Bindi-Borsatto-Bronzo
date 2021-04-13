@@ -45,6 +45,7 @@ public class FaithLevel extends FaithLevelBasic{
      */
     public FaithLevel(FaithLevel original){
         this(original.faithTrack, original.popeTiles);
+        this.position = original.position;
     }
 
     /**
@@ -53,7 +54,7 @@ public class FaithLevel extends FaithLevelBasic{
      */
     public void setPopeTiles(List<PopeTile> popeTiles) {
         if(arePopeTilesSet == false){
-            this.popeTiles = popeTiles;
+            this.popeTiles = this.cloneList(popeTiles);
             this.arePopeTilesSet = true;
         }
 
@@ -125,5 +126,33 @@ public class FaithLevel extends FaithLevelBasic{
         return popeTiles;
     }
 
+    public List<PopeTile> getPopeTilesSafe(){
+        return this.cloneList(this.popeTiles);
+    }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof FaithLevel))
+            return false;
+        FaithLevel tmp = (FaithLevel) obj;
+
+        if(tmp.isFaithTrackSet != this.isFaithTrackSet)
+            return false;
+        if(tmp.arePopeTilesSet != this.arePopeTilesSet)
+            return false;
+        if(tmp.isFaithTrackSet == false) {
+            if (tmp.arePopeTilesSet == false)
+                    return this.position == tmp.position;
+                else
+                    return this.position == tmp.position && this.popeTiles.containsAll(tmp.popeTiles) && tmp.popeTiles.containsAll(this.popeTiles);
+        }
+        if(tmp.arePopeTilesSet == false)
+            return (tmp.position == this.position) && tmp.faithTrack == this.faithTrack;
+        return (tmp.position == this.position) && tmp.faithTrack == this.faithTrack && this.popeTiles.containsAll(tmp.popeTiles) && tmp.popeTiles.containsAll(this.popeTiles);
+    }
 }

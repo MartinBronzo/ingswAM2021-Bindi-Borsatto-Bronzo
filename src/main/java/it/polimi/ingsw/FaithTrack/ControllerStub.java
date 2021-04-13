@@ -2,6 +2,7 @@ package it.polimi.ingsw.FaithTrack;
 
 import it.polimi.ingsw.Interfaces.Observer;
 import it.polimi.ingsw.Interfaces.Subject;
+import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 
 public class ControllerStub implements Observer {
@@ -11,11 +12,14 @@ public class ControllerStub implements Observer {
     private FaithLevel fT3;
     private boolean neededToTryTheVaticanReport;
     private boolean x;
+    private PlayerBoard playerBoard;
+    private boolean withPlayerBoard;
 
     public ControllerStub(Subject subject) {
         this.subject = subject;
         neededToTryTheVaticanReport = false;
         x = false;
+        withPlayerBoard = false;
     }
 
     public ControllerStub(Subject subject, FaithLevel fT1){
@@ -23,6 +27,7 @@ public class ControllerStub implements Observer {
         this.fT1 = fT1;
         neededToTryTheVaticanReport = true;
         x = true;
+        withPlayerBoard = false;
     }
 
     public ControllerStub(Subject subject, FaithLevel fT1, FaithLevel fT2, FaithLevel fT3) {
@@ -32,6 +37,7 @@ public class ControllerStub implements Observer {
         this.fT3 = fT3;
         neededToTryTheVaticanReport = true;
         x = false;
+        withPlayerBoard = false;
     }
 
 
@@ -59,6 +65,12 @@ public class ControllerStub implements Observer {
                     e.printStackTrace();
                 }
             }
+        }else if(withPlayerBoard == true){
+            try {
+                this.fakeVaticanReportWithPlayerBoard(reportNum);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }
@@ -80,5 +92,16 @@ public class ControllerStub implements Observer {
 
     public void fakeVaticanReportOnePlayer(ReportNum rN) throws IllegalActionException {
         fT1.dealWithVaticanReport(rN);
+    }
+
+    public ControllerStub(PlayerBoard playerBoard){
+        this.playerBoard = playerBoard;
+        neededToTryTheVaticanReport = false;
+        this.withPlayerBoard = true;
+
+    }
+
+    public void fakeVaticanReportWithPlayerBoard(ReportNum rN) throws IllegalActionException {
+        playerBoard.dealWithVaticanReport(rN);
     }
 }

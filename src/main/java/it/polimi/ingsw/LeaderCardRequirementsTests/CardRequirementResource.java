@@ -66,4 +66,16 @@ public class CardRequirementResource extends Requirement {
     public Requirement getClone() throws NegativeQuantityException {
         return new CardRequirementResource(this);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof CardRequirementResource))
+            return false;
+        CardRequirementResource tmp = (CardRequirementResource) obj;
+        return this.resourceType.equals(tmp.resourceType) && this.quantity == tmp.quantity;
+    }
 }

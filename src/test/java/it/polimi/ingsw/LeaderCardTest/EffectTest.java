@@ -186,6 +186,7 @@ public class EffectTest {
         assertEquals(clone.getDiscountType(), original.getDiscountType());
         assertEquals(clone.getDiscountAmount(), original.getDiscountAmount());
         assertNotSame(clone, original);
+        assertEquals(clone, original);
     }
 
     @Test
@@ -199,6 +200,7 @@ public class EffectTest {
         assertEquals(clone.getExtraOutputQuantity(), original.getExtraOutputQuantity());
         assertEquals(clone.getNormalOutputQuantity(), original.getNormalOutputQuantity());
         assertNotSame(clone, original);
+        assertEquals(clone, original);
     }
 
     @Test
@@ -209,6 +211,7 @@ public class EffectTest {
         assertEquals(clone.extraSlotGetType(), original.extraSlotGetType());
         assertEquals(clone.extraSlotGetResourceNumber(), original.extraSlotGetResourceNumber());
         assertNotSame(clone, original);
+        assertEquals(clone, original);
     }
 
     @Test
@@ -219,6 +222,14 @@ public class EffectTest {
         assertEquals(clone.getExtraResourceType(), original.getExtraResourceType());
         assertEquals(clone.getExtraResourceAmount(), original.getExtraResourceAmount());
         assertNotSame(clone, original);
+        assertEquals(clone, original);
+    }
+
+    @Test
+    public void ctrlEffectEquals(){
+        Effect effect = new Effect();
+        Effect clone = effect.getClone();
+        assertEquals(clone, effect);
     }
 
 }

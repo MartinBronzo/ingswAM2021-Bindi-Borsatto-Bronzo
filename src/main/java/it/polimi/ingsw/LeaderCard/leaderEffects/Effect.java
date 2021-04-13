@@ -65,4 +65,23 @@ public class Effect {
     public Effect getClone(){
         return new Effect();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj == this)
+            return true;
+        if(!(obj instanceof Effect))
+            return false;
+        if(obj instanceof DiscountLeaderEffect)
+            return false;
+        if(obj instanceof ExtraProductionLeaderEffect)
+            return false;
+        if(obj instanceof ExtraSlotLeaderEffect)
+            return false;
+        if(obj instanceof WhiteMarbleLeaderEffect)
+            return false;
+        return true;
+    }
 }
