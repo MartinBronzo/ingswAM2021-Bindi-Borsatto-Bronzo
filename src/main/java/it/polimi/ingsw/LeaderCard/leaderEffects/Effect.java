@@ -84,4 +84,8 @@ public class Effect {
             return false;
         return true;
     }
+
+    public boolean isOneShotCard(){
+        return false;
+    }
 }

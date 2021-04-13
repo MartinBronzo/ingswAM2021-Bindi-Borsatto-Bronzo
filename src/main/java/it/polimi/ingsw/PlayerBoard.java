@@ -10,6 +10,7 @@ import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
 import it.polimi.ingsw.LeaderCard.LeaderCards;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
@@ -107,6 +108,17 @@ public class PlayerBoard {
     }
 
     /**
+     * Returns the effect of the specified LeaderCard if the player can use such card in the game
+     * @param leaderCard a LeaderCard
+     * @return the effect of such LeaderCard
+     * @throws IllegalArgumentException if the player doesn't hold such card or if they haven't activated it, yet
+     * @throws IllegalActionException if the player tries to get the effect of a one-shot card they have already used once
+     */
+    public Effect getEffectFromCard(LeaderCard leaderCard) throws IllegalArgumentException, IllegalActionException {
+        return this.leaderCards.getEffectFromCard(leaderCard);
+    }
+
+    /**
      * Returns a copy of all the LeaderCards the player has not played yet
      * @return a copy of the not-played LeaderCards
      */
@@ -116,6 +128,20 @@ public class PlayerBoard {
 
     public List<LeaderCard> getActiveLeaderCards(){
         return this.leaderCards.getActiveCards();
+    }
+
+    public List<LeaderCard> getAlreadyUsedOneShotCard(){return this.leaderCards.getAlreadyUsedOneShotCard();}
+
+    public List<Requirement> getLeaderCardRequirements(LeaderCard leaderCard) throws IllegalArgumentException{
+        return this.leaderCards.getLeaderCardRequirements(leaderCard);
+    }
+
+    /**
+     * Returns the points the player gets from their LeaderCards
+     * @return the points of all the active LeaderCards the player has
+     */
+    public int getLeaderCardsPoints(){
+        return this.leaderCards.getLeaderCardsPoints();
     }
 
     /*
@@ -266,5 +292,21 @@ public class PlayerBoard {
      */
     public int getPositionOnFaithTrack(){
         return this.playerFaithLevel.getPosition();
+    }
+
+    /**
+     * Returns the points the player gets from where they stand on the FaithTrack
+     * @return the victory points due to the FaithTrack
+     */
+    public int getCellPoints(){
+        return this.playerFaithLevel.getCellPoints();
+    }
+
+    /**
+     * Returns the points the player gets from the PopeTiles they have
+     * @return the points due to active PopeTiles
+     */
+    public int getPopeTilesPoints(){
+        return this.playerFaithLevel.getPopeTilesPoints();
     }
 }

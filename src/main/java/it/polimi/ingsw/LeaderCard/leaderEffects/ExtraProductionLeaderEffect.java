@@ -107,6 +107,11 @@ public class ExtraProductionLeaderEffect extends Effect{
                 this.extraOutputType.equals(tmp.extraOutputType) && this.extraOutputQuantity == tmp.extraOutputQuantity &&
                 this.normalOutputQuantity == tmp.normalOutputQuantity;
     }
+
+    @Override
+    public boolean isOneShotCard() {
+        return false;
+    }
 }
 
 

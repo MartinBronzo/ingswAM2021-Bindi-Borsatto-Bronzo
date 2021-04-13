@@ -60,4 +60,8 @@ public class ExtraSlotLeaderEffect extends Effect{
         return this.slotType.equals(tmp.slotType) && this.slotNumber == tmp.slotNumber;
     }
 
+    @Override
+    public boolean isOneShotCard() {
+        return true;
+    }
 }

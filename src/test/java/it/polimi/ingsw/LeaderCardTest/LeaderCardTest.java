@@ -233,4 +233,25 @@ public class LeaderCardTest {
         assertEquals(newList.size(), tmp.size());
 
     }
+
+    @Test
+    //Tests whether LeaderCards return a copy of their RequirementList when asked so
+    public void ctrlRequirementCloningSafe() throws NegativeQuantityException {
+        Requirement requirement1 = new CardRequirementColor(DevCardColour.GREEN,2); //Met
+        Requirement requirement2 = new CardRequirementColorAndLevel(1, DevCardColour.BLUE, 1); //Unmet
+        Requirement requirement3 = new CardRequirementResource(ResourceType.COIN, 3);
+        List<Requirement> list = new ArrayList<>();
+        list.add(requirement1);
+        list.add(requirement2);
+        list.add(requirement3);
+        LeaderCard lD = new LeaderCard(4, list, new Effect());
+
+        List<Requirement> copy = lD.getRequirementsListSafe();
+        assertNotSame(copy, lD);
+        assertEquals(copy.size(), list.size());
+        for(int i = 0; i < list.size(); i++){
+            assertEquals(copy.get(i), list.get(i));
+            assertNotSame(copy.get(i), list.get(i));
+        }
+    }
 }

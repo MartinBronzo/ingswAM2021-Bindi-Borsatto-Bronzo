@@ -20,6 +20,7 @@ public class LeaderCards {
     private List<LeaderCard> activeCards;
     private List<LeaderCard> notPlayedCards;
     private boolean areNotPlayedCardsSet;
+    private List<LeaderCard> alreadyUsedOneShotCard;
 
     /**
      * Constructs a LeaderCards which hold only not-played cards. It is called at the beginning of the game
@@ -29,6 +30,7 @@ public class LeaderCards {
         this.activeCards = new ArrayList<>();
         this.notPlayedCards = new ArrayList<>(notPlayedCards);
         this.areNotPlayedCardsSet = true;
+        this.alreadyUsedOneShotCard = new ArrayList<>();
     }
 
     /**
@@ -38,6 +40,7 @@ public class LeaderCards {
         this.activeCards = new ArrayList<>();
         this.notPlayedCards = new ArrayList<>();
         this.areNotPlayedCardsSet = false;
+        this.alreadyUsedOneShotCard = new ArrayList<>();
     }
 
     public void setNotPlayedCards(List<LeaderCard> notPlayedCards) {
@@ -86,13 +89,18 @@ public class LeaderCards {
      * @return the effect of the specified LeaderCard
      * @throws IllegalArgumentException if the card is not active or if the player doesn't hold it
      */
-    public Effect getEffectFromCard(LeaderCard leaderCard) throws IllegalArgumentException{
+    public Effect getEffectFromCard(LeaderCard leaderCard) throws IllegalArgumentException, IllegalActionException{
         if(!this.activeCards.contains(leaderCard))
             if(!this.notPlayedCards.contains(leaderCard))
                 throw new IllegalArgumentException("The player can't use the effect of a LeaderCard they don't have!");
             else
                 throw new IllegalArgumentException("The player can't use the effect of a LeaderCard they haven't played yet!");
-        return leaderCard.getEffect();
+        if(alreadyUsedOneShotCard.contains(leaderCard))
+            throw new IllegalActionException("This Card can only be used once: it has already been used!");
+        Effect tmp = leaderCard.getEffect();
+        if(tmp.isOneShotCard() == true)
+            alreadyUsedOneShotCard.add(leaderCard);
+        return tmp;
     }
 
     /**
@@ -115,7 +123,7 @@ public class LeaderCards {
     public List<Requirement> getLeaderCardRequirements(LeaderCard leaderCard) throws IllegalArgumentException{
         if(!activeCards.contains(leaderCard) && !notPlayedCards.contains(leaderCard))
             throw new IllegalArgumentException("The player doesn't hold this card!");
-        return leaderCard.getRequirementsList();
+        return leaderCard.getRequirementsListSafe();
     }
 
     /**
@@ -141,6 +149,15 @@ public class LeaderCards {
             return new ArrayList<>();
         List<LeaderCard> result = new ArrayList<>();
         for(LeaderCard leaderCard: this.notPlayedCards)
+            result.add(new LeaderCard(leaderCard));
+        return result;
+    }
+
+    public List<LeaderCard> getAlreadyUsedOneShotCard(){
+        if(this.alreadyUsedOneShotCard.isEmpty() == true)
+            return new ArrayList<>();
+        List<LeaderCard> result = new ArrayList<>();
+        for(LeaderCard leaderCard: this.alreadyUsedOneShotCard)
             result.add(new LeaderCard(leaderCard));
         return result;
     }

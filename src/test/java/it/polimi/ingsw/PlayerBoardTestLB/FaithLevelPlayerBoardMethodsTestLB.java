@@ -23,7 +23,7 @@ public class FaithLevelPlayerBoardMethodsTestLB {
         playerBoard = new PlayerBoard();
         popeTileList = new ArrayList<>();
         popeTileList.add(new PopeTile(1, ReportNum.REPORT1));
-        popeTileList.add(new PopeTile(2, ReportNum.REPORT2));
+        popeTileList.add(new PopeTile(10, ReportNum.REPORT2));
         popeTileList.add(new PopeTile(3, ReportNum.REPORT3));
         ReportNumOrder.deleteState();
         FaithTrack.deleteState();
@@ -152,8 +152,41 @@ public class FaithLevelPlayerBoardMethodsTestLB {
         assertTrue(pT.get(0).isActivated());
         assertTrue(pT.get(1).isActivated());
         assertTrue(pT.get(2).isActivated());
+    }
 
+    @Test
+    //Tests that a player gets the correct points due to their position on the FaithTrack
+    public void ctrlCellPoints(){
+        playerBoard.setPlayerFaithLevelPopeTiles(popeTileList);
 
+        try {
+            assertFalse(playerBoard.moveForwardOnFaithTrack(6));
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(playerBoard.getCellPoints(), 2);
+    }
+
+    @Test
+    //Tests that a player gets the correct points from their PopeTiles
+    public void ctrlPopeTilePoints(){
+        playerBoard.setPlayerFaithLevelPopeTiles(popeTileList);
+        PopeCell pC = (PopeCell) ft.getCell(8);
+        ControllerStub cS = new ControllerStub(playerBoard);
+        pC.detach(pC.getObserversList().get(0));
+        pC.attach(cS);
+        pC = (PopeCell) ft.getCell(16);
+        pC.detach(pC.getObserversList().get(0));
+        pC.attach(cS);
+
+        try {
+            playerBoard.moveForwardOnFaithTrack(17);
+        } catch (LastVaticanReportException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(playerBoard.getPopeTilesPoints(), 11); //The first two tiles are active, the last one is not changed
     }
 
 }

@@ -76,4 +76,9 @@ public class DiscountLeaderEffect extends Effect{
         DiscountLeaderEffect tmp = (DiscountLeaderEffect) obj;
         return this.discountAmount == tmp.discountAmount && this.discountType.equals(tmp.discountType);
     }
+
+    @Override
+    public boolean isOneShotCard() {
+        return false;
+    }
 }

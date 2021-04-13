@@ -5,13 +5,17 @@ import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.FaithTrack.FaithTrack;
 import it.polimi.ingsw.FaithTrack.ReportNumOrder;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
+import it.polimi.ingsw.LeaderCard.LeaderCards;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
 import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementColor;
 import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementColorAndLevel;
 import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
@@ -160,5 +164,190 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         assertEquals(playerBoard.getActiveLeaderCards().size(), 1);
         assertEquals(playerBoard.getActiveLeaderCards().get(0), list.get(1));
     }
+
+    @Test
+    //Tests that the PlayerBoard deals correctly with one-shot cards:
+    public void ctrlOneShotCards(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        //metRequirements.add(req3);
+        Effect effect = new ExtraSlotLeaderEffect(ResourceType.COIN, 2);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
+
+        assertTrue(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
+        assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
+        assertEquals(playerBoard.getNotPlayedLeaderCards().size(), 1);
+        assertTrue(playerBoard.getNotPlayedLeaderCards().containsAll(list) && list.containsAll(playerBoard.getNotPlayedLeaderCards()));
+        assertNotSame(playerBoard.getNotPlayedLeaderCards(), list);
+        assertTrue(playerBoard.getNotPlayedLeaderCards().contains(met));
+
+        try {
+            assertTrue(playerBoard.activateLeaderCard(met));
+        } catch (UnmetRequirementException e) {
+            e.printStackTrace();
+        }
+        assertTrue(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
+        assertEquals(playerBoard.getActiveLeaderCards().size(), 1);
+        assertTrue(playerBoard.getActiveLeaderCards().contains(met));
+        assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
+
+        Effect effect1 = new Effect();
+
+        try {
+            effect1 = playerBoard.getEffectFromCard(met);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(playerBoard.getAlreadyUsedOneShotCard().size(), 1);
+        assertTrue(playerBoard.getAlreadyUsedOneShotCard().contains(met));
+        assertEquals(playerBoard.getActiveLeaderCards().size(), 1);
+        assertTrue(playerBoard.getActiveLeaderCards().contains(met));
+        assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
+
+        LeaderCard met2 = met;
+        IllegalActionException exception = assertThrows(IllegalActionException.class, () -> playerBoard.getEffectFromCard(met2));
+        assertEquals(exception.getMessage(), "This Card can only be used once: it has already been used!");
+
+        assertEquals(playerBoard.getAlreadyUsedOneShotCard().size(), 1);
+        assertTrue(playerBoard.getAlreadyUsedOneShotCard().contains(met));
+        assertEquals(playerBoard.getActiveLeaderCards().size(), 1);
+        assertTrue(playerBoard.getActiveLeaderCards().contains(met));
+        assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
+    }
+
+    @Test
+    public void ctrlNotOneShotCard(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
+
+        assertTrue(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
+
+        try {
+            playerBoard.activateLeaderCard(met);
+        } catch (UnmetRequirementException e) {
+            e.printStackTrace();
+        }
+
+        Effect effect2 = new Effect();
+        try {
+            effect2 = playerBoard.getEffectFromCard(met);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
+
+        Effect effect3 = new Effect();
+        try {
+            effect3 = playerBoard.getEffectFromCard(met);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+        assertTrue(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
+    }
+
+    @Test
+    //Tests that a player gets the right points from their active LeaderCards
+    public void ctrlLeaderCardPoints(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        LeaderCard dumbCard = new LeaderCard(10, new ArrayList<>(), new Effect());
+        list.add(dumbCard);
+        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
+
+        try {
+            playerBoard.activateLeaderCard(met);
+        } catch (UnmetRequirementException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(playerBoard.getLeaderCardsPoints(), 3);
+    }
+
+    @Test
+    //Tests that the requirements of a player's active LeaderCard are returned
+    public void ctrlActiveLeaderCardReturnedRequirements(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
+
+        try {
+            playerBoard.activateLeaderCard(met);
+        } catch (UnmetRequirementException e) {
+            e.printStackTrace();
+        }
+
+        List<Requirement> copy = playerBoard.getLeaderCardRequirements(met);
+
+        assertNotSame(copy, metRequirements);
+        assertEquals(copy.size(), metRequirements.size());
+        for(int i = 0; i < list.size(); i++){
+            assertEquals(copy.get(i), metRequirements.get(i));
+            assertNotSame(copy.get(i), metRequirements.get(i));
+        }
+    }
+
+    @Test
+    //Tests that the requirements of a player's not-played LeaderCard are returned
+    public void ctrlNotPlayedCardReturnedRequirements(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> unmetRequirements = new ArrayList<>();
+        unmetRequirements.add(req1);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard unmet = new LeaderCard(3, unmetRequirements, effect);
+        list.add(unmet); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
+
+
+        List<Requirement> copy = playerBoard.getLeaderCardRequirements(unmet);
+
+        assertNotSame(copy, unmetRequirements);
+        assertEquals(copy.size(), unmetRequirements.size());
+        for(int i = 0; i < list.size(); i++){
+            assertEquals(copy.get(i), unmetRequirements.get(i));
+            assertNotSame(copy.get(i), unmetRequirements.get(i));
+        }
+    }
+
+    @Test
+    //Tests that the requirements of a LeaderCard the player doesn't hold are not returned
+    public void ctrlNotHoldCardReturnedRequirements(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> unmetRequirements = new ArrayList<>();
+        unmetRequirements.add(req1);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard unmet = new LeaderCard(3, unmetRequirements, effect);
+        list.add(unmet); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
+
+        LeaderCard fakeLD = new LeaderCard(2, unmetRequirements, effect);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> playerBoard.getLeaderCardRequirements(fakeLD));
+        assertEquals(exception.getMessage(), "The player doesn't hold this card!");
+    }
+
 
 }

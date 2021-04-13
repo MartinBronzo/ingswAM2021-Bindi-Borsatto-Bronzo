@@ -10,6 +10,7 @@ import it.polimi.ingsw.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
 import it.polimi.ingsw.LeaderCardRequirementsTests.*;
@@ -189,7 +190,7 @@ public class LeaderCardsTest {
 
     @Test
     //Tests what happens when the player asks for the effect of a LeaderCard
-    public void ctrlEffect() throws NegativeQuantityException {
+    public void ctrlEffect() throws NegativeQuantityException, IllegalActionException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -326,5 +327,86 @@ public class LeaderCardsTest {
         assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getQuantity(), req3.getQuantity());
 
 
+    }
+
+    @Test
+    //Tests that LeaderCard with a one-shot effect such as ExtraSlotEffect can't be activated twice
+    public void ctrlOneShotCard(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        metRequirements.add(req3);
+        Effect effect = new ExtraSlotLeaderEffect(ResourceType.COIN, 2);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        LeaderCards leaderCards = new LeaderCards(list);
+
+        assertTrue(leaderCards.getAlreadyUsedOneShotCard().isEmpty());
+
+        try {
+            leaderCards.activateLeaderCard(met, playerResourcesAndCards);
+        } catch (UnmetRequirementException e) {
+            e.printStackTrace();
+        }
+
+        Effect effect2 = new Effect();
+        try {
+            effect2 = leaderCards.getEffectFromCard(met);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+
+        assertNotSame(effect2, effect);
+        assertEquals(effect2, effect);
+        assertEquals(leaderCards.getAlreadyUsedOneShotCard().size(), 1);
+        assertTrue(leaderCards.getAlreadyUsedOneShotCard().contains(met));
+
+        IllegalActionException exception = assertThrows(IllegalActionException.class, () -> leaderCards.getEffectFromCard(met));
+        assertEquals(exception.getMessage(), "This Card can only be used once: it has already been used!");
+        assertEquals(leaderCards.getAlreadyUsedOneShotCard().size(), 1);
+        assertTrue(leaderCards.getAlreadyUsedOneShotCard().contains(met));
+
+    }
+
+    @Test
+    //Tests that not-one-shot card are not labeled as such
+    public void ctrlNotOneShotCard(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        metRequirements.add(req3);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        LeaderCards leaderCards = new LeaderCards(list);
+
+        assertTrue(leaderCards.getAlreadyUsedOneShotCard().isEmpty());
+
+        try {
+            leaderCards.activateLeaderCard(met, playerResourcesAndCards);
+        } catch (UnmetRequirementException e) {
+            e.printStackTrace();
+        }
+
+        Effect effect2 = new Effect();
+        try {
+            effect2 = leaderCards.getEffectFromCard(met);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+
+        assertNotSame(effect2, effect);
+        assertEquals(effect2, effect);
+        assertTrue(leaderCards.getAlreadyUsedOneShotCard().isEmpty());
+
+        Effect effect3 = new Effect();
+        try {
+            effect3 = leaderCards.getEffectFromCard(met);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+        assertNotSame(effect3, effect);
+        assertEquals(effect3, effect);
+        assertTrue(leaderCards.getAlreadyUsedOneShotCard().isEmpty());
     }
 }

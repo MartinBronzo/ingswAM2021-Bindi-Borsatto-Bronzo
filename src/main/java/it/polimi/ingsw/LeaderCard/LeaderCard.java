@@ -82,12 +82,26 @@ public class LeaderCard {
     }
 
 
+    //Only used during testing
+    @Deprecated
+    public List<Requirement> getRequirementsList(){
+        return new ArrayList<>(this.requirementsList);
+    }
+
     /**
      * Returns a copy of all of the requirements
      * @return a list of the requirements for this LeaderCard
      */
-    public List<Requirement> getRequirementsList(){
-        return new ArrayList<>(this.requirementsList);
+    public List<Requirement> getRequirementsListSafe(){
+        List<Requirement> result = new ArrayList<>();
+        for(Requirement req: this.requirementsList) {
+            try {
+                result.add(req.getClone());
+            } catch (NegativeQuantityException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     /**

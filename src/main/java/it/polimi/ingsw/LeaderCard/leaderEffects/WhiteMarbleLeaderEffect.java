@@ -78,4 +78,9 @@ public class WhiteMarbleLeaderEffect extends Effect{
         WhiteMarbleLeaderEffect tmp = (WhiteMarbleLeaderEffect) obj;
         return this.extraResourceType.equals(tmp.extraResourceType) && this.extraResourceAmount == tmp.extraResourceAmount;
     }
+
+    @Override
+    public boolean isOneShotCard() {
+        return false;
+    }
 }
