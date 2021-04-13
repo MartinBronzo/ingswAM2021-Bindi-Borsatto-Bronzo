@@ -3,6 +3,7 @@ package it.polimi.ingsw.FaithTrack;
 import it.polimi.ingsw.Interfaces.Observer;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class FaithTrack {
      * Contains the order of the ReportNum
      */
     private ReportNumOrder reportNumOrder;
+    private boolean isReportNumOrderSet;
 
     /**
      * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. It saves the order of the Vatican Reports and it initiates the track
@@ -33,11 +35,24 @@ public class FaithTrack {
         this.track = new ArrayList<>();
         this.reportNumOrder = reportNumOrder;
         this.initTrack();
+        this.isReportNumOrderSet = true;
+    }
+
+    /**
+     * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. The constructed FaithTrack won't have a ReportNumOrder associated to it: this
+     * will be done in a later moment
+     * @param config the file where to read the design of the track
+     */
+    private FaithTrack(File config){
+        this.track = new ArrayList<>();
+        this.reportNumOrder = null;
+        this.initTrack(config);
+        this.isReportNumOrderSet = false;
     }
 
     /**
      * Constructs the only instance of the FaithTrack class. It constructs the object the first time this method is called. The other times it simply returns
-     * the instance of FaithTrack already constructed.
+     * the instance of the FaithTrack already constructed.
      * @param reportNumOrder the order of the Reports Num needed to build the instance of the class
      * @return the only instance of the class
      */
@@ -48,12 +63,24 @@ public class FaithTrack {
     }
 
     /**
-     * Constructs the ensemble of cells which constitute the track. The initiation of the track is only done one: that's why the method is private and it is only called in
-     * the private constructor
-     * @return true if the first initiation, false otherwise
+     * Constructs the only instance of the FaithTrack class. It constructs the object the first time this method is called. The other times it simply returns
+     * the instance of the FaithTrack already constructed.
+     * @param config the file where to read the description of the FaithTrack
+     * @return the only instance of the class
      */
-    // Right now, I fill the list one cell at the time. Maybe in the future we can read from an XML file how the track is designed.
 
+    public static FaithTrack instance(File config){
+        if(instance == null)
+            instance = new FaithTrack(config);
+        return instance;
+    }
+
+    /**
+     * Constructs the ensemble of cells which constitute the track. The initiation of the track is only done once: that's why the method is private and it is only called in
+     * the private constructor
+     * @return true if the initiation went fine
+     */
+    // I fill the list one cell at the time
     private boolean initTrack(){
         //If we have already designed the Track, we can't change it here
         //if(!track.isEmpty()) return false;
@@ -94,6 +121,64 @@ public class FaithTrack {
         popeCell3.attach(observer3);
 
         return true;
+    }
+
+    /**
+     * Constructs the ensemble of cells which constitute the track. The initiation of the track is only done once: that's why the method is private and it is only called in
+     * the private constructor
+     * @param config the file where to retrieve the information for the configuration
+     * @return true if the initiation went fine
+     */
+    //Right now this method is not reading from an XML file how the track is designed. TODO: implement la lettura della configurazione dall'XML
+    private boolean initTrack(File config){
+        track.add(new Cell(0, ReportNum.REPORT1));
+        track.add(new Cell(0, ReportNum.REPORT1));
+        track.add(new Cell(0, ReportNum.REPORT1));
+        track.add(new Cell(1, ReportNum.REPORT1));
+        track.add(new Cell(0, ReportNum.REPORT1));
+        track.add(new ReportCell(0, ReportNum.REPORT1));
+        track.add(new ReportCell(2, ReportNum.REPORT1));
+        track.add(new ReportCell(0, ReportNum.REPORT1));
+        PopeCell popeCell1 = new PopeCell(0, ReportNum.REPORT1);
+        track.add(popeCell1);
+        track.add(new Cell(4, ReportNum.REPORT2));
+        track.add(new Cell(0, ReportNum.REPORT2));
+        track.add(new Cell(0, ReportNum.REPORT2));
+        track.add(new ReportCell(6, ReportNum.REPORT2));
+        track.add(new ReportCell(0, ReportNum.REPORT2));
+        track.add(new ReportCell(0, ReportNum.REPORT2));
+        track.add(new ReportCell(9, ReportNum.REPORT2));
+        PopeCell popeCell2 = new PopeCell(0, ReportNum.REPORT2);
+        track.add(popeCell2);
+        track.add(new Cell(0, ReportNum.REPORT3));
+        track.add(new Cell(12, ReportNum.REPORT3));
+        track.add(new ReportCell(0, ReportNum.REPORT3));
+        track.add(new ReportCell(0, ReportNum.REPORT3));
+        track.add(new ReportCell(16, ReportNum.REPORT3));
+        track.add(new ReportCell(0, ReportNum.REPORT3));
+        track.add(new ReportCell(0, ReportNum.REPORT3));
+        PopeCell popeCell3 = new PopeCell(20, ReportNum.REPORT3);
+        track.add(popeCell3);
+        return true;
+    }
+
+    /**
+     * Sets the specified ReportNumOrder to the FaithTrack if it hasn't been set before
+     * @param reportNumOrder the ReportNumOrder to link to the FaithTrack
+     * @return true if the ReportNumOrder has been set by this method, false if it had already been set
+     */
+    public boolean setReportNumOrder(ReportNumOrder reportNumOrder){
+        if(isReportNumOrderSet == false){
+            this.reportNumOrder = reportNumOrder;
+            this.isReportNumOrderSet = true;
+            return true;
+        }
+        return false;
+    }
+
+    //This method is only used for testing purposes
+    public boolean isReportNumOrderSet() {
+        return isReportNumOrderSet;
     }
 
     /**

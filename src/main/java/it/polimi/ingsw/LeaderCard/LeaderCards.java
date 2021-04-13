@@ -126,14 +126,15 @@ public class LeaderCards {
         return leaderCard.getRequirementsListSafe();
     }
 
-    /**
-     * Returns a copy of the active cards list
-     * @return a copy of the active cards list
-     */
+
 /*    public List<LeaderCard> getActiveCards() {
         return new ArrayList<>(activeCards);
     }
 */
+    /**
+     * Returns a copy of the active cards list
+     * @return a copy of the active cards list
+     */
     public List<LeaderCard> getActiveCards() {
         if(this.activeCards.isEmpty() == true)
         //    throw new IllegalActionException("The player has no active cards!");
@@ -144,6 +145,10 @@ public class LeaderCards {
         return result;
     }
 
+    /**
+     * Returns a copy of the not-played card list
+     * @return a copy of the not-played card list
+     */
     public List<LeaderCard> getNotPlayedCards(){
         if(this.notPlayedCards.isEmpty() == true)
             return new ArrayList<>();
@@ -153,6 +158,10 @@ public class LeaderCards {
         return result;
     }
 
+    /**
+     * Returns a copy of the one-shot LeaderCards which were used once before
+     * @return a copy of the already used one-shot LeaderCards
+     */
     public List<LeaderCard> getAlreadyUsedOneShotCard(){
         if(this.alreadyUsedOneShotCard.isEmpty() == true)
             return new ArrayList<>();
@@ -163,10 +172,23 @@ public class LeaderCards {
     }
 
     /**
-     * Returns a copy of the not-played card list
-     * @return a copy of the not-played card list
+     * Returns whether the player holds the specified LeaderCard
+     * @param leaderCard a LeaderCard
+     * @return true if the card is active, false if the card is not played, yet
+     * @throws IllegalArgumentException if the player doesn't hold the card
      */
+    public boolean isLeaderCardActive(LeaderCard leaderCard) throws IllegalArgumentException{
+        if(!this.activeCards.contains(leaderCard) && !this.notPlayedCards.contains(leaderCard))
+            throw new IllegalArgumentException("The player doesn't hold this card!");
+        if(this.notPlayedCards.contains(leaderCard))
+            return false;
+        return true;
+    }
+
+
 /*    public List<LeaderCard> getNotPlayedCards() {
         return new ArrayList<>(notPlayedCards);
     }*/
+
+
 }

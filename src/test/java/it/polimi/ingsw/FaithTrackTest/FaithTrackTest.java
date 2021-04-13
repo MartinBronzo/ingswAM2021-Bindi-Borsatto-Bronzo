@@ -6,6 +6,8 @@ import it.polimi.ingsw.FaithTrack.*;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
 public class FaithTrackTest {
 
     @Test
@@ -119,6 +121,163 @@ public class FaithTrackTest {
         assertEquals(faithTrack.getTrackSize(), 25);
 
     }
+
+    @Test
+    //Tests creation of Faith Track with the configuration file
+    //Right now, this method tests that the right methods are called thanks to overloading. In the near future, I'll
+    //implement the actual configuration via file
+    public void ctrlTrackCreationWithConfigFile(){
+        FaithTrack.deleteState();
+        File config = new File("MarketConfig.xsd.xml");
+        FaithTrack faithTrack = FaithTrack.instance(config);
+
+        //REPORT1
+        //Cells 0-4: Normal Cells
+        for(int i = 0; i < 5; i++) {
+            assertFalse(faithTrack.callCellEffectBasic(i));
+            assertEquals(faithTrack.getCellVictoryPoints(i), (i != 3) ? 0 : 1);
+            assertEquals(faithTrack.getCellReportNum(i), ReportNum.REPORT1);
+            assertFalse(faithTrack.callCellActivateTile(i, ReportNum.REPORT1));
+        }
+
+        //Cells 5-7: Report Cells
+        for(int i = 5; i < 8; i++) {
+            assertFalse(faithTrack.callCellEffectBasic(i));
+            assertEquals(faithTrack.getCellVictoryPoints(i), (i != 6) ? 0 : 2);
+            assertEquals(faithTrack.getCellReportNum(i), ReportNum.REPORT1);
+            assertTrue(faithTrack.callCellActivateTile(i, ReportNum.REPORT1));
+        }
+
+        //Cell 8: PopeCell
+        assertTrue(faithTrack.callCellEffectBasic(8));
+        assertEquals(faithTrack.getCellVictoryPoints(8), 0);
+        assertEquals(faithTrack.getCellReportNum(8), ReportNum.REPORT1);
+        assertTrue(faithTrack.callCellActivateTile(8, ReportNum.REPORT1));
+
+        //REPORT2
+        //Cells 9-11: Normal Cells
+        for(int i = 9; i < 12; i++) {
+            assertFalse(faithTrack.callCellEffectBasic(i));
+            assertEquals(faithTrack.getCellVictoryPoints(i), (i != 9) ? 0 : 4);
+            assertEquals(faithTrack.getCellReportNum(i), ReportNum.REPORT2);
+            assertFalse(faithTrack.callCellActivateTile(i, ReportNum.REPORT2));
+        }
+
+        //Cells 12-15: Report Cells
+        for(int i = 12; i < 16; i++) {
+            assertFalse(faithTrack.callCellEffectBasic(i));
+            assertEquals(faithTrack.getCellVictoryPoints(i), (i != 12 && i != 15) ? 0 : ((i == 12) ? 6 : 9));
+            assertEquals(faithTrack.getCellReportNum(i), ReportNum.REPORT2);
+            assertTrue(faithTrack.callCellActivateTile(i, ReportNum.REPORT2));
+        }
+
+        //Cell 16: PopeCell
+        assertTrue(faithTrack.callCellEffectBasic(16));
+        assertEquals(faithTrack.getCellVictoryPoints(16), 0);
+        assertEquals(faithTrack.getCellReportNum(16), ReportNum.REPORT2);
+        assertTrue(faithTrack.callCellActivateTile(16, ReportNum.REPORT2));
+
+        //REPORT3
+        //Cells 17-18: Normal Cells
+        for(int i = 17; i < 19; i++) {
+            assertFalse(faithTrack.callCellEffectBasic(i));
+            assertEquals(faithTrack.getCellVictoryPoints(i), (i != 18) ? 0 : 12);
+            assertEquals(faithTrack.getCellReportNum(i), ReportNum.REPORT3);
+            assertFalse(faithTrack.callCellActivateTile(i, ReportNum.REPORT3));
+        }
+
+        //Cells 19-23: Report Cells
+        for(int i = 19; i < 24; i++) {
+            assertFalse(faithTrack.callCellEffectBasic(i));
+            assertEquals(faithTrack.getCellVictoryPoints(i), (i != 21) ? 0 : 16);
+            assertEquals(faithTrack.getCellReportNum(i), ReportNum.REPORT3);
+            assertTrue(faithTrack.callCellActivateTile(i, ReportNum.REPORT3));
+        }
+
+        //Cell 24: PopeCell
+        assertTrue(faithTrack.callCellEffectBasic(24));
+        assertEquals(faithTrack.getCellVictoryPoints(24), 20);
+        assertEquals(faithTrack.getCellReportNum(24), ReportNum.REPORT3);
+        assertTrue(faithTrack.callCellActivateTile(24, ReportNum.REPORT3));
+
+        assertEquals(faithTrack.getTrackSize(), 25);
+    }
+
+    @Test
+    //Tests that there can only be once instance of the FaithTrack class, even when we create the FaithTrack with the configuration file
+    public void onlyOneInstanceWithConfigFile(){
+        FaithTrack.deleteState();
+        File config = new File("MarketConfig.xsd.xml");
+        FaithTrack faithTrack = FaithTrack.instance(config);
+
+        FaithTrack faithTrack2 = FaithTrack.instance(config);
+        assertSame(faithTrack, faithTrack2);
+
+        FaithTrack faithTrack3 = FaithTrack.instance(config);
+        assertSame(faithTrack, faithTrack3);
+    }
+
+    @Test
+    //Tests that the ReportNumOrder can be set after the FaithTrack construction via configuration file
+    public void ctrlReportNumOrderSettingWithConfigFile(){
+        FaithTrack.deleteState();
+        File config = new File("MarketConfig.xsd.xml");
+        FaithTrack faithTrack = FaithTrack.instance(config);
+
+        assertFalse(faithTrack.isReportNumOrderSet());
+
+        ReportNumOrder copy = faithTrack.getReportNumOrder();
+        assertNull(copy);
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        assertTrue(faithTrack.setReportNumOrder(reportNumOrder));
+
+        copy = faithTrack.getReportNumOrder();
+        assertSame(copy, reportNumOrder);
+        assertTrue(faithTrack.isReportNumOrderSet());
+    }
+
+
+    @Test
+    //Tests that, once set, the ReportNumOrder can't be changed: FaithTrack created without the configuration file
+    public void ctrlReportNumOrderNotSetting(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack faithTrack = FaithTrack.instance(reportNumOrder);
+
+        assertTrue(faithTrack.isReportNumOrderSet());
+
+        ReportNumOrder copy = faithTrack.getReportNumOrder();
+        assertSame(copy, reportNumOrder);
+
+        assertFalse(faithTrack.setReportNumOrder(ReportNumOrder.instance()));
+
+        assertTrue(faithTrack.isReportNumOrderSet());
+
+        copy = faithTrack.getReportNumOrder();
+        assertSame(copy, reportNumOrder);
+    }
+
+    @Test
+    //Tests that, once set, the ReportNumOrder can't be changed: FaithTrack created with the configuration file
+    public void ctrlReportNumOrderNotSettingWithConfigFile(){
+        FaithTrack.deleteState();
+        File config = new File("MarketConfig.xsd.xml");
+        FaithTrack faithTrack = FaithTrack.instance(config);
+
+        assertFalse(faithTrack.isReportNumOrderSet());
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        assertTrue(faithTrack.setReportNumOrder(reportNumOrder));
+        assertTrue(faithTrack.isReportNumOrderSet());
+
+
+        assertFalse(faithTrack.setReportNumOrder(reportNumOrder));
+        assertTrue(faithTrack.isReportNumOrderSet());
+
+    }
+
 
     @Test
     //Tests the forwarding of request to Cells with different position given as inputs

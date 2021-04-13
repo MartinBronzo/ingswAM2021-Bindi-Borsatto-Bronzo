@@ -3,10 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevSlot;
 import it.polimi.ingsw.DevCards.DevSlots;
-import it.polimi.ingsw.FaithTrack.FaithLevel;
-import it.polimi.ingsw.FaithTrack.FaithTrack;
-import it.polimi.ingsw.FaithTrack.PopeTile;
-import it.polimi.ingsw.FaithTrack.ReportNum;
+import it.polimi.ingsw.FaithTrack.*;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
 import it.polimi.ingsw.LeaderCard.LeaderCards;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
@@ -97,7 +94,7 @@ public class PlayerBoard {
     }
 
     /**
-     * Discards the specified LeaderCard from the not-played LeaderCards the player holds
+     * Discards the specified LeaderCard from the not-played LeaderCards the player holds and lets the player have some benefits from it
      * @param leaderCard a LeaderCard to be discarded
      * @throws IllegalArgumentException if the card can't be discarded
      * @throws LastVaticanReportException if the last Vatican Report was activated
@@ -105,6 +102,16 @@ public class PlayerBoard {
     public void discardLeaderCard(LeaderCard leaderCard) throws IllegalArgumentException, LastVaticanReportException {
         HashMap<ResourceType, Integer> outputWhenDiscarded = this.leaderCards.discardLeaderCard(leaderCard);
         this.moveForwardOnFaithTrack(outputWhenDiscarded.get(ResourceType.FAITHPOINT));
+    }
+
+    /**
+     * Discards the specified LeaderCard from the not-played LeaderCards the player holds and doesn't give the player any benefits. This method is
+     * used at the configuration of the game when the player is given a certain amount of LeaderCards but they can't keel all of them
+     * @param leaderCard a LeaderCard to be discarded
+     * @throws IllegalArgumentException if the card can't be discarded
+     */
+    public void discardLeaderCardAtTheBeginning(LeaderCard leaderCard) throws IllegalArgumentException{
+        this.leaderCards.discardLeaderCard(leaderCard);
     }
 
     /**
@@ -142,6 +149,16 @@ public class PlayerBoard {
      */
     public int getLeaderCardsPoints(){
         return this.leaderCards.getLeaderCardsPoints();
+    }
+
+    /**
+     * Returns whether the player holds the specified LeaderCard
+     * @param leaderCard a LeaderCard
+     * @return true if the card is active, false if the card is not played, yet
+     * @throws IllegalArgumentException if the player doesn't hold the card
+     */
+    public boolean isLeaderCardActive(LeaderCard leaderCard) throws IllegalArgumentException{
+        return leaderCards.isLeaderCardActive(leaderCard);
     }
 
     /*

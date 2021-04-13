@@ -349,5 +349,80 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         assertEquals(exception.getMessage(), "The player doesn't hold this card!");
     }
 
+    @Test
+    //Tests that the PlayerBoard answers correctly when it is asked whether a LeaderCard is active: the player doesn't hold the card
+    public void ctrlNotHoldActivationQuestion(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+        LeaderCard dumbLD = new LeaderCard(4, metRequirements, effect);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> playerBoard.isLeaderCardActive(dumbLD));
+        assertEquals(exception.getMessage(), "The player doesn't hold this card!");
+    }
+
+    @Test
+    //Tests that the PlayerBoard answers correctly when it is asked whether a LeaderCard is active: the player does hold the card ant it is active
+    public void ctrlActiveActivationQuestion(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+
+        try {
+            playerBoard.activateLeaderCard(met);
+        } catch (UnmetRequirementException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(playerBoard.isLeaderCardActive(met));
+    }
+
+    @Test
+    //Tests that the PlayerBoard answers correctly when it is asked whether a LeaderCard is active: the player does hold the card but it is not active
+    public void ctrlNotPlayedActivationQuestion(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard met = new LeaderCard(3, metRequirements, effect);
+        list.add(met); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+
+        assertFalse(playerBoard.isLeaderCardActive(met));
+    }
+
+    @Test
+    //Tests the correct discard of LeaderCards as if we were at the beginning of the game
+    public void ctrlLeaderCardDiscardAtBeginning(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        LeaderCard met = new LeaderCard(3, metRequirements, new Effect());
+        list.add(met); //This card can be activated
+        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
+
+        assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
+        assertTrue(playerBoard.getNotPlayedLeaderCards().contains(met));
+        assertEquals(playerBoard.getNotPlayedLeaderCards().size(), 1);
+
+        assertEquals(playerBoard.getPositionOnFaithTrack(), 0);
+
+        playerBoard.discardLeaderCardAtTheBeginning(met);
+
+        assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
+        assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
+        assertEquals(playerBoard.getPositionOnFaithTrack(), 0); //The player was on position number 0
+
+    }
+
 
 }

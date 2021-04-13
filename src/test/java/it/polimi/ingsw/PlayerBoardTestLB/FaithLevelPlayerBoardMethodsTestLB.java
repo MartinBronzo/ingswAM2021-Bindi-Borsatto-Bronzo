@@ -189,4 +189,5 @@ public class FaithLevelPlayerBoardMethodsTestLB {
         assertEquals(playerBoard.getPopeTilesPoints(), 11); //The first two tiles are active, the last one is not changed
     }
 
+
 }
