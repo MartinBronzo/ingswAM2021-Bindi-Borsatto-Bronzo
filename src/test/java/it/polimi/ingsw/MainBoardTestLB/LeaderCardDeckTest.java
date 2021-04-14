@@ -149,5 +149,10 @@ public class LeaderCardDeckTest {
             }
    }
 
+   /*@Test
+    public void ctrlCreationWithConfigFile(){
+        leaderCardDeck = new LeaderCardDeck("LeaderCardConfig.xml");
+   }*/
+
 
 }
