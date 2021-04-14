@@ -35,6 +35,7 @@ public class SoloBoard extends MainBoard {
         catch (LastVaticanReportException e){
             e.printStackTrace();
             //TODO: DO SOMETHING
+            return false;
         }
         return true;
     }

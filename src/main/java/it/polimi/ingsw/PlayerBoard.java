@@ -10,6 +10,7 @@ import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.exceptions.*;
 
+import java.net.ResponseCache;
 import java.util.*;
 
 public class PlayerBoard {
@@ -201,7 +202,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative
      * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the extra slot
      */
-    public boolean addResourceToDepot(ResourceType resourceType, int quantity) throws NotEnoughSpaceException, IllegalArgumentException, NoExtraSlotException, FullExtraSlotException {
+    public boolean addResourceToLeader(ResourceType resourceType, int quantity) throws NotEnoughSpaceException, IllegalArgumentException, NoExtraSlotException, FullExtraSlotException {
         this.depot.addToLeader(resourceType,quantity);
         return true;
     }
@@ -224,19 +225,89 @@ public class PlayerBoard {
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative
      */
-    public boolean removeResourceFromDepot(ResourceType resourceType, int quantity) throws IllegalArgumentException, NotEnoughResourcesException, NoExtraSlotException {
+    public boolean removeResourceFromLeader(ResourceType resourceType, int quantity) throws IllegalArgumentException, NotEnoughResourcesException, NoExtraSlotException {
         this.depot.removeFromLeader(resourceType,quantity);
         return true;
     }
 
+    /**
+     * Returns the number of resources of the specified type that are currently in the depot
+     * @param resource the resource you want to know the quantity
+     * @return the number of resources of the specified type that are currently in the depot
+     * @throws IllegalArgumentException if the resource is a faith point
+     */
+    public int getResourceFromDepot(ResourceType resource)throws IllegalArgumentException{
+        return depot.getResourceFromDepot(resource);
+    }
 
-    /*
-    public boolean activateExtraLeaderCard(LeaderCard leaderCard){
+    /**
+     * Returns the type of the resource that is contained in the specified shelf
+     * @param shelf the shelf of which you want to know the type of the contained resources, must be between 1 and 3
+     * @return the type of the resource that is contained in the specified shelf
+     * @throws IllegalArgumentException if the shelf isn't between 1 and 3
+     */
+    public ResourceType getResourceTypeFromShelf(int shelf) throws IllegalArgumentException{
+        return depot.getShelfType(shelf);
+    }
+
+    /**
+     * Switches the resources between sourceShelf and destShelf
+     * @param sourceShelf the number of the first shelf, must be between 1 and 3
+     * @param destShelf the number of the second shelf, must be between 1 and 3
+     * @return true if the action is performed without errors
+     * @throws NotEnoughSpaceException if the sourceShelf or the destShelf hasn't enough space to store the resources of the other shelf
+     */
+    public boolean moveBetweenShelves(int sourceShelf, int destShelf) throws NotEnoughSpaceException {
+        depot.moveBetweenShelves(sourceShelf, destShelf);
+        return true;
+    }
+
+    public boolean moveFromShelfToLeader(int shelfNum, int quantity) throws NotEnoughSpaceException, NoExtraSlotException, NotEnoughResourcesException, FullExtraSlotException {
+        depot.moveToLeader(shelfNum, quantity);
+        return true;
+    }
+
+    public boolean moveFromLeaderToShelf(ResourceType resource, int quantity, int shelfNum) throws NotEnoughSpaceException, AlreadyInAnotherShelfException, NoExtraSlotException, NotEnoughResourcesException {
+        depot.moveToShelf(resource, quantity, shelfNum);
+        return true;
+    }
+
+    /**
+     * Addds the resources specified in the map to the strongbox
+     * @param resMap the map with the resource to add
+     * @return true if the action is performed without errors
+     */
+    public boolean addResourcesToStrongbox(HashMap<ResourceType, Integer> resMap) {
+        strongbox.addResource(resMap);
+        return true;
+    }
+
+    /**
+     * Removes the resources specified in the map from the strongbox
+     * @param resMap the map with the resources to remove
+     * @return true if the action is performed without errors
+     * @throws NotEnoughResourcesException if there aren't enough resources to remove
+     */
+    public boolean removeResourcesFromStrongbox(HashMap<ResourceType, Integer> resMap) throws NotEnoughResourcesException {
+        strongbox.removeResource(resMap);
+        return true;
+    }
+
+    /**
+     * Returns the quantity of the specified resource that is in the strongbox
+     * @param resource the resource you want to know the quantity
+     * @return the quantity of the specified resource that is in the strongbox
+     */
+    public int getResourceFromStrongbox(ResourceType resource){
+        return strongbox.getResource(resource);
+    }
+
+    public boolean activateExtraLeaderCard(LeaderCard leaderCard) throws FullExtraSlotException {
         Effect effect = leaderCard.getEffect();
         this.depot.addExtraSlot(leaderCard.getEffect());
         return true;
     }
-    */
+
 
     /*
     ##################
@@ -269,6 +340,27 @@ public class PlayerBoard {
      */
     public void dealWithVaticanReport(ReportNum reportNum) throws IllegalActionException{
         playerFaithLevel.dealWithVaticanReport(reportNum);
+    }
+
+
+    public int calculateVP(){
+        HashMap<ResourceType, Integer> depotRes, strongboxRes;
+        int totalResources;
+        int vp = 0;
+
+        vp += devSlots.getPoints();
+        vp += playerFaithLevel.getCellPoints();
+        vp += playerFaithLevel.getPopeTilesPoints();
+        vp += leaderCards.getLeaderCardsPoints();
+        depotRes = depot.getAllResources();
+        strongboxRes = strongbox.getAllResources();
+        totalResources = 0;
+        for(ResourceType res: strongboxRes.keySet()){
+            totalResources += depotRes.get(res) + strongboxRes.get(res);
+        }
+        vp += totalResources/5;
+
+        return vp;
     }
 
     /**
