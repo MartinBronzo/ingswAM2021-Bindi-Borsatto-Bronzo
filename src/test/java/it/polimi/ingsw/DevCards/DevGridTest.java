@@ -13,10 +13,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -113,7 +111,7 @@ class DevGridTest {
 
     @Test
     void getDrawableCardsTest() throws IllegalArgumentException {
-        Set<DevCard> devCards= devGrid.getDrawableCards();
+        Collection<DevCard> devCards= devGrid.getDrawableCards();
         assertTrue(devCards.stream().allMatch(card -> card.equals(devGrid.getDevCardFromDeck(card.getLevel(), card.getColour()))));
     }
 

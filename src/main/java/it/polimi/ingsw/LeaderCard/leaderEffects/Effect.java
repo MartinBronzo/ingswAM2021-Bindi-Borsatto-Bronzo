@@ -30,7 +30,7 @@ public class Effect {
      */
     public ResourceType extraSlotGetType(){
         return null;
-    };
+    }
 
     /**
      * Returns the number of extra slots which the effect of the LeaderCard enables the player to have
@@ -38,7 +38,7 @@ public class Effect {
      */
     public int extraSlotGetResourceNumber(){
         return 0;
-    };
+    }
 
     /**
      * Discounts the given cost of a DevCard (it applies the discount directly on the specified cost)
@@ -87,5 +87,13 @@ public class Effect {
 
     public boolean isOneShotCard(){
         return false;
+    }
+
+    /**
+     * Returns the resources required in order to produce using this effect
+     * @return the required resources
+     */
+    public HashMap<ResourceType, Integer> getRequiredInput(){
+        return new HashMap<>();
     }
 }

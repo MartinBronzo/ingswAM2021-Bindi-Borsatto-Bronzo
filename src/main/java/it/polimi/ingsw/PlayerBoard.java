@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.DevCards.DevCard;
-import it.polimi.ingsw.DevCards.DevSlot;
 import it.polimi.ingsw.DevCards.DevSlots;
 import it.polimi.ingsw.FaithTrack.*;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
@@ -9,16 +8,16 @@ import it.polimi.ingsw.LeaderCard.LeaderCards;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.exceptions.*;
-
-import java.net.ResponseCache;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PlayerBoard {
-    private FaithLevel playerFaithLevel;
+    private final FaithLevel playerFaithLevel;
     private final Depot depot;
     private final Strongbox strongbox;
     private final DevSlots devSlots;
     private final LeaderCards leaderCards;
+    private final BaseProduction baseProduction;
 
     public PlayerBoard(List<LeaderCard> leaderCards) {
         this.playerFaithLevel = new FaithLevel();
@@ -26,6 +25,7 @@ public class PlayerBoard {
         this.strongbox = new Strongbox();
         this.devSlots = new DevSlots();
         this.leaderCards = new LeaderCards(leaderCards);
+        this.baseProduction = new BaseProduction();
     }
 
     public PlayerBoard() {
@@ -34,6 +34,7 @@ public class PlayerBoard {
         this.strongbox = new Strongbox();
         this.devSlots = new DevSlots();
         this.leaderCards = new LeaderCards();
+        this.baseProduction = new BaseProduction();
     }
 
 
@@ -273,7 +274,7 @@ public class PlayerBoard {
     }
 
     /**
-     * Addds the resources specified in the map to the strongbox
+     * Adds the resources specified in the map to the strongbox
      * @param resMap the map with the resource to add
      * @return true if the action is performed without errors
      */
@@ -411,4 +412,100 @@ public class PlayerBoard {
     public int getPopeTilesPoints(){
         return this.playerFaithLevel.getPopeTilesPoints();
     }
+    /*
+    ####################
+    #PRODUCTION METHODS#
+    ####################
+    */
+
+    /**
+     * Checks if parameters can activate production and if they are ok the production is added to the strongBox
+     * @param alsoBaseProduction is true is BaseProduction must produce
+     * @param ProductiveDevCards is the Collection of devCards owned, which will produces resources.
+     * @param productiveLeaderCardsMap is the Map of LeaderCards active, which will produces extra resources. the values represents the desired extra resource, can't be a faithpoint
+     * @return the number of produced Faithpoints if all the passed cards can produces resources
+     * @throws NullPointerException if one parameter is null
+     * @throws IllegalArgumentException if ProductiveDevCards contains one or more not Usable dev Cards or if one or more productiveLeaderCardsMap key is not one the owned active leaderCards or the desired production for a leader card is faithpoint
+     */
+    public int ActivateProduction(Collection<DevCard> ProductiveDevCards, HashMap<LeaderCard,ResourceType> productiveLeaderCardsMap, boolean alsoBaseProduction) throws NullPointerException, IllegalArgumentException {
+        Collection<DevCard> usableDevCards;
+        List<LeaderCard> activeLeaderCards;
+        HashMap<ResourceType,Integer> productionMap;
+        Set<LeaderCard> productiveLeaderCards;
+
+        if (ProductiveDevCards==null || productiveLeaderCardsMap==null) throw new NullPointerException("devCards or leaderCards are null");
+
+        usableDevCards = this.devSlots.getUsableDevCards();
+        if (!usableDevCards.containsAll(ProductiveDevCards)) throw new IllegalArgumentException("One or more devCards are not activatable cards in the Slot");
+
+        productiveLeaderCards = productiveLeaderCardsMap.keySet();
+        activeLeaderCards = this.leaderCards.getActiveCards();
+        if (!activeLeaderCards.containsAll(productiveLeaderCards)) throw new IllegalArgumentException("One or more leaderCards are not activated player cards");
+        if (productiveLeaderCards.stream().anyMatch(card -> productiveLeaderCardsMap.get(card).isFaithPoint())) throw new IllegalArgumentException("A leader card can't produce faithPoints");
+
+        List<HashMap<ResourceType,Integer>> devCardsMaps = ProductiveDevCards.stream().map(DevCard::getProductionOutput).collect(Collectors.toList());
+        List<HashMap<ResourceType,Integer>> leaderCardsMaps = productiveLeaderCards.stream().map(leaderCard -> leaderCard.getEffect().extraProductionEffect(productiveLeaderCardsMap.get(leaderCard))).collect(Collectors.toList());
+        devCardsMaps.addAll(leaderCardsMaps);
+        if (alsoBaseProduction)
+            devCardsMaps.add(this.baseProduction.getOutputHashMap());
+
+        productionMap=this.sumReduceHashMaps2HashMap(devCardsMaps);
+        int numberOfProducedFaithPoints = productionMap.getOrDefault(ResourceType.FAITHPOINT, 0);
+        if (numberOfProducedFaithPoints!=0) productionMap.remove(ResourceType.FAITHPOINT);
+        strongbox.addResource(productionMap);
+        return numberOfProducedFaithPoints;
+    }
+
+    /**
+     * checks if these cards can produces resources and return the total cost to activate production with these cards
+     * @param ProductiveDevCards  is the Collection of devCards owned, which will produces resources.
+     * @param productiveLeaderCards is the Collection of leaderCards active, which ypu want to activate the production
+     * @param alsoBaseProduction if you want to activate base production
+     * @return the total cost to activate these cards
+     * @throws NullPointerException if one or more parameter is null
+     * @throws IllegalArgumentException if ProductiveDevCards contains one or more not Usable dev Cards or if one or more productiveLeaderCard is not in active leaderCards
+     * @throws IllegalActionException if the cost is bigger than the total resources owned.
+     */
+    public HashMap<ResourceType, Integer> getProductionCost(Collection<DevCard> ProductiveDevCards, Collection<LeaderCard> productiveLeaderCards, boolean alsoBaseProduction) throws NullPointerException, IllegalArgumentException, IllegalActionException {
+        Collection<DevCard> usableDevCards;
+        List<LeaderCard> activeLeaderCards;
+
+        if (ProductiveDevCards==null || productiveLeaderCards==null) throw new NullPointerException("devCards or leaderCards are null");
+
+        usableDevCards = this.devSlots.getUsableDevCards();
+        if (!usableDevCards.containsAll(ProductiveDevCards)) throw new IllegalArgumentException("One or more devCards are not activatable cards in the Slot");
+
+        activeLeaderCards = this.leaderCards.getActiveCards();
+        if (!activeLeaderCards.containsAll(productiveLeaderCards)) throw new IllegalArgumentException("One or more leaderCards are not activated player cards");
+
+        List<HashMap<ResourceType,Integer>> devCardsMaps = ProductiveDevCards.stream().map(DevCard::getProductionOutput).collect(Collectors.toList());
+        List<HashMap<ResourceType,Integer>> leaderCardsMaps = productiveLeaderCards.stream().map(leaderCard -> leaderCard.getEffect().getRequiredInput()).collect(Collectors.toList());
+        devCardsMaps.addAll(leaderCardsMaps);
+        if (alsoBaseProduction)
+            devCardsMaps.add(this.baseProduction.getOutputHashMap());
+
+        HashMap<ResourceType,Integer> costMap=this.sumReduceHashMaps2HashMap(devCardsMaps);
+        Collection<ResourceType> costKeys = costMap.keySet();
+        HashMap<ResourceType,Integer> allResources = this.getAllResources();
+        if (costKeys.stream().anyMatch(key -> costMap.getOrDefault(key,0) > allResources.getOrDefault(key,0)))
+            throw new IllegalActionException("playerboard_getProductionCost:there is not enough resources to activate these cards");
+        return costMap;
+
+
+    }
+
+
+        private HashMap<ResourceType,Integer> sumReduceHashMaps2HashMap(List<HashMap<ResourceType,Integer>> hashMaps){
+        if (hashMaps==null)throw new NullPointerException("sumReduceHashMaps2HashMap: hashMaps are null");
+        HashMap<ResourceType,Integer> finalMap = new HashMap<>();
+        Set<ResourceType> actualKeys;
+        for (HashMap<ResourceType, Integer> actualMap : hashMaps) {
+            actualKeys = actualMap.keySet();
+            actualKeys.stream()
+                    .distinct()
+                    .forEach(key -> finalMap.put(key, finalMap.getOrDefault(key, 0) + actualMap.get(key)));
+        }
+        return finalMap;
+    }
+
 }

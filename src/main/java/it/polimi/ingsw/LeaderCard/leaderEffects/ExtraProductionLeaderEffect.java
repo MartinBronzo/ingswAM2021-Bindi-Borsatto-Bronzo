@@ -22,6 +22,7 @@ public class ExtraProductionLeaderEffect extends Effect{
      * @param requiredInputType the needed type of the resources
      * @param requiredInputNumber the needed number of resources
      */
+
     public ExtraProductionLeaderEffect(ResourceType requiredInputType, int requiredInputNumber) {
         if(requiredInputNumber <= 0)
             throw new IllegalArgumentException("The required amount of resources can't be a number less than or equal to 0!");
@@ -49,6 +50,7 @@ public class ExtraProductionLeaderEffect extends Effect{
 
     //With extra constructs (which enable to set the other attributes of the object as needed), we are able to implement a more custom effect
 
+    @Override
     public HashMap<ResourceType, Integer> extraProductionEffect(ResourceType desiredOutput) throws IllegalArgumentException{
         HashMap<ResourceType, Integer> output = new HashMap<>();
 
@@ -68,6 +70,7 @@ public class ExtraProductionLeaderEffect extends Effect{
      * Returns the resources required in order to produce using this effect
      * @return the required resources
      */
+    @Override
     public HashMap<ResourceType, Integer> getRequiredInput(){
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(this.requiredInputType, this.requiredInputNumber);

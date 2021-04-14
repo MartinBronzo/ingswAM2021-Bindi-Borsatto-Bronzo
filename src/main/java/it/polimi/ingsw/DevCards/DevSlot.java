@@ -65,8 +65,8 @@ public class DevSlot {
     }
 
     /** Gets the LastDev Card in the Slot
-     * @return the Card with the higher level in the Slot, null if there is no Card in the devSlot
-     * @throws NoSuchElementException if DevCard Is Empty
+     * @return the Card with the higher level in the Slot
+     * @throws NoSuchElementException if there is no card in the devSlot
      * */
     public DevCard getLastDevCard() throws NoSuchElementException{
         return devCards.getLast();

@@ -41,7 +41,6 @@ public class WhiteMarbleLeaderEffect extends Effect{
 
 
     //With extra constructs (which enable to set the extraResourceAmount attribute of the object as needed), we are able to implement a more custom effect
-
     @Override
     public boolean whiteMarbleEffect(HashMap<ResourceType, Integer> resourceMap) throws NegativeQuantityException {
         //Gets the MarbleType corresponding to the ResourceType

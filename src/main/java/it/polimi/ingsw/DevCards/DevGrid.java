@@ -191,8 +191,8 @@ public class DevGrid {
     /**
      * @return a list of the uncovered DevCard in the Gris
      */
-    public Set<DevCard> getDrawableCards() {
-        Set<DevCard> devCards = new TreeSet<>();
+    public Collection<DevCard> getDrawableCards() {
+        Collection<DevCard> devCards = new LinkedList<>();
         DevCard devCard;
         for (int i = 0; i < devDecksGrid.length; i++) {
             for (int j = 0; j < devDecksGrid[i].length; j++) {

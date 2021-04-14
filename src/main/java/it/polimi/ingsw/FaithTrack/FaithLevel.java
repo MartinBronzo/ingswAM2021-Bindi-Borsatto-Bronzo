@@ -106,7 +106,7 @@ public class FaithLevel extends FaithLevelBasic{
     //Bisogna prestare attenzione al fatto che se cerchiamo di attivare due volte lo stesso vatican report (con lo stesso ReportNum) le
     //popeCell lanciano eccezioni
     public void dealWithVaticanReport(ReportNum reportNum) throws IllegalActionException {
-        //The position in the PopeTiles list of the PopeTile which has the required reportNum is equal to the position of the required reportNum in the RepportNumOrder list stored in the FaithTrack
+        //The position in the PopeTiles list of the PopeTile which has the required reportNum is equal to the position of the required reportNum in the ReportNumOrder list stored in the FaithTrack
         popeTiles.get(faithTrack.getPopeTileIndex(reportNum)).dealWithVaticanReport(reportNum, faithTrack.callCellActivateTile(this.position, reportNum));
     }
 
