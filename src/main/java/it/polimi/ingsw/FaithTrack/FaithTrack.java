@@ -43,6 +43,7 @@ public class FaithTrack {
      * will be done in a later moment
      * @param config the file where to read the design of the track
      */
+    //Forse è meglio che venga anche inizializzato automaticamente il reportNumOrder una volta lette le celle (si capisce leggendo come è l'ordine dei report che va nel report num order)
     private FaithTrack(File config){
         this.track = new ArrayList<>();
         this.reportNumOrder = null;
@@ -68,7 +69,6 @@ public class FaithTrack {
      * @param config the file where to read the description of the FaithTrack
      * @return the only instance of the class
      */
-
     public static FaithTrack instance(File config){
         if(instance == null)
             instance = new FaithTrack(config);
