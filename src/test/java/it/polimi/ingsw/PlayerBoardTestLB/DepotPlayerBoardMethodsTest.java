@@ -11,7 +11,6 @@ import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.EmptySource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +57,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void removeFromDepotException() throws AlreadyInAnotherShelfException, NotEnoughSpaceException, NotEnoughResourcesException {
+    public void removeFromDepotException() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
         Exception exception;
         playerBoard.addResourceToDepot(shield, 2, 3);
         exception = assertThrows(NotEnoughResourcesException.class, () -> playerBoard.removeResourceFromDepot(3, 3));
@@ -143,8 +142,8 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void addToLeader() throws NoExtraSlotException, FullExtraSlotException, NotEnoughSpaceException, UnmetRequirementException {
-        playerBoard.activateExtraLeaderCard(leaderCard);
+    public void addToLeader() throws NoExtraSlotException, FullExtraSlotException, NotEnoughSpaceException {
+        assertTrue(playerBoard.activateExtraLeaderCard(leaderCard));
         assertTrue(playerBoard.addResourceToLeader(coin, 2));
         assertEquals(playerBoard.getLeaderSlotResourceQuantity(coin),2);
         assertEquals(playerBoard.getLeaderSlotLimitQuantity(coin),2);
