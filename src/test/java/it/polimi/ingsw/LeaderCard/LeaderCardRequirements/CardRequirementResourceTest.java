@@ -1,20 +1,12 @@
-package it.polimi.ingsw.LeaderCardRequirementsTests;
+package it.polimi.ingsw.LeaderCard.LeaderCardRequirements;
 
-import it.polimi.ingsw.Depot;
-import it.polimi.ingsw.DevCards.DevCard;
-import it.polimi.ingsw.DevCards.DevCardColour;
-import it.polimi.ingsw.DevCards.DevSlots;
-import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
-import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;

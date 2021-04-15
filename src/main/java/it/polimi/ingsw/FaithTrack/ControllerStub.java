@@ -22,7 +22,7 @@ public class ControllerStub implements Observer {
         withPlayerBoard = false;
     }
 
-    public ControllerStub(Subject subject, FaithLevel fT1){
+    public ControllerStub(Subject subject, FaithLevel fT1) {
         this.subject = subject;
         this.fT1 = fT1;
         neededToTryTheVaticanReport = true;
@@ -50,22 +50,22 @@ public class ControllerStub implements Observer {
         this.neededToTryTheVaticanReport = neededToTryTheVaticanReport;
     }
 
-    public boolean update(boolean tmp, ReportNum reportNum){
+    public boolean update(boolean tmp, ReportNum reportNum) {
         if (neededToTryTheVaticanReport == true) {
-            if(x == false) {
+            if (x == false) {
                 try {
                     this.fakeVaticanReport(reportNum);
                 } catch (IllegalActionException e) {
                     e.printStackTrace();
                 }
-            }else {
+            } else {
                 try {
                     this.fakeVaticanReportOnePlayer(reportNum);
                 } catch (IllegalActionException e) {
                     e.printStackTrace();
                 }
             }
-        }else if(withPlayerBoard == true){
+        } else if (withPlayerBoard == true) {
             try {
                 this.fakeVaticanReportWithPlayerBoard(reportNum);
             } catch (IllegalActionException e) {
@@ -94,7 +94,7 @@ public class ControllerStub implements Observer {
         fT1.dealWithVaticanReport(rN);
     }
 
-    public ControllerStub(PlayerBoard playerBoard){
+    public ControllerStub(PlayerBoard playerBoard) {
         this.playerBoard = playerBoard;
         neededToTryTheVaticanReport = false;
         this.withPlayerBoard = true;

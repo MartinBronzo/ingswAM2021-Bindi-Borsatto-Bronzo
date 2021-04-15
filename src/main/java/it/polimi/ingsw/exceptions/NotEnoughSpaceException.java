@@ -1,9 +1,9 @@
 package it.polimi.ingsw.exceptions;
 
-public class NotEnoughSpaceException extends Exception{
+public class NotEnoughSpaceException extends Exception {
     int availableSpace;
 
-    public NotEnoughSpaceException(String s, int remainingSpace){
+    public NotEnoughSpaceException(String s, int remainingSpace) {
         super(s);
         this.availableSpace = remainingSpace;
     }

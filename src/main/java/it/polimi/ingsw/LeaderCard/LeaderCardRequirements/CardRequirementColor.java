@@ -1,7 +1,6 @@
-package it.polimi.ingsw.LeaderCardRequirementsTests;
+package it.polimi.ingsw.LeaderCard.LeaderCardRequirements;
 
 import it.polimi.ingsw.DevCards.DevCardColour;
-import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 
@@ -20,12 +19,13 @@ public class CardRequirementColor extends Requirement {
 
     /**
      * Constructs a CardRequirement of DevCards with the specified color
+     *
      * @param cardColour the required color of the DevCard
-     * @param quantity the number of devCards required having this cardColour
+     * @param quantity   the number of devCards required having this cardColour
      * @throws NegativeQuantityException if quantity is negative
      */
     public CardRequirementColor(DevCardColour cardColour, int quantity) throws NegativeQuantityException {
-        if(quantity<0)
+        if (quantity < 0)
             throw new NegativeQuantityException("CardRequirementColor: Quantity must be at least 0");
         this.quantity = quantity;
         this.cardColour = cardColour;
@@ -33,6 +33,7 @@ public class CardRequirementColor extends Requirement {
 
     /**
      * Returns the number of DevCards required
+     *
      * @return the required quantity
      */
     public int getQuantity() {
@@ -41,6 +42,7 @@ public class CardRequirementColor extends Requirement {
 
     /**
      * Returns the required color of the DevCard
+     *
      * @return the required color
      */
     public DevCardColour getCardColour() {
@@ -54,6 +56,7 @@ public class CardRequirementColor extends Requirement {
 
     /**
      * Constructs a clone of the specified CardRequirementColor
+     *
      * @param original the requirement to be cloned
      * @throws NegativeQuantityException if quantity is negative
      */
@@ -68,11 +71,11 @@ public class CardRequirementColor extends Requirement {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null)
             return false;
-        if(obj == this)
+        if (obj == this)
             return true;
-        if(!(obj instanceof CardRequirementColor))
+        if (!(obj instanceof CardRequirementColor))
             return false;
         CardRequirementColor tmp = (CardRequirementColor) obj;
         return this.cardColour.equals(tmp.cardColour) && this.quantity == tmp.quantity;

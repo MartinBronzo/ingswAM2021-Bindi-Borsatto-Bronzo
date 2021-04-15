@@ -17,8 +17,8 @@ public class FaithPointToken extends SoloActionToken implements Subject {
     private final int faithPoints;
     protected boolean shuffleToken;
 
-    public FaithPointToken(int faithPoints){
-        if(faithPoints < 0)
+    public FaithPointToken(int faithPoints) {
+        if (faithPoints < 0)
             throw new IllegalArgumentException("Can't have negative faith points");
         observersList = new ArrayList<>();
         this.faithPoints = faithPoints;
@@ -27,6 +27,7 @@ public class FaithPointToken extends SoloActionToken implements Subject {
 
     /**
      * Activates the effect of the token notifying the observers to move the faith point marker
+     *
      * @return true if the action is performed without errors
      */
     @Override
@@ -37,6 +38,7 @@ public class FaithPointToken extends SoloActionToken implements Subject {
 
     /**
      * Attaches an observer to the token, waiting to be notified
+     *
      * @param observer the Observer
      * @return true if the observer is added wothout errors
      */
@@ -47,6 +49,7 @@ public class FaithPointToken extends SoloActionToken implements Subject {
 
     /**
      * Detaches the observer from the token
+     *
      * @param observer the Observer
      * @return true if the observer is removed wothout errors
      */
@@ -57,17 +60,19 @@ public class FaithPointToken extends SoloActionToken implements Subject {
 
     /**
      * Notifies all the observers that they have to apply the effect of the token
+     *
      * @return true if the action is performed without errors
      */
     @Override
     public boolean notifyObservers() {
-        for(Observer o: observersList)
+        for (Observer o : observersList)
             o.update(this);
         return true;
     }
 
     /**
      * Returns the number of faith point of the token
+     *
      * @return the number of faith point of the token
      */
     public int getFaithPoints() {
@@ -76,6 +81,7 @@ public class FaithPointToken extends SoloActionToken implements Subject {
 
     /**
      * Returns true if the token is a shuffle token, so you have to shuffle the soloActionDeck
+     *
      * @return true if the token is a shuffle token, so you have to shuffle the soloActionDeck
      */
     public boolean isShuffleToken() {

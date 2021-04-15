@@ -10,25 +10,28 @@ import java.util.HashMap;
 
 public class BlueMarble extends Marble {
 
-     /**  increments the ResourceType.SHIELD counter in the Hashmap, if absent add the the key of the specific resource.
-      *   @throws NegativeQuantityException if the mapped value accessed in the method is negative
-      *   @throws NegativeQuantityException doesn't ensure that the hashMap is completely valid
-      *   @throws NullPointerException if ResourceMap is null
-      *   @param resourceMap is modified in this Method
-      *   */
-     @Override
-     public synchronized boolean onActivate(HashMap <ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException, NullPointerException{
-         if (resourceMap==null) throw new NullPointerException("onActivate BlueMarble: not expected NULL resourceMap");
-         
-         ResourceType resource=ResourceType.SHIELD;
-         Integer resourceNumber;
+    /**
+     * increments the ResourceType.SHIELD counter in the Hashmap, if absent add the the key of the specific resource.
+     *
+     * @param resourceMap is modified in this Method
+     * @throws NegativeQuantityException if the mapped value accessed in the method is negative
+     * @throws NegativeQuantityException doesn't ensure that the hashMap is completely valid
+     * @throws NullPointerException      if ResourceMap is null
+     */
+    @Override
+    public synchronized boolean onActivate(HashMap<ResourceType, Integer> resourceMap, Effect effect) throws NegativeQuantityException, NullPointerException {
+        if (resourceMap == null) throw new NullPointerException("onActivate BlueMarble: not expected NULL resourceMap");
 
-         resourceNumber = resourceMap.getOrDefault(resource, 0);
-         if (resourceNumber<0) throw new NegativeQuantityException("onActivate BlueMarble: Negative numbers of resources in hashmap");
+        ResourceType resource = ResourceType.SHIELD;
+        Integer resourceNumber;
 
-         resourceNumber++;
-         resourceMap.put(resource,resourceNumber);
-         return true;
+        resourceNumber = resourceMap.getOrDefault(resource, 0);
+        if (resourceNumber < 0)
+            throw new NegativeQuantityException("onActivate BlueMarble: Negative numbers of resources in hashmap");
+
+        resourceNumber++;
+        resourceMap.put(resource, resourceNumber);
+        return true;
     }
 
     @Override

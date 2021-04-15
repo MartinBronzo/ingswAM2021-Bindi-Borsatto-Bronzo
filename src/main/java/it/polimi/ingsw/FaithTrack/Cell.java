@@ -10,8 +10,9 @@ public class Cell {
 
     /**
      * Constructs a cell
+     *
      * @param vicoryPoints the points of the cell
-     * @param reportNum the vatican report the cell belongs to
+     * @param reportNum    the vatican report the cell belongs to
      */
     public Cell(int vicoryPoints, ReportNum reportNum) {
         this.vicoryPoints = vicoryPoints;
@@ -20,6 +21,7 @@ public class Cell {
 
     /**
      * Gets the victory points of the cells in order to calculate the final points of the player
+     *
      * @return the victory points of the cells
      */
     public int getVicoryPoints() {
@@ -28,6 +30,7 @@ public class Cell {
 
     /**
      * Gets the ReportNum of this cell
+     *
      * @return the ReportNum of the cell
      */
     public ReportNum getReportNum() {
@@ -36,19 +39,21 @@ public class Cell {
 
     /**
      * Activates the effect of the cell. Normal cells have no effect
+     *
      * @return false
      */
     //We have this method returning a boolean because we need the boolean for testing purposes
-    public boolean effect(){
+    public boolean effect() {
         return false;
     }
 
     /**
      * States whether this cell lets the player turn the PopeTile for the activated Vatican Report
+     *
      * @param currentReportNum the activated Vatican Report
      * @return true if the Tile needs to be turned, false otherwise
      */
-    public boolean activatePopeTile(ReportNum currentReportNum){
+    public boolean activatePopeTile(ReportNum currentReportNum) {
         return false;
     }
 }

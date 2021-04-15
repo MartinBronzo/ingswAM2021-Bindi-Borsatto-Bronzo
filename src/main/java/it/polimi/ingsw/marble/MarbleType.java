@@ -15,7 +15,8 @@ public enum MarbleType {
     },
     PURPLEMARBLE {
         @Override
-        public Marble getMarble() { return purpleMarble;
+        public Marble getMarble() {
+            return purpleMarble;
         }
     },
     REDMARBLE {
@@ -37,14 +38,15 @@ public enum MarbleType {
         }
     };
 
-    private final static Marble blueMarble= new BlueMarble();
+    private final static Marble blueMarble = new BlueMarble();
     private final static Marble greyMarble = new GreyMarble();
     private final static Marble purpleMarble = new PurpleMarble();
     private final static Marble redMarble = new RedMarble();
     private final static Marble whiteMarble = new WhiteMarble();
     private final static Marble yellowMarble = new YellowMarble();
 
-    public Marble getMarble() { return null;
+    public Marble getMarble() {
+        return null;
     }
 
 }

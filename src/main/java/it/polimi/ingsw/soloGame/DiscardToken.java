@@ -18,8 +18,8 @@ public class DiscardToken extends SoloActionToken implements Subject {
     private final DevCardColour cardColour;
     private final int numCards;
 
-    public DiscardToken(DevCardColour devCardColour, int numCards){
-        if(numCards < 0)
+    public DiscardToken(DevCardColour devCardColour, int numCards) {
+        if (numCards < 0)
             throw new IllegalArgumentException("Can't discard negative cards");
         observersList = new ArrayList<>();
         this.cardColour = devCardColour;
@@ -28,6 +28,7 @@ public class DiscardToken extends SoloActionToken implements Subject {
 
     /**
      * Activates the effect of the token notifying the observers to discard DevCards from DevGrid
+     *
      * @return true if the action is performed without errors
      */
     @Override
@@ -38,6 +39,7 @@ public class DiscardToken extends SoloActionToken implements Subject {
 
     /**
      * Attaches an observer to the token, waiting to be notified
+     *
      * @param observer the Observer
      * @return true if the observer is added wothout errors
      */
@@ -48,6 +50,7 @@ public class DiscardToken extends SoloActionToken implements Subject {
 
     /**
      * Detaches the observer from the token
+     *
      * @param observer the Observer
      * @return true if the observer is removed wothout errors
      */
@@ -58,11 +61,12 @@ public class DiscardToken extends SoloActionToken implements Subject {
 
     /**
      * Notifies all the observers that they have to apply the effect of the token
+     *
      * @return true if the action is performed without errors
      */
     @Override
     public boolean notifyObservers() {
-        for(Observer o: observersList)
+        for (Observer o : observersList)
             o.update(this);
         return true;
     }
@@ -70,17 +74,19 @@ public class DiscardToken extends SoloActionToken implements Subject {
 
     /**
      * Returns the color of the DevCard to discard
+     *
      * @return the color of the DevCard to discard
      */
-    public DevCardColour getCardColour(){
+    public DevCardColour getCardColour() {
         return cardColour;
     }
 
     /**
      * Returns the number of DevCards to discard
+     *
      * @return the number of DevCards to discard
      */
-    public int getNumCards(){
+    public int getNumCards() {
         return numCards;
     }
 

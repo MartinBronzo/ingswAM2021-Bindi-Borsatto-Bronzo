@@ -29,9 +29,10 @@ public class FaithTrack {
 
     /**
      * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. It saves the order of the Vatican Reports and it initiates the track
+     *
      * @param reportNumOrder the order of the ReportNum of the Faith track
      */
-    private FaithTrack(ReportNumOrder reportNumOrder){
+    private FaithTrack(ReportNumOrder reportNumOrder) {
         this.track = new ArrayList<>();
         this.reportNumOrder = reportNumOrder;
         this.initTrack();
@@ -41,9 +42,10 @@ public class FaithTrack {
     /**
      * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. The constructed FaithTrack won't have a ReportNumOrder associated to it: this
      * will be done in a later moment
+     *
      * @param config the file where to read the design of the track
      */
-    private FaithTrack(File config){
+    private FaithTrack(File config) {
         this.track = new ArrayList<>();
         this.reportNumOrder = null;
         this.initTrack(config);
@@ -53,11 +55,12 @@ public class FaithTrack {
     /**
      * Constructs the only instance of the FaithTrack class. It constructs the object the first time this method is called. The other times it simply returns
      * the instance of the FaithTrack already constructed.
+     *
      * @param reportNumOrder the order of the Reports Num needed to build the instance of the class
      * @return the only instance of the class
      */
-    public static FaithTrack instance(ReportNumOrder reportNumOrder){
-        if(instance == null)
+    public static FaithTrack instance(ReportNumOrder reportNumOrder) {
+        if (instance == null)
             instance = new FaithTrack(reportNumOrder);
         return instance;
     }
@@ -65,12 +68,13 @@ public class FaithTrack {
     /**
      * Constructs the only instance of the FaithTrack class. It constructs the object the first time this method is called. The other times it simply returns
      * the instance of the FaithTrack already constructed.
+     *
      * @param config the file where to read the description of the FaithTrack
      * @return the only instance of the class
      */
 
-    public static FaithTrack instance(File config){
-        if(instance == null)
+    public static FaithTrack instance(File config) {
+        if (instance == null)
             instance = new FaithTrack(config);
         return instance;
     }
@@ -78,10 +82,11 @@ public class FaithTrack {
     /**
      * Constructs the ensemble of cells which constitute the track. The initiation of the track is only done once: that's why the method is private and it is only called in
      * the private constructor
+     *
      * @return true if the initiation went fine
      */
     // I fill the list one cell at the time
-    private boolean initTrack(){
+    private boolean initTrack() {
         //If we have already designed the Track, we can't change it here
         //if(!track.isEmpty()) return false;
         track.add(new Cell(0, ReportNum.REPORT1));
@@ -126,11 +131,12 @@ public class FaithTrack {
     /**
      * Constructs the ensemble of cells which constitute the track. The initiation of the track is only done once: that's why the method is private and it is only called in
      * the private constructor
+     *
      * @param config the file where to retrieve the information for the configuration
      * @return true if the initiation went fine
      */
     //Right now this method is not reading from an XML file how the track is designed. TODO: implement la lettura della configurazione dall'XML
-    private boolean initTrack(File config){
+    private boolean initTrack(File config) {
         track.add(new Cell(0, ReportNum.REPORT1));
         track.add(new Cell(0, ReportNum.REPORT1));
         track.add(new Cell(0, ReportNum.REPORT1));
@@ -164,11 +170,12 @@ public class FaithTrack {
 
     /**
      * Sets the specified ReportNumOrder to the FaithTrack if it hasn't been set before
+     *
      * @param reportNumOrder the ReportNumOrder to link to the FaithTrack
      * @return true if the ReportNumOrder has been set by this method, false if it had already been set
      */
-    public boolean setReportNumOrder(ReportNumOrder reportNumOrder){
-        if(isReportNumOrderSet == false){
+    public boolean setReportNumOrder(ReportNumOrder reportNumOrder) {
+        if (isReportNumOrderSet == false) {
             this.reportNumOrder = reportNumOrder;
             this.isReportNumOrderSet = true;
             return true;
@@ -183,21 +190,23 @@ public class FaithTrack {
 
     /**
      * Calls the effect of the cell whose position is given as a parameter
+     *
      * @param position the position of the cell
      */
     //This method was only used for testing purposes
-    public boolean callCellEffectBasic(int position){
+    public boolean callCellEffectBasic(int position) {
         return track.get(position).effect();
     }
 
     /**
      * Calls the effect of the cell whose position is given as a parameter
+     *
      * @param position the position of the cell
      * @return the effect of the cell
      * @throws LastVaticanReportException if the last cell (a PopeCell) was reached activating the last Vatican Report
      */
-    public boolean callCellEffect(int position) throws LastVaticanReportException{
-        if(position < track.size() - 1)
+    public boolean callCellEffect(int position) throws LastVaticanReportException {
+        if (position < track.size() - 1)
             return track.get(position).effect();
         //TODO: come estendere in modo tale che non è sempre detto l'ultima cella è la ultima cella papale
         throw new LastVaticanReportException("Last Vatican Report was activated!", track.get(position).effect());
@@ -205,37 +214,41 @@ public class FaithTrack {
 
     /**
      * Returns the victory points of the cell whose position is given as a parameter
+     *
      * @param position the position of the cell
      * @return the victory points of the cell
      */
-    public int getCellVictoryPoints(int position){
+    public int getCellVictoryPoints(int position) {
         return track.get(position).getVicoryPoints();
     }
 
     /**
      * Returns the ReportNum of the cell whose position is given as a parameter
+     *
      * @param position the position of the cell
      * @return the ReportNum of the cell
      */
-    public ReportNum getCellReportNum(int position){
+    public ReportNum getCellReportNum(int position) {
         return track.get(position).getReportNum();
     }
 
     /**
      * States whether the cell whose position is given as a parameter activates the Pope Tile in a Vatican Report whose corresponding ReportNum is given as a parameter
-     * @param position the position of the cell
+     *
+     * @param position  the position of the cell
      * @param reportNum the ReportNum of the activated Vatican Report
      * @return true if the PopeTile must be activated, false otherwise
      */
-    public boolean callCellActivateTile(int position, ReportNum reportNum){
+    public boolean callCellActivateTile(int position, ReportNum reportNum) {
         return track.get(position).activatePopeTile(reportNum);
     }
 
     /**
      * Returns the size of the track
+     *
      * @return the size of the track
      */
-    public int getTrackSize(){
+    public int getTrackSize() {
         return track.size();
     }
 
@@ -254,27 +267,28 @@ public class FaithTrack {
     }*/
 
     //This method is only used for testing purposes
-    public ReportNumOrder getReportNumOrder(){
+    public ReportNumOrder getReportNumOrder() {
         return this.reportNumOrder;
     }
 
     //This method is only used for testing purposes
     //NOT TO BE USED IN THE GAME
-    public static void deleteState(){
+    public static void deleteState() {
         instance = null;
     }
 
     /**
      * Returns the index of the specified ReportNum in the ordered list of ReportNums stored in the FaithTrack
+     *
      * @param reportNum the ReportNum
      * @return the index of the specified ReportNum
      */
-    public int getPopeTileIndex(ReportNum reportNum){
+    public int getPopeTileIndex(ReportNum reportNum) {
         return reportNumOrder.getOrder(reportNum);
     }
 
     //This method is only used for testing purposes
-    public Cell getCell(int position){
+    public Cell getCell(int position) {
         return this.track.get(position);
     }
 

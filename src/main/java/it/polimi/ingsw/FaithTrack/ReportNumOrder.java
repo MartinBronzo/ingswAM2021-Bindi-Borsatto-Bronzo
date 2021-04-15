@@ -22,24 +22,26 @@ public class ReportNumOrder {
     /**
      * Constructs the only instance of the ReportNumOrder class. It constructs the object the first time this method is called. The other times it simply returns
      * the instance already constructed.
+     *
      * @return the only instance of the class
      */
-    public static ReportNumOrder instance(){
-        if(instance == null)
+    public static ReportNumOrder instance() {
+        if (instance == null)
             instance = new ReportNumOrder();
         return instance;
     }
 
     /**
      * Appends a ReportNum to the end of this list. It only adds element if they are not already present
+     *
      * @param reportNum element to be added to the list
      * @return true if it added the element, false otherwise
      * @throws NullPointerException if the ReportNum is a null pointer
      */
-    public boolean addElementInOrder(ReportNum reportNum) throws NullPointerException{
-        if(reportNum == null)
+    public boolean addElementInOrder(ReportNum reportNum) throws NullPointerException {
+        if (reportNum == null)
             throw new NullPointerException("Get a ReportNum before passing it as an input!");
-        if(!this.order.contains(reportNum)) {
+        if (!this.order.contains(reportNum)) {
             this.order.add(reportNum);
             return true;
         }
@@ -49,6 +51,7 @@ public class ReportNumOrder {
 
     /**
      * States which of the ReportNum given in inputs comes first
+     *
      * @param x a ReportNum
      * @param y a ReportNum
      * @return true if x comes first, false otherwise (y comes first or the two have the same priority)
@@ -56,33 +59,34 @@ public class ReportNumOrder {
      */
     @Deprecated
     //This method right now is only used for testing purposes
-    public boolean stateOrder(ReportNum x, ReportNum y) throws IllegalArgumentException{
-        if(!this.order.contains(x))
+    public boolean stateOrder(ReportNum x, ReportNum y) throws IllegalArgumentException {
+        if (!this.order.contains(x))
             throw new IllegalArgumentException("The first element given as a parameter is not in the list");
-        if(!this.order.contains(y))
+        if (!this.order.contains(y))
             throw new IllegalArgumentException("The second element given as a parameter is not in the list");
-        if(this.order.indexOf(x) < this.order.indexOf(y))
+        if (this.order.indexOf(x) < this.order.indexOf(y))
             return true;
         return false;
     }
 
     /**
      * Returns the priority of the ReportNum given as a parameter
+     *
      * @param reportNum a ReportNum
      * @return the index of the ReportNum
      */
-    public int getOrder(ReportNum reportNum){
+    public int getOrder(ReportNum reportNum) {
         return this.order.indexOf(reportNum);
     }
 
     //This method is only used for testing purposes
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return this.order.isEmpty();
     }
 
     //This method is only used for testing purposes
     //NOT TO BE USED IN THE GAME
-    public static void deleteState(){
+    public static void deleteState() {
         instance = null;
     }
 }

@@ -1,6 +1,5 @@
-package it.polimi.ingsw.LeaderCardRequirementsTests;
+package it.polimi.ingsw.LeaderCard.LeaderCardRequirements;
 
-import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
@@ -22,12 +21,13 @@ public class CardRequirementResource extends Requirement {
 
     /**
      * Constructs a CardRequirementResource of the specified ResourceType and quantity
+     *
      * @param resourceType the required type of the resources
-     * @param quantity the required amount of the resources
+     * @param quantity     the required amount of the resources
      * @throws IllegalArgumentException if the given quantity is not a positive integer greater than 0
      */
-    public CardRequirementResource(ResourceType resourceType, int quantity) throws IllegalArgumentException{
-        if(quantity <= 0)
+    public CardRequirementResource(ResourceType resourceType, int quantity) throws IllegalArgumentException {
+        if (quantity <= 0)
             throw new IllegalArgumentException("The quantity must be a positive integer greater than 0!");
         this.resourceType = resourceType;
         this.quantity = quantity;
@@ -35,6 +35,7 @@ public class CardRequirementResource extends Requirement {
 
     /**
      * Returns the required type of the resources
+     *
      * @return the required type
      */
     public ResourceType getResourceType() {
@@ -43,6 +44,7 @@ public class CardRequirementResource extends Requirement {
 
     /**
      * Returns the required amount of the resources
+     *
      * @return the required amount
      */
     public int getQuantity() {
@@ -51,14 +53,15 @@ public class CardRequirementResource extends Requirement {
 
     @Override
     public boolean checkRequirement(PlayerResourcesAndCards playerResourcesAndCards) {
-        return playerResourcesAndCards.getResources().getOrDefault(resourceType,0) >= quantity;
+        return playerResourcesAndCards.getResources().getOrDefault(resourceType, 0) >= quantity;
     }
 
     /**
      * Constructs a clone of the specified CardRequirementResource
+     *
      * @param original the CardRequirementResource to be cloned
      */
-    public CardRequirementResource(CardRequirementResource original){
+    public CardRequirementResource(CardRequirementResource original) {
         this(original.resourceType, original.quantity);
     }
 
@@ -69,11 +72,11 @@ public class CardRequirementResource extends Requirement {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null)
             return false;
-        if(obj == this)
+        if (obj == this)
             return true;
-        if(!(obj instanceof CardRequirementResource))
+        if (!(obj instanceof CardRequirementResource))
             return false;
         CardRequirementResource tmp = (CardRequirementResource) obj;
         return this.resourceType.equals(tmp.resourceType) && this.quantity == tmp.quantity;

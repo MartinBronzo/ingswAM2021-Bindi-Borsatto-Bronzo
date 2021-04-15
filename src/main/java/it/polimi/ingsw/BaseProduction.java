@@ -27,18 +27,35 @@ public class BaseProduction {
     }
 
     /**
+     * Creates a copy of the baseProduction parameter
+     */
+    public BaseProduction(BaseProduction baseProduction) {
+        if (baseProduction == null) throw new NullPointerException("baseProduction can't be null");
+        this.quantityInputResources = baseProduction.quantityInputResources;
+        this.quantityOutputResources = baseProduction.quantityOutputResources;
+        this.inputForcedResources = new LinkedList<>(baseProduction.inputForcedResources);
+        this.outputForcedResources = new LinkedList<>(baseProduction.outputForcedResources);
+        this.inputHashMap = new HashMap<>(baseProduction.inputHashMap);
+        this.outputHashMap = new HashMap<>(baseProduction.outputHashMap);
+    }
+
+    /**
      * Constructor for not standard rules
-     * @param inputForcedResources the resources which must be present in the Input HashMap. whether a resource must be present more times add it more times here
-     * @param outputForcedResources the resources which must be present in the Output HashMap. whether a resource must be present more times add it more times here
-     * @param quantityInputResources the total quantity of resources in the Input HashMap.
+     *
+     * @param inputForcedResources    the resources which must be present in the Input HashMap. whether a resource must be present more times add it more times here
+     * @param outputForcedResources   the resources which must be present in the Output HashMap. whether a resource must be present more times add it more times here
+     * @param quantityInputResources  the total quantity of resources in the Input HashMap.
      * @param quantityOutputResources the total quantity of resources in the Output HashMap.
-     * @throws NullPointerException  if inputForcedResources or outputForcedResources are null
+     * @throws NullPointerException     if inputForcedResources or outputForcedResources are null
      * @throws IllegalArgumentException if inputForcedResources.size() > quantityInputResources or outputForcedResources.size() > quantityOutputResources or inputForcedResources contains faithpoints or outputForcedResources contains faithpoints
      */
     public BaseProduction(List<ResourceType> inputForcedResources, List<ResourceType> outputForcedResources, int quantityInputResources, int quantityOutputResources) throws NullPointerException, IllegalArgumentException {
-        if (inputForcedResources==null || outputForcedResources==null) throw new NullPointerException("Lists can't be null");
-        if (inputForcedResources.size() > quantityInputResources || outputForcedResources.size() > quantityOutputResources)  throw new IllegalArgumentException("Configuration is not Legit");
-        if (inputForcedResources.contains(ResourceType.FAITHPOINT) || outputForcedResources.contains(ResourceType.FAITHPOINT))  throw new IllegalArgumentException("List can't contains faithpoints");
+        if (inputForcedResources == null || outputForcedResources == null)
+            throw new NullPointerException("Lists can't be null");
+        if (inputForcedResources.size() > quantityInputResources || outputForcedResources.size() > quantityOutputResources)
+            throw new IllegalArgumentException("Configuration is not Legit");
+        if (inputForcedResources.contains(ResourceType.FAITHPOINT) || outputForcedResources.contains(ResourceType.FAITHPOINT))
+            throw new IllegalArgumentException("List can't contains faithpoints");
 
         this.quantityInputResources = quantityInputResources;
         this.quantityOutputResources = quantityOutputResources;
@@ -51,11 +68,12 @@ public class BaseProduction {
     /**
      * this class codes Parameters in input HashMap and output HashMap which represents the input Cost of the BaseProduction and the output production.
      * Also performs analysis to see if parameters are can be valid for this Base Production
-     * @param inputResources the List which represents the desired cost HashMap
+     *
+     * @param inputResources  the List which represents the desired cost HashMap
      * @param outputResources the List which represents the desired output HashMap
      * @return true if the lists are Valid for this BaseProduction
      * @throws IllegalArgumentException if one or more parameters are not Valid
-     * @throws NullPointerException if inputResources or outputResources are null
+     * @throws NullPointerException     if inputResources or outputResources are null
      */
     public boolean setBaseProduction(List<ResourceType> inputResources, List<ResourceType> outputResources) throws IllegalArgumentException, NullPointerException {
         return setInputHashMap(inputResources) && setOutputHashMap(outputResources);
@@ -64,51 +82,54 @@ public class BaseProduction {
     /**
      * this class codes the input HashMap which represents the input Cost of the BaseProduction.
      * Also performs analysis to see if parameter is valid for this Base Production
+     *
      * @param inputResources the List which represents the desired cost HashMap
      * @return true if the list is Valid for this BaseProduction
      * @throws IllegalArgumentException if the parameter is not Valid
-     * @throws NullPointerException if inputResources is null
+     * @throws NullPointerException     if inputResources is null
      * @deprecated because is better set BaseProduction state for both input and outputs
      */
     @Deprecated
     public boolean setInputHashMap(List<ResourceType> inputResources) throws IllegalArgumentException, NullPointerException {
         if (!checkInputSet(inputResources)) throw new IllegalArgumentException("Configuration List is not Valid");
         this.inputHashMap = new HashMap<>();
-        inputResources.stream().forEach(resource -> this.inputHashMap.put(resource, this.inputHashMap.getOrDefault(resource,0) + 1));
+        inputResources.stream().forEach(resource -> this.inputHashMap.put(resource, this.inputHashMap.getOrDefault(resource, 0) + 1));
         return true;
     }
 
     /**
      * this class codes the output HashMap which represents the production of the BaseProduction.
      * Also performs analysis to see if parameter is valid for this Base Production
+     *
      * @param outputResources the List which represents the desired production HashMap
      * @return true if the list is Valid for this BaseProduction
      * @throws IllegalArgumentException if the parameter is not Valid
-     * @throws NullPointerException if outputResources is null
+     * @throws NullPointerException     if outputResources is null
      * @deprecated because is better set BaseProduction state for both input and outputs
      */
     @Deprecated
     public boolean setOutputHashMap(List<ResourceType> outputResources) {
         if (!checkOutputSet(outputResources)) throw new IllegalArgumentException("Configuration List is not Valid");
         this.outputHashMap = new HashMap<>();
-        outputResources.stream().forEach(resource -> this.outputHashMap.put(resource, this.outputHashMap.getOrDefault(resource,0) + 1));
+        outputResources.stream().forEach(resource -> this.outputHashMap.put(resource, this.outputHashMap.getOrDefault(resource, 0) + 1));
         return true;
     }
 
     private boolean checkInputSet(List<ResourceType> inputResources) throws NullPointerException {
-        if (inputResources==null) throw new NullPointerException("baseProduction: Input Resources can't be null");
+        if (inputResources == null) throw new NullPointerException("baseProduction: Input Resources can't be null");
         return inputResources.size() == quantityInputResources && !inputResources.contains(ResourceType.FAITHPOINT) && this.containsAllWithDuplicates(inputForcedResources, inputResources);
     }
 
     private boolean checkOutputSet(List<ResourceType> outputResources) throws NullPointerException {
-        if (outputResources==null) throw new NullPointerException("baseProduction: Output Resources can't be null");
+        if (outputResources == null) throw new NullPointerException("baseProduction: Output Resources can't be null");
         return outputResources.size() == quantityOutputResources && !outputResources.contains(ResourceType.FAITHPOINT) && this.containsAllWithDuplicates(outputForcedResources, outputResources);
     }
 
     private boolean containsAllWithDuplicates(Collection<ResourceType> containedResources, Collection<ResourceType> allResources) throws NullPointerException {
-        if (containedResources == null || allResources == null) throw new NullPointerException("containsAllWithDuplicates: one parameter is null");
+        if (containedResources == null || allResources == null)
+            throw new NullPointerException("containsAllWithDuplicates: one parameter is null");
         List<ResourceType> checkerList = new LinkedList<>(allResources);
-        for (ResourceType resource: containedResources) {
+        for (ResourceType resource : containedResources) {
             if (!checkerList.remove(resource))
                 return false;
         }
