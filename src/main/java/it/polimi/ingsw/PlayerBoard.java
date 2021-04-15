@@ -252,6 +252,24 @@ public class PlayerBoard {
     }
 
     /**
+     * Returns the quantity of the required resource that is in the ExtraSlot of the depot
+     * @param resourceType the resource of which you want to know the quantity
+     * @return the quantity of the required resource that is in the ExtraSlot of the depot
+     */
+    public int getLeaderSlotResourceQuantity(ResourceType resourceType){
+        return depot.getExtraDepotValue(resourceType);
+    }
+
+    /**
+     * Returns the maximum amount of resources of the required type that can be stored in the ExtraSlot of the depot
+     * @param resourceType the resource of which you want to know the maximum quantity allowed
+     * @return  the maximum amount of resources that can be stored in the ExtraSlot of the depot
+     */
+    public int getLeaderSlotLimitQuantity(ResourceType resourceType){
+        return depot.getExtraDepotLimit(resourceType);
+    }
+
+    /**
      * Switches the resources between sourceShelf and destShelf
      * @param sourceShelf the number of the first shelf, must be between 1 and 3
      * @param destShelf the number of the second shelf, must be between 1 and 3
@@ -263,11 +281,32 @@ public class PlayerBoard {
         return true;
     }
 
+    /**
+     * Moves the specified amount of resources from the specified shelf of the depot to the ExtraSlot slot in the depot
+     * @param shelfNum the number of the shelf from which remove the resources, must be between 1 and 3
+     * @param quantity the number of resources to move to the extraSlot
+     * @return true if the action is performed without errors
+     * @throws NotEnoughSpaceException if there isn't enough space in the extra slot to move the resources
+     * @throws NoExtraSlotException if there isn't an active extra slot for that type of resource
+     * @throws NotEnoughResourcesException if there aren't enough resources to move from the shelf of the depot
+     * @throws FullExtraSlotException if the etra slot is already full of resources
+     */
     public boolean moveFromShelfToLeader(int shelfNum, int quantity) throws NotEnoughSpaceException, NoExtraSlotException, NotEnoughResourcesException, FullExtraSlotException {
         depot.moveToLeader(shelfNum, quantity);
         return true;
     }
 
+    /**
+     * Moves the specified amount of resources from the extra slot to the specified shelf in the depot
+     * @param resource the resources you want to move
+     * @param quantity the number of resources to move to the shelf
+     * @param shelfNum the number of the shelf in which you want to move the resources
+     * @return true if the action is performed without errors
+     * @throws NotEnoughSpaceException if there isn't enough space in the specified shelf to contain the specified quantity
+     * @throws AlreadyInAnotherShelfException if exists another shelf that contains the same resource
+     * @throws NoExtraSlotException if there isn't an extra slot for the specified type of resource
+     * @throws NotEnoughResourcesException if there aren't enough resources in the extra slot to move to the shelf
+     */
     public boolean moveFromLeaderToShelf(ResourceType resource, int quantity, int shelfNum) throws NotEnoughSpaceException, AlreadyInAnotherShelfException, NoExtraSlotException, NotEnoughResourcesException {
         depot.moveToShelf(resource, quantity, shelfNum);
         return true;
