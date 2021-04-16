@@ -41,6 +41,18 @@ public class PlayerBoard {
         this.baseProduction = new BaseProduction();
     }
 
+    public FaithLevel getPlayerFaithLevel() {
+        return new FaithLevel(this.playerFaithLevel);
+    }
+
+    public DevSlots getDevSlots() {
+        return new DevSlots(this.devSlots);
+    }
+
+    public BaseProduction getBaseProduction() {
+        return new BaseProduction(this.baseProduction);
+    }
+
 
     public HashMap<ResourceType, Integer> getAllResources() {
         HashMap<ResourceType, Integer> depotMap = depot.getAllResources();
@@ -57,14 +69,6 @@ public class PlayerBoard {
         return allResourcesMap;
     }
 
-    public Boolean isCardBuyable(DevCard devCard) {
-        if (devCard == null) throw new NullPointerException("isCardBuyable: DevCardCan't be null");
-        HashMap<ResourceType, Integer> cost = devCard.getCost();
-        Collection<ResourceType> costKeys = cost.keySet();
-        HashMap<ResourceType, Integer> allResources = getAllResources();
-        return costKeys.stream().allMatch(key -> cost.getOrDefault(key, 0) <= allResources.getOrDefault(key, 0));
-    }
-
     /**
      * Gets A Collection containing all the DevCards in the Slots.
      *
@@ -73,6 +77,36 @@ public class PlayerBoard {
     public Collection<DevCard> getAllDevCards() {
         return devSlots.getAllDevCards();
     }
+
+    public Boolean isCardBuyable(DevCard devCard) {
+        if (devCard == null) throw new NullPointerException("isCardBuyable: DevCardCan't be null");
+        HashMap<ResourceType, Integer> cost = devCard.getCost();
+        Collection<ResourceType> costKeys = cost.keySet();
+        HashMap<ResourceType, Integer> allResources = getAllResources();
+        return costKeys.stream().allMatch(key -> cost.getOrDefault(key, 0) <= allResources.getOrDefault(key, 0));
+    }
+
+
+    public int calculateVictoryPoints() {
+        HashMap<ResourceType, Integer> depotRes, strongboxRes;
+        int totalResources;
+        int vp = 0;
+
+        vp += devSlots.getPoints();
+        vp += playerFaithLevel.getCellPoints();
+        vp += playerFaithLevel.getPopeTilesPoints();
+        vp += leaderCards.getLeaderCardsPoints();
+        depotRes = depot.getAllResources();
+        strongboxRes = strongbox.getAllResources();
+        totalResources = 0;
+        for (ResourceType res : ResourceType.values()) {
+            totalResources += depotRes.getOrDefault(res,0) + strongboxRes.getOrDefault(res,0);
+        }
+        vp += totalResources / 5;
+
+        return vp;
+    }
+
 
     /*
     #####################
@@ -92,10 +126,21 @@ public class PlayerBoard {
      * @param leaderCard the LeaderCard to be activated
      * @return true if the card was activated
      * @throws UnmetRequirementException if the player doesn't meet the requirements
+     * @throws FullExtraSlotException if the maximum number of extraSlotLeaderCards had been reached
+     * @throws NullPointerException if leader card is null
      */
-    public boolean activateLeaderCard(LeaderCard leaderCard) throws UnmetRequirementException {
+    public boolean activateLeaderCard(LeaderCard leaderCard) throws UnmetRequirementException, FullExtraSlotException, NullPointerException {
+        if (leaderCard == null) throw new NullPointerException("LeaderCard can't be null");
+
         PlayerResourcesAndCards playerResourcesAndCards = new PlayerResourcesAndCards(getAllResources(), getAllDevCards());
-        return leaderCards.activateLeaderCard(leaderCard, playerResourcesAndCards);
+        if (this.leaderCards.activateLeaderCard(leaderCard, playerResourcesAndCards)) {
+            if (this.leaderCards.addCardToActivatedOneShotCards(leaderCard))
+                this.depot.addExtraSlot(leaderCard.getEffect());
+            return true;
+        }
+        return false;
+
+
     }
 
     /**
@@ -374,12 +419,6 @@ public class PlayerBoard {
         return strongbox.getResource(resource);
     }
 
-    public boolean activateExtraLeaderCard(LeaderCard leaderCard) throws FullExtraSlotException {
-        Effect effect = leaderCard.getEffect();
-        this.depot.addExtraSlot(leaderCard.getEffect());
-        return true;
-    }
-
 
     /*
     ##################
@@ -415,27 +454,6 @@ public class PlayerBoard {
      */
     public void dealWithVaticanReport(ReportNum reportNum) throws IllegalActionException {
         playerFaithLevel.dealWithVaticanReport(reportNum);
-    }
-
-
-    public int calculateVictoryPoints() {
-        HashMap<ResourceType, Integer> depotRes, strongboxRes;
-        int totalResources;
-        int vp = 0;
-
-        vp += devSlots.getPoints();
-        vp += playerFaithLevel.getCellPoints();
-        vp += playerFaithLevel.getPopeTilesPoints();
-        vp += leaderCards.getLeaderCardsPoints();
-        depotRes = depot.getAllResources();
-        strongboxRes = strongbox.getAllResources();
-        totalResources = 0;
-        for (ResourceType res : strongboxRes.keySet()) {
-            totalResources += depotRes.get(res) + strongboxRes.get(res);
-        }
-        vp += totalResources / 5;
-
-        return vp;
     }
 
     /**
@@ -499,16 +517,16 @@ public class PlayerBoard {
     */
 
     /**
-     * Checks if parameters can activate production and if they are ok the production is added to the strongBox
+     * Checks if parameters can activate production and if they are ok the production is added to the strongBox and FaithPoints move forward faithtrack;
      *
      * @param alsoBaseProduction       is true is BaseProduction must produce
      * @param ProductiveDevCards       is the Collection of devCards owned, which will produces resources.
      * @param productiveLeaderCardsMap is the Map of LeaderCards active, which will produces extra resources. the values represents the desired extra resource, can't be a faithpoint
-     * @return the number of produced Faithpoints if all the passed cards can produces resources
+     * @return true if everything went well
      * @throws NullPointerException     if one parameter is null
      * @throws IllegalArgumentException if ProductiveDevCards contains one or more not Usable dev Cards or if one or more productiveLeaderCardsMap key is not one the owned active leaderCards or the desired production for a leader card is faithpoint
      */
-    public int ActivateProduction(Collection<DevCard> ProductiveDevCards, HashMap<LeaderCard, ResourceType> productiveLeaderCardsMap, boolean alsoBaseProduction) throws NullPointerException, IllegalArgumentException {
+    public boolean ActivateProduction(Collection<DevCard> ProductiveDevCards, HashMap<LeaderCard, ResourceType> productiveLeaderCardsMap, boolean alsoBaseProduction) throws NullPointerException, IllegalArgumentException, LastVaticanReportException {
         Collection<DevCard> usableDevCards;
         List<LeaderCard> activeLeaderCards;
         HashMap<ResourceType, Integer> productionMap;
@@ -536,9 +554,12 @@ public class PlayerBoard {
 
         productionMap = this.sumReduceHashMaps2HashMap(devCardsMaps);
         int numberOfProducedFaithPoints = productionMap.getOrDefault(ResourceType.FAITHPOINT, 0);
-        if (numberOfProducedFaithPoints != 0) productionMap.remove(ResourceType.FAITHPOINT);
+        if (numberOfProducedFaithPoints != 0) {
+            productionMap.remove(ResourceType.FAITHPOINT);
+            this.playerFaithLevel.moveFaithMarker(numberOfProducedFaithPoints);
+        }
         strongbox.addResource(productionMap);
-        return numberOfProducedFaithPoints;
+        return true;
     }
 
     /**
@@ -567,11 +588,11 @@ public class PlayerBoard {
         if (!activeLeaderCards.containsAll(productiveLeaderCards))
             throw new IllegalArgumentException("One or more leaderCards are not activated player cards");
 
-        List<HashMap<ResourceType, Integer>> devCardsMaps = ProductiveDevCards.stream().map(DevCard::getProductionOutput).collect(Collectors.toList());
+        List<HashMap<ResourceType, Integer>> devCardsMaps = ProductiveDevCards.stream().map(DevCard::getProductionInput).collect(Collectors.toList());
         List<HashMap<ResourceType, Integer>> leaderCardsMaps = productiveLeaderCards.stream().map(leaderCard -> leaderCard.getEffect().getRequiredInput()).collect(Collectors.toList());
         devCardsMaps.addAll(leaderCardsMaps);
         if (alsoBaseProduction)
-            devCardsMaps.add(this.baseProduction.getOutputHashMap());
+            devCardsMaps.add(this.baseProduction.getInputHashMap());
 
         HashMap<ResourceType, Integer> costMap = this.sumReduceHashMaps2HashMap(devCardsMaps);
         Collection<ResourceType> costKeys = costMap.keySet();
@@ -595,6 +616,20 @@ public class PlayerBoard {
                     .forEach(key -> finalMap.put(key, finalMap.getOrDefault(key, 0) + actualMap.get(key)));
         }
         return finalMap;
+    }
+
+    /**
+     * this class sets Parameters in input HashMap and output HashMap which represents the input Cost of the BaseProduction and the output production.
+     * Also performs analysis to see if parameters are can be valid for this configuration Base Production
+     *
+     * @param inputResources  the List which represents the desired cost HashMap
+     * @param outputResources the List which represents the desired output HashMap
+     * @return true if the lists are Valid for this BaseProduction
+     * @throws IllegalArgumentException if one or more parameters are not Valid
+     * @throws NullPointerException     if inputResources or outputResources are null
+     */
+    public boolean SetBaseProduction(List<ResourceType> inputResources, List<ResourceType> outputResources) throws IllegalArgumentException, NullPointerException{
+        return this.baseProduction.setBaseProduction(inputResources,outputResources);
     }
 
 }

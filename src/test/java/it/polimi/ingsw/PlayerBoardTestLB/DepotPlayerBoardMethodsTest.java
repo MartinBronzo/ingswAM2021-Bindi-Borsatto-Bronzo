@@ -1,19 +1,16 @@
 package it.polimi.ingsw.PlayerBoardTestLB;
 
 import it.polimi.ingsw.DevCards.DevCardColour;
-import it.polimi.ingsw.LeaderCard.LeaderCard;
-import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.LeaderCard.*;
 import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.*;
+import it.polimi.ingsw.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,7 +29,9 @@ public class DepotPlayerBoardMethodsTest {
         requirementList.add(new CardRequirementColor(DevCardColour.BLUE, 0));
         Effect effect = new ExtraSlotLeaderEffect(coin, 2);
         leaderCard = new LeaderCard(2, requirementList, effect);
-        playerBoard = new PlayerBoard();
+        List<LeaderCard> leaderCards = new ArrayList<>();
+        leaderCards.add(leaderCard);
+        playerBoard = new PlayerBoard(leaderCards);
     }
 
     @Test
@@ -141,16 +140,16 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void addToLeader() throws NoExtraSlotException, FullExtraSlotException, NotEnoughSpaceException {
-        assertTrue(playerBoard.activateExtraLeaderCard(leaderCard));
+    public void addToLeader() throws NoExtraSlotException, FullExtraSlotException, NotEnoughSpaceException, UnmetRequirementException {
+        assertTrue(playerBoard.activateLeaderCard(leaderCard));
         assertTrue(playerBoard.addResourceToLeader(coin, 2));
         assertEquals(playerBoard.getLeaderSlotResourceQuantity(coin),2);
         assertEquals(playerBoard.getLeaderSlotLimitQuantity(coin),2);
     }
 
     @Test
-    public void removeFromLeader() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, NotEnoughResourcesException {
-        playerBoard.activateExtraLeaderCard(leaderCard);
+    public void removeFromLeader() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, NotEnoughResourcesException, UnmetRequirementException {
+        playerBoard.activateLeaderCard(leaderCard);
         playerBoard.addResourceToLeader(coin, 2);
         assertTrue(playerBoard.removeResourceFromLeader(coin, 1));
         assertEquals(playerBoard.getLeaderSlotLimitQuantity(coin), 2);
@@ -158,8 +157,8 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void moveToLeader() throws AlreadyInAnotherShelfException, NotEnoughSpaceException, FullExtraSlotException, NotEnoughResourcesException, NoExtraSlotException {
-        playerBoard.activateExtraLeaderCard(leaderCard);
+    public void moveToLeader() throws AlreadyInAnotherShelfException, NotEnoughSpaceException, FullExtraSlotException, NotEnoughResourcesException, NoExtraSlotException, UnmetRequirementException {
+        playerBoard.activateLeaderCard(leaderCard);
         playerBoard.addResourceToDepot(coin, 2,2);
         playerBoard.moveFromShelfToLeader(2,1);
         assertEquals(playerBoard.getResourceFromDepot(coin), 1);
@@ -167,8 +166,8 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void moveToShelf() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, AlreadyInAnotherShelfException, NotEnoughResourcesException {
-        playerBoard.activateExtraLeaderCard(leaderCard);
+    public void moveToShelf() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, AlreadyInAnotherShelfException, NotEnoughResourcesException, UnmetRequirementException {
+        playerBoard.activateLeaderCard(leaderCard);
         playerBoard.addResourceToLeader(coin,2);
         assertTrue(playerBoard.moveFromLeaderToShelf(coin, 1,1));
         assertEquals(playerBoard.getLeaderSlotResourceQuantity(coin),1);

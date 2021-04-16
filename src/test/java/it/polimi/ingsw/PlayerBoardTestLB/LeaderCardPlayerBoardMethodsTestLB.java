@@ -14,10 +14,7 @@ import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
-import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.exceptions.LastVaticanReportException;
-import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.exceptions.UnmetRequirementException;
+import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,7 +71,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException e) {
+        } catch (UnmetRequirementException | FullExtraSlotException e) {
             e.printStackTrace();
         }
 
@@ -152,7 +149,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException e) {
+        } catch (UnmetRequirementException | FullExtraSlotException e) {
             e.printStackTrace();
         }
 
@@ -186,21 +183,17 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             assertTrue(playerBoard.activateLeaderCard(met));
-        } catch (UnmetRequirementException e) {
+        } catch (UnmetRequirementException | FullExtraSlotException e) {
             e.printStackTrace();
         }
-        assertTrue(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
+        assertFalse(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
         assertEquals(playerBoard.getActiveLeaderCards().size(), 1);
         assertTrue(playerBoard.getActiveLeaderCards().contains(met));
         assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
 
         Effect effect1 = new Effect();
 
-        try {
-            effect1 = playerBoard.getEffectFromCard(met);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
+
 
         assertEquals(playerBoard.getAlreadyUsedOneShotCard().size(), 1);
         assertTrue(playerBoard.getAlreadyUsedOneShotCard().contains(met));
@@ -234,7 +227,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException e) {
+        } catch (UnmetRequirementException | FullExtraSlotException e) {
             e.printStackTrace();
         }
 
@@ -272,7 +265,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException e) {
+        } catch (UnmetRequirementException | FullExtraSlotException e) {
             e.printStackTrace();
         }
 
@@ -293,7 +286,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException e) {
+        } catch (UnmetRequirementException | FullExtraSlotException e) {
             e.printStackTrace();
         }
 
@@ -377,7 +370,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException e) {
+        } catch (UnmetRequirementException | FullExtraSlotException e) {
             e.printStackTrace();
         }
 

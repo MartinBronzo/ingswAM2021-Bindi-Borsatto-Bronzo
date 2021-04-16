@@ -107,6 +107,28 @@ public class LeaderCards {
     }
 
     /**
+     * Adds the leader Card to the list of activated one shot cards
+     *
+     * @param leaderCard to be add to oneshot cards
+     * @return true whether the card is correctly added or false if the card isn't a one shot card or if it is present in one shot cards list
+     * @throws IllegalArgumentException if the card is not active or if the player doesn't hold it
+     * @throws NullPointerException if leadercard is null
+     */
+    public boolean addCardToActivatedOneShotCards(LeaderCard leaderCard) throws IllegalArgumentException, NullPointerException {
+        if (leaderCard == null) throw new NullPointerException("leaderCard is null");
+        if (!this.activeCards.contains(leaderCard))
+            if (!this.notPlayedCards.contains(leaderCard))
+                throw new IllegalArgumentException("The player can't use the effect of a LeaderCard they don't have!");
+            else
+                throw new IllegalArgumentException("The player can't use the effect of a LeaderCard they haven't played yet!");
+        if (!alreadyUsedOneShotCard.contains(leaderCard) && leaderCard.getEffect().isOneShotCard()) {
+            alreadyUsedOneShotCard.add(leaderCard);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Returns the points the player gets from all of their active cards
      *
      * @return the total point of the active cards
