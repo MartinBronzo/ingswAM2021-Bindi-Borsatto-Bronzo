@@ -2,12 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.Interfaces.Deck;
-import it.polimi.ingsw.LeaderCard.LeaderCard;
+import it.polimi.ingsw.LeaderCard.*;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.*;
 import it.polimi.ingsw.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementColor;
-import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementColorAndLevel;
-import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementResource;
-import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

@@ -1,12 +1,23 @@
 package it.polimi.ingsw.MainBoardTestLB;
 
+import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
-import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.LeaderCardDeck;
+import it.polimi.ingsw.ResourceType;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,10 +160,36 @@ public class LeaderCardDeckTest {
             }
    }
 
-   /*@Test
-    public void ctrlCreationWithConfigFile(){
-        leaderCardDeck = new LeaderCardDeck("LeaderCardConfig.xml");
-   }*/
+   @Test
+   //The file read contains an example of four LeaderCards
+    public void ctrlCreationWithConfigFile() throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
+        leaderCardDeck = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        tmp = new ArrayList<>();
+
+        List<Requirement> reqList = new ArrayList<>();
+        reqList.add(new CardRequirementColor(DevCardColour.BLUE, 1));
+        reqList.add(new CardRequirementColor(DevCardColour.PURPLE, 1));
+        tmp.add(new LeaderCard(2, reqList, new DiscountLeaderEffect(ResourceType.SHIELD, 1)));
+
+        reqList = new ArrayList<>();
+        reqList.add(new CardRequirementResource(ResourceType.COIN, 5));
+        tmp.add(new LeaderCard(3, reqList, new ExtraSlotLeaderEffect(ResourceType.STONE, 2)));
+
+       reqList = new ArrayList<>();
+       reqList.add(new CardRequirementColor(DevCardColour.YELLOW, 2));
+       reqList.add(new CardRequirementColor(DevCardColour.BLUE, 1));
+       tmp.add(new LeaderCard(5, reqList, new WhiteMarbleLeaderEffect(ResourceType.SERVANT)));
+
+       reqList = new ArrayList<>();
+       reqList.add(new CardRequirementColorAndLevel(2, DevCardColour.YELLOW, 1));
+       tmp.add(new LeaderCard(4, reqList, new ExtraProductionLeaderEffect(ResourceType.SHIELD, 1)));
+
+       List<LeaderCard> result = leaderCardDeck.getCopyLeaderCards();
+
+       assertNotSame(result, tmp);
+       assertTrue(result.containsAll(tmp));
+       assertTrue(tmp.containsAll(result));
+   }
 
 
 }
