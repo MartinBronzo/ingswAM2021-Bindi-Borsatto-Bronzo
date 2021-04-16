@@ -9,7 +9,7 @@ import java.util.HashMap;
  * they can get back whatever resource they desire and some extra output
  */
 //
-public class ExtraProductionLeaderEffect extends Effect{
+public class ExtraProductionLeaderEffect extends Effect {
     private final ResourceType requiredInputType;
     private final int requiredInputNumber;
     private final ResourceType extraOutputType;
@@ -19,13 +19,15 @@ public class ExtraProductionLeaderEffect extends Effect{
     /**
      * Constructs an ExtraProductionLeaderEffect which will require the specified type and amount of resources to be activated and
      * by default it will give one normal output and one FaithPoint as an extra output
-     * @param requiredInputType the needed type of the resources
+     *
+     * @param requiredInputType   the needed type of the resources
      * @param requiredInputNumber the needed number of resources
      */
+
     public ExtraProductionLeaderEffect(ResourceType requiredInputType, int requiredInputNumber) {
-        if(requiredInputNumber <= 0)
+        if (requiredInputNumber <= 0)
             throw new IllegalArgumentException("The required amount of resources can't be a number less than or equal to 0!");
-        if(requiredInputType.equals(ResourceType.FAITHPOINT))
+        if (requiredInputType.equals(ResourceType.FAITHPOINT))
             throw new IllegalArgumentException("FaithPoints can't be required in order to activate the extra production!");
         this.requiredInputType = requiredInputType;
         this.requiredInputNumber = requiredInputNumber;
@@ -36,9 +38,10 @@ public class ExtraProductionLeaderEffect extends Effect{
 
     /**
      * Constructs a clone of the specified ExtraProductionLeaderEffect
+     *
      * @param original the effect to be cloned
      */
-    public ExtraProductionLeaderEffect(ExtraProductionLeaderEffect original){
+    public ExtraProductionLeaderEffect(ExtraProductionLeaderEffect original) {
         this(original.requiredInputType, original.requiredInputNumber);
     }
 
@@ -49,15 +52,16 @@ public class ExtraProductionLeaderEffect extends Effect{
 
     //With extra constructs (which enable to set the other attributes of the object as needed), we are able to implement a more custom effect
 
-    public HashMap<ResourceType, Integer> extraProductionEffect(ResourceType desiredOutput) throws IllegalArgumentException{
+    @Override
+    public HashMap<ResourceType, Integer> extraProductionEffect(ResourceType desiredOutput) throws IllegalArgumentException {
         HashMap<ResourceType, Integer> output = new HashMap<>();
 
-        if(desiredOutput.equals(ResourceType.FAITHPOINT))
+        if (desiredOutput.equals(ResourceType.FAITHPOINT))
             throw new IllegalArgumentException("This effect can't produce a a FaithPoint!");
 
-        if(desiredOutput.equals(this.extraOutputType))
+        if (desiredOutput.equals(this.extraOutputType))
             output.put(desiredOutput, this.normalOutputQuantity + this.extraOutputQuantity);
-        else{
+        else {
             output.put(desiredOutput, this.normalOutputQuantity);
             output.put(this.extraOutputType, this.extraOutputQuantity);
         }
@@ -66,9 +70,11 @@ public class ExtraProductionLeaderEffect extends Effect{
 
     /**
      * Returns the resources required in order to produce using this effect
+     *
      * @return the required resources
      */
-    public HashMap<ResourceType, Integer> getRequiredInput(){
+    @Override
+    public HashMap<ResourceType, Integer> getRequiredInput() {
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(this.requiredInputType, this.requiredInputNumber);
         return input;
@@ -96,11 +102,11 @@ public class ExtraProductionLeaderEffect extends Effect{
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null)
             return false;
-        if(obj == this)
+        if (obj == this)
             return true;
-        if(!(obj instanceof ExtraProductionLeaderEffect))
+        if (!(obj instanceof ExtraProductionLeaderEffect))
             return false;
         ExtraProductionLeaderEffect tmp = (ExtraProductionLeaderEffect) obj;
         return this.requiredInputNumber == tmp.requiredInputNumber && this.requiredInputType.equals(tmp.requiredInputType) &&

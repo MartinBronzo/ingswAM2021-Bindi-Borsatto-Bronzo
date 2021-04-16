@@ -1,14 +1,12 @@
 package it.polimi.ingsw.LeaderCard;
 
-import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.PlayerBoard;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,15 +26,16 @@ public class LeaderCard {
 
     /**
      * Constructs a LeaderCard with the specified victoryPoints, list of requirements and effect
-     * @param victoryPoints the Victory points this card may gives the player at the end of the game if the player plays the card
+     *
+     * @param victoryPoints    the Victory points this card may gives the player at the end of the game if the player plays the card
      * @param requirementsList the requirements which must be met in order to be able to play this card
-     * @param effect the extra effect this LeaderCard has
+     * @param effect           the extra effect this LeaderCard has
      * @throws NullPointerException if either the requirementsList or the effect is a null pointer
      */
     public LeaderCard(int victoryPoints, List<Requirement> requirementsList, Effect effect) {
-        if(requirementsList == null)
+        if (requirementsList == null)
             throw new NullPointerException("The requirement list can't be a null pointer!");
-        if(effect == null)
+        if (effect == null)
             throw new NullPointerException("The effect can't be a null pointer!");
         this.victoryPoints = victoryPoints;
         this.requirementsList = getCloneList(requirementsList);
@@ -47,9 +46,10 @@ public class LeaderCard {
 
     /**
      * Constructs a clone of the specified LeaderCard
+     *
      * @param original the LeaderCard to be cloned
      */
-    public LeaderCard(LeaderCard original){
+    public LeaderCard(LeaderCard original) {
         this.victoryPoints = original.victoryPoints;
         this.requirementsList = getCloneList(original.requirementsList);
         this.effect = original.effect.getClone();
@@ -57,9 +57,9 @@ public class LeaderCard {
         this.outputAmountWhenDiscarded = 1;
     }
 
-    public static List<Requirement> getCloneList(List<Requirement> originalList){
+    public static List<Requirement> getCloneList(List<Requirement> originalList) {
         List<Requirement> result = new ArrayList<>();
-        for(Requirement req: originalList) {
+        for (Requirement req : originalList) {
             try {
                 result.add(req.getClone());
             } catch (NegativeQuantityException e) {
@@ -71,13 +71,14 @@ public class LeaderCard {
 
     /**
      * Checks if all the requirements are met
+     *
      * @param playerResourcesAndCards the Resources and the DevCards owned by the player in the PlayerBoard
      * @return true if the player meets all the requirements
      * @throws UnmetRequirementException if the player doesn't meet a requirement which is then stored in the exception itself
      */
-    public boolean checkRequirements(PlayerResourcesAndCards playerResourcesAndCards) throws UnmetRequirementException{
-        for(Requirement req: requirementsList)
-            if(!req.checkRequirement(playerResourcesAndCards))
+    public boolean checkRequirements(PlayerResourcesAndCards playerResourcesAndCards) throws UnmetRequirementException {
+        for (Requirement req : requirementsList)
+            if (!req.checkRequirement(playerResourcesAndCards))
                 throw new UnmetRequirementException("The player can't activate the LeaderCard!", req);
         return true;
     }
@@ -85,17 +86,18 @@ public class LeaderCard {
 
     //Only used during testing
     @Deprecated
-    public List<Requirement> getRequirementsList(){
+    public List<Requirement> getRequirementsList() {
         return new ArrayList<>(this.requirementsList);
     }
 
     /**
      * Returns a copy of all of the requirements
+     *
      * @return a list of the requirements for this LeaderCard
      */
-    public List<Requirement> getRequirementsListSafe(){
+    public List<Requirement> getRequirementsListSafe() {
         List<Requirement> result = new ArrayList<>();
-        for(Requirement req: this.requirementsList) {
+        for (Requirement req : this.requirementsList) {
             try {
                 result.add(req.getClone());
             } catch (NegativeQuantityException e) {
@@ -107,6 +109,7 @@ public class LeaderCard {
 
     /**
      * Returns the Victory points of this LeaderCard
+     *
      * @return the Victory points
      */
     public int getVictoryPoints() {
@@ -115,6 +118,7 @@ public class LeaderCard {
 
     /**
      * Returns the effect of this LeaderCard
+     *
      * @return the effect of the LeaderCard
      */
     public Effect getEffect() {
@@ -123,9 +127,10 @@ public class LeaderCard {
 
     /**
      * Returns the resources the player gets when they discard this LeaderCard
+     *
      * @return the resources the player gets
      */
-    public HashMap<ResourceType, Integer> getOutputWhenDiscarded(){
+    public HashMap<ResourceType, Integer> getOutputWhenDiscarded() {
         HashMap<ResourceType, Integer> output = new HashMap<>();
         output.put(this.outputTypeWhenDiscarded, this.outputAmountWhenDiscarded);
         return output;
@@ -133,11 +138,11 @@ public class LeaderCard {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null)
             return false;
-        if(obj == this)
+        if (obj == this)
             return true;
-        if(!(obj instanceof LeaderCard))
+        if (!(obj instanceof LeaderCard))
             return false;
         LeaderCard tmp = (LeaderCard) obj;
         return this.victoryPoints == tmp.victoryPoints && this.outputTypeWhenDiscarded.equals(tmp.outputTypeWhenDiscarded) &&

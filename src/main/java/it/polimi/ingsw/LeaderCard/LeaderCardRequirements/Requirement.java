@@ -1,4 +1,4 @@
-package it.polimi.ingsw.LeaderCardRequirementsTests;
+package it.polimi.ingsw.LeaderCard.LeaderCardRequirements;
 
 
 import it.polimi.ingsw.PlayerResourcesAndCards;

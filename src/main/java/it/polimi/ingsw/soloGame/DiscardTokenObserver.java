@@ -11,12 +11,13 @@ import it.polimi.ingsw.Interfaces.Observer;
 public class DiscardTokenObserver implements Observer {
     private final SoloBoard soloBoard;
 
-    public DiscardTokenObserver(SoloBoard soloBoard){
+    public DiscardTokenObserver(SoloBoard soloBoard) {
         this.soloBoard = soloBoard;
     }
 
     /**
      * Discards the DevCards with the characteristics described in the token
+     *
      * @param token the token that activates the effect
      * @return true if the action is performed without errors
      */

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,6 +57,17 @@ class DevSlotsTest {
         assertEquals(cardLevel2_2, devSlots.getDevSlot(2).getDevCard(2));
         assertEquals(cardLevel3_1, devSlots.getDevSlot(2).getDevCard(3));
 
+    }
+
+    @Test
+    void getUsableDevCardsTest(){
+        Collection<DevCard> devCards = devSlots.getUsableDevCards();
+        assertTrue(devCards.contains(cardLevel1_1));
+        assertFalse(devCards.contains(cardLevel1_2));
+        assertTrue(devCards.contains(cardLevel2_1));
+        assertFalse(devCards.contains(cardLevel1_3));
+        assertFalse(devCards.contains(cardLevel2_2));
+        assertTrue(devCards.contains(cardLevel3_1));
     }
 
     @BeforeEach

@@ -4,11 +4,10 @@ import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.DevCards.DevGrid;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
 import it.polimi.ingsw.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementColor;
-import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementColorAndLevel;
-import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementResource;
-import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
-import it.polimi.ingsw.Market.Market;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -81,14 +80,14 @@ public class MainBoard {
         return deck;
     }
 
-    private Effect readEffectFromXML(Element elementLeaderCard){
+    private Effect readEffectFromXML(Element elementLeaderCard) {
         Node effectNode;
         Element elementEffect;
 
         ResourceType resourceType;
         int quantity;
 
-        if(elementLeaderCard.getElementsByTagName("DiscountEffect").getLength() != 0){
+        if (elementLeaderCard.getElementsByTagName("DiscountEffect").getLength() != 0) {
             effectNode = elementLeaderCard.getElementsByTagName("DiscountEffect").item(0);
             if (effectNode.getNodeType() == Node.ELEMENT_NODE) {
                 elementEffect = (Element) effectNode;
@@ -96,8 +95,7 @@ public class MainBoard {
                 quantity = Integer.parseInt(elementEffect.getElementsByTagName("Discount").item(0).getTextContent());
                 return new DiscountLeaderEffect(resourceType, quantity);
             }
-        }
-        else if(elementLeaderCard.getElementsByTagName("ExtraSlotEffect").getLength() != 0){
+        } else if (elementLeaderCard.getElementsByTagName("ExtraSlotEffect").getLength() != 0) {
             effectNode = elementLeaderCard.getElementsByTagName("ExtraSlotEffect").item(0);
             if (effectNode.getNodeType() == Node.ELEMENT_NODE) {
                 elementEffect = (Element) effectNode;
@@ -105,16 +103,14 @@ public class MainBoard {
                 quantity = Integer.parseInt(elementEffect.getElementsByTagName("Quantity").item(0).getTextContent());
                 return new ExtraSlotLeaderEffect(resourceType, quantity);
             }
-        }
-        else if(elementLeaderCard.getElementsByTagName("WhiteMarbleEffect").getLength() != 0){
+        } else if (elementLeaderCard.getElementsByTagName("WhiteMarbleEffect").getLength() != 0) {
             effectNode = elementLeaderCard.getElementsByTagName("WhiteMarbleEffect").item(0);
             if (effectNode.getNodeType() == Node.ELEMENT_NODE) {
                 elementEffect = (Element) effectNode;
                 resourceType = ResourceType.valueOf(elementEffect.getElementsByTagName("Resource").item(0).getTextContent());
                 return new WhiteMarbleLeaderEffect(resourceType);
             }
-        }
-        else if(elementLeaderCard.getElementsByTagName("ExtraProductionEffect").getLength() != 0){
+        } else if (elementLeaderCard.getElementsByTagName("ExtraProductionEffect").getLength() != 0) {
             effectNode = elementLeaderCard.getElementsByTagName("ExtraProductionEffect").item(0);
             if (effectNode.getNodeType() == Node.ELEMENT_NODE) {
                 elementEffect = (Element) effectNode;

@@ -1,7 +1,6 @@
-package it.polimi.ingsw.LeaderCardRequirementsTests;
+package it.polimi.ingsw.LeaderCard.LeaderCardRequirements;
 
 import it.polimi.ingsw.DevCards.DevCardColour;
-import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 
@@ -23,16 +22,17 @@ public class CardRequirementColorAndLevel extends Requirement {
 
     /**
      * Constructs a CardRequirement of DevCards with the specified color and level
-     * @param level the required color of the DevCard
+     *
+     * @param level      the required color of the DevCard
      * @param cardColour the required color of the DevCard
-     * @param quantity the number of devCards required having this cardColour and level
-     * @throws IllegalArgumentException if the specified level is out of range
+     * @param quantity   the number of devCards required having this cardColour and level
+     * @throws IllegalArgumentException  if the specified level is out of range
      * @throws NegativeQuantityException if quantity is negative
      */
     public CardRequirementColorAndLevel(int level, DevCardColour cardColour, int quantity) throws IllegalArgumentException, NegativeQuantityException {
-        if(level <= 0 || level >= 4)
+        if (level <= 0 || level >= 4)
             throw new IllegalArgumentException("The level must be a positive number from 1 to 3!");
-        if(quantity<0)
+        if (quantity < 0)
             throw new NegativeQuantityException("CardRequirementColorandLevel: Quantity must be at least 0");
         this.level = level;
         this.cardColour = cardColour;
@@ -42,6 +42,7 @@ public class CardRequirementColorAndLevel extends Requirement {
 
     /**
      * Returns the number of DevCards required
+     *
      * @return the required quantity
      */
     public int getQuantity() {
@@ -50,6 +51,7 @@ public class CardRequirementColorAndLevel extends Requirement {
 
     /**
      * Returns the required level of the DevCard
+     *
      * @return the required level
      */
     public int getLevel() {
@@ -58,6 +60,7 @@ public class CardRequirementColorAndLevel extends Requirement {
 
     /**
      * Returns the required color of the DevCard
+     *
      * @return the required color
      */
     public DevCardColour getCardColour() {
@@ -71,6 +74,7 @@ public class CardRequirementColorAndLevel extends Requirement {
 
     /**
      * Constructs a clone of the specified CardRequirementColorAndLevel
+     *
      * @param original the requirement to be cloned
      * @throws NegativeQuantityException if quantity is negative
      */
@@ -85,11 +89,11 @@ public class CardRequirementColorAndLevel extends Requirement {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null)
             return false;
-        if(obj == this)
+        if (obj == this)
             return true;
-        if(!(obj instanceof CardRequirementColorAndLevel))
+        if (!(obj instanceof CardRequirementColorAndLevel))
             return false;
         CardRequirementColorAndLevel tmp = (CardRequirementColorAndLevel) obj;
         return this.level == tmp.level && this.cardColour.equals(tmp.cardColour) && this.quantity == tmp.quantity;

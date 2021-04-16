@@ -4,13 +4,13 @@ package it.polimi.ingsw.FaithTrack;
  * ReportCell class represents a particular subsets of cells: they belong to the Vatican Report Sections. They
  * differ from normal Cells because of the different value the method activatePopeTile returns.
  */
-public class ReportCell extends Cell{
+public class ReportCell extends Cell {
 
     /**
      * Constructs a cell
      *
      * @param victoryPoints the points of the cell
-     * @param reportNum    the vatican report the cell belongs to
+     * @param reportNum     the vatican report the cell belongs to
      */
     public ReportCell(int victoryPoints, ReportNum reportNum) {
         super(victoryPoints, reportNum);
@@ -18,6 +18,7 @@ public class ReportCell extends Cell{
 
     /**
      * Activates the effect of the cell. ReportCells have no effect
+     *
      * @return false
      */
     @Override
@@ -27,14 +28,13 @@ public class ReportCell extends Cell{
 
     /**
      * States whether this cell lets the player turn the PopeTile for the activated Vatican Report
+     *
      * @param currentReportNum the activated Vatican Report
      * @return true if this cell belongs to the activated Vatican Report, false otherwise
      */
 
     @Override
     public boolean activatePopeTile(ReportNum currentReportNum) {
-        if(currentReportNum.equals(this.getReportNum()))
-            return true;
-        return false;
+        return currentReportNum.equals(this.getReportNum());
     }
 }

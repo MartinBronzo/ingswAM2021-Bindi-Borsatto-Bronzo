@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class PlayerResourcesAndCards {
-    private HashMap<ResourceType,Integer> resources;
+    private HashMap<ResourceType, Integer> resources;
     private Collection<DevCard> devCards;
 
     public PlayerResourcesAndCards(HashMap<ResourceType, Integer> resources, Collection<DevCard> devCards) {

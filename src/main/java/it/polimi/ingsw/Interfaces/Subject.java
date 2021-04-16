@@ -6,12 +6,14 @@ package it.polimi.ingsw.Interfaces;
 public interface Subject {
     /**
      * Lets know the Subject that this Observer wants to be notified of its change
+     *
      * @param observer the Observer
      */
     public boolean attach(Observer observer);
 
     /**
      * Lets know the Subject that this Observer doesn't want to be notified of its change anymore
+     *
      * @param observer the Observer
      */
     public boolean detach(Observer observer);

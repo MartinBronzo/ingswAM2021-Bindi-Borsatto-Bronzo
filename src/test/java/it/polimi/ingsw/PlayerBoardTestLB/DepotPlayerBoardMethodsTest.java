@@ -1,20 +1,26 @@
 package it.polimi.ingsw.PlayerBoardTestLB;
 
+import it.polimi.ingsw.DevCards.DevCardColour;
+import it.polimi.ingsw.LeaderCard.LeaderCard;
+import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.LeaderCardRequirementsTests.CardRequirementColor;
+import it.polimi.ingsw.LeaderCardRequirementsTests.Requirement;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.ResourceType;
-import it.polimi.ingsw.exceptions.AlreadyInAnotherShelfException;
-import it.polimi.ingsw.exceptions.NotEnoughResourcesException;
-import it.polimi.ingsw.exceptions.NotEnoughSpaceException;
+import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.EmptySource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DepotPlayerBoardMethodsTest {
     PlayerBoard playerBoard;
+    LeaderCard leaderCard;
     final ResourceType coin = ResourceType.COIN;
     final ResourceType shield = ResourceType.SHIELD;
     final ResourceType servant = ResourceType.SERVANT;
@@ -22,7 +28,11 @@ public class DepotPlayerBoardMethodsTest {
     final ResourceType faithPoint = ResourceType.FAITHPOINT;
 
     @BeforeEach
-    public void init(){
+    public void init() throws NegativeQuantityException {
+        List<Requirement> requirementList = new ArrayList<>();
+        requirementList.add(new CardRequirementColor(DevCardColour.BLUE, 0));
+        Effect effect = new ExtraSlotLeaderEffect(coin, 2);
+        leaderCard = new LeaderCard(2, requirementList, effect);
         playerBoard = new PlayerBoard();
     }
 
@@ -34,9 +44,9 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void addToDepotException(){
+    public void addToDepotException() {
         Exception exception;
-        exception = assertThrows(IllegalArgumentException.class, () -> playerBoard.addResourceToDepot(faithPoint, 1,2));
+        exception = assertThrows(IllegalArgumentException.class, () -> playerBoard.addResourceToDepot(faithPoint, 1, 2));
         assertEquals(exception.getMessage(), "Depot can't handle faith points");
     }
 
@@ -47,7 +57,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void removeFromDepotException() throws AlreadyInAnotherShelfException, NotEnoughSpaceException, NotEnoughResourcesException {
+    public void removeFromDepotException() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
         Exception exception;
         playerBoard.addResourceToDepot(shield, 2, 3);
         exception = assertThrows(NotEnoughResourcesException.class, () -> playerBoard.removeResourceFromDepot(3, 3));
@@ -55,7 +65,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void addToStrongbox(){
+    public void addToStrongbox() {
         HashMap<ResourceType, Integer> resMap = new HashMap<>();
         resMap.put(coin, 3);
         resMap.put(shield, 10);
@@ -66,7 +76,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void addToStrongboxException(){
+    public void addToStrongboxException() {
         Exception exception;
         HashMap<ResourceType, Integer> resMap = new HashMap<>();
         resMap.put(faithPoint, 3);
@@ -88,7 +98,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void removeFromStrongboxException(){
+    public void removeFromStrongboxException() {
         Exception exception;
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
@@ -105,7 +115,7 @@ public class DepotPlayerBoardMethodsTest {
         playerBoard.addResourceToDepot(coin, 1, 1);
         playerBoard.addResourceToDepot(stone, 1, 3);
 
-        playerBoard.moveBetweenShelves(1, 3);
+        assertTrue(playerBoard.moveBetweenShelves(1, 3));
         assertEquals(playerBoard.getResourceTypeFromShelf(3), coin);
         assertEquals(playerBoard.getResourceTypeFromShelf(1), stone);
         assertEquals(playerBoard.getResourceFromDepot(coin), 1);
@@ -131,38 +141,41 @@ public class DepotPlayerBoardMethodsTest {
         assertEquals(exception.getMessage(), "No source resource to move");
     }
 
+    @Test
+    public void addToLeader() throws NoExtraSlotException, FullExtraSlotException, NotEnoughSpaceException {
+        assertTrue(playerBoard.activateExtraLeaderCard(leaderCard));
+        assertTrue(playerBoard.addResourceToLeader(coin, 2));
+        assertEquals(playerBoard.getLeaderSlotResourceQuantity(coin),2);
+        assertEquals(playerBoard.getLeaderSlotLimitQuantity(coin),2);
+    }
 
+    @Test
+    public void removeFromLeader() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, NotEnoughResourcesException {
+        playerBoard.activateExtraLeaderCard(leaderCard);
+        playerBoard.addResourceToLeader(coin, 2);
+        assertTrue(playerBoard.removeResourceFromLeader(coin, 1));
+        assertEquals(playerBoard.getLeaderSlotLimitQuantity(coin), 2);
+        assertEquals(playerBoard.getLeaderSlotResourceQuantity(coin), 1);
+    }
 
+    @Test
+    public void moveToLeader() throws AlreadyInAnotherShelfException, NotEnoughSpaceException, FullExtraSlotException, NotEnoughResourcesException, NoExtraSlotException {
+        playerBoard.activateExtraLeaderCard(leaderCard);
+        playerBoard.addResourceToDepot(coin, 2,2);
+        playerBoard.moveFromShelfToLeader(2,1);
+        assertEquals(playerBoard.getResourceFromDepot(coin), 1);
+        assertEquals(playerBoard.getLeaderSlotResourceQuantity(coin),1);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Test
+    public void moveToShelf() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, AlreadyInAnotherShelfException, NotEnoughResourcesException {
+        playerBoard.activateExtraLeaderCard(leaderCard);
+        playerBoard.addResourceToLeader(coin,2);
+        assertTrue(playerBoard.moveFromLeaderToShelf(coin, 1,1));
+        assertEquals(playerBoard.getLeaderSlotResourceQuantity(coin),1);
+        assertEquals(playerBoard.getResourceFromDepot(coin), 1);
+        assertEquals(playerBoard.getResourceTypeFromShelf(1), coin);
+    }
 
 
 

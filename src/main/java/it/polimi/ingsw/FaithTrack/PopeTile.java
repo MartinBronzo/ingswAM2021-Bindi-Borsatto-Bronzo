@@ -34,7 +34,8 @@ public class PopeTile {
 
     /**
      * Constructs a PopeTile with the given points and ReportNum. When it is created, the tile is neither active, discarded nor changed yet.
-     * @param points the points the tile has
+     *
+     * @param points    the points the tile has
      * @param reportNum the ReportNum of the Vatican Report the tile is either activated or discarded
      */
     public PopeTile(int points, ReportNum reportNum) {
@@ -47,16 +48,18 @@ public class PopeTile {
 
     /**
      * Returns the point of the cell based on the state of the cell
+     *
      * @return the points of the cells if it is active, 0 otherwise (not changed yet or discarded)
      */
     public int getPoints() {
-        if(activated == true)
+        if (activated == true)
             return points;
         return 0;
     }
 
     /**
      * Returns the ReportNum associated with the cell
+     *
      * @return the said ReportNum
      */
     public ReportNum getReportNum() {
@@ -65,6 +68,7 @@ public class PopeTile {
 
     /**
      * States whether this cell has been activated yet
+     *
      * @return true if the cell has been activated, false otherwise (the cell has not been activated yet or it has been already discarded)
      */
     public boolean isActivated() {
@@ -73,6 +77,7 @@ public class PopeTile {
 
     /**
      * States whether this cell has been activated yet
+     *
      * @return true if the cell has been discarded, false otherwise (the cell has not been discarded yet or it has been already activated)
      */
     public boolean isDiscarded() {
@@ -81,15 +86,16 @@ public class PopeTile {
 
     /**
      * Activates or discards the Tile as needed if the corresponding Vatican Report is taking place
-     * @param reportNum the ReportNum of the Vatican Report taking place
+     *
+     * @param reportNum  the ReportNum of the Vatican Report taking place
      * @param toTurnTile true if the tile needs to be activated, false if it needs to be discarded
      * @throws IllegalActionException if the tile has already been changed
      */
     public void dealWithVaticanReport(ReportNum reportNum, boolean toTurnTile) throws IllegalActionException {
-        if(this.changed == true)
+        if (this.changed == true)
             throw new IllegalActionException("This tile has already been changed. ReportNum: " + this.reportNum);
-        if(reportNum.equals(this.reportNum)){
-            if(toTurnTile == true)
+        if (reportNum.equals(this.reportNum)) {
+            if (toTurnTile == true)
                 this.activated = true;
             else
                 this.discarded = true;
@@ -99,6 +105,7 @@ public class PopeTile {
 
     /**
      * States whether this tile has already been changed
+     *
      * @return true if the tile has already been changed, false otherwise
      */
     public boolean isChanged() {
@@ -107,9 +114,10 @@ public class PopeTile {
 
     /**
      * Clones this tile
+     *
      * @return a clone of this tile
      */
-    public PopeTile cloneTile(){
+    public PopeTile cloneTile() {
         PopeTile tmp = new PopeTile(this.points, this.reportNum);
         tmp.activated = this.activated;
         tmp.discarded = this.discarded;
@@ -119,11 +127,11 @@ public class PopeTile {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null)
             return false;
-        if(obj == this)
+        if (obj == this)
             return true;
-        if(!(obj instanceof PopeTile))
+        if (!(obj instanceof PopeTile))
             return false;
         PopeTile tmp = (PopeTile) obj;
         return tmp.changed == this.changed && tmp.discarded == this.discarded && tmp.activated == this.activated && tmp.points == this.points && tmp.reportNum == this.reportNum;

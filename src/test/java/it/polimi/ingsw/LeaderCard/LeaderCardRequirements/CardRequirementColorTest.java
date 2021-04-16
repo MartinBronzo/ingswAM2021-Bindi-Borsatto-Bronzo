@@ -1,9 +1,7 @@
-package it.polimi.ingsw.LeaderCardRequirementsTests;
+package it.polimi.ingsw.LeaderCard.LeaderCardRequirements;
 
 import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevCardColour;
-import it.polimi.ingsw.DevCards.DevSlots;
-import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
