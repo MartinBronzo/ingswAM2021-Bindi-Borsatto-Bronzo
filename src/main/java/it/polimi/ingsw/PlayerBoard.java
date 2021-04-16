@@ -7,9 +7,9 @@ import it.polimi.ingsw.FaithTrack.FaithTrack;
 import it.polimi.ingsw.FaithTrack.PopeTile;
 import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
+import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.LeaderCard.LeaderCards;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.exceptions.*;
 
 import java.util.*;
@@ -41,7 +41,12 @@ public class PlayerBoard {
         this.baseProduction = new BaseProduction();
     }
 
-    public FaithLevel getPlayerFaithLevel() {
+    /**
+     * Returns a copy of the player's FaithLevel
+     *
+     * @return a copy of the player's FaithLevel
+     */
+    public FaithLevel getFaithLevel() {
         return new FaithLevel(this.playerFaithLevel);
     }
 
@@ -74,6 +79,7 @@ public class PlayerBoard {
      *
      * @return a collection of Cards
      */
+    @Deprecated
     public Collection<DevCard> getAllDevCards() {
         return devSlots.getAllDevCards();
     }
@@ -132,14 +138,13 @@ public class PlayerBoard {
     public boolean activateLeaderCard(LeaderCard leaderCard) throws UnmetRequirementException, FullExtraSlotException, NullPointerException {
         if (leaderCard == null) throw new NullPointerException("LeaderCard can't be null");
 
-        PlayerResourcesAndCards playerResourcesAndCards = new PlayerResourcesAndCards(getAllResources(), getAllDevCards());
+        PlayerResourcesAndCards playerResourcesAndCards = new PlayerResourcesAndCards(getAllResources(), devSlots.getAllDevCards());
         if (this.leaderCards.activateLeaderCard(leaderCard, playerResourcesAndCards)) {
             if (this.leaderCards.addCardToActivatedOneShotCards(leaderCard))
                 this.depot.addExtraSlot(leaderCard.getEffect());
             return true;
         }
         return false;
-
 
     }
 
@@ -174,6 +179,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException if the player doesn't hold such card or if they haven't activated it, yet
      * @throws IllegalActionException   if the player tries to get the effect of a one-shot card they have already used once
      */
+    @Deprecated
     public Effect getEffectFromCard(LeaderCard leaderCard) throws IllegalArgumentException, IllegalActionException {
         return this.leaderCards.getEffectFromCard(leaderCard);
     }
@@ -183,18 +189,22 @@ public class PlayerBoard {
      *
      * @return a copy of the not-played LeaderCards
      */
+    @Deprecated
     public List<LeaderCard> getNotPlayedLeaderCards() {
         return this.leaderCards.getNotPlayedCards();
     }
 
+    @Deprecated
     public List<LeaderCard> getActiveLeaderCards() {
         return this.leaderCards.getActiveCards();
     }
 
+    @Deprecated
     public List<LeaderCard> getAlreadyUsedOneShotCard() {
         return this.leaderCards.getAlreadyUsedOneShotCard();
     }
 
+    @Deprecated
     public List<Requirement> getLeaderCardRequirements(LeaderCard leaderCard) throws IllegalArgumentException {
         return this.leaderCards.getLeaderCardRequirements(leaderCard);
     }
@@ -204,6 +214,7 @@ public class PlayerBoard {
      *
      * @return the points of all the active LeaderCards the player has
      */
+    @Deprecated
     public int getLeaderCardsPoints() {
         return this.leaderCards.getLeaderCardsPoints();
     }
@@ -215,6 +226,7 @@ public class PlayerBoard {
      * @return true if the card is active, false if the card is not played, yet
      * @throws IllegalArgumentException if the player doesn't hold the card
      */
+    @Deprecated
     public boolean isLeaderCardActive(LeaderCard leaderCard) throws IllegalArgumentException {
         return leaderCards.isLeaderCardActive(leaderCard);
     }
@@ -236,8 +248,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException  if this card can't be added in the desiredSlot
      */
     public boolean addCardToDevSlot(int index, DevCard devCard) throws IndexOutOfBoundsException, NullPointerException, IllegalArgumentException {
-        devSlots.addDevCard(index, devCard);
-        return true;
+        return devSlots.addDevCard(index, devCard);
     }
 
     /*
@@ -257,8 +268,7 @@ public class PlayerBoard {
      * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the shelf
      */
     public boolean addResourceToDepot(ResourceType resourceType, int quantity, int shelf) throws NotEnoughSpaceException, IllegalArgumentException, AlreadyInAnotherShelfException {
-        this.depot.addToShelf(resourceType, quantity, shelf);
-        return true;
+        return this.depot.addToShelf(resourceType, quantity, shelf);
     }
 
     /**
@@ -271,8 +281,7 @@ public class PlayerBoard {
      * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the extra slot
      */
     public boolean addResourceToLeader(ResourceType resourceType, int quantity) throws NotEnoughSpaceException, IllegalArgumentException, NoExtraSlotException, FullExtraSlotException {
-        this.depot.addToLeader(resourceType, quantity);
-        return true;
+        return this.depot.addToLeader(resourceType, quantity);
     }
 
 
@@ -285,8 +294,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
      */
     public boolean removeResourceFromDepot(int quantity, int shelf) throws IllegalArgumentException, NotEnoughResourcesException {
-        this.depot.removeFromDepot(shelf, quantity);
-        return true;
+        return this.depot.removeFromDepot(shelf, quantity);
     }
 
     /**
@@ -298,8 +306,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative
      */
     public boolean removeResourceFromLeader(ResourceType resourceType, int quantity) throws IllegalArgumentException, NotEnoughResourcesException, NoExtraSlotException {
-        this.depot.removeFromLeader(resourceType, quantity);
-        return true;
+        return this.depot.removeFromLeader(resourceType, quantity);
     }
 
     /**
@@ -309,6 +316,7 @@ public class PlayerBoard {
      * @return the number of resources of the specified type that are currently in the depot
      * @throws IllegalArgumentException if the resource is a faith point
      */
+    @Deprecated
     public int getResourceFromDepot(ResourceType resource) throws IllegalArgumentException {
         return depot.getResourceFromDepot(resource);
     }
@@ -320,6 +328,7 @@ public class PlayerBoard {
      * @return the type of the resource that is contained in the specified shelf
      * @throws IllegalArgumentException if the shelf isn't between 1 and 3
      */
+    @Deprecated
     public ResourceType getResourceTypeFromShelf(int shelf) throws IllegalArgumentException {
         return depot.getShelfType(shelf);
     }
@@ -329,6 +338,7 @@ public class PlayerBoard {
      * @param resourceType the resource of which you want to know the quantity
      * @return the quantity of the required resource that is in the ExtraSlot of the depot
      */
+    @Deprecated
     public int getLeaderSlotResourceQuantity(ResourceType resourceType){
         return depot.getExtraDepotValue(resourceType);
     }
@@ -338,6 +348,7 @@ public class PlayerBoard {
      * @param resourceType the resource of which you want to know the maximum quantity allowed
      * @return  the maximum amount of resources that can be stored in the ExtraSlot of the depot
      */
+    @Deprecated
     public int getLeaderSlotLimitQuantity(ResourceType resourceType){
         return depot.getExtraDepotLimit(resourceType);
     }
@@ -351,8 +362,7 @@ public class PlayerBoard {
      * @throws NotEnoughSpaceException if the sourceShelf or the destShelf hasn't enough space to store the resources of the other shelf
      */
     public boolean moveBetweenShelves(int sourceShelf, int destShelf) throws NotEnoughSpaceException {
-        depot.moveBetweenShelves(sourceShelf, destShelf);
-        return true;
+        return depot.moveBetweenShelves(sourceShelf, destShelf);
     }
 
     /**
@@ -363,11 +373,10 @@ public class PlayerBoard {
      * @throws NotEnoughSpaceException if there isn't enough space in the extra slot to move the resources
      * @throws NoExtraSlotException if there isn't an active extra slot for that type of resource
      * @throws NotEnoughResourcesException if there aren't enough resources to move from the shelf of the depot
-     * @throws FullExtraSlotException if the etra slot is already full of resources
+     * @throws FullExtraSlotException if the extra slot is already full of resources
      */
     public boolean moveFromShelfToLeader(int shelfNum, int quantity) throws NotEnoughSpaceException, NoExtraSlotException, NotEnoughResourcesException, FullExtraSlotException {
-        depot.moveToLeader(shelfNum, quantity);
-        return true;
+        return depot.moveToLeader(shelfNum, quantity);
     }
 
     /**
@@ -382,8 +391,7 @@ public class PlayerBoard {
      * @throws NotEnoughResourcesException if there aren't enough resources in the extra slot to move to the shelf
      */
     public boolean moveFromLeaderToShelf(ResourceType resource, int quantity, int shelfNum) throws NotEnoughSpaceException, AlreadyInAnotherShelfException, NoExtraSlotException, NotEnoughResourcesException {
-        depot.moveToShelf(resource, quantity, shelfNum);
-        return true;
+        return depot.moveToShelf(resource, quantity, shelfNum);
     }
 
     /**
@@ -391,10 +399,11 @@ public class PlayerBoard {
      *
      * @param resMap the map with the resource to add
      * @return true if the action is performed without errors
+     * @deprecated resources to strongbox can be added exclusively using activate production method
      */
+    @Deprecated
     public boolean addResourcesToStrongbox(HashMap<ResourceType, Integer> resMap) {
-        strongbox.addResource(resMap);
-        return true;
+        return strongbox.addResource(resMap);
     }
 
     /**
@@ -405,8 +414,7 @@ public class PlayerBoard {
      * @throws NotEnoughResourcesException if there aren't enough resources to remove
      */
     public boolean removeResourcesFromStrongbox(HashMap<ResourceType, Integer> resMap) throws NotEnoughResourcesException {
-        strongbox.removeResource(resMap);
-        return true;
+        return strongbox.removeResource(resMap);
     }
 
     /**
@@ -415,6 +423,7 @@ public class PlayerBoard {
      * @param resource the resource you want to know the quantity
      * @return the quantity of the specified resource that is in the strongbox
      */
+    @Deprecated
     public int getResourceFromStrongbox(ResourceType resource) {
         return strongbox.getResource(resource);
     }
@@ -441,7 +450,9 @@ public class PlayerBoard {
      * Sets the PopeTiles this FaithLevel of the player has if they haven't been set, yet
      *
      * @param popeTiles a list of PopeTiles
+     * @deprecated Pope Tile must be set using PlayerboardConstructor
      */
+    @Deprecated
     public void setPlayerFaithLevelPopeTiles(List<PopeTile> popeTiles) {
         playerFaithLevel.setPopeTiles(popeTiles);
     }
@@ -467,19 +478,11 @@ public class PlayerBoard {
     }
 
     /**
-     * Returns a copy of the player's FaithLevel
-     *
-     * @return a copy of the player's FaithLevel
-     */
-    public FaithLevel getFaithLevel() {
-        return new FaithLevel(this.playerFaithLevel);
-    }
-
-    /**
      * Returns the FaithTrack the player is playing in
      *
      * @return the FaithTrack of the player
      */
+    @Deprecated
     public FaithTrack getFaithTrack() {
         return playerFaithLevel.getFaithTrack();
     }
@@ -489,6 +492,7 @@ public class PlayerBoard {
      *
      * @return the position of the player on the FaithTrack
      */
+    @Deprecated
     public int getPositionOnFaithTrack() {
         return this.playerFaithLevel.getPosition();
     }
@@ -498,6 +502,7 @@ public class PlayerBoard {
      *
      * @return the victory points due to the FaithTrack
      */
+    @Deprecated
     public int getCellPoints() {
         return this.playerFaithLevel.getCellPoints();
     }
@@ -507,6 +512,7 @@ public class PlayerBoard {
      *
      * @return the points due to active PopeTiles
      */
+    @Deprecated
     public int getPopeTilesPoints() {
         return this.playerFaithLevel.getPopeTilesPoints();
     }
@@ -558,8 +564,7 @@ public class PlayerBoard {
             productionMap.remove(ResourceType.FAITHPOINT);
             this.playerFaithLevel.moveFaithMarker(numberOfProducedFaithPoints);
         }
-        strongbox.addResource(productionMap);
-        return true;
+        return strongbox.addResource(productionMap);
     }
 
     /**
@@ -600,8 +605,6 @@ public class PlayerBoard {
         if (costKeys.stream().anyMatch(key -> costMap.getOrDefault(key, 0) > allResources.getOrDefault(key, 0)))
             throw new IllegalActionException("playerboard_getProductionCost:there is not enough resources to activate these cards");
         return costMap;
-
-
     }
 
 
