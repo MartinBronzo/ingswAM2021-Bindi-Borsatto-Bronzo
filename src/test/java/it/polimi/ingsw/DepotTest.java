@@ -985,6 +985,25 @@ class DepotTest {
         assertEquals(returnedRes.get(shield),3);
     }
 
+    @Test
+    public void depotCopy() throws AlreadyInAnotherShelfException, NotEnoughSpaceException, FullExtraSlotException, NoExtraSlotException {
+        ExtraSlotLeaderEffect extraSlotLeaderEffect = new ExtraSlotLeaderEffect(stone, 2);
+        Depot depot = new Depot();
+        Depot depotCopy;
+
+        depot.addExtraSlot(extraSlotLeaderEffect);
+        depot.addToShelf(shield, 2, 2);
+        depot.addToShelf(servant, 1, 1);
+        depot.addToLeader(stone, 1);
+
+        depotCopy = new Depot(depot);
+        assertEquals(depotCopy.getResourceFromDepot(shield), 2);
+        assertEquals(depotCopy.getResourceFromDepot(servant), 1);
+        assertEquals(depotCopy.getShelfType(1), servant);
+        assertEquals(depotCopy.getShelfType(2),shield);
+        assertEquals(depotCopy.getExtraDepotLimit(stone),2);
+        assertEquals(depotCopy.getExtraDepotValue(stone),1);
+    }
 
 
 

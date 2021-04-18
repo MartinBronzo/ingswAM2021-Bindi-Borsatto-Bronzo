@@ -22,6 +22,10 @@ public class Strongbox {
         }
     }
 
+    public Strongbox(Strongbox strongbox){
+        this.strongBoxResources = new HashMap<>(strongbox.strongBoxResources);
+    }
+
     /**
      * The method adds all the resources inside resMap to strongBoxResources, adding them to the previous value
      *

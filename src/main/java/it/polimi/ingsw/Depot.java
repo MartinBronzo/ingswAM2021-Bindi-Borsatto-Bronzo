@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Interfaces.Deck;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.exceptions.*;
 
@@ -23,9 +24,16 @@ public class Depot {
                 depotLevel.put(resource, 0);
                 leaderDepot.put(resource, 0);
             }
-
         }
         shelves = new ResourceType[3];
+    }
+
+    public Depot(Depot depot){
+        this.depotLevel = new HashMap<>(depot.depotLevel);
+        shelves = new ResourceType[3];
+        System.arraycopy(depot.shelves, 0, this.shelves, 0, depot.shelves.length);
+        this.leaderDepot = new HashMap<>(depot.leaderDepot);
+        this.depotLimit = new ArrayList<>(depot.depotLimit);
     }
 
     /**

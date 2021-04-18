@@ -28,6 +28,10 @@ public class SoloActionDeck implements Deck {
         Collections.shuffle(soloDeck);
     }
 
+    public SoloActionDeck(SoloActionDeck soloActionDeck){
+        this.soloDeck = new LinkedList<>(soloActionDeck.soloDeck);
+    }
+
     /**
      * Creates the deck from an xml file and returns it
      *

@@ -175,4 +175,20 @@ public class StrongboxTest {
         assertEquals(returnedRes.get(shield),15);
     }
 
+    @Test
+    public void cloneStrongbox(){
+        Strongbox strongbox = new Strongbox();
+        Strongbox strongboxCopy;
+        HashMap<ResourceType, Integer> resAdd = new HashMap<>();
+
+        resAdd.put(coin, 3);
+        resAdd.put(stone, 10);
+
+        strongbox.addResource(resAdd);
+
+        strongboxCopy = new Strongbox(strongbox);
+        assertEquals(strongboxCopy.getResource(coin),3);
+        assertEquals(strongboxCopy.getResource(stone), 10);
+    }
+
 }
