@@ -146,7 +146,8 @@ public class LeaderCard {
             return false;
         LeaderCard tmp = (LeaderCard) obj;
         return this.victoryPoints == tmp.victoryPoints && this.outputTypeWhenDiscarded.equals(tmp.outputTypeWhenDiscarded) &&
-                this.outputAmountWhenDiscarded == tmp.outputAmountWhenDiscarded && this.requirementsList.equals(tmp.requirementsList) &&
-                this.effect.equals(effect);
+                this.outputAmountWhenDiscarded == tmp.outputAmountWhenDiscarded &&
+                this.requirementsList.containsAll(tmp.requirementsList) && tmp.requirementsList.containsAll(this.requirementsList) &&
+                this.effect.equals(tmp.effect);
     }
 }

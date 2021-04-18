@@ -8,6 +8,7 @@ import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementResource
 import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.LeaderCard.leaderEffects.ExtraProductionLeaderEffect;
 import it.polimi.ingsw.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
 import it.polimi.ingsw.PlayerResourcesAndCards;
 import it.polimi.ingsw.ResourceType;
@@ -16,10 +17,7 @@ import it.polimi.ingsw.exceptions.UnmetRequirementException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class LeaderCardTest {
     private static final ResourceType[] resources = new ResourceType[]{ResourceType.COIN, ResourceType.STONE, ResourceType.SERVANT, ResourceType.FAITHPOINT,  ResourceType.SHIELD};
@@ -252,5 +250,47 @@ public class LeaderCardTest {
             assertEquals(copy.get(i), list.get(i));
             assertNotSame(copy.get(i), list.get(i));
         }
+    }
+
+    @Test
+    public void ctrlEquals(){
+        Effect e1 = new ExtraProductionLeaderEffect(ResourceType.SERVANT, 1);
+        Effect e2 = new ExtraProductionLeaderEffect(ResourceType.COIN, 1);
+        LeaderCard l1 = new LeaderCard(2, new LinkedList<>(), e1);
+        LeaderCard l2 = new LeaderCard(2, new LinkedList<>(), e2);
+
+        assertNotEquals(l1, l2);
+        assertNotEquals(e1, e2);
+        Effect e1bis = new ExtraProductionLeaderEffect(ResourceType.SERVANT, 1);
+        assertEquals(e1, e1bis);
+        assertNotSame(e1, e1bis);
+    }
+
+    @Test
+    public void ctrlEqualsRequirementsFalse() throws NegativeQuantityException {
+        List<Requirement> req1 = new LinkedList<>();
+        List<Requirement> req2 = new LinkedList<>();
+
+        req1.add(new CardRequirementResource(ResourceType.COIN, 1));
+        req2.add(new CardRequirementResource(ResourceType.COIN, 1));
+        req1.add(new CardRequirementColor(DevCardColour.YELLOW, 2));
+        req2.add(new CardRequirementColor(DevCardColour.BLUE, 2));
+        LeaderCard l1 = new LeaderCard(2, req1, new ExtraProductionLeaderEffect(ResourceType.SERVANT, 1));
+        LeaderCard l2 = new LeaderCard(2, req2, new ExtraProductionLeaderEffect(ResourceType.SERVANT, 1));
+
+        assertNotEquals(l1, l2);
+        assertFalse(req1.containsAll(req2));
+        assertFalse(req2.containsAll(req1));
+    }
+
+    @Test
+    public void ctrlEqualsRequirementsTrue() throws NegativeQuantityException {
+        List<Requirement> req1 = new LinkedList<>();
+        req1.add(new CardRequirementResource(ResourceType.COIN, 1));
+        req1.add(new CardRequirementColor(DevCardColour.YELLOW, 2));
+        LeaderCard l1 = new LeaderCard(2, req1, new ExtraProductionLeaderEffect(ResourceType.SERVANT, 1));
+        LeaderCard l2 = new LeaderCard(2, req1, new ExtraProductionLeaderEffect(ResourceType.SERVANT, 1));
+
+        assertEquals(l1, l2);
     }
 }
