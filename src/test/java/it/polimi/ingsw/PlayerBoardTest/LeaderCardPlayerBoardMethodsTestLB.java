@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PlayerBoardTestLB;
+package it.polimi.ingsw.PlayerBoardTest;
 
 import it.polimi.ingsw.DevCards.DevCard;
 import it.polimi.ingsw.DevCards.DevCardColour;
