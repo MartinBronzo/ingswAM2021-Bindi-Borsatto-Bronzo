@@ -52,7 +52,7 @@ public class PopeTile {
      * @return the points of the cells if it is active, 0 otherwise (not changed yet or discarded)
      */
     public int getPoints() {
-        if (activated == true)
+        if (activated)
             return points;
         return 0;
     }
@@ -92,10 +92,10 @@ public class PopeTile {
      * @throws IllegalActionException if the tile has already been changed
      */
     public void dealWithVaticanReport(ReportNum reportNum, boolean toTurnTile) throws IllegalActionException {
-        if (this.changed == true)
+        if (this.changed)
             throw new IllegalActionException("This tile has already been changed. ReportNum: " + this.reportNum);
         if (reportNum.equals(this.reportNum)) {
-            if (toTurnTile == true)
+            if (toTurnTile)
                 this.activated = true;
             else
                 this.discarded = true;
@@ -125,6 +125,13 @@ public class PopeTile {
         return tmp;
     }
 
+    public PopeTile(PopeTile original){
+        this(original.points, original.reportNum);
+        this.activated = original.activated;
+        this.discarded = original.discarded;
+        this.changed = original.changed;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null)
@@ -136,4 +143,6 @@ public class PopeTile {
         PopeTile tmp = (PopeTile) obj;
         return tmp.changed == this.changed && tmp.discarded == this.discarded && tmp.activated == this.activated && tmp.points == this.points && tmp.reportNum == this.reportNum;
     }
+
+
 }

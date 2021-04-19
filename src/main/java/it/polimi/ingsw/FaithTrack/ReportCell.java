@@ -37,4 +37,22 @@ public class ReportCell extends Cell {
     public boolean activatePopeTile(ReportNum currentReportNum) {
         return currentReportNum.equals(this.getReportNum());
     }
+
+    public ReportCell(ReportCell original){
+        this(original.getVictoryPoints(), original.getReportNum());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof ReportCell))
+            return false;
+        if(obj instanceof PopeCell)
+            return false;
+        ReportCell tmp = (ReportCell) obj;
+        return this.getVictoryPoints() == tmp.getVictoryPoints() && this.getReportNum().equals(tmp.getReportNum());
+    }
 }

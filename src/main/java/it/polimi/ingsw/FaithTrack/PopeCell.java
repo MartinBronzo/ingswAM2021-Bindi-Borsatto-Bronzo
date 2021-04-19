@@ -54,7 +54,7 @@ public class PopeCell extends ReportCell implements Subject {
     @Override
     public boolean effect() {
         //If the Vatican Report has already been activated, then we can't activate it again
-        if (this.activated == true) {
+        if (this.activated) {
             //System.out.println("The Vatican ReportXXX " + this.getReportNum() + " has already been activated!");
             return false;
         }
@@ -79,11 +79,9 @@ public class PopeCell extends ReportCell implements Subject {
     public boolean notifyObservers() {
         int tmp = 0;
         for (Observer o : observersList)
-            if (o.update(true, this.getReportNum()) == true)
+            if (o.update(true, this.getReportNum()))
                 tmp++;
-        if (tmp == observersList.size())
-            return true;
-        return false;
+        return tmp == observersList.size();
     }
 
     //This method is only used for testing purposes
@@ -103,5 +101,25 @@ public class PopeCell extends ReportCell implements Subject {
     //This method is only used for testing purposes
     public List<Observer> getObserversList() {
         return observersList;
+    }
+
+    public PopeCell(PopeCell original){
+        super(original.getVictoryPoints(), original.getReportNum());
+        this.activated = original.activated;
+        this.observersList = new ArrayList<>(original.observersList);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof PopeCell))
+            return false;
+        PopeCell tmp = (PopeCell) obj;
+        return this.getVictoryPoints() == tmp.getVictoryPoints() && this.getReportNum().equals(tmp.getReportNum())
+                && this.activated == tmp.activated && this.observersList.containsAll(tmp.observersList) && tmp.observersList.containsAll(this.observersList);
+
     }
 }

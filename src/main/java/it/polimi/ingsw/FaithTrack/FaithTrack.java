@@ -175,7 +175,7 @@ public class FaithTrack {
      * @return true if the ReportNumOrder has been set by this method, false if it had already been set
      */
     public boolean setReportNumOrder(ReportNumOrder reportNumOrder) {
-        if (isReportNumOrderSet == false) {
+        if (!isReportNumOrderSet) {
             this.reportNumOrder = reportNumOrder;
             this.isReportNumOrderSet = true;
             return true;
@@ -219,7 +219,7 @@ public class FaithTrack {
      * @return the victory points of the cell
      */
     public int getCellVictoryPoints(int position) {
-        return track.get(position).getVicoryPoints();
+        return track.get(position).getVictoryPoints();
     }
 
     /**
