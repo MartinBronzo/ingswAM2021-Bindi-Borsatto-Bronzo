@@ -5,17 +5,17 @@ package it.polimi.ingsw.FaithTrack;
  */
 public class Cell {
 
-    private int vicoryPoints;
+    private int victoryPoints;
     private ReportNum reportNum;
 
     /**
      * Constructs a cell
      *
-     * @param vicoryPoints the points of the cell
+     * @param victoryPoints the points of the cell
      * @param reportNum    the vatican report the cell belongs to
      */
-    public Cell(int vicoryPoints, ReportNum reportNum) {
-        this.vicoryPoints = vicoryPoints;
+    public Cell(int victoryPoints, ReportNum reportNum) {
+        this.victoryPoints = victoryPoints;
         this.reportNum = reportNum;
     }
 
@@ -24,8 +24,8 @@ public class Cell {
      *
      * @return the victory points of the cells
      */
-    public int getVicoryPoints() {
-        return vicoryPoints;
+    public int getVictoryPoints() {
+        return victoryPoints;
     }
 
     /**
@@ -55,5 +55,25 @@ public class Cell {
      */
     public boolean activatePopeTile(ReportNum currentReportNum) {
         return false;
+    }
+
+    public Cell(Cell original){
+        this(original.victoryPoints, original.reportNum);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof Cell))
+            return false;
+        if(obj instanceof ReportCell)
+            return false;
+/*        if(obj instanceof PopeCell)
+            return false;*/
+        Cell tmp = (Cell) obj;
+        return this.victoryPoints == tmp.victoryPoints && this.reportNum.equals(tmp.reportNum);
     }
 }

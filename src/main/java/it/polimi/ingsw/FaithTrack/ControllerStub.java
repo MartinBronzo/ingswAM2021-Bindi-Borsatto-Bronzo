@@ -40,6 +40,10 @@ public class ControllerStub implements Observer {
         withPlayerBoard = false;
     }
 
+    public ControllerStub(){
+        subject = null;
+    }
+
 
     @Override
     public String update() {
@@ -51,8 +55,8 @@ public class ControllerStub implements Observer {
     }
 
     public boolean update(boolean tmp, ReportNum reportNum) {
-        if (neededToTryTheVaticanReport == true) {
-            if (x == false) {
+        if (neededToTryTheVaticanReport) {
+            if (!x) {
                 try {
                     this.fakeVaticanReport(reportNum);
                 } catch (IllegalActionException e) {
@@ -65,7 +69,7 @@ public class ControllerStub implements Observer {
                     e.printStackTrace();
                 }
             }
-        } else if (withPlayerBoard == true) {
+        } else if (withPlayerBoard) {
             try {
                 this.fakeVaticanReportWithPlayerBoard(reportNum);
             } catch (IllegalActionException e) {

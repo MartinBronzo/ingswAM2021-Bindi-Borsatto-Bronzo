@@ -1,5 +1,6 @@
 package it.polimi.ingsw.LeaderCard;
 
+import it.polimi.ingsw.FaithTrack.FaithTrack;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.PlayerResourcesAndCards;
@@ -44,10 +45,18 @@ public class LeaderCards {
     }
 
     public void setNotPlayedCards(List<LeaderCard> notPlayedCards) {
-        if (this.areNotPlayedCardsSet == false) {
-            this.notPlayedCards = notPlayedCards;
+        if (!this.areNotPlayedCardsSet) {
+            this.notPlayedCards = LeaderCards.cloneList(notPlayedCards);
             this.areNotPlayedCardsSet = true;
         }
+    }
+
+    public static List<LeaderCard> cloneList(List<LeaderCard> original){
+        List<LeaderCard> result = new ArrayList<>();
+        for(LeaderCard lD: original){
+            result.add(new LeaderCard(lD));
+        }
+        return result;
     }
 
     /**
@@ -101,7 +110,7 @@ public class LeaderCards {
         if (alreadyUsedOneShotCard.contains(leaderCard))
             throw new IllegalActionException("This Card can only be used once: it has already been used!");
         Effect tmp = leaderCard.getEffect();
-        if (tmp.isOneShotCard() == true)
+        if (tmp.isOneShotCard())
             alreadyUsedOneShotCard.add(leaderCard);
         return tmp;
     }
@@ -165,6 +174,9 @@ public class LeaderCards {
      * @return a copy of the active cards list
      */
     public List<LeaderCard> getActiveCards() {
+        return LeaderCards.cloneList(this.activeCards);
+    }
+    /*    public List<LeaderCard> getActiveCards() {
         if (this.activeCards.isEmpty() == true)
             //    throw new IllegalActionException("The player has no active cards!");
             return new ArrayList<>();
@@ -172,21 +184,24 @@ public class LeaderCards {
         for (LeaderCard leaderCard : this.activeCards)
             result.add(new LeaderCard(leaderCard));
         return result;
-    }
+    }*/
 
     /**
      * Returns a copy of the not-played card list
      *
      * @return a copy of the not-played card list
      */
-    public List<LeaderCard> getNotPlayedCards() {
+    public List<LeaderCard> getNotPlayedCards(){
+        return LeaderCards.cloneList(this.notPlayedCards);
+    }
+    /*    public List<LeaderCard> getNotPlayedCards() {
         if (this.notPlayedCards.isEmpty() == true)
             return new ArrayList<>();
         List<LeaderCard> result = new ArrayList<>();
         for (LeaderCard leaderCard : this.notPlayedCards)
             result.add(new LeaderCard(leaderCard));
         return result;
-    }
+    }*/
 
     /**
      * Returns a copy of the one-shot LeaderCards which were used once before
@@ -194,13 +209,17 @@ public class LeaderCards {
      * @return a copy of the already used one-shot LeaderCards
      */
     public List<LeaderCard> getAlreadyUsedOneShotCard() {
+        return LeaderCards.cloneList(alreadyUsedOneShotCard);
+    }
+/*    public List<LeaderCard> getAlreadyUsedOneShotCard() {
         if (this.alreadyUsedOneShotCard.isEmpty() == true)
             return new ArrayList<>();
         List<LeaderCard> result = new ArrayList<>();
         for (LeaderCard leaderCard : this.alreadyUsedOneShotCard)
             result.add(new LeaderCard(leaderCard));
         return result;
-    }
+    }*/
+
 
     /**
      * Returns whether the player holds the specified LeaderCard
@@ -212,9 +231,7 @@ public class LeaderCards {
     public boolean isLeaderCardActive(LeaderCard leaderCard) throws IllegalArgumentException {
         if (!this.activeCards.contains(leaderCard) && !this.notPlayedCards.contains(leaderCard))
             throw new IllegalArgumentException("The player doesn't hold this card!");
-        if (this.notPlayedCards.contains(leaderCard))
-            return false;
-        return true;
+        return !this.notPlayedCards.contains(leaderCard);
     }
 
 
@@ -222,5 +239,30 @@ public class LeaderCards {
         return new ArrayList<>(notPlayedCards);
     }*/
 
+    public LeaderCards(LeaderCards original){
+        this.activeCards = LeaderCards.cloneList(original.activeCards);
+        this.notPlayedCards = LeaderCards.cloneList(original.notPlayedCards);
+        this.areNotPlayedCardsSet = original.areNotPlayedCardsSet;
+        this.alreadyUsedOneShotCard = LeaderCards.cloneList(original.alreadyUsedOneShotCard);
 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof LeaderCards))
+            return false;
+        LeaderCards tmp = (LeaderCards) obj;
+        return this.activeCards.containsAll(tmp.activeCards) && tmp.activeCards.containsAll(this.activeCards) &&
+                this.notPlayedCards.containsAll(tmp.notPlayedCards) && tmp.notPlayedCards.containsAll(this.notPlayedCards) &&
+                this.areNotPlayedCardsSet == tmp.areNotPlayedCardsSet &&
+                this.alreadyUsedOneShotCard.containsAll(tmp.alreadyUsedOneShotCard) && tmp.alreadyUsedOneShotCard.containsAll(this.alreadyUsedOneShotCard);
+    }
+
+    public boolean isAreNotPlayedCardsSet() {
+        return areNotPlayedCardsSet;
+    }
 }
