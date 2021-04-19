@@ -6,6 +6,7 @@ import it.polimi.ingsw.DevCards.DevGrid;
 import it.polimi.ingsw.FaithTrack.FaithLevelBasic;
 import it.polimi.ingsw.MainBoard;
 import it.polimi.ingsw.exceptions.EmptyDeckException;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 
 /**
@@ -28,15 +29,8 @@ public class SoloBoard extends MainBoard {
      * @param steps the steps to move lorenzo's faith point marker
      * @return true if the action is performed without errors
      */
-    //TODO: Decide how to handle the lastVaticanReport exception
-    public boolean moveLorenzosFaith(int steps) {
-        try {
-            lorenzosTrack.moveFaithMarker(steps);
-        } catch (LastVaticanReportException e) {
-            e.printStackTrace();
-            //TODO: DO SOMETHING
-            return false;
-        }
+    public boolean moveLorenzosFaith(int steps) throws LastVaticanReportException {
+        lorenzosTrack.moveFaithMarker(steps);
         return true;
     }
 
@@ -56,8 +50,9 @@ public class SoloBoard extends MainBoard {
      * @param colour   the color of the card to discard
      * @param numCards the number of cards to discard
      * @return true if the action is performed without errors
+     * @throws EmptyDevColumnException if the entire column of the specified color in devGrid is empty
      */
-    public boolean discardDevCards(DevCardColour colour, int numCards) {
+    public boolean discardDevCards(DevCardColour colour, int numCards) throws EmptyDevColumnException {
         DevCard card;
         int level;
 
@@ -68,19 +63,18 @@ public class SoloBoard extends MainBoard {
                 level++;
                 card = devGrid.getDevCardFromDeck(level, colour);
             }
-            if (level == 4)
-                return false; //TODO: CAN ALSO THROW AN EXCEPTION
 
-            //TODO: THINK ABOUT HOW TO HANDLE THE EXCEPTION
-            //The exception is thrown only if the entire column of dev card of that color is already empty
+            //redundant check
+            /*if (level == 4)
+                throw new EmptyDevColumnException("Empty column");*/
+
             try {
                 devGrid.drawDevCardFromDeck(level, colour);
             } catch (EmptyDeckException e) {
                 e.printStackTrace();
-                return false;
+                throw new EmptyDevColumnException("Empty column");
             }
         }
-
         return true;
     }
 
@@ -91,6 +85,15 @@ public class SoloBoard extends MainBoard {
      */
     public int getFaithTrackPosition() {
         return lorenzosTrack.getPosition();
+    }
+
+    /**
+     * Returns if the column of the specified color in devGrid is empty
+     * @param colour: the color of the column
+     * @return true if the column of the specified color in devGrid is empty
+     */
+    public boolean isDevColumnEmpty(DevCardColour colour){
+        return devGrid.getDevDeckSize(colour) == 0;
     }
 
 }

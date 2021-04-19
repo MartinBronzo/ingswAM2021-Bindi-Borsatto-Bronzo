@@ -1,14 +1,13 @@
 package it.polimi.ingsw.soloGame;
 
-import it.polimi.ingsw.FaithTrack.ReportNum;
-import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
 
 /**
  * This class is the observer of FaithPointToken that applies the effect when notified
  */
 
-public class FaithPointTokenObserver implements Observer {
-    SoloBoard soloBoard; //questa implementa i metodi per eseguire le azioni del token
+public class FaithPointTokenObserver{
+    SoloBoard soloBoard;
 
     public FaithPointTokenObserver(SoloBoard soloBoard) {
         this.soloBoard = soloBoard;
@@ -19,9 +18,9 @@ public class FaithPointTokenObserver implements Observer {
      *
      * @param token the token that activates the effect
      * @return true if the action is performed without errors
+     * @throws LastVaticanReportException if the last vatican report is reached
      */
-    @Override
-    public boolean update(Object token) {
+    public boolean update(Object token) throws LastVaticanReportException {
         FaithPointToken faithPointToken;
         int steps;
 
@@ -34,16 +33,4 @@ public class FaithPointTokenObserver implements Observer {
 
         return true;
     }
-
-    @Override
-    public String update() {
-        return null;
-    }
-
-    //Da togliere in futuro
-    @Override
-    public boolean update(boolean tmp, ReportNum reportNum) {
-        return false;
-    }
-
 }

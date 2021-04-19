@@ -1,9 +1,18 @@
 package it.polimi.ingsw.soloGame;
 
 import it.polimi.ingsw.DevCards.DevCardColour;
+import it.polimi.ingsw.DevCards.DevGrid;
+import it.polimi.ingsw.FaithTrack.FaithLevelBasic;
 import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,24 +39,14 @@ class DiscardTokenTest {
         assertEquals(exception.getMessage(), "Can't discard negative cards");
     }
 
-    @Test
-    public void attachObserver(){
-        Observer observer = new Observer() {
-            @Override
-            public String update() {
-                return null;
-            }
+   @Test
+    public void attachObserver() throws IOException, SAXException, ParserConfigurationException, NegativeQuantityException, EmptyDevColumnException {
+       DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
+       FaithLevelBasic faithLevelBasic = new FaithLevelBasic();
+       SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
+       SoloBoard soloBoard = new SoloBoard(devGrid, faithLevelBasic,  soloActionDeck);
 
-            @Override
-            public boolean update(boolean tmp, ReportNum reportNum) {
-                return true;
-            }
-
-            @Override
-            public boolean update(Object object) {
-                return true;
-            }
-        };
+       DiscardTokenObserver observer = new DiscardTokenObserver(soloBoard);
 
         DiscardToken discardToken = new DiscardToken(DevCardColour.PURPLE, 1);
 

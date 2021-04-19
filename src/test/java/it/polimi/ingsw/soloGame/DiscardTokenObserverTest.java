@@ -6,6 +6,7 @@ import it.polimi.ingsw.FaithTrack.FaithLevelBasic;
 import it.polimi.ingsw.FaithTrack.FaithTrack;
 import it.polimi.ingsw.FaithTrack.ReportNumOrder;
 import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,8 @@ class DiscardTokenObserverTest {
     }
 
     @Test
-    public void init(){
-        Observer observer = new DiscardTokenObserver(soloBoard);
+    public void init() throws EmptyDevColumnException {
+        DiscardTokenObserver observer = new DiscardTokenObserver(soloBoard);
         DiscardToken discardToken = new DiscardToken(DevCardColour.GREEN, 1);
 
         assertTrue(discardToken.attach(observer));

@@ -3,6 +3,7 @@ package it.polimi.ingsw.soloGame;
 import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.Interfaces.Observer;
 import it.polimi.ingsw.Interfaces.Subject;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.List;
  * It calls an observer to make the SoloTable discard the cards
  */
 
-public class DiscardToken extends SoloActionToken implements Subject {
-    private final List<Observer> observersList;
+public class DiscardToken extends SoloActionToken{
+    private final List<DiscardTokenObserver> observersList;
     private final DevCardColour cardColour;
     private final int numCards;
 
@@ -30,9 +31,10 @@ public class DiscardToken extends SoloActionToken implements Subject {
      * Activates the effect of the token notifying the observers to discard DevCards from DevGrid
      *
      * @return true if the action is performed without errors
+     * @throws EmptyDevColumnException if an entire column in devGrid is empty
      */
     @Override
-    public boolean playEffect() {
+    public boolean playEffect() throws EmptyDevColumnException {
         notifyObservers();
         return true;
     }
@@ -43,8 +45,7 @@ public class DiscardToken extends SoloActionToken implements Subject {
      * @param observer the Observer
      * @return true if the observer is added wothout errors
      */
-    @Override
-    public boolean attach(Observer observer) {
+    public boolean attach(DiscardTokenObserver observer) {
         return observersList.add(observer);
     }
 
@@ -54,8 +55,7 @@ public class DiscardToken extends SoloActionToken implements Subject {
      * @param observer the Observer
      * @return true if the observer is removed wothout errors
      */
-    @Override
-    public boolean detach(Observer observer) {
+    public boolean detach(DiscardTokenObserver observer) {
         return observersList.remove(observer);
     }
 
@@ -64,13 +64,11 @@ public class DiscardToken extends SoloActionToken implements Subject {
      *
      * @return true if the action is performed without errors
      */
-    @Override
-    public boolean notifyObservers() {
-        for (Observer o : observersList)
+    public boolean notifyObservers() throws EmptyDevColumnException {
+        for (DiscardTokenObserver o : observersList)
             o.update(this);
         return true;
     }
-
 
     /**
      * Returns the color of the DevCard to discard

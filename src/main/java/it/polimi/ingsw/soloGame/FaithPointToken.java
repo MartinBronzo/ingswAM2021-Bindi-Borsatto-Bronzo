@@ -1,7 +1,7 @@
 package it.polimi.ingsw.soloGame;
 
-import it.polimi.ingsw.Interfaces.Observer;
-import it.polimi.ingsw.Interfaces.Subject;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,8 @@ import java.util.List;
  * This token makes you move your faith point marker ahead of faithPoints steps
  * It calls an observer to make the SoloTable move the faith point marker
  */
-
-public class FaithPointToken extends SoloActionToken implements Subject {
-    private final List<Observer> observersList;
+public class FaithPointToken extends SoloActionToken{
+    private final List<FaithPointTokenObserver> observersList;
     private final int faithPoints;
     protected boolean shuffleToken;
 
@@ -29,9 +28,10 @@ public class FaithPointToken extends SoloActionToken implements Subject {
      * Activates the effect of the token notifying the observers to move the faith point marker
      *
      * @return true if the action is performed without errors
+     * @throws LastVaticanReportException if the last vatican report is reached
      */
     @Override
-    public boolean playEffect() {
+    public boolean playEffect() throws LastVaticanReportException {
         notifyObservers();
         return true;
     }
@@ -42,8 +42,7 @@ public class FaithPointToken extends SoloActionToken implements Subject {
      * @param observer the Observer
      * @return true if the observer is added wothout errors
      */
-    @Override
-    public boolean attach(Observer observer) {
+    public boolean attach(FaithPointTokenObserver observer) {
         return observersList.add(observer);
     }
 
@@ -53,8 +52,7 @@ public class FaithPointToken extends SoloActionToken implements Subject {
      * @param observer the Observer
      * @return true if the observer is removed wothout errors
      */
-    @Override
-    public boolean detach(Observer observer) {
+    public boolean detach(FaithPointTokenObserver observer) {
         return observersList.remove(observer);
     }
 
@@ -63,9 +61,8 @@ public class FaithPointToken extends SoloActionToken implements Subject {
      *
      * @return true if the action is performed without errors
      */
-    @Override
-    public boolean notifyObservers() {
-        for (Observer o : observersList)
+    public boolean notifyObservers() throws LastVaticanReportException {
+        for (FaithPointTokenObserver o : observersList)
             o.update(this);
         return true;
     }

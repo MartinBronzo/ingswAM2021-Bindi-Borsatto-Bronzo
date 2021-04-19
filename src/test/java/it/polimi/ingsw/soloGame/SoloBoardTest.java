@@ -5,6 +5,8 @@ import it.polimi.ingsw.DevCards.DevGrid;
 import it.polimi.ingsw.FaithTrack.FaithLevelBasic;
 import it.polimi.ingsw.FaithTrack.FaithTrack;
 import it.polimi.ingsw.FaithTrack.ReportNumOrder;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -29,13 +31,13 @@ class SoloBoardTest {
     }
 
     @Test
-    public void moveLorenzosFaith(){
+    public void moveLorenzosFaith() throws LastVaticanReportException {
         assertTrue(soloBoard.moveLorenzosFaith(2));
         assertEquals(soloBoard.getFaithTrackPosition(), 2);
     }
 
     @RepeatedTest(2)
-    public void discardCard(){
+    public void discardCard() throws EmptyDevColumnException {
         assertTrue(soloBoard.discardDevCards(DevCardColour.GREEN, 2));
     }
 
@@ -43,5 +45,24 @@ class SoloBoardTest {
     public void shuffle(){
         assertTrue(soloBoard.shuffleTokenDeck());
     }
+
+    @Test
+    public void testEmptyColumn(){
+        assertFalse(soloBoard.isDevColumnEmpty(DevCardColour.GREEN));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

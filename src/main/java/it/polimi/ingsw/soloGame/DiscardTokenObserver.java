@@ -1,14 +1,13 @@
 package it.polimi.ingsw.soloGame;
 
 import it.polimi.ingsw.DevCards.DevCardColour;
-import it.polimi.ingsw.FaithTrack.ReportNum;
-import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 
 /**
  * This class is the observer of discardTokens that applies the effect when notified
  */
 
-public class DiscardTokenObserver implements Observer {
+public class DiscardTokenObserver{
     private final SoloBoard soloBoard;
 
     public DiscardTokenObserver(SoloBoard soloBoard) {
@@ -20,9 +19,9 @@ public class DiscardTokenObserver implements Observer {
      *
      * @param token the token that activates the effect
      * @return true if the action is performed without errors
+     * @throws EmptyDevColumnException if an entire column of devGrid is empty
      */
-    @Override
-    public boolean update(Object token) {
+    public boolean update(Object token) throws EmptyDevColumnException {
         DiscardToken soloToken;
         DevCardColour colour;
         int numCards;
@@ -33,18 +32,9 @@ public class DiscardTokenObserver implements Observer {
         numCards = soloToken.getNumCards();
 
         soloBoard.discardDevCards(colour, numCards);
+        if(soloBoard.isDevColumnEmpty(colour))
+            throw new EmptyDevColumnException("Empty column");
 
         return true;
-    }
-
-    @Override
-    public String update() {
-        return null;
-    }
-
-    //questo metodo sarà eliminato
-    @Override
-    public boolean update(boolean tmp, ReportNum reportNum) {
-        return false;
     }
 }

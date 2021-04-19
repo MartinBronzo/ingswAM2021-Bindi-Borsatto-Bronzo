@@ -219,6 +219,15 @@ public class DevGrid {
         return devCards;
     }
 
+    /**
+     * Returns the size of the devDeck containing devCards of the specified color and max level
+     * @param colour the color of the devDeck
+     * @return the size of the devDeck containing devCards of the specified color and max level
+     */
+    public int getDevDeckSize(DevCardColour colour){
+        return devDecksGrid[2][colour.ordinal()].size();
+    }
+
     @Override
     public String toString() {
         String devDecksGridString;

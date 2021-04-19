@@ -5,6 +5,7 @@ import it.polimi.ingsw.FaithTrack.FaithLevelBasic;
 import it.polimi.ingsw.FaithTrack.FaithTrack;
 import it.polimi.ingsw.FaithTrack.ReportNumOrder;
 import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,8 @@ class FaithPointTokenObserverTest {
     }
 
     @Test
-    public void init(){
-        Observer observer = new FaithPointTokenObserver(soloBoard);
+    public void init() throws LastVaticanReportException {
+        FaithPointTokenObserver observer = new FaithPointTokenObserver(soloBoard);
         FaithPointToken faithPointToken = new FaithPointToken(2);
         ShuffleToken shuffleToken = new ShuffleToken(1);
 

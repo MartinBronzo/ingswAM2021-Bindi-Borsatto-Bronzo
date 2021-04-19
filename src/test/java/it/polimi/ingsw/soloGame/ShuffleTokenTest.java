@@ -1,8 +1,17 @@
 package it.polimi.ingsw.soloGame;
 
+import it.polimi.ingsw.DevCards.DevGrid;
+import it.polimi.ingsw.FaithTrack.FaithLevelBasic;
 import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,23 +39,13 @@ class ShuffleTokenTest {
     }
 
     @Test
-    public void attachObserver(){
-        Observer observer = new Observer() {
-            @Override
-            public String update() {
-                return null;
-            }
+    public void attachObserver() throws LastVaticanReportException, IOException, SAXException, ParserConfigurationException, NegativeQuantityException {
+        DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
+        FaithLevelBasic faithLevelBasic = new FaithLevelBasic();
+        SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
+        SoloBoard soloBoard = new SoloBoard(devGrid, faithLevelBasic,  soloActionDeck);
 
-            @Override
-            public boolean update(boolean tmp, ReportNum reportNum) {
-                return true;
-            }
-
-            @Override
-            public boolean update(Object object) {
-                return true;
-            }
-        };
+        FaithPointTokenObserver observer = new FaithPointTokenObserver(soloBoard);
 
         ShuffleToken shuffleToken = new ShuffleToken(2);
 
