@@ -59,6 +59,11 @@ public class PlayerBoard {
     }
 
 
+    /**
+     * Sum all resources owned by the player
+     *
+     * @return the Sum of all resources owned by the player
+     */
     public HashMap<ResourceType, Integer> getAllResources() {
         HashMap<ResourceType, Integer> depotMap = depot.getAllResources();
         HashMap<ResourceType, Integer> strongBoxMap = strongbox.getAllResources();
@@ -84,6 +89,13 @@ public class PlayerBoard {
         return devSlots.getAllDevCards();
     }
 
+    /**
+     * Compares the cost of the passed DevCard with all resources owned
+     *
+     * @param devCard is the DevCard to be checked
+     * @return true if devCard can be bought
+     * @throws NullPointerException if devCard is Null
+     */
     public Boolean isCardBuyable(DevCard devCard) {
         if (devCard == null) throw new NullPointerException("isCardBuyable: DevCardCan't be null");
         HashMap<ResourceType, Integer> cost = devCard.getCost();
@@ -93,6 +105,11 @@ public class PlayerBoard {
     }
 
 
+    /**
+     * Calculate the actual Victory Points of the Player
+     *
+     * @return the actual Victory Points
+     */
     public int calculateVictoryPoints() {
         HashMap<ResourceType, Integer> depotRes, strongboxRes;
         int totalResources;
@@ -119,6 +136,12 @@ public class PlayerBoard {
     #LEADERCARDS METHODS#
     #####################
     */
+
+
+    /**
+     * @deprecated isn't required set methods for leaderCards
+     */
+    @Deprecated
     public void setNotPlayedLeaderCards(List<LeaderCard> notPlayedLeaderCards) {
         List<LeaderCard> clone = new ArrayList<>();
         for (LeaderCard lD : notPlayedLeaderCards)
@@ -532,7 +555,7 @@ public class PlayerBoard {
      * @throws NullPointerException     if one parameter is null
      * @throws IllegalArgumentException if ProductiveDevCards contains one or more not Usable dev Cards or if one or more productiveLeaderCardsMap key is not one the owned active leaderCards or the desired production for a leader card is faithpoint
      */
-    public boolean ActivateProduction(Collection<DevCard> ProductiveDevCards, HashMap<LeaderCard, ResourceType> productiveLeaderCardsMap, boolean alsoBaseProduction) throws NullPointerException, IllegalArgumentException, LastVaticanReportException {
+    public boolean activateProduction(Collection<DevCard> ProductiveDevCards, HashMap<LeaderCard, ResourceType> productiveLeaderCardsMap, boolean alsoBaseProduction) throws NullPointerException, IllegalArgumentException, LastVaticanReportException {
         Collection<DevCard> usableDevCards;
         List<LeaderCard> activeLeaderCards;
         HashMap<ResourceType, Integer> productionMap;
@@ -631,7 +654,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException if one or more parameters are not Valid
      * @throws NullPointerException     if inputResources or outputResources are null
      */
-    public boolean SetBaseProduction(List<ResourceType> inputResources, List<ResourceType> outputResources) throws IllegalArgumentException, NullPointerException{
+    public boolean setBaseProduction(List<ResourceType> inputResources, List<ResourceType> outputResources) throws IllegalArgumentException, NullPointerException{
         return this.baseProduction.setBaseProduction(inputResources,outputResources);
     }
 

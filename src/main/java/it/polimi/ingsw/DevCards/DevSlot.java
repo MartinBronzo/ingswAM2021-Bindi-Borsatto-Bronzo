@@ -47,7 +47,7 @@ public class DevSlot {
         if (devCard.getLevel() == actualLevel + 1) {
             devCards.addLast(devCard);
         } else {
-            throw new IllegalArgumentException("addDevCard: This devCard can't be Add to DevSlot");
+            throw new IllegalArgumentException("addDevCard: This devCard can't be added to DevSlot");
         }
 
         return true;

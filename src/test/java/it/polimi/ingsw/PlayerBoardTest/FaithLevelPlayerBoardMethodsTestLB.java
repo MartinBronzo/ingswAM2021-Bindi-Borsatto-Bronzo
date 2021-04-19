@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PlayerBoardTestLB;
+package it.polimi.ingsw.PlayerBoardTest;
 
 import it.polimi.ingsw.FaithTrack.*;
 import it.polimi.ingsw.PlayerBoard;
@@ -6,7 +6,6 @@ import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
