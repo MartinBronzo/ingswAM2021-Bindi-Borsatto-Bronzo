@@ -2,7 +2,27 @@ package it.polimi.ingsw.FaithTrack;
 
 import it.polimi.ingsw.Interfaces.Observer;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.*;
+
+import it.polimi.ingsw.FaithTrack.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +66,10 @@ public class FaithTrack {
      * @param config the file where to read the design of the track
      */
     //Forse è meglio che venga anche inizializzato automaticamente il reportNumOrder una volta lette le celle (si capisce leggendo come è l'ordine dei report che va nel report num order)
-    private FaithTrack(File config) {
+    private FaithTrack(File config) throws IOException, SAXException, ParserConfigurationException {
         this.track = new ArrayList<>();
-        this.reportNumOrder = null;
         this.initTrack(config);
-        this.isReportNumOrderSet = false;
+        this.isReportNumOrderSet = true;
     }
 
     /**
@@ -73,7 +92,7 @@ public class FaithTrack {
      * @param config the file where to read the description of the FaithTrack
      * @return the only instance of the class
      */
-    public static FaithTrack instance(File config){
+    public static FaithTrack instance(File config) throws ParserConfigurationException, SAXException, IOException {
         if(instance == null)
             instance = new FaithTrack(config);
         return instance;
@@ -135,36 +154,69 @@ public class FaithTrack {
      * @param config the file where to retrieve the information for the configuration
      * @return true if the initiation went fine
      */
-    //Right now this method is not reading from an XML file how the track is designed. TODO: implement la lettura della configurazione dall'XML
-    private boolean initTrack(File config) {
-        track.add(new Cell(0, ReportNum.REPORT1));
-        track.add(new Cell(0, ReportNum.REPORT1));
-        track.add(new Cell(0, ReportNum.REPORT1));
-        track.add(new Cell(1, ReportNum.REPORT1));
-        track.add(new Cell(0, ReportNum.REPORT1));
-        track.add(new ReportCell(0, ReportNum.REPORT1));
-        track.add(new ReportCell(2, ReportNum.REPORT1));
-        track.add(new ReportCell(0, ReportNum.REPORT1));
-        PopeCell popeCell1 = new PopeCell(0, ReportNum.REPORT1);
-        track.add(popeCell1);
-        track.add(new Cell(4, ReportNum.REPORT2));
-        track.add(new Cell(0, ReportNum.REPORT2));
-        track.add(new Cell(0, ReportNum.REPORT2));
-        track.add(new ReportCell(6, ReportNum.REPORT2));
-        track.add(new ReportCell(0, ReportNum.REPORT2));
-        track.add(new ReportCell(0, ReportNum.REPORT2));
-        track.add(new ReportCell(9, ReportNum.REPORT2));
-        PopeCell popeCell2 = new PopeCell(0, ReportNum.REPORT2);
-        track.add(popeCell2);
-        track.add(new Cell(0, ReportNum.REPORT3));
-        track.add(new Cell(12, ReportNum.REPORT3));
-        track.add(new ReportCell(0, ReportNum.REPORT3));
-        track.add(new ReportCell(0, ReportNum.REPORT3));
-        track.add(new ReportCell(16, ReportNum.REPORT3));
-        track.add(new ReportCell(0, ReportNum.REPORT3));
-        track.add(new ReportCell(0, ReportNum.REPORT3));
-        PopeCell popeCell3 = new PopeCell(20, ReportNum.REPORT3);
-        track.add(popeCell3);
+    private boolean initTrack(File config) throws ParserConfigurationException, IOException, SAXException {
+        Node elementNode;
+        NodeList cellsList;
+        Element el;
+
+        String report;
+        String type;
+        int victoryPoints;
+
+        this.track = new ArrayList<>();
+        this.reportNumOrder = ReportNumOrder.instance();
+        ReportNum reportNum;
+
+
+
+        //an instance of factory that gives a document builder
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        //an instance of builder to parse the specified xml file
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(config);
+        doc.getDocumentElement().normalize();
+
+
+        NodeList nodeList = doc.getElementsByTagName("Report");
+
+        // nodeList is not iterable, so we are using for loop
+        for (int itr = 0; itr < nodeList.getLength(); itr++) {
+            Node node = nodeList.item(itr);
+
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) node;
+                report = eElement.getElementsByTagName("Name").item(0).getTextContent();
+                reportNum = ReportNum.valueOf(report);
+                reportNumOrder.addElementInOrder(reportNum);
+
+                elementNode = eElement.getElementsByTagName("Elements").item(0);
+
+                if (elementNode.getNodeType() == Node.ELEMENT_NODE) {
+                    el = (Element) elementNode;
+                    cellsList = el.getElementsByTagName("Cell");
+
+                    for (int i = 0; i < cellsList.getLength(); i++) {
+                        Node cellNode = cellsList.item(i);
+
+                        if (cellNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element cellElement = (Element) cellNode;
+                            type = cellElement.getElementsByTagName("Type").item(0).getTextContent();
+                            victoryPoints = Integer.parseInt(cellElement.getElementsByTagName("Points").item(0).getTextContent());
+
+                            if (type.equals("NORMAL"))
+                                track.add(new Cell(victoryPoints, reportNum));
+                            else if (type.equals("REPORT"))
+                                track.add(new ReportCell(victoryPoints, reportNum));
+                            else /*if(type.equals("POPE"))*/
+                                track.add(new PopeCell(victoryPoints, reportNum));
+                        }
+                    }
+
+                }
+            }
+
+        }
+
         return true;
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.soloGame;
 
 import it.polimi.ingsw.DevCards.DevGrid;
 import it.polimi.ingsw.FaithTrack.FaithLevelBasic;
+import it.polimi.ingsw.FaithTrack.FaithTrack;
 import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.Interfaces.Observer;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
@@ -41,7 +42,8 @@ class FaithPointTokenTest {
     @Test
     public void attachObserver() throws LastVaticanReportException, ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
         DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
-        FaithLevelBasic faithLevelBasic = new FaithLevelBasic();
+        FaithLevelBasic faithLevelBasic = new FaithLevelBasic(FaithTrack.instance(new File("FaithTrackConfig.xml")));
+        //FaithLevelBasic faithLevelBasic = new FaithLevelBasic();
         SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
         SoloBoard soloBoard = new SoloBoard(devGrid, faithLevelBasic,  soloActionDeck);
 

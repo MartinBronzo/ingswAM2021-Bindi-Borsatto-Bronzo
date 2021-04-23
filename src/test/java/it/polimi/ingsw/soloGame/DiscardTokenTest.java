@@ -3,6 +3,7 @@ package it.polimi.ingsw.soloGame;
 import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.DevCards.DevGrid;
 import it.polimi.ingsw.FaithTrack.FaithLevelBasic;
+import it.polimi.ingsw.FaithTrack.FaithTrack;
 import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.Interfaces.Observer;
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
@@ -42,7 +43,8 @@ class DiscardTokenTest {
    @Test
     public void attachObserver() throws IOException, SAXException, ParserConfigurationException, NegativeQuantityException, EmptyDevColumnException {
        DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
-       FaithLevelBasic faithLevelBasic = new FaithLevelBasic();
+       FaithLevelBasic faithLevelBasic = new FaithLevelBasic(FaithTrack.instance(new File("FaithTrackConfig.xml")));
+       //FaithLevelBasic faithLevelBasic = new FaithLevelBasic();
        SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
        SoloBoard soloBoard = new SoloBoard(devGrid, faithLevelBasic,  soloActionDeck);
 

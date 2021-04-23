@@ -54,7 +54,7 @@ public class MainBoard {
     }
 
     //In futuro questi metodi saranno private e chiamati da un unico metodo pubblico initGame objects
-    public void initFaithTrack(File config){
+    public void initFaithTrack(File config) throws IOException, SAXException, ParserConfigurationException {
         this.faithTrack = FaithTrack.instance(config);
         //Configurare anche il suo reportnUm ordrer a meno che nella configurazione del faithtrack con file non venga autmaticamente fatto
     }

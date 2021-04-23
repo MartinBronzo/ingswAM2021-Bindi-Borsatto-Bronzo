@@ -64,9 +64,7 @@ public class ReportNumOrder {
             throw new IllegalArgumentException("The first element given as a parameter is not in the list");
         if (!this.order.contains(y))
             throw new IllegalArgumentException("The second element given as a parameter is not in the list");
-        if (this.order.indexOf(x) < this.order.indexOf(y))
-            return true;
-        return false;
+        return this.order.indexOf(x) < this.order.indexOf(y);
     }
 
     /**
@@ -88,5 +86,13 @@ public class ReportNumOrder {
     //NOT TO BE USED IN THE GAME
     public static void deleteState() {
         instance = null;
+    }
+
+    public ReportNum getReportNum(int index) {
+        return this.order.get(index);
+    }
+
+    public int getSize(){
+        return this.order.size();
     }
 }

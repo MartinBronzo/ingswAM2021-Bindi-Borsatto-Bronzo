@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import it.polimi.ingsw.FaithTrack.*;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 
 public class FaithTrackTest {
 
@@ -126,9 +129,9 @@ public class FaithTrackTest {
     //Tests creation of Faith Track with the configuration file
     //Right now, this method tests that the right methods are called thanks to overloading. In the near future, I'll
     //implement the actual configuration via file
-    public void ctrlTrackCreationWithConfigFile(){
+    public void ctrlTrackCreationWithConfigFile() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
-        File config = new File("MarketConfig.xsd.xml");
+        File config = new File("FaithTrackConfig.xml");
         FaithTrack faithTrack = FaithTrack.instance(config);
 
         //REPORT1
@@ -205,9 +208,9 @@ public class FaithTrackTest {
 
     @Test
     //Tests that there can only be once instance of the FaithTrack class, even when we create the FaithTrack with the configuration file
-    public void onlyOneInstanceWithConfigFile(){
+    public void onlyOneInstanceWithConfigFile() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
-        File config = new File("MarketConfig.xsd.xml");
+        File config = new File("FaithTrackConfig.xml");
         FaithTrack faithTrack = FaithTrack.instance(config);
 
         FaithTrack faithTrack2 = FaithTrack.instance(config);
@@ -218,23 +221,19 @@ public class FaithTrackTest {
     }
 
     @Test
-    //Tests that the ReportNumOrder can be set after the FaithTrack construction via configuration file
-    public void ctrlReportNumOrderSettingWithConfigFile(){
+    //Tests that the ReportNumOrder is correctly set via configuration file
+    public void ctrlReportNumOrderViaFile() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
-        File config = new File("MarketConfig.xsd.xml");
+        File config = new File("FaithTrackConfig.xml");
         FaithTrack faithTrack = FaithTrack.instance(config);
+        ReportNumOrder reportNumOrder = faithTrack.getReportNumOrder();
 
-        assertFalse(faithTrack.isReportNumOrderSet());
+        assertEquals(reportNumOrder.getReportNum(0), ReportNum.REPORT1);
+        assertEquals(reportNumOrder.getReportNum(1), ReportNum.REPORT2);
+        assertEquals(reportNumOrder.getReportNum(2), ReportNum.REPORT3);
+        assertEquals(reportNumOrder.getSize(), 3);
 
-        ReportNumOrder copy = faithTrack.getReportNumOrder();
-        assertNull(copy);
 
-        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
-        assertTrue(faithTrack.setReportNumOrder(reportNumOrder));
-
-        copy = faithTrack.getReportNumOrder();
-        assertSame(copy, reportNumOrder);
-        assertTrue(faithTrack.isReportNumOrderSet());
     }
 
 
@@ -261,15 +260,15 @@ public class FaithTrackTest {
 
     @Test
     //Tests that, once set, the ReportNumOrder can't be changed: FaithTrack created with the configuration file
-    public void ctrlReportNumOrderNotSettingWithConfigFile(){
+    public void ctrlReportNumOrderNotSettingWithConfigFile() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
-        File config = new File("MarketConfig.xsd.xml");
+        File config = new File("FaithTrackConfig.xml");
         FaithTrack faithTrack = FaithTrack.instance(config);
 
-        assertFalse(faithTrack.isReportNumOrderSet());
+        assertTrue(faithTrack.isReportNumOrderSet());
 
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
-        assertTrue(faithTrack.setReportNumOrder(reportNumOrder));
+        assertFalse(faithTrack.setReportNumOrder(reportNumOrder));
         assertTrue(faithTrack.isReportNumOrderSet());
 
 
@@ -277,7 +276,6 @@ public class FaithTrackTest {
         assertTrue(faithTrack.isReportNumOrderSet());
 
     }
-
 
     @Test
     //Tests the forwarding of request to Cells with different position given as inputs
