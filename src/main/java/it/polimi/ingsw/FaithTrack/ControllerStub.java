@@ -5,6 +5,7 @@ import it.polimi.ingsw.Interfaces.Subject;
 import it.polimi.ingsw.PlayerBoard;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 
+@Deprecated
 public class ControllerStub implements Observer {
     private Subject subject;
     private FaithLevel fT1;
@@ -54,7 +55,8 @@ public class ControllerStub implements Observer {
         this.neededToTryTheVaticanReport = neededToTryTheVaticanReport;
     }
 
-    public boolean update(boolean tmp, ReportNum reportNum) {
+    public boolean update(Object object) {
+        ReportNum reportNum = (ReportNum) object;
         if (neededToTryTheVaticanReport) {
             if (!x) {
                 try {
@@ -79,10 +81,10 @@ public class ControllerStub implements Observer {
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean update(Object object) {
         return false;
-    }
+    }*/
 
     public void fakeVaticanReport(ReportNum reportNum) throws IllegalActionException {
         fT1.dealWithVaticanReport(reportNum);

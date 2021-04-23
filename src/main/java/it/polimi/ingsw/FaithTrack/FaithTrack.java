@@ -344,5 +344,15 @@ public class FaithTrack {
         return this.track.get(position);
     }
 
+    /**
+     * Attaches the specified observer to the PopeTiles in the FaithTrack
+     * @param observer the observer to be attached
+     */
+    public void attachObserverToPopeTiles(Observer observer){
+        for(Cell c: this.track)
+            if(c instanceof PopeCell)
+                ((PopeCell) c).attach(observer);
+    }
+
 
 }

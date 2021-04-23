@@ -3,6 +3,8 @@ package it.polimi.ingsw.FaithTrackTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.FaithTrack.*;
+import it.polimi.ingsw.Interfaces.Observer;
+import it.polimi.ingsw.MainBoard;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
@@ -313,6 +315,36 @@ public class FaithTrackTest {
         assertFalse(faithTrack.callCellActivateTile(8, ReportNum.REPORT2));
         //The last PopeCell
         assertThrows(LastVaticanReportException.class, () -> faithTrack.callCellEffect(24));
+
+    }
+
+    @Test
+    //Tests that the observer are attached with the specific method
+    public void ctrlObserverAttachment() throws IOException, SAXException, ParserConfigurationException {
+        FaithTrack.deleteState();
+        FaithTrack fT = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+
+        PopeCell p1 = (PopeCell) fT.getCell(8);
+        PopeCell p2 = (PopeCell) fT.getCell(16);
+        PopeCell p3 = (PopeCell) fT.getCell(24);
+
+        //When the FaithTrack is configured with the XML file, no observer is already attached to the PopeTiles
+        assertTrue(p1.getObserversList().isEmpty());
+        assertTrue(p2.getObserversList().isEmpty());
+        assertTrue(p3.getObserversList().isEmpty());
+
+
+        Observer observer = new PopeCellObserver(new MainBoard(1)); //The MainBoard constructor called here is irrelevant
+
+        fT.attachObserverToPopeTiles(observer);
+
+        assertEquals(p1.getObserversList().size(), 1);
+        assertEquals(p2.getObserversList().size(), 1);
+        assertEquals(p3.getObserversList().size(), 1);
+
+        assertSame(p1.getObserversList().get(0), observer);
+        assertSame(p2.getObserversList().get(0), observer);
+        assertSame(p3.getObserversList().get(0), observer);
 
     }
 

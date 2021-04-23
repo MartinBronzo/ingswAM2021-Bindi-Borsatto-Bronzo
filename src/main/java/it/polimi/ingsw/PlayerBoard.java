@@ -539,6 +539,10 @@ public class PlayerBoard {
     public int getPopeTilesPoints() {
         return this.playerFaithLevel.getPopeTilesPoints();
     }
+
+    public List<PopeTile> getPopeTile(){
+        return playerFaithLevel.getPopeTilesSafe();
+    }
     /*
     ####################
     #PRODUCTION METHODS#

@@ -48,6 +48,7 @@ public class FaithLevel extends FaithLevelBasic {
     public FaithLevel(FaithLevel original) {
         this(original.faithTrack, original.popeTiles);
         this.position = original.position;
+        this.arePopeTilesSet = original.arePopeTilesSet;
     }
 
     /**
@@ -56,7 +57,7 @@ public class FaithLevel extends FaithLevelBasic {
      * @param popeTiles a list of PopeTiles
      */
     public void setPopeTiles(List<PopeTile> popeTiles) {
-        if (arePopeTilesSet == false) {
+        if (!arePopeTilesSet) {
             this.popeTiles = this.cloneList(popeTiles);
             this.arePopeTilesSet = true;
         }
@@ -128,11 +129,16 @@ public class FaithLevel extends FaithLevelBasic {
         return points;
     }
 
+    @Deprecated
     //This method is only used for testing purposes
     public List<PopeTile> getPopeTiles() {
         return popeTiles;
     }
 
+    /**
+     * Returns a copy of the PopeTiles of this FaithLevel
+     * @return a copy of the PopeTiles
+     */
     public List<PopeTile> getPopeTilesSafe() {
         return this.cloneList(this.popeTiles);
     }
@@ -152,13 +158,13 @@ public class FaithLevel extends FaithLevelBasic {
             return false;
         if (tmp.arePopeTilesSet != this.arePopeTilesSet)
             return false;
-        if (tmp.isFaithTrackSet == false) {
-            if (tmp.arePopeTilesSet == false)
+        if (!tmp.isFaithTrackSet) {
+            if (!tmp.arePopeTilesSet)
                 return this.position == tmp.position;
             else
                 return this.position == tmp.position && this.popeTiles.containsAll(tmp.popeTiles) && tmp.popeTiles.containsAll(this.popeTiles);
         }
-        if (tmp.arePopeTilesSet == false)
+        if (!tmp.arePopeTilesSet)
             return (tmp.position == this.position) && tmp.faithTrack == this.faithTrack;
         return (tmp.position == this.position) && tmp.faithTrack == this.faithTrack && this.popeTiles.containsAll(tmp.popeTiles) && tmp.popeTiles.containsAll(this.popeTiles);
     }

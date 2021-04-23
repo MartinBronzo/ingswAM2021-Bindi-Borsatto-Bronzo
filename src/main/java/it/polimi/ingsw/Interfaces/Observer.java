@@ -13,7 +13,7 @@ public interface Observer {
     String update();
 
     //Usato solo a fine di testing
-    boolean update(boolean tmp, ReportNum reportNum);
+    //boolean update(boolean tmp, ReportNum reportNum);
     //TODO: l'update dovrebbe non avere parametri, semmai è il concrete observer che chiede lo stato
 
     boolean update(Object object);

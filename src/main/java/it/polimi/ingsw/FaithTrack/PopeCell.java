@@ -79,7 +79,7 @@ public class PopeCell extends ReportCell implements Subject {
     public boolean notifyObservers() {
         int tmp = 0;
         for (Observer o : observersList)
-            if (o.update(true, this.getReportNum()))
+            if (o.update(this.getReportNum()))
                 tmp++;
         return tmp == observersList.size();
     }

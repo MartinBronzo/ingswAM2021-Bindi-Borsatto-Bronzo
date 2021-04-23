@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.DevCards.DevCardColour;
 import it.polimi.ingsw.DevCards.DevGrid;
 import it.polimi.ingsw.FaithTrack.FaithTrack;
+import it.polimi.ingsw.FaithTrack.ReportNum;
 import it.polimi.ingsw.Interfaces.Deck;
 import it.polimi.ingsw.LeaderCard.LeaderCard;
 import it.polimi.ingsw.LeaderCard.leaderEffects.*;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -241,5 +243,18 @@ public class MainBoard {
 
     public MainBoard(DevGrid devGrid) {
         this.devGrid = devGrid;
+    }
+
+    public void dealWithVaticanReportAllPlayers(ReportNum reportNum) throws IllegalActionException {
+        for(PlayerBoard pB: this.playerBoardsList)
+            pB.dealWithVaticanReport(reportNum);
+    }
+
+    public MainBoard(){
+        this.playerBoardsList = new ArrayList<>();
+    }
+
+    public void addPlayerBoard(PlayerBoard playerBoard){
+        this.playerBoardsList.add(playerBoard);
     }
 }
