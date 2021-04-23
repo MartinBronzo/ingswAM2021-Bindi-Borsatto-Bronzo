@@ -3,9 +3,12 @@ package it.polimi.ingsw.marble;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,18 +18,29 @@ class BlueMarbleTest {
     final ResourceType servant = ResourceType.SERVANT;
     final ResourceType stone = ResourceType.STONE;
     final ResourceType faith = ResourceType.FAITHPOINT;
+    HashMap<ResourceType, Integer> resourceMap;
+    Effect effect;
+    List<Effect> effects;
+    Marble marble;
+
+
+    @BeforeEach
+    void setUp(){
+        resourceMap = new HashMap<>();
+        effect = new Effect();
+        effects = new LinkedList<>();
+        effects.add(effect);
+        marble = new BlueMarble();
+    }
 
 
 
     @Test
     void onActivateLegalTest() throws NegativeQuantityException {
-        HashMap<ResourceType, Integer> resourceMap = new HashMap<>();
-        Effect effect = new Effect();
-        BlueMarble marble = new BlueMarble();
 
         for (Integer c=0; c<100; c++){
             assertEquals(c,resourceMap.getOrDefault(shield,0));
-            marble.onActivate(resourceMap,effect);
+            marble.onActivate(resourceMap, effects);
         }
         assertEquals(100,resourceMap.get(shield));
         assertNull(resourceMap.get(coin));
@@ -37,14 +51,10 @@ class BlueMarbleTest {
 
     @Test
     void onActivateIllegalTest() throws NegativeQuantityException {
-        HashMap<ResourceType, Integer> resourceMap = new HashMap<>();
-        Effect effect = new Effect();
-        BlueMarble marble = new BlueMarble();
-
-        marble.onActivate(resourceMap,effect);
+        marble.onActivate(resourceMap, effects);
         assertEquals(1,resourceMap.get(shield));
         resourceMap.put(shield, -3);
-        assertThrows(NegativeQuantityException.class, () -> marble.onActivate(resourceMap,effect));
+        assertThrows(NegativeQuantityException.class, () -> marble.onActivate(resourceMap, effects));
         assertNull(resourceMap.get(coin));
         assertNull(resourceMap.get(servant));
         assertNull(resourceMap.get(stone));

@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.marble.Marble;
 import it.polimi.ingsw.marble.MarbleType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -45,12 +46,12 @@ public class WhiteMarbleLeaderEffect extends Effect {
     public boolean whiteMarbleEffect(HashMap<ResourceType, Integer> resourceMap) throws NegativeQuantityException {
         //Gets the MarbleType corresponding to the ResourceType
         MarbleType tmp = this.extraResourceType.getCorrespondingMarble();
-        //Gets the Marbe of the just-found MarbleType
+        //Gets the Marble of the just-found MarbleType
         Marble marble = tmp.getMarble();
         //Calls the onActivate method of the Marble because the WhiteMarble "acts like" that marble thanks to this effect
         boolean result = true;
         for (int i = 0; i < this.extraResourceAmount; i++)
-            if (!marble.onActivate(resourceMap, new Effect()))
+            if (!marble.onActivate(resourceMap, new ArrayList<>()))
                 result = false;
         return result;
 
