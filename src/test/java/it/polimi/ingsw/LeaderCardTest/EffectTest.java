@@ -176,6 +176,7 @@ public class EffectTest {
                 assertEquals(output.get(tP), null);
     }
 
+
     //The following four tests test the cloning of effects
 
     @Test
