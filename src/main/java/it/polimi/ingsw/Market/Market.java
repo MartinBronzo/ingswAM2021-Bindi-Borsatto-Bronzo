@@ -80,6 +80,7 @@ public class Market {
             }
         }
 
+
         this.marbleOnSlide = configurationList.get(configurationList.size() - 1);
     }
 
@@ -112,26 +113,29 @@ public class Market {
     /**
      * Method used when buying from market and selecting 1 of the 3 rows.
      * Modify the references to the grid after buying action according to game rules.
+     * the hashmap is instantiated in this Method, but it isn't modified directly
      *
      * @param rowNumber is the chosen row in the Market grid starting from 0.
-     * @param effect    determines the bought resources when selecting whiteMarbles
+     * @param effects   determines the bought resources when selecting whiteMarbles. The list must Have the size of the number of white marbles in the row
      * @return the resources purchased in an hashmap
-     * @throws IllegalArgumentException if rowNumber is not valid [0...2]
-     * @throws NullPointerException     if effect is NULL
-     *                                  the hashmap is instantiated in this Method, but it isn't modified directly
+     * @throws IllegalArgumentException if rowNumber is not valid [0...2] or if there aren't enough effects for all the white marbles
+     * @throws NullPointerException     if effects is NULL
+     *
      */
-    public HashMap<ResourceType, Integer> moveRow(int rowNumber, Effect effect) throws IllegalArgumentException, NullPointerException {
+    public HashMap<ResourceType, Integer> moveRow(int rowNumber, List<Effect> effects) throws IllegalArgumentException, NullPointerException {
         if (rowNumber < 0 || rowNumber >= 3) throw new IllegalArgumentException("moveRow Market: not valid rowNumber");
-        if (effect == null) throw new NullPointerException("moveRow Market: not expected NULL effect");
+        if (effects == null) throw new NullPointerException("moveRow Market: not expected NULL effect");
 
         HashMap<ResourceType, Integer> resources = new HashMap<>();
         Marble tempMarble = marbleOnSlide;
         for (int j = 0; j < marketMatrix[rowNumber].length; j++) {
             try {
-                marketMatrix[rowNumber][j].onActivate(resources, effect);
+                marketMatrix[rowNumber][j].onActivate(resources, effects);
             } catch (NegativeQuantityException | NullPointerException e) {
                 System.out.println("moveRow: Something extremely bad happened in the Market");
                 return new HashMap<>();
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("The effects size is not the numbers of white marbles in the column");
             }
 
             if (j == 0) marbleOnSlide = getMarbleInTheGrid(rowNumber, j);
@@ -144,28 +148,32 @@ public class Market {
     /**
      * Method used when buying from market and selecting 1 of the 4 columns.
      * Modify the references to the grid after buying action according to game rules.
+     * the hashmap is instantiated in this Method, but it isn't modified directly
      *
      * @param columnNumber is the chosen column in the Market grid starting from 0.
-     * @param effect       determines the bought resources when selecting whiteMarbles
+     * @param effects   determines the bought resources when selecting whiteMarbles. The list must Have the size of the number of white marbles in the column
      * @return the resources purchased in an hashmap
-     * @throws IllegalArgumentException if columnNumber is not valid [0...3]
+     * @throws IllegalArgumentException if columnNumber is not valid [0...3] or if there aren't enough effects for all the white marbles
      * @throws NullPointerException     if effect is NULL
      *                                  the hashmap is instantiated in this Method, but it isn't modified directly
      */
-    public HashMap<ResourceType, Integer> moveColumn(int columnNumber, Effect effect) throws IllegalArgumentException, NullPointerException {
+    public HashMap<ResourceType, Integer> moveColumn(int columnNumber, List<Effect> effects) throws IllegalArgumentException, NullPointerException {
         if (columnNumber < 0 || columnNumber >= 4)
             throw new IllegalArgumentException("moveColumn Market: not valid columnNumber");
-        if (effect == null) throw new NullPointerException("moveColumn Market: not expected NULL effect");
+        if (effects == null) throw new NullPointerException("moveColumn Market: not expected NULL effect");
 
         HashMap<ResourceType, Integer> resources = new HashMap<>();
         Marble tempMarble = marbleOnSlide;
         for (int j = 0; j < marketMatrix.length; j++) {
             try {
-                marketMatrix[j][columnNumber].onActivate(resources, effect);
+                marketMatrix[j][columnNumber].onActivate(resources, effects);
             } catch (NegativeQuantityException | NullPointerException e) {
                 System.out.println("moveColumn: Something extremely bad happened in the Market:");
                 return new HashMap<>();
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("The effects size is not the numbers of white marbles in the column");
             }
+
             if (j == 0) marbleOnSlide = getMarbleInTheGrid(j, columnNumber);
             else setMarbleInTheGrid(marketMatrix[j][columnNumber], j - 1, columnNumber);
         }
