@@ -238,7 +238,6 @@ public class FaithTrackTest {
 
     }
 
-
     @Test
     //Tests that, once set, the ReportNumOrder can't be changed: FaithTrack created without the configuration file
     public void ctrlReportNumOrderNotSetting(){
@@ -280,8 +279,8 @@ public class FaithTrackTest {
     }
 
     @Test
-    //Tests the forwarding of request to Cells with different position given as inputs
-   public void ctrlPositionCell(){
+    //Tests the forwarding of request to Cells with different position given as inputs: normal cell
+    public void ctrlPositionNormalCell(){
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         reportNumOrder.addElementInOrder(ReportNum.REPORT1);
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
@@ -297,6 +296,17 @@ public class FaithTrackTest {
         }
         assertFalse(faithTrack.callCellActivateTile(4, ReportNum.REPORT1));
         assertFalse(faithTrack.callCellActivateTile(9, ReportNum.REPORT1));
+    }
+
+    @Test
+    //Tests the forwarding of request to Cells with different position given as inputs: Report cell
+    public void ctrlPositionReportCell(){
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
+        FaithTrack faithTrack = FaithTrack.instance(reportNumOrder);
+
         //ReportCell
         try {
             assertFalse(faithTrack.callCellEffect(5));
@@ -305,6 +315,17 @@ public class FaithTrackTest {
         }
         assertTrue(faithTrack.callCellActivateTile(5, ReportNum.REPORT1));
         assertFalse(faithTrack.callCellActivateTile(5, ReportNum.REPORT2));
+    }
+
+    @Test
+    //Tests the forwarding of request to Cells with different position given as inputs: pope cell
+    public void ctrlPositionPopeCell(){
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
+        FaithTrack faithTrack = FaithTrack.instance(reportNumOrder);
+
         //PopeCell but not the last one
         try {
             assertTrue(faithTrack.callCellEffect(8));
@@ -313,9 +334,9 @@ public class FaithTrackTest {
         }
         assertTrue(faithTrack.callCellActivateTile(8, ReportNum.REPORT1));
         assertFalse(faithTrack.callCellActivateTile(8, ReportNum.REPORT2));
+
         //The last PopeCell
         assertThrows(LastVaticanReportException.class, () -> faithTrack.callCellEffect(24));
-
     }
 
     @Test

@@ -23,15 +23,13 @@ public class LeaderCardTest {
     private static final ResourceType[] resources = new ResourceType[]{ResourceType.COIN, ResourceType.STONE, ResourceType.SERVANT, ResourceType.FAITHPOINT,  ResourceType.SHIELD};
 
     @Test
-    //Tests correct creation of the LeaderCard (the default creation)
-    public void ctrlLeaderCardCreation(){
+    //Tests correct creation of the LeaderCard (the default creation): bad parameters
+    public void ctrlLeaderCardCreationBadParameters() throws NegativeQuantityException{
         List<Requirement> requirements = new ArrayList<>();
-        try {
-            requirements.add(new CardRequirementColor(DevCardColour.BLUE, 3));
-            requirements.add(new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2));
-        } catch (NegativeQuantityException e) {
-            e.printStackTrace();
-        }
+
+        requirements.add(new CardRequirementColor(DevCardColour.BLUE, 3));
+        requirements.add(new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2));
+
         Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
 
         NullPointerException exception = assertThrows(NullPointerException.class, () -> new LeaderCard(2, null, effect));
@@ -41,19 +39,29 @@ public class LeaderCardTest {
         exception = assertThrows(NullPointerException.class, () -> new LeaderCard(2, requirements, null));
         assertEquals(exception.getMessage(), "The effect can't be a null pointer!");
 
+    }
+
+    @Test
+    //Tests correct creation of the LeaderCard (the default creation): good parameters
+    public void ctrlLeaderCardCreationGoodParameters() throws NegativeQuantityException{
+        List<Requirement> requirements = new ArrayList<>();
+
+        requirements.add(new CardRequirementColor(DevCardColour.BLUE, 3));
+        requirements.add(new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2));
+
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+
         LeaderCard leaderCard = new LeaderCard(3, requirements, effect);
 
-        List<Requirement> tmp = leaderCard.getRequirementsList();
+        List<Requirement> tmp = leaderCard.getRequirementsListSafe();
 
         assertNotSame(requirements, tmp);
-        assertEquals(((CardRequirementColor) tmp.get(0)).getQuantity(), 3);
-        assertEquals(((CardRequirementColor) tmp.get(0)).getCardColour(), DevCardColour.BLUE);
-        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getLevel(), 2);
-        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getCardColour(), DevCardColour.GREEN);
-        assertEquals(((CardRequirementColorAndLevel) tmp.get(1)).getQuantity(),2);
+        assertTrue(requirements.containsAll(tmp));
+        assertTrue(tmp.containsAll(requirements));
 
         assertEquals(leaderCard.getVictoryPoints(), 3);
-        assertEquals(((WhiteMarbleLeaderEffect)leaderCard.getEffect()).getExtraResourceType(), ((WhiteMarbleLeaderEffect)effect).getExtraResourceType());
+
+        assertEquals(leaderCard.getEffect(), effect);
 
         HashMap<ResourceType, Integer> output = leaderCard.getOutputWhenDiscarded();
         assertFalse(output.isEmpty());
@@ -66,8 +74,8 @@ public class LeaderCardTest {
     }
 
     @Test
-    //Tests if the LeaderCard correctly checks for its requirements
-    public void ctrlCardRequirements() throws NegativeQuantityException {
+    //Tests if the LeaderCard correctly checks for its requirements: all requirements met
+    public void ctrlCardRequirementsAllMet() throws NegativeQuantityException {
         CardRequirementColor requirement1;
         CardRequirementColor requirement2;
         PlayerResourcesAndCards playerResourcesAndCards;
@@ -147,8 +155,10 @@ public class LeaderCardTest {
         requirements.add(req2);
         Collections.shuffle(requirements);
         leaderCard = new LeaderCard(3, requirements, effect);
-        exception = assertThrows(UnmetRequirementException.class, () -> finalLeaderCard1.checkRequirements(playerResourcesAndCards));
+        LeaderCard finalLeaderCard2 = leaderCard;
+        exception = assertThrows(UnmetRequirementException.class, () -> finalLeaderCard2.checkRequirements(playerResourcesAndCards));
         //assertTrue(exception.getUnmetRequirement().equals(req1) || exception.getUnmetRequirement().equals(requirement2) || exception.getUnmetRequirement().equals(req2));
+        tmp = exception.getUnmetRequirement();
         if(tmp instanceof CardRequirementColorAndLevel ){
             if(((CardRequirementColorAndLevel) tmp).getLevel() == 3) {
                 assertEquals(((CardRequirementColorAndLevel) tmp).getLevel(), req1.getLevel());
@@ -165,6 +175,150 @@ public class LeaderCardTest {
             assertEquals(((CardRequirementColor) tmp).getCardColour(), requirement2.getCardColour());
         }
     }
+
+    @Test
+    //Tests if the LeaderCard correctly checks for its requirements: all unmet
+    public void ctrlCardRequirementsAllUnmet() throws NegativeQuantityException{
+        CardRequirementColor requirement1;
+        CardRequirementColor requirement2;
+        PlayerResourcesAndCards playerResourcesAndCards;
+        HashMap<ResourceType,Integer> hashMap;
+        DevCard cardLevel1;
+        DevCard cardLevel2;
+        DevCard cardLevel3;
+        List<DevCard> devCards;
+        requirement2 = new CardRequirementColor(DevCardColour.BLUE,1); //Unmet
+        hashMap=new HashMap<>();
+        cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
+        cardLevel2=new DevCard(2,DevCardColour.GREEN,2,hashMap,hashMap,hashMap,"abc");
+        cardLevel3=new DevCard(3,DevCardColour.GREEN,3,hashMap,hashMap,hashMap,"abc");
+        devCards=new ArrayList<>();
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel3);
+        playerResourcesAndCards = new PlayerResourcesAndCards(new HashMap<>(),devCards);
+
+        CardRequirementColorAndLevel req1;
+        CardRequirementColorAndLevel req2;
+        CardRequirementColorAndLevel req3;
+        req1 = new CardRequirementColorAndLevel(3, DevCardColour.GREEN, 2); //Unmet
+        req2 = new CardRequirementColorAndLevel(1, DevCardColour.BLUE, 1); //Unmet
+
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard leaderCard;
+
+        //All the requirements are unmet
+        List<Requirement> requirements = new ArrayList<>();
+        requirements.add(requirement2);
+        requirements.add(req1);
+        requirements.add(req2);
+        Collections.shuffle(requirements);
+        leaderCard = new LeaderCard(3, requirements, effect);
+        LeaderCard finalLeaderCard1 = leaderCard;
+        UnmetRequirementException exception = assertThrows(UnmetRequirementException.class, () -> finalLeaderCard1.checkRequirements(playerResourcesAndCards));
+        assertTrue(exception.getUnmetRequirement().equals(req1) || exception.getUnmetRequirement().equals(requirement2) || exception.getUnmetRequirement().equals(req2));
+    }
+
+    @Test
+    //Tests if the LeaderCard correctly checks for its requirements: Two unmet
+    public void ctrlCardRequirementsTwoUnmet() throws NegativeQuantityException {
+        CardRequirementColor requirement1;
+        CardRequirementColor requirement2;
+        PlayerResourcesAndCards playerResourcesAndCards;
+        HashMap<ResourceType,Integer> hashMap;
+        DevCard cardLevel1;
+        DevCard cardLevel2;
+        DevCard cardLevel3;
+        List<DevCard> devCards;
+        requirement1 = new CardRequirementColor(DevCardColour.GREEN,2); //Met
+        requirement2 = new CardRequirementColor(DevCardColour.BLUE,1); //Unmet
+        hashMap=new HashMap<>();
+        cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
+        cardLevel2=new DevCard(2,DevCardColour.GREEN,2,hashMap,hashMap,hashMap,"abc");
+        cardLevel3=new DevCard(3,DevCardColour.GREEN,3,hashMap,hashMap,hashMap,"abc");
+        devCards=new ArrayList<>();
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel3);
+        playerResourcesAndCards = new PlayerResourcesAndCards(new HashMap<>(),devCards);
+
+        CardRequirementColorAndLevel req1;
+        CardRequirementColorAndLevel req2;
+        CardRequirementColorAndLevel req3;
+        req1 = new CardRequirementColorAndLevel(3, DevCardColour.GREEN, 2); //Unmet
+        req3 = new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2); //Met
+
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard leaderCard;
+        List<Requirement> requirements = new ArrayList<>();
+
+        //Two requirements are unmet
+        requirements.add(requirement1);
+        requirements.add(req3);
+        requirements.add(req1);
+        requirements.add(requirement2);
+        Collections.shuffle(requirements);
+        leaderCard = new LeaderCard(3, requirements, effect);
+        LeaderCard finalLeaderCard1 = leaderCard;
+        UnmetRequirementException exception = assertThrows(UnmetRequirementException.class, () -> finalLeaderCard1.checkRequirements(playerResourcesAndCards));
+        Requirement tmp = exception.getUnmetRequirement();
+
+        assertTrue(tmp.equals(req1) || tmp.equals(requirement2));
+    }
+
+    @Test
+    //Tests if the LeaderCard correctly checks for its requirements: one unmet
+    public void ctrlCardRequirementsOneUnmet() throws NegativeQuantityException{
+        CardRequirementColor requirement1;
+        CardRequirementColor requirement2;
+        PlayerResourcesAndCards playerResourcesAndCards;
+        HashMap<ResourceType,Integer> hashMap;
+        DevCard cardLevel1;
+        DevCard cardLevel2;
+        DevCard cardLevel3;
+        List<DevCard> devCards;
+        requirement1 = new CardRequirementColor(DevCardColour.GREEN,2); //Met
+        hashMap=new HashMap<>();
+        cardLevel1=new DevCard(1, DevCardColour.GREEN,1,hashMap,hashMap,hashMap,"abc");
+        cardLevel2=new DevCard(2,DevCardColour.GREEN,2,hashMap,hashMap,hashMap,"abc");
+        cardLevel3=new DevCard(3,DevCardColour.GREEN,3,hashMap,hashMap,hashMap,"abc");
+        devCards=new ArrayList<>();
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel1);
+        devCards.add(cardLevel2);
+        devCards.add(cardLevel3);
+        playerResourcesAndCards = new PlayerResourcesAndCards(new HashMap<>(),devCards);
+
+        CardRequirementColorAndLevel req1;
+        CardRequirementColorAndLevel req2;
+        CardRequirementColorAndLevel req3;
+        req1 = new CardRequirementColorAndLevel(3, DevCardColour.GREEN, 2); //Unmet
+        req3 = new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2); //Met
+
+        Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
+        LeaderCard leaderCard;
+        List<Requirement> requirements = new ArrayList<>();
+
+        //One requirement is unmet
+        requirements.add(requirement1);
+        requirements.add(req3);
+        requirements.add(req1);
+        Collections.shuffle(requirements);
+
+        leaderCard = new LeaderCard(3, requirements, effect);
+        LeaderCard finalLeaderCard = leaderCard;
+        UnmetRequirementException exception = assertThrows(UnmetRequirementException.class, () -> finalLeaderCard.checkRequirements(playerResourcesAndCards));
+        assertEquals(exception.getUnmetRequirement(), req1);
+    }
+
 
     @Test
     //Tests the cloning of LeaderCards

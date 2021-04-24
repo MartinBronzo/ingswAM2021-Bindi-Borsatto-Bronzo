@@ -65,6 +65,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         //metRequirements.add(req3);
         LeaderCard met = new LeaderCard(3, metRequirements, new Effect());
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
 
         assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
@@ -90,6 +94,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         //metRequirements.add(req3);
         LeaderCard met = new LeaderCard(3, metRequirements, new Effect());
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
         assertEquals(playerBoard.getPositionOnFaithTrack(), 0);
@@ -118,6 +126,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         list.add(met); //This card can be activated
         met = new LeaderCard(4, metRequirements, new Effect());
         list.add(met);
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
@@ -144,6 +156,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         met = new LeaderCard(4, metRequirements, new Effect());
         list.add(met);
         assertEquals(list.size(), 2);
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
@@ -162,7 +178,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
     }
 
     @Test
-    //Tests that the PlayerBoard deals correctly with one-shot cards:
+    //Tests that the PlayerBoard deals correctly with one-shot cards
     public void ctrlOneShotCards(){
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
@@ -171,6 +187,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         Effect effect = new ExtraSlotLeaderEffect(ResourceType.COIN, 2);
         LeaderCard met = new LeaderCard(3, metRequirements, effect);
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
@@ -192,7 +212,6 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
 
         Effect effect1 = new Effect();
-
 
 
         assertEquals(playerBoard.getAlreadyUsedOneShotCard().size(), 1);
@@ -220,6 +239,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
         LeaderCard met = new LeaderCard(3, metRequirements, effect);
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
@@ -260,6 +283,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         list.add(met); //This card can be activated
         LeaderCard dumbCard = new LeaderCard(10, new ArrayList<>(), new Effect());
         list.add(dumbCard);
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
@@ -281,6 +308,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
         LeaderCard met = new LeaderCard(3, metRequirements, effect);
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
@@ -309,6 +340,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
         LeaderCard unmet = new LeaderCard(3, unmetRequirements, effect);
         list.add(unmet); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
@@ -332,6 +367,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
         LeaderCard unmet = new LeaderCard(3, unmetRequirements, effect);
         list.add(unmet); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
@@ -350,6 +389,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
         LeaderCard met = new LeaderCard(3, metRequirements, effect);
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         LeaderCard dumbLD = new LeaderCard(4, metRequirements, effect);
 
@@ -366,6 +409,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
         LeaderCard met = new LeaderCard(3, metRequirements, effect);
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
 
         try {
@@ -386,6 +433,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         Effect effect = new WhiteMarbleLeaderEffect(ResourceType.SERVANT);
         LeaderCard met = new LeaderCard(3, metRequirements, effect);
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
 
         assertFalse(playerBoard.isLeaderCardActive(met));
@@ -399,6 +450,10 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         metRequirements.add(requirement1);
         LeaderCard met = new LeaderCard(3, metRequirements, new Effect());
         list.add(met); //This card can be activated
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
         playerBoard.setNotPlayedLeaderCards(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class represents the position of the players who actively play in the game. Each player in the game is associated with a FaithLevel.
@@ -115,6 +116,9 @@ public class FaithLevel extends FaithLevelBasic {
     public void dealWithVaticanReport(ReportNum reportNum) throws IllegalActionException {
         //The position in the PopeTiles list of the PopeTile which has the required reportNum is equal to the position of the required reportNum in the ReportNumOrder list stored in the FaithTrack
         popeTiles.get(faithTrack.getPopeTileIndex(reportNum)).dealWithVaticanReport(reportNum, faithTrack.callCellActivateTile(this.position, reportNum));
+        /*List<PopeTile> tmp = popeTiles.stream().filter(x -> x.getReportNum() == reportNum).collect(Collectors.toList());
+        for(PopeTile pT: tmp)
+            pT.dealWithVaticanReport(reportNum, faithTrack.callCellActivateTile(this.position, reportNum));*/
     }
 
     /**

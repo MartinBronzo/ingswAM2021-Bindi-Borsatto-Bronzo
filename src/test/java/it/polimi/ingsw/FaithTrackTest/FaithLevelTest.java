@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FaithLevelTest {
     @Test
-    //Tests the creation, controlling that the given list of PopeTiles matches with the one stored in teh FaithLevel (non only because
+    //Tests the creation, controlling that the given list of PopeTiles matches with the one stored in teh FaithLevel (not only because
     //they both contain the same elements, but also because they are in the same order)
     public void ctrlCreation(){
         //The first two lines are needed to make sure that in this method the first and only instances of these two classes are created
@@ -36,32 +36,29 @@ public class FaithLevelTest {
         //Tests that the PopeTile list stored in the FaithLevel is a clone of the original
         List<PopeTile> myPopeTiles = faithLevel.getPopeTiles();
         assertNotSame(popeTiles, myPopeTiles);
+        assertTrue(popeTiles.containsAll(myPopeTiles));
+        assertTrue(myPopeTiles.containsAll(popeTiles));
         PopeTile tmp;
         int i = 0;
         for(PopeTile pt: popeTiles){
             tmp = myPopeTiles.get(popeTiles.indexOf(pt));
             assertEquals(popeTiles.indexOf(pt), i);
+            assertEquals(pt, tmp);
             assertNotSame(pt, tmp);
-            assertEquals(pt.getPoints(), tmp.getPoints());
-            assertEquals(pt.getReportNum(), tmp.getReportNum());
-            assertEquals(pt.isActivated(), tmp.isActivated());
-            assertEquals(pt.isDiscarded(), tmp.isDiscarded());
-            assertEquals(pt.isChanged(), tmp.isChanged());
             i++;
         }
         assertEquals(popeTiles.size(), myPopeTiles.size());
     }
 
     @Test
-    //Tests FaithLevels give the right victory points when called
-    public void ctrlCellPoints(){
+    //Tests FaithLevels give the right victory points when called: the cell does give points
+    public void ctrlCellPointsSomePoints(){
         //The first two lines are needed to make sure that in this method the first and only instances of these two classes are created
         FaithTrack.deleteState();
         ReportNumOrder.deleteState();
 
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        //ft.initTrack();
 
         List<PopeTile> popeTiles = new ArrayList<>();
         FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
@@ -69,10 +66,19 @@ public class FaithLevelTest {
         //The Player is on a cell which gives points
         faithLevel.moveFaithMarkerBasicVersion(9);
         assertEquals(faithLevel.getCellPoints(), ft.getCellVictoryPoints(9));
+    }
 
-        //The Player is in a cell which doesn't give points
-        faithLevel.moveFaithMarkerBasicVersion(5);//Cell 14
-        assertEquals(faithLevel.getCellPoints(), ft.getCellVictoryPoints(12));
+    @Test
+    //Tests FaithLevels give the right victory points when called: boundaries edition
+    public void ctrlCellPointsBounds(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
 
         //Checking the bounds
         faithLevel.moveFaithMarkerBasicVersion(+ft.getTrackSize() + 10); //The FaithMarker is on the last cell
@@ -84,19 +90,35 @@ public class FaithLevelTest {
     }
 
     @Test
-    //Tests the PopeTiles in the FaithLevels give the right victory points when called
-    public void ctrlPopeTilesPoints() throws IllegalActionException {
+    //Tests FaithLevels give the right victory points when called: the cell doesn't give points
+    public void ctrlCellPointsNoPoints(){
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
+
+        //The Player is in a cell which doesn't give points
+        faithLevel.moveFaithMarkerBasicVersion(5);//Cell 5
+        assertEquals(faithLevel.getPosition(), 5);
+        assertEquals(faithLevel.getCellPoints(), ft.getCellVictoryPoints(3));
+    }
+
+    @Test
+    //Tests the PopeTiles in the FaithLevels give the right victory points when called: three not changed tiles
+    public void ctrlPopeTilesPointsNotChangedTiles() throws IllegalActionException {
         //The first two lines are needed to make sure that in this method the first and only instances of these two classes are created
         FaithTrack.deleteState();
         ReportNumOrder.deleteState();
 
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        //ft.initTrack();
 
         //We manually force the PopeTiles to change their status to try some combinations of discarded, active and not changed tiles
 
-        //Three not changed tiles
         List<PopeTile> popeTiles = new ArrayList<>();
         PopeTile p1 = new PopeTile(4, ReportNum.REPORT1);
         PopeTile p2 = new PopeTile(3, ReportNum.REPORT2);
@@ -105,7 +127,135 @@ public class FaithLevelTest {
         popeTiles.add(p2);
         popeTiles.add(p3);
         FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
+
+        //Three not changed tiles
         assertEquals(faithLevel.getPopeTilesPoints(), 0);
+
+    }
+
+    @Test
+    //Tests the PopeTiles in the FaithLevels give the right victory points when called: one discarded, one active, one not changed
+    public void ctrlPopeTilesPointsOneForEachType() throws IllegalActionException{
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+
+        //We manually force the PopeTiles to change their status to try some combinations of discarded, active and not changed tiles
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        PopeTile p1 = new PopeTile(4, ReportNum.REPORT1);
+        PopeTile p2 = new PopeTile(3, ReportNum.REPORT2);
+        PopeTile p3 = new PopeTile(5, ReportNum.REPORT3);
+
+        //1 discarded, 1 active, 1 not changed
+        p1.dealWithVaticanReport(ReportNum.REPORT1, false);
+        p2.dealWithVaticanReport(ReportNum.REPORT2, true);
+        popeTiles = new ArrayList<>();
+        popeTiles.add(p1);
+        popeTiles.add(p2);
+        popeTiles.add(p3);
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
+        assertEquals(faithLevel.getPopeTilesPoints(), 3);
+    }
+
+    @Test
+    //Tests the PopeTiles in the FaithLevels give the right victory points when called: three active tiles
+    public void ctrlPopeTilesPointsThreeActive() throws IllegalActionException{
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+
+        //We manually force the PopeTiles to change their status to try some combinations of discarded, active and not changed tiles
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        PopeTile p1 = new PopeTile(4, ReportNum.REPORT1);
+        PopeTile p2 = new PopeTile(3, ReportNum.REPORT2);
+        PopeTile p3 = new PopeTile(5, ReportNum.REPORT3);
+
+        //Three active tiles
+        p1.dealWithVaticanReport(ReportNum.REPORT1, true);
+        p2.dealWithVaticanReport(ReportNum.REPORT2, true);
+        p3.dealWithVaticanReport(ReportNum.REPORT3, true);
+        popeTiles = new ArrayList<>();
+        popeTiles.add(p1);
+        popeTiles.add(p2);
+        popeTiles.add(p3);
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
+        assertEquals(faithLevel.getPopeTilesPoints(), 12);
+    }
+
+    @Test
+    //Tests the PopeTiles in the FaithLevels give the right victory points when called: one active, two not changed
+    public void ctrlPopeTilesPointsOneActiveTwoNotChanged() throws IllegalActionException{
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+
+        //We manually force the PopeTiles to change their status to try some combinations of discarded, active and not changed tiles
+
+        //active, not changed, not changed
+        PopeTile p1  = new PopeTile(4, ReportNum.REPORT1);
+        PopeTile p2 = new PopeTile(3, ReportNum.REPORT2);
+        PopeTile p3 = new PopeTile(5, ReportNum.REPORT3);
+        p1.dealWithVaticanReport(ReportNum.REPORT1, true);
+        List<PopeTile> popeTiles = new ArrayList<>();
+        popeTiles.add(p1);
+        popeTiles.add(p2);
+        popeTiles.add(p3);
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
+        assertEquals(faithLevel.getPopeTilesPoints(), 4);
+
+    }
+
+    @Test
+    //Tests the PopeTiles in the FaithLevels give the right victory points when called: three discarded tiles
+    public void ctrlPopeTilesPointsThreeDiscarded() throws IllegalActionException {
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+
+        //We manually force the PopeTiles to change their status to try some combinations of discarded, active and not changed tiles
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        PopeTile p1 = new PopeTile(4, ReportNum.REPORT1);
+        PopeTile p2 = new PopeTile(3, ReportNum.REPORT2);
+        PopeTile p3 = new PopeTile(5, ReportNum.REPORT3);
+
+        //Three discarded tiles
+        p1.dealWithVaticanReport(ReportNum.REPORT1, false);
+        p2.dealWithVaticanReport(ReportNum.REPORT2, false);
+        p3.dealWithVaticanReport(ReportNum.REPORT3, false);
+        popeTiles = new ArrayList<>();
+        popeTiles.add(p1);
+        popeTiles.add(p2);
+        popeTiles.add(p3);
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
+        assertEquals(faithLevel.getPopeTilesPoints(), 0);
+    }
+
+    @Test
+    //Tests the PopeTiles in the FaithLevels give the right victory points when called: One discarded, two not changed
+    public void ctrlPopeTilesPointsOneDiscardedTwoNotChanged() throws IllegalActionException {
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        PopeTile p1 = new PopeTile(4, ReportNum.REPORT1);
+        PopeTile p2 = new PopeTile(3, ReportNum.REPORT2);
+        PopeTile p3 = new PopeTile(5, ReportNum.REPORT3);
+
+        //We manually force the PopeTiles to change their status to try some combinations of discarded, active and not changed tiles
 
         //Discarded, not changed, not changed
         p1.dealWithVaticanReport(ReportNum.REPORT1, false);
@@ -113,52 +263,8 @@ public class FaithLevelTest {
         popeTiles.add(p1);
         popeTiles.add(p2);
         popeTiles.add(p3);
-        faithLevel = new FaithLevel(ft, popeTiles);
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
         assertEquals(faithLevel.getPopeTilesPoints(), 0);
-
-        //Three discarded tiles
-        p2.dealWithVaticanReport(ReportNum.REPORT2, false);
-        p3.dealWithVaticanReport(ReportNum.REPORT3, false);
-        popeTiles = new ArrayList<>();
-        popeTiles.add(p1);
-        popeTiles.add(p2);
-        popeTiles.add(p3);
-        faithLevel = new FaithLevel(ft, popeTiles);
-        assertEquals(faithLevel.getPopeTilesPoints(), 0);
-
-        //active, not changed, not changed
-        p1 = new PopeTile(4, ReportNum.REPORT1);
-        p2 = new PopeTile(3, ReportNum.REPORT2);
-        p3 = new PopeTile(5, ReportNum.REPORT3);
-        p1.dealWithVaticanReport(ReportNum.REPORT1, true);
-        popeTiles = new ArrayList<>();
-        popeTiles.add(p1);
-        popeTiles.add(p2);
-        popeTiles.add(p3);
-        faithLevel = new FaithLevel(ft, popeTiles);
-        assertEquals(faithLevel.getPopeTilesPoints(), 4);
-
-        //Three active tiles
-        p2.dealWithVaticanReport(ReportNum.REPORT2, true);
-        p3.dealWithVaticanReport(ReportNum.REPORT3, true);
-        popeTiles = new ArrayList<>();
-        popeTiles.add(p1);
-        popeTiles.add(p2);
-        popeTiles.add(p3);
-        faithLevel = new FaithLevel(ft, popeTiles);
-        assertEquals(faithLevel.getPopeTilesPoints(), 12);
-
-        //1 discarded, 1 active, 1 not changed
-        p1 = new PopeTile(4, ReportNum.REPORT1);
-        p3 = new PopeTile(5, ReportNum.REPORT3);
-        p1.dealWithVaticanReport(ReportNum.REPORT1, false);
-        popeTiles = new ArrayList<>();
-        popeTiles.add(p1);
-        popeTiles.add(p2);
-        popeTiles.add(p3);
-        faithLevel = new FaithLevel(ft, popeTiles);
-        assertEquals(faithLevel.getPopeTilesPoints(), 3);
-
     }
 
     //The three next test test how the tiles respond to a Vatican Report (also checking what happens when we call an already activated Vatican Report)
@@ -461,7 +567,7 @@ public class FaithLevelTest {
     }
 
     @Test
-    //Tests that the Vatican Repport full version: it is activated because the player lands at the end of all of their steps after a PopeTile
+    //Tests that the Vatican Report full version: it is activated because the player lands at the end of all of their steps after a PopeTile
     //Tests with three "human" players
     public void ctrlVaticanReportFull(){
         FaithTrack.deleteState();
@@ -581,9 +687,6 @@ public class FaithLevelTest {
         assertTrue(pT3.get(1).isActivated());
         assertTrue(pT3.get(2).isActivated());
     }
-
-    //TODO: Valgono le regole semplici => non ci dovrebbe essere più necessità del ReportNumOrder nei metodi effetti delle celle MA serve ancora per calcolare l'indice delle PopeTile nel DealWithVaticanReport del FaithLevel
-    //Non serve più il metodo di stateOrder ma serve ancora per segnarsi qual è l'ordine delle celle!
 
     @Test
     //Tests that the Vatican Report full version: it is activated because the player lands at the end of all of their steps after a PopeTile
@@ -741,8 +844,8 @@ public class FaithLevelTest {
     }
 
     @Test
-    //Tests particular values for the steps the Marker takes
-    public void ctrlMarkerSteps(){
+    //Tests particular values for the steps the Marker takes: zero steps
+    public void ctrlMarkerStepsZeroStep() throws LastVaticanReportException{
         FaithTrack.deleteState();
         ReportNumOrder.deleteState();
 
@@ -751,7 +854,6 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        //ft.initTrack();
         PopeCell tmp = (PopeCell) ft.getCell(8);
         tmp.detach(tmp.getObserversList().get(0));
 
@@ -767,12 +869,7 @@ public class FaithLevelTest {
         assertFalse(popeTiles.get(1).isChanged());
         assertFalse(popeTiles.get(2).isChanged());
 
-
-        try {
-            assertFalse(faithLevel.moveFaithMarker(9));
-        } catch (LastVaticanReportException e) {
-            e.printStackTrace();
-        }
+        assertFalse(faithLevel.moveFaithMarker(9));
 
         assertEquals(faithLevel.getPosition(), 9);
 
@@ -780,11 +877,7 @@ public class FaithLevelTest {
         assertFalse(popeTiles.get(1).isChanged());
         assertFalse(popeTiles.get(2).isChanged());
 
-        try {
-            assertTrue(faithLevel.moveFaithMarker(0));
-        } catch (LastVaticanReportException e) {
-            e.printStackTrace();
-        }
+        assertTrue(faithLevel.moveFaithMarker(0));
 
         assertEquals(faithLevel.getPosition(), 9);
 
@@ -792,12 +885,43 @@ public class FaithLevelTest {
         assertTrue(popeTiles.get(0).isActivated());
         assertFalse(popeTiles.get(1).isChanged());
         assertFalse(popeTiles.get(2).isChanged());
+    }
 
-        try {
-            assertTrue(faithLevel.moveFaithMarker(-4));
-        } catch (LastVaticanReportException e) {
-            e.printStackTrace();
-        }
+    @Test
+    //Tests particular values for the steps the Marker takes: negative steps
+    public void ctrlMarkerStepsNegativeSteps() throws LastVaticanReportException{
+        FaithTrack.deleteState();
+        ReportNumOrder.deleteState();
+
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        reportNumOrder.addElementInOrder(ReportNum.REPORT1);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT2);
+        reportNumOrder.addElementInOrder(ReportNum.REPORT3);
+        FaithTrack ft = FaithTrack.instance(reportNumOrder);
+        PopeCell tmp = (PopeCell) ft.getCell(8);
+        tmp.detach(tmp.getObserversList().get(0));
+
+        List<PopeTile> popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(1, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(2, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(3, ReportNum.REPORT3));
+        FaithLevel faithLevel = new FaithLevel(ft, popeTiles);
+        popeTiles = faithLevel.getPopeTiles();
+        tmp.attach(new ControllerStub(tmp, faithLevel));
+
+        assertFalse(popeTiles.get(0).isChanged());
+        assertFalse(popeTiles.get(1).isChanged());
+        assertFalse(popeTiles.get(2).isChanged());
+
+        assertFalse(faithLevel.moveFaithMarker(9));
+
+        assertEquals(faithLevel.getPosition(), 9);
+
+        assertTrue(popeTiles.get(0).isActivated());
+        assertFalse(popeTiles.get(1).isChanged());
+        assertFalse(popeTiles.get(2).isChanged());
+
+        assertTrue(faithLevel.moveFaithMarker(-4));
 
         assertEquals(faithLevel.getPosition(), 5);
 

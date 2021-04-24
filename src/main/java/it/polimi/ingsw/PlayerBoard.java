@@ -138,10 +138,7 @@ public class PlayerBoard {
     */
 
 
-    /**
-     * @deprecated isn't required set methods for leaderCards
-     */
-    @Deprecated
+
     public void setNotPlayedLeaderCards(List<LeaderCard> notPlayedLeaderCards) {
         List<LeaderCard> clone = new ArrayList<>();
         for (LeaderCard lD : notPlayedLeaderCards)
@@ -212,17 +209,14 @@ public class PlayerBoard {
      *
      * @return a copy of the not-played LeaderCards
      */
-    @Deprecated
     public List<LeaderCard> getNotPlayedLeaderCards() {
         return this.leaderCards.getNotPlayedCards();
     }
 
-    @Deprecated
     public List<LeaderCard> getActiveLeaderCards() {
         return this.leaderCards.getActiveCards();
     }
 
-    @Deprecated
     public List<LeaderCard> getAlreadyUsedOneShotCard() {
         return this.leaderCards.getAlreadyUsedOneShotCard();
     }

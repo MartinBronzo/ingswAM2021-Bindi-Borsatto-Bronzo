@@ -121,7 +121,7 @@ public class PopeTileTest {
 
     @Test
     //Tests that activated PopeTiles give their points, discarded and unchanged tile give 0 points
-    public void ctlrPointsActiveTiles(){
+    public void ctrlPointsActiveTiles(){
         PopeTile popeTile1 = new PopeTile(2, ReportNum.REPORT1);
 
         try {
