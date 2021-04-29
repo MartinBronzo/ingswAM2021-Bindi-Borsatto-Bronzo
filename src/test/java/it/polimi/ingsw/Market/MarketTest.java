@@ -1,6 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Market;
 
 import it.polimi.ingsw.Market.Market;
+import it.polimi.ingsw.ResourceType;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.marble.*;
@@ -197,4 +198,82 @@ class MarketTest {
         System.out.println(market.moveRow(2, effects).toString());
         System.out.println(market.toString());
     }
+
+    @Test
+    void getResourcesFromRow() {
+        int i =rnd.nextInt(3);
+        Marble[] marbles = {market.getMarbleInTheGrid(i ,0), market.getMarbleInTheGrid(i ,1), market.getMarbleInTheGrid(i ,2), market.getMarbleInTheGrid(i ,3)};
+        int blueCounter=0;
+        int greyCounter=0;
+        int purpleCounter=0;
+        int redCounter=0;
+        int yellowCounter=0;
+        int whiteCounter=0;
+        for (Marble marble:marbles) {
+            if (marble instanceof BlueMarble){
+                blueCounter++;
+            } else if (marble instanceof GreyMarble){
+                greyCounter++;
+            } else if (marble instanceof PurpleMarble){
+                purpleCounter++;
+            } else if (marble instanceof RedMarble){
+                redCounter++;
+            } else if (marble instanceof YellowMarble){
+                yellowCounter++;
+            } else if (marble instanceof WhiteMarble){
+                whiteCounter++;
+            }
+        }
+        while (whiteCounter>0){
+            effects.add(effect);
+            whiteCounter--;
+        }
+        HashMap<ResourceType, Integer> resourceMap = market.getResourcesFromRow(i, effects);
+
+        assertEquals(blueCounter,resourceMap.getOrDefault(shield,0));
+        assertEquals(greyCounter,resourceMap.getOrDefault(stone,0));
+        assertEquals(purpleCounter,resourceMap.getOrDefault(servant,0));
+        assertEquals(redCounter,resourceMap.getOrDefault(faith,0));
+        assertEquals(yellowCounter,resourceMap.getOrDefault(coin,0));
+    }
+
+    @Test
+    void getResourcesFromColumn() {
+        int i =rnd.nextInt(4);
+        Marble[] marbles = {market.getMarbleInTheGrid(0 ,i), market.getMarbleInTheGrid(1,i), market.getMarbleInTheGrid(2,i)};
+        int blueCounter=0;
+        int greyCounter=0;
+        int purpleCounter=0;
+        int redCounter=0;
+        int yellowCounter=0;
+        int whiteCounter=0;
+        for (Marble marble:marbles) {
+            if (marble instanceof BlueMarble){
+                blueCounter++;
+            } else if (marble instanceof GreyMarble){
+                greyCounter++;
+            } else if (marble instanceof PurpleMarble){
+                purpleCounter++;
+            } else if (marble instanceof RedMarble){
+                redCounter++;
+            } else if (marble instanceof YellowMarble){
+                yellowCounter++;
+            } else if (marble instanceof WhiteMarble){
+                whiteCounter++;
+            }
+        }
+        while (whiteCounter>0){
+            effects.add(effect);
+            whiteCounter--;
+        }
+
+        HashMap<ResourceType, Integer> resourceMap = market.getResourcesFromColumn(i, effects);
+
+        assertEquals(blueCounter,resourceMap.getOrDefault(shield,0));
+        assertEquals(greyCounter,resourceMap.getOrDefault(stone,0));
+        assertEquals(purpleCounter,resourceMap.getOrDefault(servant,0));
+        assertEquals(redCounter,resourceMap.getOrDefault(faith,0));
+        assertEquals(yellowCounter,resourceMap.getOrDefault(coin,0));
+    }
+
 }
