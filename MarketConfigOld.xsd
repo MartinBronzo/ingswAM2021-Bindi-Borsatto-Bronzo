@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="MarketConfig" type="MarketConfigType"/>
-  <xs:complexType name="MarketConfigType">
-    <xs:all>
-      <xs:element type="xs:nonNegativeInteger" name="WHITEMARBLE"/>
-      <xs:element type="xs:nonNegativeInteger" name="BLUEMARBLE"/>
-      <xs:element type="xs:nonNegativeInteger" name="GREYMARBLE"/>
-      <xs:element type="xs:nonNegativeInteger" name="YELLOWMARBLE"/>
-      <xs:element type="xs:nonNegativeInteger" name="PURPLEMARBLE"/>
-      <xs:element type="xs:nonNegativeInteger" name="REDMARBLE"/>
-    </xs:all>
-  </xs:complexType>
+    <xs:element name="MarketConfig" type="MarketConfigType"/>
+    <xs:complexType name="MarketConfigType">
+        <xs:all>
+            <xs:element type="xs:nonNegativeInteger" name="WHITEMARBLE"/>
+            <xs:element type="xs:nonNegativeInteger" name="BLUEMARBLE"/>
+            <xs:element type="xs:nonNegativeInteger" name="GREYMARBLE"/>
+            <xs:element type="xs:nonNegativeInteger" name="YELLOWMARBLE"/>
+            <xs:element type="xs:nonNegativeInteger" name="PURPLEMARBLE"/>
+            <xs:element type="xs:nonNegativeInteger" name="REDMARBLE"/>
+        </xs:all>
+    </xs:complexType>
 </xs:schema>
