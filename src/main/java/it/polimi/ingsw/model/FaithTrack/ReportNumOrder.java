@@ -4,31 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class takes track of the specified order of the ReportNum. This class implements the Singleton Patter and it
- * doesn't let change eliminate ReportNums after they are added because throughout the game the ReportNum order shouldn't change.
+ * This class takes track of the specified order of the ReportNum. It doesn't let eliminate ReportNums after they are added because throughout the game the ReportNum order shouldn't change.
  * It doesn't contain any null elements.
  */
 public class ReportNumOrder {
-    private static ReportNumOrder instance;
     private List<ReportNum> order;
 
     /**
-     * Constructs a new ReportNumOrder without any particular predefined oder. It is private because this class implements the Singleton pattern-
+     * Constructs a new ReportNumOrder without any particular predefined oder.
      */
     private ReportNumOrder() {
         this.order = new ArrayList<>();
     }
 
     /**
-     * Constructs the only instance of the ReportNumOrder class. It constructs the object the first time this method is called. The other times it simply returns
-     * the instance already constructed.
+     * Returns a newly-constructed ReportNumOrder object.
      *
-     * @return the only instance of the class
+     * @return a ReportNumOrder object
      */
+    //The reason this class seems to implement the Singleton pattern even if it doesn't because it used to be a singleton.
     public static ReportNumOrder instance() {
-        if (instance == null)
-            instance = new ReportNumOrder();
-        return instance;
+        return new ReportNumOrder();
     }
 
     /**
@@ -84,8 +80,10 @@ public class ReportNumOrder {
 
     //This method is only used for testing purposes
     //NOT TO BE USED IN THE GAME
-    public static void deleteState() {
-        instance = null;
+    //Once upon a time this method was actually useful
+    @Deprecated
+    public static void deleteState(){
+        ;
     }
 
     public ReportNum getReportNum(int index) {

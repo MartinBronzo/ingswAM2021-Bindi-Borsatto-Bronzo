@@ -17,15 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * FaithTrack class represents the FaithTrack. It is a singleton because it is shared between all players. It consists of a list of the cells the Faith track in the board is made of.
+ * FaithTrack class represents the FaithTrack. It consists of a list of the cells the Faith track in the board is made of.
  * It has many methods whose goal is to simply forward the requests to the right Cell (the given position of the Cell is for sure in the range of correct values because the FaithLevels
  * make sure of that). This class knows the order of the ReportNum.
  */
 public class FaithTrack {
-    /**
-     * Contains the only instance of this class
-     */
-    private static FaithTrack instance;
     /**
      * Contains all the Cells which make up the Faith track in the board
      */
@@ -37,7 +33,7 @@ public class FaithTrack {
     private boolean isReportNumOrderSet;
 
     /**
-     * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. It saves the order of the Vatican Reports and it initiates the track
+     * Constructs a FaithTrack. It saves the order of the Vatican Reports and it initiates the track
      *
      * @param reportNumOrder the order of the ReportNum of the Faith track
      */
@@ -49,7 +45,7 @@ public class FaithTrack {
     }
 
     /**
-     * Constructs a FaithTrack. The method is private because this class implements the Singleton pattern. The constructed FaithTrack won't have a ReportNumOrder associated to it: this
+     * Constructs a FaithTrack. The constructed FaithTrack won't have a ReportNumOrder associated to it: this
      * will be done in a later moment
      *
      * @param config the file where to read the design of the track
@@ -62,29 +58,24 @@ public class FaithTrack {
     }
 
     /**
-     * Constructs the only instance of the FaithTrack class. It constructs the object the first time this method is called. The other times it simply returns
-     * the instance of the FaithTrack already constructed.
+     * Returns a newly-constructed FaithTrack object with its ReportNumOrder already set.
      *
      * @param reportNumOrder the order of the Reports Num needed to build the instance of the class
-     * @return the only instance of the class
+     * @return a FaithTrack object
      */
+    //The reason this class seems to implement the Singleton pattern even if it doesn't because it used to be a singleton.
     public static FaithTrack instance(ReportNumOrder reportNumOrder) {
-        if (instance == null)
-            instance = new FaithTrack(reportNumOrder);
-        return instance;
+        return new FaithTrack(reportNumOrder);
     }
 
     /**
-     * Constructs the only instance of the FaithTrack class. It constructs the object the first time this method is called. The other times it simply returns
-     * the instance of the FaithTrack already constructed.
+     * Returns a newly-constructed FaithTrack object with its ReportNumOrder already set.
      *
      * @param config the file where to read the description of the FaithTrack
-     * @return the only instance of the class
+     * @return a FaithTrack object
      */
     public static FaithTrack instance(File config) throws ParserConfigurationException, SAXException, IOException {
-        if (instance == null)
-            instance = new FaithTrack(config);
-        return instance;
+        return new FaithTrack(config);
     }
 
     /**
@@ -313,8 +304,10 @@ public class FaithTrack {
 
     //This method is only used for testing purposes
     //NOT TO BE USED IN THE GAME
+    //Once upon a time this method was actually useful
+    @Deprecated
     public static void deleteState() {
-        instance = null;
+        ;
     }
 
     /**
