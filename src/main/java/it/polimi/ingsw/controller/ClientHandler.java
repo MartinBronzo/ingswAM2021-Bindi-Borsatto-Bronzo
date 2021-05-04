@@ -67,4 +67,12 @@ public class ClientHandler implements Runnable {
     public PlayerState getState() {
         return state;
     }
+
+    public DataInputStream getDis() {
+        return dis;
+    }
+
+    public DataOutputStream getDos() {
+        return dos;
+    }
 }
