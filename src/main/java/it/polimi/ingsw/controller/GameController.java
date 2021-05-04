@@ -1,5 +1,5 @@
 package it.polimi.ingsw.controller;
 
-public class Game {
+public class GameController {
     private ClientHandler actualActive;
 }

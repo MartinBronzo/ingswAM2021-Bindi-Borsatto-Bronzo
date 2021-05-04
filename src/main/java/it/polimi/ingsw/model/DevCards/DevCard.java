@@ -22,7 +22,7 @@ public class DevCard implements Comparable<DevCard> {
      * @param colour           is one of the 4 possible Card Colours currently in the game
      * @param level            can be 1,2 or 3
      * @param url              refers to image url which can be used to implements a GUI
-     * @param victoryPoints    is a non negative int which refers to the victory points given by the Dev Card at the end of the Game
+     * @param victoryPoints    is a non negative int which refers to the victory points given by the Dev Card at the end of the GameController
      * @param cost             is the reference to the Resources, that can be used to buy the DevCard
      * @param productionInput  is the reference to the Resources, that can be used to produce other resources
      * @param productionOutput is the reference to the Resources produced after consuming the resources in productionInput

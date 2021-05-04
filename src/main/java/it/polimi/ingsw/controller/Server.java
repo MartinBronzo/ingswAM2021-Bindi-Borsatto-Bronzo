@@ -13,13 +13,13 @@ import java.util.concurrent.Executors;
 public class Server
 {
     final private int port;
-    private Collection<Game> games;
-    private Game startingGame;
+    private Collection<GameController> games;
+    private GameController startingGame;
 
     public Server(int port) {
         this.port = port;
         this.games = new ArrayList<>();
-        startingGame = new Game();
+        startingGame = new GameController();
     }
 
 
