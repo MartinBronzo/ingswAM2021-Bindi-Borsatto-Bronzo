@@ -85,6 +85,7 @@ public class PlayerBoard {
      * @return a collection of Cards
      */
     @Deprecated
+    @SuppressWarnings("Deprecated")
     public Collection<DevCard> getAllDevCards() {
         return devSlots.getAllDevCards();
     }
@@ -263,12 +264,17 @@ public class PlayerBoard {
      * @throws NullPointerException      if devCard is null
      * @throws IllegalArgumentException  if this card can't be added in the desiredSlot
      */
-    public boolean addCardToDevSlot(int index, DevCard devCard) throws IndexOutOfBoundsException, NullPointerException, IllegalArgumentException {
-        return devSlots.addDevCard(index, devCard);
+    public boolean addCardToDevSlot(int index, DevCard devCard) throws IndexOutOfBoundsException, NullPointerException, IllegalArgumentException, EndOfGameException {
+        if (this.devSlots.addDevCard(index, devCard)) {
+            if (this.devSlots.getAllDevCards().size() == 7)
+                throw new EndOfGameException("Added the seventh card in devSlots; it's the last turn");
+            return true;
+        }
+        return false;
     }
 
     /*
-    ##################
+    #################
     #DEPOT METHODS#
     ##################
     */

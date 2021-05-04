@@ -44,7 +44,7 @@ public class productionTest {
     FaithTrack ft;
 
     @BeforeEach
-    void setUp() throws NegativeQuantityException, FullExtraSlotException, UnmetRequirementException, NotEnoughSpaceException, AlreadyInAnotherShelfException {
+    void setUp() throws NegativeQuantityException, FullExtraSlotException, UnmetRequirementException, EndOfGameException {
         requirements = new LinkedList<>();
         leaderCards = new LinkedList<>();
         effect = new ExtraProductionLeaderEffect(ResourceType.SERVANT, 1);
@@ -140,14 +140,18 @@ public class productionTest {
     }
 
     @Test
-    void activateProductionNotActionableDevCard() throws IllegalActionException, NegativeQuantityException {
+    void activateProductionNotActionableDevCard() throws NegativeQuantityException {
         leaderCards = new LinkedList<>();
         leaderCards.add(leaderCard1);
         leaderCards.add(leaderCard2);
         HashMap<ResourceType, Integer> cardMap = new HashMap<>();
         cardMap.put(ResourceType.COIN, 275);
         DevCard cardLevel3_2 = new DevCard(3, DevCardColour.GREEN, 3, cardMap, cardMap, cardMap, "abc");
-        playerBoard.addCardToDevSlot(1, cardLevel3_2);
+        try {
+            playerBoard.addCardToDevSlot(1, cardLevel3_2);
+        }catch (EndOfGameException e){
+            e.printStackTrace();
+        }
         HashMap<LeaderCard, ResourceType> leaderProductionMap = new HashMap<>();
         for (LeaderCard leadercard : leaderCards) {
             leaderProductionMap.put(leadercard, ResourceType.COIN);
@@ -156,7 +160,7 @@ public class productionTest {
     }
 
     @Test
-    void activateProductionNotActionableLeaderCardCard() throws IllegalActionException, NegativeQuantityException {
+    void activateProductionNotActionableLeaderCardCard(){
         leaderCards = new ArrayList<>();
         leaderCards.add(leaderCard3);
         HashMap<LeaderCard, ResourceType> leaderProductionMap = new HashMap<>();
@@ -199,33 +203,41 @@ public class productionTest {
     }
 
     @Test
-    void getProductionNotEnoughResources() throws IllegalActionException, NegativeQuantityException {
+    void getProductionNotEnoughResources() throws NegativeQuantityException {
         leaderCards = new LinkedList<>();
         leaderCards.add(leaderCard1);
         leaderCards.add(leaderCard2);
         HashMap<ResourceType, Integer> cardMap = new HashMap<>();
         cardMap.put(ResourceType.COIN, 275);
         DevCard cardLevel3_2 = new DevCard(3, DevCardColour.GREEN, 3, cardMap, cardMap, cardMap, "abc");
-        playerBoard.addCardToDevSlot(1, cardLevel3_2);
+        try {
+            playerBoard.addCardToDevSlot(1, cardLevel3_2);
+        }catch (EndOfGameException e){
+            e.printStackTrace();
+        }
         devCards = new ArrayList<>();
         devCards.add(cardLevel3_2);
         assertThrows(IllegalActionException.class, () -> playerBoard.getProductionCost(devCards, leaderCards, false));
     }
 
     @Test
-    void getProductionNotActionableDevCard() throws IllegalActionException, NegativeQuantityException {
+    void getProductionNotActionableDevCard() throws  NegativeQuantityException {
         leaderCards = new LinkedList<>();
         leaderCards.add(leaderCard1);
         leaderCards.add(leaderCard2);
         HashMap<ResourceType, Integer> cardMap = new HashMap<>();
         cardMap.put(ResourceType.COIN, 275);
         DevCard cardLevel3_2 = new DevCard(3, DevCardColour.GREEN, 3, cardMap, cardMap, cardMap, "abc");
-        playerBoard.addCardToDevSlot(1, cardLevel3_2);
+        try {
+            playerBoard.addCardToDevSlot(1, cardLevel3_2);
+        }catch (EndOfGameException e){
+            e.printStackTrace();
+        }
         assertThrows(IllegalArgumentException.class, () -> playerBoard.getProductionCost(devCards, leaderCards, false));
     }
 
     @Test
-    void getProductionNotActionableLeaderCard() throws IllegalActionException, NegativeQuantityException {
+    void getProductionNotActionableLeaderCard() {
         leaderCards = new ArrayList<>();
         leaderCards.add(leaderCard3);
         assertThrows(IllegalArgumentException.class, () -> playerBoard.getProductionCost(devCards, leaderCards, false));

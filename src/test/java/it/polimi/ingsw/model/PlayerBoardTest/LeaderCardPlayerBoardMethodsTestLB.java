@@ -42,7 +42,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
 
     @BeforeEach
-    public void setup() throws NegativeQuantityException {
+    public void setup() throws NegativeQuantityException, EndOfGameException {
         requirement1 = new CardRequirementColor(DevCardColour.GREEN, 2); //Met
         requirement2 = new CardRequirementColor(DevCardColour.BLUE, 1); //Unmet
         hashMap = new HashMap<>();
@@ -60,7 +60,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests how LeaderCards are activated
-    public void ctrlLeaderCardActivation() {
+    public void ctrlLeaderCardActivation() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -89,7 +89,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests how LeaderCards are discarded
-    public void ctrlLeaderCardDiscard() {
+    public void ctrlLeaderCardDiscard() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -119,7 +119,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the correct Cards are returned when it is ask for not-played leader card
-    public void ctrlNotPlayedLeaderCards() {
+    public void ctrlNotPlayedLeaderCards() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -148,7 +148,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the correct Cards are returned when it is ask for played leader card
-    public void ctrlPlayedLeaderCards() {
+    public void ctrlPlayedLeaderCards() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -181,7 +181,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the PlayerBoard deals correctly with one-shot cards
-    public void ctrlOneShotCards() {
+    public void ctrlOneShotCards() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -234,7 +234,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
     }
 
     @Test
-    public void ctrlNotOneShotCard() {
+    public void ctrlNotOneShotCard() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -276,7 +276,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that a player gets the right points from their active LeaderCards
-    public void ctrlLeaderCardPoints() {
+    public void ctrlLeaderCardPoints() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -303,7 +303,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the requirements of a player's active LeaderCard are returned
-    public void ctrlActiveLeaderCardReturnedRequirements() {
+    public void ctrlActiveLeaderCardReturnedRequirements() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -335,7 +335,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the requirements of a player's not-played LeaderCard are returned
-    public void ctrlNotPlayedCardReturnedRequirements() {
+    public void ctrlNotPlayedCardReturnedRequirements() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> unmetRequirements = new ArrayList<>();
         unmetRequirements.add(req1);
@@ -362,7 +362,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the requirements of a LeaderCard the player doesn't hold are not returned
-    public void ctrlNotHoldCardReturnedRequirements() {
+    public void ctrlNotHoldCardReturnedRequirements() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> unmetRequirements = new ArrayList<>();
         unmetRequirements.add(req1);
@@ -384,7 +384,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the PlayerBoard answers correctly when it is asked whether a LeaderCard is active: the player doesn't hold the card
-    public void ctrlNotHoldActivationQuestion() {
+    public void ctrlNotHoldActivationQuestion() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -404,7 +404,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the PlayerBoard answers correctly when it is asked whether a LeaderCard is active: the player does hold the card ant it is active
-    public void ctrlActiveActivationQuestion() {
+    public void ctrlActiveActivationQuestion() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -428,7 +428,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests that the PlayerBoard answers correctly when it is asked whether a LeaderCard is active: the player does hold the card but it is not active
-    public void ctrlNotPlayedActivationQuestion() {
+    public void ctrlNotPlayedActivationQuestion() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -446,7 +446,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
     @Test
     //Tests the correct discard of LeaderCards as if we were at the beginning of the game
-    public void ctrlLeaderCardDiscardAtBeginning() {
+    public void ctrlLeaderCardDiscardAtBeginning() throws EndOfGameException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
