@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class PlayerResourcesAndCards {
-    private HashMap<ResourceType, Integer> resources;
-    private Collection<DevCard> devCards;
+    private final HashMap<ResourceType, Integer> resources;
+    private final Collection<DevCard> devCards;
 
     public PlayerResourcesAndCards(HashMap<ResourceType, Integer> resources, Collection<DevCard> devCards) {
         this.resources = resources;

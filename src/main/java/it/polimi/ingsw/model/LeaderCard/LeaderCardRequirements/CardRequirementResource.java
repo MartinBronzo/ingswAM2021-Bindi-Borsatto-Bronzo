@@ -13,11 +13,11 @@ public class CardRequirementResource extends Requirement {
     /**
      * The type of the required resources.
      */
-    private ResourceType resourceType;
+    private final ResourceType resourceType;
     /**
      * The amount of the required resources. It is a positive integer greater than 0.
      */
-    private int quantity;
+    private final int quantity;
 
     /**
      * Constructs a CardRequirementResource of the specified ResourceType and quantity

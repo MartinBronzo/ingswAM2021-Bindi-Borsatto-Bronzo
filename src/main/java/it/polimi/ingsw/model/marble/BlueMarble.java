@@ -15,7 +15,7 @@ public class BlueMarble extends Marble {
      * increments the ResourceType.SHIELD counter in the Hashmap, if absent add the the key of the specific resource.
      *
      * @param resourceMap is modified in this Method
-     * @param effects
+     * @param effects is the List of effects.
      * @throws NegativeQuantityException if the mapped value accessed in the method is negative
      * @throws NegativeQuantityException doesn't ensure that the hashMap is completely valid
      * @throws NullPointerException      if ResourceMap is null

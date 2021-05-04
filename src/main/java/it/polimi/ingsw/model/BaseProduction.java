@@ -87,13 +87,11 @@ public class BaseProduction {
      * @return true if the list is Valid for this BaseProduction
      * @throws IllegalArgumentException if the parameter is not Valid
      * @throws NullPointerException     if inputResources is null
-     * @deprecated because is better set BaseProduction state for both input and outputs
      */
-    @Deprecated
     public boolean setInputHashMap(List<ResourceType> inputResources) throws IllegalArgumentException, NullPointerException {
         if (!checkInputSet(inputResources)) throw new IllegalArgumentException("Configuration List is not Valid");
         this.inputHashMap = new HashMap<>();
-        inputResources.stream().forEach(resource -> this.inputHashMap.put(resource, this.inputHashMap.getOrDefault(resource, 0) + 1));
+        inputResources.forEach(resource -> this.inputHashMap.put(resource, this.inputHashMap.getOrDefault(resource, 0) + 1));
         return true;
     }
 
@@ -105,13 +103,11 @@ public class BaseProduction {
      * @return true if the list is Valid for this BaseProduction
      * @throws IllegalArgumentException if the parameter is not Valid
      * @throws NullPointerException     if outputResources is null
-     * @deprecated because is better set BaseProduction state for both input and outputs
      */
-    @Deprecated
     public boolean setOutputHashMap(List<ResourceType> outputResources) {
         if (!checkOutputSet(outputResources)) throw new IllegalArgumentException("Configuration List is not Valid");
         this.outputHashMap = new HashMap<>();
-        outputResources.stream().forEach(resource -> this.outputHashMap.put(resource, this.outputHashMap.getOrDefault(resource, 0) + 1));
+        outputResources.forEach(resource -> this.outputHashMap.put(resource, this.outputHashMap.getOrDefault(resource, 0) + 1));
         return true;
     }
 
