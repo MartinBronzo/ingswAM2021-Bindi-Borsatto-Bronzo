@@ -2,33 +2,31 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.enums.PlayerState;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
     private String nickname;
     private PlayerState state;
     private final Socket socket;
-    private final DataInputStream dis;
-    private final DataOutputStream dos;
+    private final BufferedReader in;
+    private final PrintWriter out;
     private GameController game;
 
 
 
 
-    public ClientHandler(Socket socket, DataInputStream dis, DataOutputStream dos) {
+    public ClientHandler(Socket socket, BufferedReader in, PrintWriter out) {
         this.socket = socket;
-        this.dis = dis;
-        this.dos = dos;
+        this.in = in;
+        this.out = out;
         this.state = PlayerState.WAITING4NAME;
     }
 
     public ClientHandler(Socket socket) throws IOException {
         this.socket = socket;
-        this.dis = new DataInputStream(socket.getInputStream());
-        this.dos = new DataOutputStream(socket.getOutputStream());
+        this.in = new BufferedReader( new InputStreamReader(socket.getInputStream()));
+        this.out = new PrintWriter( socket.getOutputStream());
         this.state = PlayerState.WAITING4NAME;
     }
 
@@ -68,11 +66,11 @@ public class ClientHandler implements Runnable {
         return state;
     }
 
-    public DataInputStream getDis() {
-        return dis;
+    public BufferedReader getIn() {
+        return in;
     }
 
-    public DataOutputStream getDos() {
-        return dos;
+    public PrintWriter getOut() {
+        return out;
     }
 }

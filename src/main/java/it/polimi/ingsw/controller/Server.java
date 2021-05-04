@@ -37,14 +37,14 @@ public class Server
         while (true)
         {
             Socket socket = null;
+            ClientHandler client;
             try {
                 socket = serverSocket.accept();
                 System.out.println("A new client is connected : " + socket);
-                DataInputStream dis = new DataInputStream(socket.getInputStream());
-                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+                client = new ClientHandler(socket);
+                System.out.println("A new client is connected : " + socket);
 
                 System.out.println("Adding Client to thread Pool");
-                executor.submit(new ClientHandler(socket, dis, dos));
             } catch (Exception e){
                     break;
             }
