@@ -19,20 +19,29 @@ public class ReportNumOrderTest {
         ReportNumOrder.deleteState();
         ReportNumOrder reportNumOrder1 = ReportNumOrder.instance();
 
-        //Tests that only instance ever exists
+        /*//Tests that only instance ever exists
         ReportNumOrder reportNumOrder2 = ReportNumOrder.instance();
         assertSame(reportNumOrder1, reportNumOrder2);
         ReportNumOrder reportNumOrder3 = ReportNumOrder.instance();
-        assertSame(reportNumOrder1, reportNumOrder3);
+        assertSame(reportNumOrder1, reportNumOrder3);*/
 
         //Tests that elements can only be added once
         assertThrows(NullPointerException.class, () -> reportNumOrder1.addElementInOrder(null));
-        assertTrue(reportNumOrder2.addElementInOrder(ReportNum.REPORT1));
-        assertTrue(reportNumOrder3.addElementInOrder(ReportNum.REPORT2));
+        assertTrue(reportNumOrder1.addElementInOrder(ReportNum.REPORT1));
+        assertTrue(reportNumOrder1.addElementInOrder(ReportNum.REPORT2));
         assertTrue(reportNumOrder1.addElementInOrder(ReportNum.REPORT3));
         assertFalse(reportNumOrder1.addElementInOrder(ReportNum.REPORT1));
-        assertFalse(reportNumOrder2.addElementInOrder(ReportNum.REPORT2));
-        assertFalse(reportNumOrder3.addElementInOrder(ReportNum.REPORT3));
+        assertFalse(reportNumOrder1.addElementInOrder(ReportNum.REPORT2));
+        assertFalse(reportNumOrder1.addElementInOrder(ReportNum.REPORT3));
+    }
+
+    @Test
+    //Checks that multiple ReportNumOrder can be made
+    public void ctrlMultipleInstances(){
+        ReportNumOrder reportNumOrder1 = ReportNumOrder.instance();
+        ReportNumOrder reportNumOrder2 = ReportNumOrder.instance();
+
+        assertNotSame(reportNumOrder1, reportNumOrder2);
     }
 
     @Test

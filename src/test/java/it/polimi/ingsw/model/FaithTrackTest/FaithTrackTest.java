@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FaithTrackTest {
 
-    @Test
+    /*@Test
     //Tests that only one instance of the FaithTrack ever exists
     public void onlyOneInstance() {
         //This first line is needed to make sure that when the whole class of tests is running this method is able to create the only instance of the FaithTrack class
@@ -32,7 +32,7 @@ public class FaithTrackTest {
         FaithTrack faithTrack3 = FaithTrack.instance(reportNumOrder);
         assertSame(faithTrack1, faithTrack3);
         //assertFalse(faithTrack3.initTrack());
-    }
+    }*/
 
     @Test
     //Tests creation of Faith Track
@@ -208,7 +208,7 @@ public class FaithTrackTest {
         assertEquals(faithTrack.getTrackSize(), 25);
     }
 
-    @Test
+    /*@Test
     //Tests that there can only be once instance of the FaithTrack class, even when we create the FaithTrack with the configuration file
     public void onlyOneInstanceWithConfigFile() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
@@ -220,7 +220,7 @@ public class FaithTrackTest {
 
         FaithTrack faithTrack3 = FaithTrack.instance(config);
         assertSame(faithTrack, faithTrack3);
-    }
+    }*/
 
     @Test
     //Tests that the ReportNumOrder is correctly set via configuration file
@@ -366,6 +366,26 @@ public class FaithTrackTest {
         assertSame(p1.getObserversList().get(0), observer);
         assertSame(p2.getObserversList().get(0), observer);
         assertSame(p3.getObserversList().get(0), observer);
+
+    }
+
+    @Test
+    //Checks that multiple FaithTrack objects can be made: it doesn't use the configuration file
+    public void ctrlMultipleInstancesNoConfigFile() {
+        ReportNumOrder reportNumOrder = ReportNumOrder.instance();
+        FaithTrack ft1 = FaithTrack.instance(reportNumOrder);
+        FaithTrack ft2 = FaithTrack.instance(reportNumOrder);
+
+        assertNotSame(ft1, ft2);
+    }
+
+    @Test
+    //Checks that multiple FaithTrack objects can be made: it uses the configuration file
+    public void ctrlMultipleInstancesWithConfigFile() throws ParserConfigurationException, IOException, SAXException {
+        FaithTrack ft1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack ft2 =  FaithTrack.instance(new File("FaithTrackConfig.xml"));
+
+        assertNotSame(ft1, ft2);
 
     }
 
