@@ -23,24 +23,6 @@ public class PlayerBoard {
     private final LeaderCards leaderCards;
     private final BaseProduction baseProduction;
 
-    public PlayerBoard(List<LeaderCard> leaderCards) {
-        this.playerFaithLevel = new FaithLevel();
-        this.depot = new Depot();
-        this.strongbox = new Strongbox();
-        this.devSlots = new DevSlots();
-        this.leaderCards = new LeaderCards(leaderCards);
-        this.baseProduction = new BaseProduction();
-    }
-
-    public PlayerBoard() {
-        this.playerFaithLevel = new FaithLevel();
-        this.depot = new Depot();
-        this.strongbox = new Strongbox();
-        this.devSlots = new DevSlots();
-        this.leaderCards = new LeaderCards();
-        this.baseProduction = new BaseProduction();
-    }
-
     /**
      * Returns a copy of the player's FaithLevel
      *
@@ -54,9 +36,7 @@ public class PlayerBoard {
         return new DevSlots(this.devSlots);
     }
 
-    public BaseProduction getBaseProduction() {
-        return new BaseProduction(this.baseProduction);
-    }
+
 
 
     /**
@@ -79,16 +59,6 @@ public class PlayerBoard {
         return allResourcesMap;
     }
 
-    /**
-     * Gets A Collection containing all the DevCards in the Slots.
-     *
-     * @return a collection of Cards
-     */
-    @Deprecated
-    @SuppressWarnings("Deprecated")
-    public Collection<DevCard> getAllDevCards() {
-        return devSlots.getAllDevCards();
-    }
 
     /**
      * Compares the cost of the passed DevCard with all resources owned
@@ -139,7 +109,11 @@ public class PlayerBoard {
     */
 
 
-    public void setNotPlayedLeaderCards(List<LeaderCard> notPlayedLeaderCards) {
+    /**
+     * Sets the LeaderCards this player has at the beginning of the game
+     * @param notPlayedLeaderCards this player's LeaderCards
+     */
+    public void setNotPlayedLeaderCardsAtGameBeginning(List<LeaderCard> notPlayedLeaderCards) {
         List<LeaderCard> clone = new ArrayList<>();
         for (LeaderCard lD : notPlayedLeaderCards)
             clone.add(new LeaderCard(lD));
@@ -181,14 +155,18 @@ public class PlayerBoard {
     }
 
     /**
-     * Discards the specified LeaderCard from the not-played LeaderCards the player holds and doesn't give the player any benefits. This method is
-     * used at the configuration of the game when the player is given a certain amount of LeaderCards but they can't keel all of them
+     * Discards the specified LeaderCards from the not-played LeaderCards the player holds and doesn't give the player any benefits. This method is
+     * used at the configuration of the game when the player is given a certain amount of LeaderCards but they can't keep all of them
      *
-     * @param leaderCard a LeaderCard to be discarded
-     * @throws IllegalArgumentException if the card can't be discarded
+     * @param cards the LeaderCards to be discarded
+     * @throws IllegalActionException if the player wants to discard more cards than they have
+     * @throws IllegalArgumentException if one card can't be discarded
      */
-    public void discardLeaderCardAtTheBeginning(LeaderCard leaderCard) throws IllegalArgumentException {
-        this.leaderCards.discardLeaderCard(leaderCard);
+    public void discardLeaderCardsAtTheBeginning(List<LeaderCard> cards) throws IllegalActionException, IllegalArgumentException{
+        if(cards.size() > this.leaderCards.getNotPlayedCards().size())
+            throw new IllegalActionException("There are not enough cards to discard!");
+        for(LeaderCard lC: cards)
+            this.leaderCards.discardLeaderCard(lC);
     }
 
     /**
@@ -273,6 +251,16 @@ public class PlayerBoard {
         return false;
     }
 
+    /**
+     * Returns a collection containing all the DevCards in the this player's slots.
+     * @return a collection of Cards
+     */
+    public Collection<DevCard> getAllDevCards() {
+        return devSlots.getAllDevCards();
+    }
+
+
+
     /*
     #################
     #DEPOT METHODS#
@@ -338,7 +326,6 @@ public class PlayerBoard {
      * @return the number of resources of the specified type that are currently in the depot
      * @throws IllegalArgumentException if the resource is a faith point
      */
-    @Deprecated
     public int getResourceFromDepot(ResourceType resource) throws IllegalArgumentException {
         return depot.getResourceFromDepot(resource);
     }
@@ -350,7 +337,6 @@ public class PlayerBoard {
      * @return the type of the resource that is contained in the specified shelf
      * @throws IllegalArgumentException if the shelf isn't between 1 and 3
      */
-    @Deprecated
     public ResourceType getResourceTypeFromShelf(int shelf) throws IllegalArgumentException {
         return depot.getShelfType(shelf);
     }
@@ -449,7 +435,6 @@ public class PlayerBoard {
      * @param resource the resource you want to know the quantity
      * @return the quantity of the specified resource that is in the strongbox
      */
-    @Deprecated
     public int getResourceFromStrongbox(ResourceType resource) {
         return strongbox.getResource(resource);
     }
@@ -478,7 +463,6 @@ public class PlayerBoard {
      * @param popeTiles a list of PopeTiles
      * @deprecated Pope Tile must be set using PlayerboardConstructor
      */
-    @Deprecated
     public void setPlayerFaithLevelPopeTiles(List<PopeTile> popeTiles) {
         playerFaithLevel.setPopeTiles(popeTiles);
     }
@@ -508,7 +492,6 @@ public class PlayerBoard {
      *
      * @return the FaithTrack of the player
      */
-    @Deprecated
     public FaithTrack getFaithTrack() {
         return playerFaithLevel.getFaithTrack();
     }
@@ -518,7 +501,6 @@ public class PlayerBoard {
      *
      * @return the position of the player on the FaithTrack
      */
-    @Deprecated
     public int getPositionOnFaithTrack() {
         return this.playerFaithLevel.getPosition();
     }
@@ -546,6 +528,7 @@ public class PlayerBoard {
     public List<PopeTile> getPopeTile() {
         return playerFaithLevel.getPopeTilesSafe();
     }
+
     /*
     ####################
     #PRODUCTION METHODS#
@@ -664,5 +647,64 @@ public class PlayerBoard {
     public boolean setBaseProduction(List<ResourceType> inputResources, List<ResourceType> outputResources) throws IllegalArgumentException, NullPointerException {
         return this.baseProduction.setBaseProduction(inputResources, outputResources);
     }
+
+    /**
+     * Returns a copy of the player's BaseProduction
+     * @return a copy of the BaseProduction
+     */
+    public BaseProduction getBaseProduction() {
+        return new BaseProduction(this.baseProduction);
+    }
+
+
+     /*
+    ###############################
+    #BEGINNING OF THE GAME METHODS#
+    ###############################
+    */
+
+    /**
+     * Adds to the depot all the extra resources players might get at the beginning of the game and moves forward the player's faith marker
+     * @param extraResources a map of all the extra resources and where to put them
+     * @param extraFaithPoint the extra steps on the FaithTrack this player gets to take
+     * @throws IllegalActionException if the specified configuration in the depot is invalid
+     * @throws LastVaticanReportException if the player already finished the FaithTrack (they must be very lucky)
+     */
+    public void setBeginningExtraResources(Map<ResourceType, ArrayList<Integer>> extraResources, int extraFaithPoint) throws IllegalActionException, LastVaticanReportException {
+        try {
+            for (Map.Entry<ResourceType, ArrayList<Integer>> e : extraResources.entrySet()) {
+                this.addResourceToDepot(e.getKey(), e.getValue().get(0), e.getValue().get(1));
+            }
+        }catch (Exception e){
+            throw new IllegalActionException("Can't add to depot in this way!");
+        }
+        this.moveForwardOnFaithTrack(extraFaithPoint);
+    }
+
+    @Deprecated
+    public PlayerBoard(List<LeaderCard> leaderCards) {
+        this.playerFaithLevel = new FaithLevel();
+        this.depot = new Depot();
+        this.strongbox = new Strongbox();
+        this.devSlots = new DevSlots();
+        this.leaderCards = new LeaderCards(leaderCards);
+        this.baseProduction = new BaseProduction();
+    }
+
+    /**
+     * Constructs an empty PlayerBoard (no FaithTrack, no initial LeaderCards are set)
+     */
+    public PlayerBoard() {
+        this.playerFaithLevel = new FaithLevel();
+        this.depot = new Depot();
+        this.strongbox = new Strongbox();
+        this.devSlots = new DevSlots();
+        this.leaderCards = new LeaderCards();
+        this.baseProduction = new BaseProduction();
+    }
+
+
+
+
 
 }

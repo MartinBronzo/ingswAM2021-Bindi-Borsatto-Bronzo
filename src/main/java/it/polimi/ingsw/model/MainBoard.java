@@ -22,6 +22,13 @@ public class MainBoard {
     protected int numberOfPlayers;
     protected FaithTrack faithTrack;
     protected int numberOfLeaderCardsToGive;
+    protected DevGrid devGrid;
+    //other fields...
+
+
+    public MainBoard(DevGrid devGrid) {
+        this.devGrid = devGrid;
+    }
 
     //Inizializzazione FaithTrack (e anche il reportNumOrder deve essere creato) e settaggio per i vari playerBoard del faithtrack
     //Inizializzazione PopeTiles: controllare che il numero di pope tiles sia uguale e che l'ordine sia sempre lo stesso
@@ -73,7 +80,7 @@ public class MainBoard {
             tmpList = new ArrayList<>();
             for (int i = 0; i < this.numberOfLeaderCardsToGive; i++)
                 tmpList.add((LeaderCard) this.leaderCardsDeck.drawFromDeck());
-            pB.setNotPlayedLeaderCards(tmpList);
+            pB.setNotPlayedLeaderCardsAtGameBeginning(tmpList);
         }
         //Da qualche parte nel controller implementare il fatto che di queste che riceve il player ne può mantenere solo una certa
     }
@@ -225,13 +232,7 @@ public class MainBoard {
             }
             return requirementList;
         }*/
-    protected DevGrid devGrid;
-    //other fields...
 
-
-    public MainBoard(DevGrid devGrid) {
-        this.devGrid = devGrid;
-    }
 
     public void dealWithVaticanReportAllPlayers(ReportNum reportNum) throws IllegalActionException {
         for (PlayerBoard pB : this.playerBoardsList)
