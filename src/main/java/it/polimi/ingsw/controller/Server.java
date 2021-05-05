@@ -1,8 +1,11 @@
 package it.polimi.ingsw.controller;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import com.google.gson.Gson;
+import it.polimi.ingsw.controller.enums.PlayerState;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -42,14 +45,23 @@ public class Server
                 socket = serverSocket.accept();
                 System.out.println("A new client is connected : " + socket);
                 client = new ClientHandler(socket);
-                System.out.println("A new client is connected : " + socket);
-
-                System.out.println("Adding Client to thread Pool");
+                System.out.println("Starting managing player");
+                this.manageClient(client);
+                System.out.println("player managed, Adding Client to thread Pool");
+                executor.submit(client);
             } catch (Exception e){
                     break;
             }
         }
         executor.shutdown();
+    }
+
+    private void manageClient(ClientHandler client) {
+        client.setState(PlayerState.WAITING4NAME);
+        BufferedReader in = client.getIn();
+        PrintWriter out = client.getOut();
+        Gson gson = new Gson();
+        out.println(gson.toJson(PlayerState.WAITING4NAME));
     }
 
     public static void main(String[] args) {
