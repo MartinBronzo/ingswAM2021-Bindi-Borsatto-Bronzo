@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.MainBoardTestLB;
 
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.model.FaithTrack.PopeCellObserver;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
@@ -29,7 +30,7 @@ public class FaithTrackMainBoardMethodsTestLB {
     static List<PopeTile> popeTileList;
 
     @BeforeAll
-    public static void setUp() throws IOException, SAXException, ParserConfigurationException {
+    public static void setUp() throws IOException, SAXException, ParserConfigurationException, NegativeQuantityException {
         faithTrack = FaithTrack.instance(new File("FaithTrackConfig.xml"));
         playerBoard1 = new PlayerBoard();
         playerBoard2 = new PlayerBoard();
