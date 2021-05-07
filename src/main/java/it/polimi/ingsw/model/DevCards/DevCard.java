@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.DevCards;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import it.polimi.ingsw.model.FaithTrack.PopeCell;
 import it.polimi.ingsw.model.ResourceType;
 
 import java.util.Collection;
@@ -17,6 +18,20 @@ public class DevCard implements Comparable<DevCard> {
     private final HashMap<ResourceType, Integer> productionOutput;
     private final HashMap<ResourceType, Integer> cost;
     private final String url;
+
+    /*@Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof DevCard))
+            return false;
+        DevCard tmp = (DevCard) obj;
+        return this.level == tmp.level && this.colour.equals(tmp.colour) && this.victoryPoints == tmp.victoryPoints &&
+                this.productionInput.equals(tmp.productionInput) && this.productionOutput.equals(tmp.productionOutput) &&
+                this.cost.equals(tmp.cost) && this.url.equals(tmp.url);
+    }*/
 
     /**
      * @param colour           is one of the 4 possible Card Colours currently in the game

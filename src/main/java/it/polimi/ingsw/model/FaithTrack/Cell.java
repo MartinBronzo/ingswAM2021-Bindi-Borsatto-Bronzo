@@ -61,6 +61,10 @@ public class Cell {
         this(original.victoryPoints, original.reportNum);
     }
 
+    public Cell getClone(){
+        return new Cell(this);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null)

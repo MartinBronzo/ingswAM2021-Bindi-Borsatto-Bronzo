@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.MainBoardTestLB;
+package it.polimi.ingsw.model.MainBoardTest;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementCo
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.model.LeaderCardDeck;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.ResourceType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.FaithTrack.*;
 import it.polimi.ingsw.model.Interfaces.Observer;
 import it.polimi.ingsw.model.MainBoard;
@@ -249,14 +250,14 @@ public class FaithTrackTest {
         assertTrue(faithTrack.isReportNumOrderSet());
 
         ReportNumOrder copy = faithTrack.getReportNumOrder();
-        assertSame(copy, reportNumOrder);
+        assertEquals(copy, reportNumOrder);
 
         assertFalse(faithTrack.setReportNumOrder(ReportNumOrder.instance()));
 
         assertTrue(faithTrack.isReportNumOrderSet());
 
         copy = faithTrack.getReportNumOrder();
-        assertSame(copy, reportNumOrder);
+        assertEquals(copy, reportNumOrder);
     }
 
     @Test
@@ -341,13 +342,13 @@ public class FaithTrackTest {
 
     @Test
     //Tests that the observer are attached with the specific method
-    public void ctrlObserverAttachment() throws IOException, SAXException, ParserConfigurationException {
+    public void ctrlObserverAttachment() throws IOException, SAXException, ParserConfigurationException, NegativeQuantityException {
         FaithTrack.deleteState();
         FaithTrack fT = FaithTrack.instance(new File("FaithTrackConfig.xml"));
 
-        PopeCell p1 = (PopeCell) fT.getCell(8);
-        PopeCell p2 = (PopeCell) fT.getCell(16);
-        PopeCell p3 = (PopeCell) fT.getCell(24);
+        PopeCell p1 = (PopeCell) fT.getCellNotSame(8);
+        PopeCell p2 = (PopeCell) fT.getCellNotSame(16);
+        PopeCell p3 = (PopeCell) fT.getCellNotSame(24);
 
         //When the FaithTrack is configured with the XML file, no observer is already attached to the PopeTiles
         assertTrue(p1.getObserversList().isEmpty());
@@ -355,7 +356,7 @@ public class FaithTrackTest {
         assertTrue(p3.getObserversList().isEmpty());
 
 
-        Observer observer = new PopeCellObserver(new MainBoard(1)); //The MainBoard constructor called here is irrelevant
+        Observer observer = new PopeCellObserver(new MainBoard(4)); //The MainBoard constructor called here is irrelevant
 
         fT.attachObserverToPopeTiles(observer);
 
@@ -368,6 +369,7 @@ public class FaithTrackTest {
         assertSame(p3.getObserversList().get(0), observer);
 
     }
+
 
     @Test
     //Checks that multiple FaithTrack objects can be made: it doesn't use the configuration file
@@ -386,7 +388,48 @@ public class FaithTrackTest {
         FaithTrack ft2 =  FaithTrack.instance(new File("FaithTrackConfig.xml"));
 
         assertNotSame(ft1, ft2);
+    }
 
+
+
+    @Test
+    public void ctrlEqualsTrue() throws ParserConfigurationException, IOException, SAXException {
+        FaithTrack f1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f2 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+
+        assertNotSame(f1, f2);
+        assertEquals(f1, f2);
+    }
+
+    @Test
+    //The FaithTrack differ for the different observers attached to the PopeTiles
+    public void ctrlEqualsFalse() throws ParserConfigurationException, IOException, SAXException {
+        FaithTrack f1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f2 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+
+        f1.attachObserverToPopeTiles(new PopeCellObserver(new MainBoard(4)));
+
+        assertNotEquals(f1, f2);
+    }
+
+    @Test
+    public void ctrlFaithTrackCloning() throws ParserConfigurationException, IOException, SAXException {
+        FaithTrack f1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f2 = new FaithTrack(f1);
+
+        assertNotSame(f1, f2);
+        assertEquals(f1, f2);
+    }
+
+    @Test
+    public void ctrlGettingCellSafe() throws ParserConfigurationException, IOException, SAXException {
+        FaithTrack f1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+
+        Cell cell = f1.getCell(4);
+
+        assertEquals(cell.getClass(), Cell.class);
+        assertEquals(cell.getVictoryPoints(), 0);
+        assertEquals(cell.getReportNum(), ReportNum.REPORT1);
     }
 
 }

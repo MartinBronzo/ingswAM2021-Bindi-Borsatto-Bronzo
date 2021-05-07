@@ -282,7 +282,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
         //ft.initTrack();
-        PopeCell tmp = (PopeCell) ft.getCell(8);
+        PopeCell tmp = (PopeCell) ft.getCellNotSame(8);
         tmp.detach(tmp.getObserversList().get(0));
 
         List<PopeTile> popeTiles = new ArrayList<>();
@@ -348,7 +348,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
         //ft.initTrack();
-        PopeCell tmp = (PopeCell) ft.getCell(8);
+        PopeCell tmp = (PopeCell) ft.getCellNotSame(8);
         tmp.detach(tmp.getObserversList().get(0));
 
 
@@ -415,7 +415,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
         //ft.initTrack();
-        PopeCell tmp = (PopeCell) ft.getCell(8);
+        PopeCell tmp = (PopeCell) ft.getCellNotSame(8);
         tmp.detach(tmp.getObserversList().get(0));
 
         List<PopeTile> popeTiles = new ArrayList<>();
@@ -426,7 +426,7 @@ public class FaithLevelTest {
         List<PopeTile> myPT = faithLevel.getPopeTiles();
         tmp.attach(new ControllerStub(tmp, faithLevel));
 
-        tmp = (PopeCell) ft.getCell(16);
+        tmp = (PopeCell) ft.getCellNotSame(16);
         tmp.detach(tmp.getObserversList().get(0));
         tmp.attach(new ControllerStub(tmp, faithLevel));
 
@@ -493,14 +493,14 @@ public class FaithLevelTest {
         popeTiles.add(new PopeTile(3 * 3, ReportNum.REPORT3));
         FaithLevel faithLevel3 = new FaithLevel(ft, popeTiles);
         List<PopeTile> pT3 = faithLevel3.getPopeTiles();
-        PopeCell tmp = (PopeCell) ft.getCell(8);
+        PopeCell tmp = (PopeCell) ft.getCellNotSame(8);
         tmp.detach(tmp.getObserversList().get(0));
         ControllerStub controllerStub = new ControllerStub(tmp, faithLevel1, faithLevel2, faithLevel3);
         tmp.attach(controllerStub);
-        tmp = (PopeCell) ft.getCell(16);
+        tmp = (PopeCell) ft.getCellNotSame(16);
         tmp.detach(tmp.getObserversList().get(0));
         tmp.attach(controllerStub);
-        tmp = (PopeCell) ft.getCell(24);
+        tmp = (PopeCell) ft.getCellNotSame(24);
         tmp.detach(tmp.getObserversList().get(0));
         tmp.attach(controllerStub);
 
@@ -598,14 +598,14 @@ public class FaithLevelTest {
         popeTiles.add(new PopeTile(3 * 3, ReportNum.REPORT3));
         FaithLevel faithLevel3 = new FaithLevel(ft, popeTiles);
         List<PopeTile> pT3 = faithLevel3.getPopeTiles();
-        PopeCell tmp = (PopeCell) ft.getCell(8);
+        PopeCell tmp = (PopeCell) ft.getCellNotSame(8);
         tmp.detach(tmp.getObserversList().get(0));
         ControllerStub controllerStub = new ControllerStub(tmp, faithLevel1, faithLevel2, faithLevel3);
         tmp.attach(controllerStub);
-        tmp = (PopeCell) ft.getCell(16);
+        tmp = (PopeCell) ft.getCellNotSame(16);
         tmp.detach(tmp.getObserversList().get(0));
         tmp.attach(controllerStub);
-        tmp = (PopeCell) ft.getCell(24);
+        tmp = (PopeCell) ft.getCellNotSame(24);
         tmp.detach(tmp.getObserversList().get(0));
         tmp.attach(controllerStub);
 
@@ -635,7 +635,7 @@ public class FaithLevelTest {
         assertTrue(pT3.get(0).isActivated());
         assertFalse(pT3.get(1).isChanged());
         assertFalse((pT3.get(2).isChanged()));
-        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+        assertTrue(((PopeCell) ft.getCellNotSame(8)).isActivated());
 
         //Let's cross again the PopeTile
         try {
@@ -720,14 +720,14 @@ public class FaithLevelTest {
         popeTiles.add(new PopeTile(3 * 3, ReportNum.REPORT3));
         FaithLevel faithLevel3 = new FaithLevel(ft, popeTiles);
         List<PopeTile> pT3 = faithLevel3.getPopeTiles();
-        PopeCell tmp = (PopeCell) ft.getCell(8);
+        PopeCell tmp = (PopeCell) ft.getCellNotSame(8);
         tmp.detach(tmp.getObserversList().get(0));
         ControllerStub controllerStub = new ControllerStub(tmp, faithLevel1, faithLevel2, faithLevel3);
         tmp.attach(controllerStub);
-        tmp = (PopeCell) ft.getCell(16);
+        tmp = (PopeCell) ft.getCellNotSame(16);
         tmp.detach(tmp.getObserversList().get(0));
         tmp.attach(controllerStub);
-        tmp = (PopeCell) ft.getCell(24);
+        tmp = (PopeCell) ft.getCellNotSame(24);
         tmp.detach(tmp.getObserversList().get(0));
         tmp.attach(controllerStub);
 
@@ -759,7 +759,7 @@ public class FaithLevelTest {
         assertTrue(pT3.get(0).isActivated());
         assertFalse(pT3.get(1).isChanged());
         assertFalse((pT3.get(2).isChanged()));
-        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+        assertTrue(((PopeCell) ft.getCellNotSame(8)).isActivated());
 
         //Let's cross again the PopeTile
         try {
@@ -779,7 +779,7 @@ public class FaithLevelTest {
         assertTrue(pT3.get(0).isActivated());
         assertFalse(pT3.get(1).isChanged());
         assertFalse((pT3.get(2).isChanged()));
-        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+        assertTrue(((PopeCell) ft.getCellNotSame(8)).isActivated());
 
         //Let's land on the PopeTile
         try {
@@ -804,7 +804,7 @@ public class FaithLevelTest {
         assertTrue(pT3.get(0).isActivated());
         assertFalse(pT3.get(1).isChanged());
         assertFalse((pT3.get(2).isChanged()));
-        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+        assertTrue(((PopeCell) ft.getCellNotSame(8)).isActivated());
 
         //Let Lorenzo activate the second Vatican Report by landing on it
         try {
@@ -824,13 +824,13 @@ public class FaithLevelTest {
         assertTrue(pT3.get(0).isActivated()); //Player3 is on the 9th cell
         assertTrue(pT3.get(1).isDiscarded());
         assertFalse((pT3.get(2).isChanged()));
-        assertTrue(((PopeCell) ft.getCell(16)).isActivated());
+        assertTrue(((PopeCell) ft.getCellNotSame(16)).isActivated());
 
         //Let's activate the remaining VaticanReport together by crossing also the second Vatican Report
         LastVaticanReportException exception = assertThrows(LastVaticanReportException.class, () -> faithLevel3.moveFaithMarker(+ft.getTrackSize() + 10));
         //"The Vatican Report REPORT2 has already been activated!";
         assertTrue(exception.getLastValue());
-        assertTrue(((PopeCell) ft.getCell(24)).isActivated());
+        assertTrue(((PopeCell) ft.getCellNotSame(24)).isActivated());
         //Controlling the tiles
         assertTrue(pT1.get(0).isDiscarded()); //Player1 is on the 8th cell
         assertTrue(pT1.get(1).isDiscarded());
@@ -854,7 +854,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        PopeCell tmp = (PopeCell) ft.getCell(8);
+        PopeCell tmp = (PopeCell) ft.getCellNotSame(8);
         tmp.detach(tmp.getObserversList().get(0));
 
         List<PopeTile> popeTiles = new ArrayList<>();
@@ -898,7 +898,7 @@ public class FaithLevelTest {
         reportNumOrder.addElementInOrder(ReportNum.REPORT2);
         reportNumOrder.addElementInOrder(ReportNum.REPORT3);
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
-        PopeCell tmp = (PopeCell) ft.getCell(8);
+        PopeCell tmp = (PopeCell) ft.getCellNotSame(8);
         tmp.detach(tmp.getObserversList().get(0));
 
         List<PopeTile> popeTiles = new ArrayList<>();

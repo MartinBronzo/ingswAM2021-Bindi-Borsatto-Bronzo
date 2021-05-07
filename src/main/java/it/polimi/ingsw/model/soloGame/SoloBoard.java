@@ -8,6 +8,11 @@ import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.FaithTrack.FaithLevelBasic;
 import it.polimi.ingsw.model.MainBoard;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class represents the SoloBoard, which is the container of all the elements of the game
@@ -21,6 +26,12 @@ public class SoloBoard extends MainBoard {
         super(devGrid);
         this.lorenzosTrack = lorenzosTrack;
         this.tokenDeck = tokenDeck;
+    }
+
+    public SoloBoard() throws ParserConfigurationException, IOException, SAXException {
+        super(1);
+        this.lorenzosTrack = new FaithLevelBasic(this.faithTrack);
+        this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
     }
 
     /**
@@ -83,7 +94,7 @@ public class SoloBoard extends MainBoard {
      *
      * @return the position of the lorenzo's Faith point marker in his Faith Treack
      */
-    public int getFaithTrackPosition() {
+    public int getLorenzoFaithTrackPosition() {
         return lorenzosTrack.getPosition();
     }
 

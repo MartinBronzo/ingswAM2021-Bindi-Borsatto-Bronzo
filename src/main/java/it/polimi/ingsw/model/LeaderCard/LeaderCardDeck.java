@@ -1,7 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.LeaderCard;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.FaithTrack.PopeCell;
+import it.polimi.ingsw.model.FaithTrack.ReportCell;
 import it.polimi.ingsw.model.Interfaces.Deck;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
@@ -9,6 +11,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementCo
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
+import it.polimi.ingsw.model.ResourceType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -47,9 +50,27 @@ public class LeaderCardDeck implements Deck {
         this.leaderCards = leaderCards;
     }
 
-    public LeaderCardDeck(File configFile) throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
+    /**
+     * Constructs a LeaderCardDeck by reading the LeaderCards description in the specified file and by constructing them, too
+     * @param configFile the file where to read the description of the LeaderCards
+     * @throws NegativeQuantityException if the described LeaderCard aren't valid because of a negative number used as a quantity for some requirement
+     * @throws ParserConfigurationException if there are problems in the parsing
+     * @throws SAXException if there is a general SAX error or warning
+     * @throws IOException if an IO operations fails
+     */
+    public LeaderCardDeck(File configFile) throws NegativeQuantityException, ParserConfigurationException, SAXException, IOException {
         this.leaderCards = this.initLeaderCards(configFile);
         this.shuffle();
+    }
+
+    /**
+     * Constructs a copy of the specified LeaderCardDeck
+     * @param original the LeaderCard to be cloned
+     */
+    public LeaderCardDeck(LeaderCardDeck original){
+        this();
+        for(LeaderCard lC: original.leaderCards)
+            this.leaderCards.add(new LeaderCard(lC));
     }
 
 
@@ -109,7 +130,19 @@ public class LeaderCardDeck implements Deck {
         return result;
     }
 
-    public LinkedList<LeaderCard> initLeaderCards(File configFile) throws ParserConfigurationException, IOException, SAXException, NegativeQuantityException {
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof LeaderCardDeck))
+            return false;
+        LeaderCardDeck tmp = (LeaderCardDeck) obj;
+        return this.leaderCards.containsAll(tmp.leaderCards) && tmp.leaderCards.containsAll(this.leaderCards);
+    }
+
+    public static LinkedList<LeaderCard> initLeaderCards(File configFile) throws ParserConfigurationException, IOException, SAXException, NegativeQuantityException {
         LinkedList<LeaderCard> deck = new LinkedList<>();
 
         NodeList nodeLeaderCardList;
@@ -157,7 +190,7 @@ public class LeaderCardDeck implements Deck {
         return deck;
     }
 
-    private Effect readEffectFromXML(Element elementLeaderCard) {
+    private static Effect readEffectFromXML(Element elementLeaderCard) {
         Node effectNode;
         Element elementEffect;
 
@@ -200,7 +233,7 @@ public class LeaderCardDeck implements Deck {
         return null;
     }
 
-    private ArrayList<Requirement> readRequirementsFromXML(Node requirementsListNode) throws NegativeQuantityException {
+    private static ArrayList<Requirement> readRequirementsFromXML(Node requirementsListNode) throws NegativeQuantityException {
         NodeList colorRequirementList, resourceRequirementList, colorAndLevelRequirementsList;
         Node requirementNode;
         Element elementRequirementsList, elementRequirement;

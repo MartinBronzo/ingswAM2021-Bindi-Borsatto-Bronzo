@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.MainBoardTestLB;
+package it.polimi.ingsw.model.MainBoardTest;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
@@ -18,7 +18,7 @@ public class DevGridMainBoardMethodsTest {
 
     @BeforeEach
     public void setup() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
-        mainBoard = new MainBoard();
+        mainBoard = new MainBoard(4); //The number of players here is irrelevant
     }
 
     @Test

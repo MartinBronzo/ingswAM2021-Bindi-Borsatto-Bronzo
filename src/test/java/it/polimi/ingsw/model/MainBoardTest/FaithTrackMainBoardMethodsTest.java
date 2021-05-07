@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.MainBoardTestLB;
+package it.polimi.ingsw.model.MainBoardTest;
 
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FaithTrackMainBoardMethodsTestLB {
+public class FaithTrackMainBoardMethodsTest {
     static FaithTrack faithTrack;
     static PlayerBoard playerBoard1;
     static PlayerBoard playerBoard2;
@@ -36,7 +36,7 @@ public class FaithTrackMainBoardMethodsTestLB {
         playerBoard2 = new PlayerBoard();
         playerBoard1.setPlayerFaithLevelFaithTrack(faithTrack);
         playerBoard2.setPlayerFaithLevelFaithTrack(faithTrack);
-        mainBoard = new MainBoard();
+        mainBoard = new MainBoard(0); //Random number of players
         mainBoard.addPlayerBoard(playerBoard1);
         mainBoard.addPlayerBoard(playerBoard2);
         observer = new PopeCellObserver(mainBoard);
@@ -55,8 +55,9 @@ public class FaithTrackMainBoardMethodsTestLB {
         assertEquals(playerBoard1.getPositionOnFaithTrack(), 0);
         assertEquals(playerBoard2.getPositionOnFaithTrack(), 0);
 
-        playerBoard1.moveForwardOnFaithTrack(10);
+        mainBoard.getPlayerBoard(0).moveForwardOnFaithTrack(10);
 
+        assertEquals(playerBoard1.getPositionOnFaithTrack(), 10);
         assertTrue(playerBoard1.getPopeTile().get(0).isActivated());
         assertTrue(playerBoard2.getPopeTile().get(0).isDiscarded());
 

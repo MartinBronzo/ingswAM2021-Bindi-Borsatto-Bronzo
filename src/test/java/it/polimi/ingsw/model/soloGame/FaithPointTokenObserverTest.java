@@ -36,10 +36,10 @@ class FaithPointTokenObserverTest {
 
         assertTrue(faithPointToken.attach(observer));
         assertTrue(faithPointToken.playEffect());
-        assertEquals(soloBoard.getFaithTrackPosition(), 2);
+        assertEquals(soloBoard.getLorenzoFaithTrackPosition(), 2);
 
         assertTrue(shuffleToken.attach(observer));
         assertTrue(shuffleToken.playEffect());
-        assertEquals(soloBoard.getFaithTrackPosition(), 3);
+        assertEquals(soloBoard.getLorenzoFaithTrackPosition(), 3);
     }
 }

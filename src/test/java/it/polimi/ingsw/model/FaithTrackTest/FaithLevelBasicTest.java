@@ -65,7 +65,7 @@ public class FaithLevelBasicTest {
         //ft.initTrack();
         FaithLevelBasic faithLevelBasic = new FaithLevelBasic(ft);
 
-        assertFalse(((PopeCell) ft.getCell(8)).isActivated());
+        assertFalse(((PopeCell) ft.getCellNotSame(8)).isActivated());
         //Landing on a normal Cell
         try {
             assertFalse(faithLevelBasic.moveFaithMarker(4));
@@ -73,7 +73,7 @@ public class FaithLevelBasicTest {
             e.printStackTrace();
         }
 
-        assertFalse(((PopeCell) ft.getCell(8)).isActivated());
+        assertFalse(((PopeCell) ft.getCellNotSame(8)).isActivated());
 
         //Landing on a ReportCell
         try {
@@ -82,7 +82,7 @@ public class FaithLevelBasicTest {
             e.printStackTrace();
         }
 
-        assertFalse(((PopeCell) ft.getCell(8)).isActivated());
+        assertFalse(((PopeCell) ft.getCellNotSame(8)).isActivated());
 
         //Landing on a PopeCell but not the last one
         try {
@@ -91,7 +91,7 @@ public class FaithLevelBasicTest {
             e.printStackTrace();
         }
         assertEquals(faithLevelBasic.getPosition(), 8);
-        assertTrue(((PopeCell) ft.getCell(8)).isActivated());
+        assertTrue(((PopeCell) ft.getCellNotSame(8)).isActivated());
 
         //Landing on the last PopeCell which activates the last Vatican Report
         LastVaticanReportException exception = assertThrows(LastVaticanReportException.class, () -> faithLevelBasic.moveFaithMarker(+ft.getTrackSize() + 10));

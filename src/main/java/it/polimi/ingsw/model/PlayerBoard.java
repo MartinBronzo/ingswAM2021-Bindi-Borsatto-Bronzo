@@ -461,7 +461,6 @@ public class PlayerBoard {
      * Sets the PopeTiles this FaithLevel of the player has if they haven't been set, yet
      *
      * @param popeTiles a list of PopeTiles
-     * @deprecated Pope Tile must be set using PlayerboardConstructor
      */
     public void setPlayerFaithLevelPopeTiles(List<PopeTile> popeTiles) {
         playerFaithLevel.setPopeTiles(popeTiles);
@@ -702,9 +701,5 @@ public class PlayerBoard {
         this.leaderCards = new LeaderCards();
         this.baseProduction = new BaseProduction();
     }
-
-
-
-
 
 }

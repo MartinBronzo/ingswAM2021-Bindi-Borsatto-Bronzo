@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.Market;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import it.polimi.ingsw.model.FaithTrack.PopeCell;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.*;
@@ -24,6 +25,25 @@ import java.util.*;
 public class Market {
     private final Marble[][] marketMatrix;
     private Marble marbleOnSlide;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof Market))
+            return false;
+        Market tmp = (Market) obj;
+        if(!(this.marbleOnSlide.equals(tmp.marbleOnSlide)))
+            return false;
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                if(!(this.marketMatrix[i][j].equals(tmp.marketMatrix[i][j])))
+                    return false;
+
+        return true;
+    }
 
     /**
      * Builder which instantiated the marbles on the grid and on the slide according with Classic Rules

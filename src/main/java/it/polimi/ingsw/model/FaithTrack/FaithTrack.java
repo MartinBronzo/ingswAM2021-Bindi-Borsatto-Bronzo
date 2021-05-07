@@ -297,9 +297,12 @@ public class FaithTrack {
         System.out.print("Cella ultima posizione: " + ft.getCellVictoryPoints(25 - 1));
     }*/
 
-    //This method is only used for testing purposes
+    /**
+     * Returns a copy of the ReportNumOrder of this FaithTrack
+     * @return a copy of the ReportNumOrder of this FaithTrack
+     */
     public ReportNumOrder getReportNumOrder() {
-        return this.reportNumOrder;
+        return new ReportNumOrder(this.reportNumOrder);
     }
 
     //This method is only used for testing purposes
@@ -321,8 +324,18 @@ public class FaithTrack {
     }
 
     //This method is only used for testing purposes
-    public Cell getCell(int position) {
+    @Deprecated
+    public Cell getCellNotSame(int position) {
         return this.track.get(position);
+    }
+
+    /**
+     * Returns a copy of the Cell whose position is specified as a parameter
+     * @param position the position of the desired Cell
+     * @return a copy of the Cell
+     */
+    public Cell getCell(int position){
+        return this.track.get(position).getClone();
     }
 
     /**
@@ -336,5 +349,37 @@ public class FaithTrack {
                 ((PopeCell) c).attach(observer);
     }
 
+    public FaithTrack(FaithTrack original){
+        this.track = new ArrayList<>();
+        for(Cell c: original.track)
+            this.track.add(c.getClone());
+        this.reportNumOrder = new ReportNumOrder(original.reportNumOrder);
+        this.isReportNumOrderSet = original.isReportNumOrderSet;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof FaithTrack))
+            return false;
+        FaithTrack tmp = (FaithTrack) obj;
+        if(this.track.size() != tmp.track.size())
+            return false;
+
+        for(int i = 0; i < this.track.size(); i++)
+            if(!this.track.get(i).equals(tmp.track.get(i))) {
+                System.out.println("hel + i: " + i);
+                return false;
+            }
+        //If the thread arrives here, then the two track must be equals
+        if(this.isReportNumOrderSet != tmp.isReportNumOrderSet)
+            return false;
+        if(this.isReportNumOrderSet == false)
+            return true; //Since their ReportNumOrder is not set then they are automatically equals
+        return this.reportNumOrder.equals(tmp.reportNumOrder);
+    }
 
 }
