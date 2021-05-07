@@ -6,4 +6,8 @@ public class LeaderMessage {
     public LeaderMessage(int leader) {
         this.leader = leader;
     }
+
+    public int getLeader() {
+        return leader;
+    }
 }

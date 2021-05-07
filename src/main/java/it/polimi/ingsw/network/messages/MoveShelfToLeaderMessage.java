@@ -7,4 +7,12 @@ public class MoveShelfToLeaderMessage {
         this.numShelf = numShelf;
         this.quantity = quantity;
     }
+
+    public int getNumShelf() {
+        return numShelf;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }

@@ -3,6 +3,8 @@ package it.polimi.ingsw.network.messages;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.ResourceType;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,5 +24,33 @@ public class BuyDevCardMessage {
         this.leaderRes = leaderRes;
         this.strongboxRes = strongboxRes;
         this.devSlot = devSlot;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public List<Integer> getLeader() {
+        return new ArrayList<>(leader);
+    }
+
+    public DepotParams getDepotRes() {
+        return depotRes;
+    }
+
+    public Map<ResourceType, Integer> getLeaderRes() {
+        return new HashMap<>(leaderRes);
+    }
+
+    public Map<ResourceType, Integer> getStrongboxRes() {
+        return new HashMap<>(strongboxRes);
+    }
+
+    public int getDevSlot() {
+        return devSlot;
     }
 }

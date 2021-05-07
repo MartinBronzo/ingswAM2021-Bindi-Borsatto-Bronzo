@@ -7,4 +7,12 @@ public class MoveBetweenShelvesMessage {
         this.sourceShelf = sourceShelf;
         this.destShelf = destShelf;
     }
+
+    public int getSourceShelf() {
+        return sourceShelf;
+    }
+
+    public int getDestShelf() {
+        return destShelf;
+    }
 }

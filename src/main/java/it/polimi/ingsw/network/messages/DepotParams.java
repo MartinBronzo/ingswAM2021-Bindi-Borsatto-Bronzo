@@ -13,4 +13,15 @@ public class DepotParams {
         this.shelf = shelf;
     }
 
+    public ResourceType getResourceType() {
+        return resourceType;
+    }
+
+    public int getQt() {
+        return qt;
+    }
+
+    public int getShelf() {
+        return shelf;
+    }
 }

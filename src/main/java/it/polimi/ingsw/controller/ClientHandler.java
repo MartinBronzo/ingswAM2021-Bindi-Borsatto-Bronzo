@@ -31,17 +31,10 @@ public class ClientHandler implements Runnable {
         this.state = PlayerState.WAITING4NAME;
     }
 
-
     /**
-     * When an object implementing interface {@code Runnable} is used
-     * to create a thread, starting the thread causes the object's
-     * {@code run} method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method {@code run} is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
+     * Creates a new thread for the communication with the client. This thread receives the message from the client,
+     * parses the message in the Command class and reads the name of the command; based on this name it parses
+     * the parameters of the command in the correct class and calls the methods of game to do the action
      */
     @Override
     public void run() {
@@ -57,6 +50,14 @@ public class ClientHandler implements Runnable {
 
                 command = gson.fromJson(line, Command.class);
                 switch (command.getCmd()) {
+
+                    case "login":
+                        //TODO: il parametro del messaggio è solo una stringa: creare comunque una classe o leggerla direttametne?
+                        break;
+
+                    case "setNumPlayer":
+                        //TODO: il parametro del messaggio è solo un intero: creare comunque una classe o leggerlo direttametne?
+                        break;
 
                     case "getResourcesFromMarket":
                         GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);

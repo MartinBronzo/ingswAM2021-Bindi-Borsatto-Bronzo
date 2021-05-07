@@ -19,4 +19,16 @@ public class BaseProductionParams {
         this.baseInput = baseInput;
         this.baseOutput = baseOutput;
     }
+
+    public boolean isActivate() {
+        return activate;
+    }
+
+    public ResourceType getBaseInput() {
+        return baseInput;
+    }
+
+    public ResourceType getBaseOutput() {
+        return baseOutput;
+    }
 }

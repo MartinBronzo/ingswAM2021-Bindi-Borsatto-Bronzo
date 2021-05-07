@@ -10,4 +10,12 @@ public class MoveLeaderToShelfMessage {
         this.res = res;
         this.destShelf = destShelf;
     }
+
+    public ResourceType getRes() {
+        return res;
+    }
+
+    public int getDestShelf() {
+        return destShelf;
+    }
 }
