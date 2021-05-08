@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.network.messages.BuyDevCardMessage;
 import it.polimi.ingsw.network.messages.BuyFromMarketMessage;
 import it.polimi.ingsw.network.messages.DepotParams;
 import it.polimi.ingsw.network.messages.GetFromMatrixMessage;
@@ -24,8 +26,9 @@ public class GameController {
 
     /**
      * This class represents the relationship between the ClientHandler of the player and the their PlayerBoard.
+     *
      * @param <clientHandler> the ClientHandler of the player
-     * @param <playerBoard> the PlayerBoard of the player
+     * @param <playerBoard>   the PlayerBoard of the player
      */
     class Pair<clientHandler, playerBoard> {
         private clientHandler l;
@@ -62,26 +65,27 @@ public class GameController {
     /**
      * Constructs an empty GameController, without anything set yet.
      */
-    public GameController(){
+    public GameController() {
         this.activePlayer = null;
         this.mainBoard = null;
         this.players = new ArrayList<>();
-        this.numberOfPlayers = - 1;
+        this.numberOfPlayers = -1;
         this.maxPlayersNum = 4;
     }
 
     /**
      * Creates the MainBoard for this game with as many players as the parameter specifies
+     *
      * @param numberOfPlayers the number of players for this game
      */
     public void startMainBoard(int numberOfPlayers) {
-        if(numberOfPlayers <= 0 || numberOfPlayers > this.maxPlayersNum)
+        if (numberOfPlayers <= 0 || numberOfPlayers > this.maxPlayersNum)
             throw new IllegalArgumentException("The number of players must be a number between 1 and " + this.maxPlayersNum + " included!");
-        if(this.numberOfPlayers > 0)
+        if (this.numberOfPlayers > 0)
             return;
         try {
             this.mainBoard = new MainBoard(numberOfPlayers);
-        } catch (Exception e){
+        } catch (Exception e) {
             //System.out.println("Can't create the MainBoard because there are problems with the configuration files!");
             e.printStackTrace();
         }
@@ -91,15 +95,16 @@ public class GameController {
     /**
      * Adds a player represented by the specified ClientHandler to the game if the player hasn't been added, yet, and if the game hasn't reach its maximum
      * capacity, yet.
+     *
      * @param player the ClientHandler of the player to be added at the game
      */
     public void setPlayer(ClientHandler player) {
         //We can't add more players than the one given by the numberOfPlayers number
-        if(this.players.size() == this.numberOfPlayers)
+        if (this.players.size() == this.numberOfPlayers)
             return;
         //We can't add an already added player
         //if(this.findClientHandler(player))
-        if(this.getPlayerBoardOfPlayer(player) != null)
+        if (this.getPlayerBoardOfPlayer(player) != null)
             return;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
@@ -113,9 +118,10 @@ public class GameController {
 
     /**
      * Returns a list of all the players that are added to the game in the moment this method is invoked
+     *
      * @return a list of the player's ClientHandler added to the game
      */
-    public List<ClientHandler> getPlayersList(){
+    public List<ClientHandler> getPlayersList() {
         List<ClientHandler> result = new ArrayList<>();
         for (Pair<ClientHandler, PlayerBoard> entry : players)
             result.add(entry.getKey());
@@ -124,6 +130,7 @@ public class GameController {
 
     /**
      * Returns the number of players this game can hold
+     *
      * @return the number of players for this game
      */
     public int getNumberOfPlayers() {
@@ -133,18 +140,20 @@ public class GameController {
 
     /**
      * Returns the reference to the player's PlayerBoard. The player is determined by the specified ClientHandler
+     *
      * @param clientHandler the ClientHandler of the player
      * @return the PlayerBoard of the player if the player is present in the game, null otherwise
      */
-    private PlayerBoard getPlayerBoardOfPlayer(ClientHandler clientHandler){
-        for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(e.getKey() == clientHandler)
+    private PlayerBoard getPlayerBoardOfPlayer(ClientHandler clientHandler) {
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if (e.getKey() == clientHandler)
                 return e.getValue();
         return null;
     }
 
     /**
      * Returns the PlayerBoard whose nickname is specified as a parameter
+     *
      * @param //nickname the nickname of a player
      * @return the PlayerBoard of the player if the player is present in the game, null otherwise
      */
@@ -160,10 +169,9 @@ public class GameController {
      ClientHandler-RELATED METHODS
     ###########################################################################################################
      */
-
     public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) {
         //TODO: se il client passa solo la stringa prima recuperare il clienthandler
-        if(resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
+        if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
             return this.sendErrorToClientHandler(clientHandler, "Specify only a column or row!");
 
         try {
@@ -179,7 +187,7 @@ public class GameController {
                 result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol(), effects);
             else //if(resFromMkt.getRow() != 0)
                 result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow(), effects);
-        } catch (Exception e){
+        } catch (Exception e) {
             return this.sendErrorToClientHandler(clientHandler, e.getMessage());
         }
 
@@ -189,11 +197,11 @@ public class GameController {
     }
 
 
-    public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler){
+    public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) {
         //TODO: se il client passa solo la stringa prima recuperare il clienthandler
-        if(buyFromMarket.getRow() != 0 && buyFromMarket.getCol() != 0)
+        if (buyFromMarket.getRow() != 0 && buyFromMarket.getCol() != 0)
             return this.sendErrorToClientHandler(clientHandler, "Specify only a column or row!");
-        try{
+        try {
             PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
             List<Effect> effects = playerBoard.getEffectsFromCards(buyFromMarket.getLeaderList());
             //TODO: chiamare il metodo che controlla il numero di biglie
@@ -202,7 +210,7 @@ public class GameController {
 
             //TODO: salvare lo stato interno della mainboard
             HashMap<ResourceType, Integer> res;
-            if(buyFromMarket.getCol() != 0)
+            if (buyFromMarket.getCol() != 0)
                 res = mainBoard.moveColumnInMarket(buyFromMarket.getCol(), effects);
             else
                 res = mainBoard.moveRowInMarket(buyFromMarket.getRow(), effects);
@@ -211,8 +219,9 @@ public class GameController {
             List<DepotParams> depotRes = buyFromMarket.getDepotRes();
             //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
-            for(DepotParams e: depotRes){
-                if(res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt()) {
+            //TODO: controllare anche che la dimensione è la stessa tra depotRes e res? e mettere res.get(...) != e.getQt()?
+            for (DepotParams e : depotRes) {
+                if (res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt()) {
                     this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
                     //TODO: ripristinare stato precedente
                     return false;
@@ -223,11 +232,11 @@ public class GameController {
                 playerBoard.addResourceToDepot(e.getResourceType(), e.getQt(), e.getShelf());
             }
 
-            Map<ResourceType, Integer> resToLeader = buyFromMarket.getLeaderSlots();
-            for(Map.Entry<ResourceType, Integer> e: resToLeader.entrySet()){
+            Map<ResourceType, Integer> resToLeader = buyFromMarket.getLeaderRes();
+            for (Map.Entry<ResourceType, Integer> e : resToLeader.entrySet()) {
                 //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
                 //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
-                if(res.get(e.getKey()) == null || res.get(e.getKey()) < e.getValue()) {
+                if (res.get(e.getKey()) == null || res.get(e.getKey()) < e.getValue()) {
                     this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
                     //TODO: ripristinare stato precedente
                     return false;
@@ -238,10 +247,11 @@ public class GameController {
                 playerBoard.addResourceToLeader(e.getKey(), e.getValue());
             }
 
+            //TODO: potrebbe lanciare LastVaticanReport, non va gestita?
             //Discards the Extra resources
             mainBoard.discardResources(buyFromMarket.getDiscardRes(), playerBoard);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             return this.sendErrorToClientHandler(clientHandler, e.getMessage());
         }
 
@@ -250,6 +260,118 @@ public class GameController {
         return true;
     }
 
+    public boolean getCardCost(GetFromMatrixMessage devCardMessage, ClientHandler clientHandler) {
+        //TODO: se il client passa solo la stringa prima recuperare il clienthandler
+        DevCard devCard;
+        HashMap<ResourceType, Integer> cost;
+        try {
+            //TODO: bisogna applicare il discount effect ma non so dove si trova
+            //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
+            devCard = mainBoard.getDevCardFromDeckInDevGrid(devCardMessage.getRow() - 1, devCardMessage.getCol() - 1);
+            cost = devCard.getCost();
+
+
+        } catch (Exception e) {
+            return this.sendErrorToClientHandler(clientHandler, e.getMessage());
+        }
+
+        //TODO: mandare il messaggio positivo solo al client in questione
+        return true;
+    }
+
+    public boolean buyDevCard(BuyDevCardMessage buyDevCard, ClientHandler clientHandler) {
+        //TODO: se il client passa solo la stringa prima recuperare il clienthandler
+
+        //TODO: salvare lo stato interno della mainboard
+        //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
+        try {
+            DevCard devCard;
+            HashMap<ResourceType, Integer> cost;
+
+            //TODO: bisogna applicare il discount effect ma non so dove si trova
+            //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
+            devCard = mainBoard.drawDevCardFromDeckInDevGrid(buyDevCard.getRow() - 1, buyDevCard.getCol() - 1);
+            cost = devCard.getCost();
+
+            PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+
+            //TODO: rimuovere le risorse dal deposito
+            List<DepotParams> depotRes = buyDevCard.getDepotRes();
+            Map<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
+            Map<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
+
+            //Let's check if the description the player gives in the message is valid: all the resources they put are present in the cost of the card
+            //(we check both if the indicated ResourceType is present and if it is present with the right quantity)
+            if (depotRes.size() + resToLeader.size() + strongboxRes.size() != cost.size()){
+                this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
+                //TODO: ripristinare stato precedente
+                return false;
+            }
+
+            //check if depot params are correct
+            for (DepotParams e : depotRes) {
+                if (cost.get(e.getResourceType()) == null || cost.get(e.getResourceType()) != e.getQt()) {
+                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
+                    //TODO: ripristinare stato precedente
+                    return false;
+                }
+
+                //If the thread arrives here, then the current <ResType, Integer> is fine because at least it is coherent to what has been computed
+                cost.put(e.getResourceType(), cost.get(e.getResourceType()) - e.getQt()); //Updates the cost map
+                playerBoard.removeResourceFromDepot(e.getQt(), e.getShelf());
+            }
+
+            //check if leaderSlot params are correct
+            for (Map.Entry<ResourceType, Integer> e : resToLeader.entrySet()) {
+                //Let's check if the description the player gives in the message is valid: all the resources they put are present in the cost of the card
+                //(we check both if the indicated ResourceType is present and if it is present with the right quantity)
+                if (cost.get(e.getKey()) == null || cost.get(e.getKey()) < e.getValue()) {
+                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
+                    //TODO: ripristinare stato precedente
+                    return false;
+                }
+
+                cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the res map
+                playerBoard.addResourceToLeader(e.getKey(), e.getValue());
+            }
+
+            //check if strongbox params are correct
+            for (Map.Entry<ResourceType, Integer> e : strongboxRes.entrySet()) {
+                //Let's check if the description the player gives in the message is valid: all the resources they put are present in the cost of the card
+                //(we check both if the indicated ResourceType is present and if it is present with the right quantity)
+                if (cost.get(e.getKey()) == null || cost.get(e.getKey()) < e.getValue()) {
+                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
+                    //TODO: ripristinare stato precedente
+                    return false;
+                }
+
+                cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the res map
+                playerBoard.addResourceToLeader(e.getKey(), e.getValue());
+            }
+
+            //final check
+            for (Map.Entry<ResourceType, Integer> e : cost.entrySet()) {
+                if(cost.get(e.getKey()) != 0){
+                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the cost of the card");
+                    //TODO: ripristinare stato precedente
+                    return false;
+                }
+            }
+
+            //TODO: lancia EndOfGameException
+            //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
+            playerBoard.addCardToDevSlot(buyDevCard.getDevSlot() - 1, devCard);
+
+        } catch (Exception e) {
+            return this.sendErrorToClientHandler(clientHandler, e.getMessage());
+        }
+
+        //If we are here, then everything is going fine so result is containing something useful and must returned to the client
+        //TODO: mandare il messaggio positivo solo al client in questione
+        return true;
+    }
+
+
      /*
     ###########################################################################################################
      RESPONSE PRIVATE METHODS
@@ -257,7 +379,7 @@ public class GameController {
      */
 
 
-    private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message){
+    private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
         //TODO: mandare un messaggio al client handler in questione passandogli il messaggio d'errore
         return false;
     }
@@ -272,9 +394,9 @@ public class GameController {
         return activePlayer;
     }
 
-    private boolean findClientHandler(ClientHandler clientHandler){
-        for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(e.getKey() == clientHandler)
+    private boolean findClientHandler(ClientHandler clientHandler) {
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if (e.getKey() == clientHandler)
                 return true;
         return false;
     }

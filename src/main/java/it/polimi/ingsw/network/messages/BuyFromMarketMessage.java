@@ -12,15 +12,15 @@ public class BuyFromMarketMessage {
     private int row, col;
     private List<Integer> leaderList;
     private List<DepotParams> depotRes;
-    private Map<ResourceType, Integer> leaderSlots;
+    private Map<ResourceType, Integer> leaderRes;
     private Map<ResourceType, Integer> discardRes;
 
-    public BuyFromMarketMessage(int row, int col, List<Integer> leaderList, List<DepotParams> depotRes, Map<ResourceType, Integer> leaderSlots, Map<ResourceType, Integer> discardRes) {
+    public BuyFromMarketMessage(int row, int col, List<Integer> leaderList, List<DepotParams> depotRes, Map<ResourceType, Integer> leaderRes, Map<ResourceType, Integer> discardRes) {
         this.row = row;
         this.col = col;
         this.leaderList = leaderList;
         this.depotRes = depotRes;
-        this.leaderSlots = leaderSlots;
+        this.leaderRes = leaderRes;
         this.discardRes = discardRes;
     }
 
@@ -40,8 +40,8 @@ public class BuyFromMarketMessage {
         return depotRes;
     }
 
-    public Map<ResourceType, Integer> getLeaderSlots() {
-        return new HashMap<>(leaderSlots);
+    public Map<ResourceType, Integer> getLeaderRes() {
+        return new HashMap<>(leaderRes);
     }
 
     public Map<ResourceType, Integer> getDiscardRes() {

@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.messages;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.ResourceType;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,12 +12,12 @@ import java.util.Map;
 public class BuyDevCardMessage {
     private int row, col;
     private List<Integer> leader;
-    private DepotParams depotRes;
+    private List<DepotParams> depotRes;
     private Map<ResourceType, Integer> leaderRes;
     private Map<ResourceType, Integer> strongboxRes;
     private int devSlot;
 
-    public BuyDevCardMessage(int row, int col, List<Integer> leader, DepotParams depotRes, Map<ResourceType, Integer> leaderRes, Map<ResourceType, Integer> strongboxRes, int devSlot) {
+    public BuyDevCardMessage(int row, int col, List<Integer> leader, List<DepotParams> depotRes, Map<ResourceType, Integer> leaderRes, Map<ResourceType, Integer> strongboxRes, int devSlot) {
         this.row = row;
         this.col = col;
         this.leader = leader;
@@ -38,8 +39,8 @@ public class BuyDevCardMessage {
         return new ArrayList<>(leader);
     }
 
-    public DepotParams getDepotRes() {
-        return depotRes;
+    public List<DepotParams> getDepotRes() {
+        return new ArrayList<>(depotRes);
     }
 
     public Map<ResourceType, Integer> getLeaderRes() {
