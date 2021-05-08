@@ -11,11 +11,11 @@ import java.util.Map;
 public class BuyFromMarketMessage {
     private int row, col;
     private List<Integer> leaderList;
-    private DepotParams depotRes;
+    private List<DepotParams> depotRes;
     private Map<ResourceType, Integer> leaderSlots;
     private Map<ResourceType, Integer> discardRes;
 
-    public BuyFromMarketMessage(int row, int col, List<Integer> leaderList, DepotParams depotRes, Map<ResourceType, Integer> leaderSlots, Map<ResourceType, Integer> discardRes) {
+    public BuyFromMarketMessage(int row, int col, List<Integer> leaderList, List<DepotParams> depotRes, Map<ResourceType, Integer> leaderSlots, Map<ResourceType, Integer> discardRes) {
         this.row = row;
         this.col = col;
         this.leaderList = leaderList;
@@ -36,7 +36,7 @@ public class BuyFromMarketMessage {
         return new ArrayList<>(leaderList);
     }
 
-    public DepotParams getDepotRes() {
+    public List<DepotParams> getDepotRes() {
         return depotRes;
     }
 

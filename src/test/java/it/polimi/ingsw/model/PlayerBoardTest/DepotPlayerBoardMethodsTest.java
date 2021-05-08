@@ -39,7 +39,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void addToDepot() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
+    public void addToDepot() throws IllegalActionException {
         playerBoard.addResourceToDepot(coin, 3, 3);
         assertEquals(playerBoard.getResourceFromDepot(coin), 3);
         assertEquals(playerBoard.getResourceTypeFromShelf(3), coin);
@@ -53,13 +53,13 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void removeFromDepot() throws AlreadyInAnotherShelfException, NotEnoughSpaceException, NotEnoughResourcesException {
+    public void removeFromDepot() throws NotEnoughResourcesException, IllegalActionException {
         playerBoard.addResourceToDepot(shield, 3, 3);
         playerBoard.removeResourceFromDepot(2, 3);
     }
 
     @Test
-    public void removeFromDepotException() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
+    public void removeFromDepotException() throws IllegalActionException {
         Exception exception;
         playerBoard.addResourceToDepot(shield, 2, 3);
         exception = assertThrows(NotEnoughResourcesException.class, () -> playerBoard.removeResourceFromDepot(3, 3));
@@ -113,7 +113,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void moveBetweenShelves() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
+    public void moveBetweenShelves() throws NotEnoughSpaceException, IllegalActionException {
         playerBoard.addResourceToDepot(coin, 1, 1);
         playerBoard.addResourceToDepot(stone, 1, 3);
 
@@ -125,7 +125,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void moveBetweenShelvesException1() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
+    public void moveBetweenShelvesException1() throws IllegalActionException {
         Exception exception;
         playerBoard.addResourceToDepot(coin, 1, 1);
         playerBoard.addResourceToDepot(stone, 2, 3);
@@ -135,7 +135,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void moveBetweenShelvesException2() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
+    public void moveBetweenShelvesException2() throws IllegalActionException {
         Exception exception;
         playerBoard.addResourceToDepot(stone, 2, 3);
 
@@ -144,7 +144,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void addToLeader() throws NoExtraSlotException, FullExtraSlotException, NotEnoughSpaceException, UnmetRequirementException {
+    public void addToLeader() throws FullExtraSlotException, UnmetRequirementException, IllegalActionException {
         assertTrue(playerBoard.activateLeaderCard(leaderCard));
         assertTrue(playerBoard.addResourceToLeader(coin, 2));
         assertEquals(playerBoard.getLeaderSlotResourceQuantity(coin), 2);
@@ -152,7 +152,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void removeFromLeader() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, NotEnoughResourcesException, UnmetRequirementException {
+    public void removeFromLeader() throws FullExtraSlotException, NoExtraSlotException, NotEnoughResourcesException, UnmetRequirementException, IllegalActionException {
         playerBoard.activateLeaderCard(leaderCard);
         playerBoard.addResourceToLeader(coin, 2);
         assertTrue(playerBoard.removeResourceFromLeader(coin, 1));
@@ -161,7 +161,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void moveToLeader() throws AlreadyInAnotherShelfException, NotEnoughSpaceException, FullExtraSlotException, NotEnoughResourcesException, NoExtraSlotException, UnmetRequirementException {
+    public void moveToLeader() throws NotEnoughSpaceException, FullExtraSlotException, NotEnoughResourcesException, NoExtraSlotException, UnmetRequirementException, IllegalActionException {
         playerBoard.activateLeaderCard(leaderCard);
         playerBoard.addResourceToDepot(coin, 2, 2);
         playerBoard.moveFromShelfToLeader(2, 1);
@@ -170,7 +170,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void moveToShelf() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, AlreadyInAnotherShelfException, NotEnoughResourcesException, UnmetRequirementException {
+    public void moveToShelf() throws FullExtraSlotException, NotEnoughSpaceException, NoExtraSlotException, AlreadyInAnotherShelfException, NotEnoughResourcesException, UnmetRequirementException, IllegalActionException {
         playerBoard.activateLeaderCard(leaderCard);
         playerBoard.addResourceToLeader(coin, 2);
         assertTrue(playerBoard.moveFromLeaderToShelf(coin, 1, 1));

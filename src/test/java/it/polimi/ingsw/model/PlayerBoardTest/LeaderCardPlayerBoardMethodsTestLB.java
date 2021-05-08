@@ -222,8 +222,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         assertTrue(playerBoard.getActiveLeaderCards().contains(met));
         assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
 
-        LeaderCard met2 = met;
-        IllegalActionException exception = assertThrows(IllegalActionException.class, () -> playerBoard.getEffectFromCard(met2));
+        IllegalActionException exception = assertThrows(IllegalActionException.class, () -> playerBoard.getEffectFromCard(met));
         assertEquals(exception.getMessage(), "This Card can only be used once: it has already been used!");
 
         assertEquals(playerBoard.getAlreadyUsedOneShotCard().size(), 1);
@@ -497,5 +496,31 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
     }
 
+    @Test
+    public void getEffectFromCardsWithIndexes() throws FullExtraSlotException, UnmetRequirementException, EndOfGameException {
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        LeaderCard met = new LeaderCard(3, metRequirements, new WhiteMarbleLeaderEffect(ResourceType.COIN));
+        LeaderCard met2 = new LeaderCard(4, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        list.add(met); //This card can be activated
+        list.add(met2);
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
+
+        playerBoard.activateLeaderCard(met);
+        playerBoard.activateLeaderCard(met2);
+        List<Integer> indexes = new ArrayList<>();
+        indexes.add(0);
+        indexes.add(1);
+
+        List<Effect> effects = playerBoard.getEffectsFromCards(indexes);
+
+        assertEquals(effects.get(0), new WhiteMarbleLeaderEffect(ResourceType.COIN));
+        assertEquals(effects.get(1), new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+    }
 
 }

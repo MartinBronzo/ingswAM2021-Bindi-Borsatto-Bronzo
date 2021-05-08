@@ -37,6 +37,8 @@ public class MainBoard {
     protected int[] extraFaithPointsAtBeginning;
     protected int[] extraResourcesAtBeginning;
 
+    protected int stepForEachDiscardedRes;
+
 
     /*
     ###########################################################################################################
@@ -108,6 +110,19 @@ public class MainBoard {
      */
     public Marble getMarbleInTheGrid(int row, int column) throws IllegalArgumentException{
         return this.market.getMarbleInTheGrid(row, column);
+    }
+
+    /**
+     * Discards the specified resources and gives extra Faith points to each player who is not the one discarding these resources
+     * @param resToDiscard the resources to be discarded
+     * @param notToBeGiven the PlayerBoard of the player who is discarding the specified resources
+     * @throws LastVaticanReportException if a player reaches the last Vatican Report
+     */
+    public void discardResources(Map<ResourceType, Integer> resToDiscard, PlayerBoard notToBeGiven) throws LastVaticanReportException {
+        int numDiscardedRes = resToDiscard.size();
+        for(PlayerBoard pB: playerBoardsList)
+            if(pB != notToBeGiven)
+                pB.moveForwardOnFaithTrack(numDiscardedRes * this.stepForEachDiscardedRes);
     }
 
     /*
@@ -307,6 +322,7 @@ public class MainBoard {
         this.numberOfLeaderCardsToGive = 4;
         this.extraFaithPointsAtBeginning = new int[]{0, 0, 1, 1};
         this.extraResourcesAtBeginning = new int[]{0, 1, 1, 2};
+        this.stepForEachDiscardedRes = 1;
         initMainBoard();
     }
 

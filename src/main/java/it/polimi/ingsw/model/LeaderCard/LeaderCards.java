@@ -115,6 +115,18 @@ public class LeaderCards {
     }
 
     /**
+     * Returns the effect of the LeaderCard whose position in the ordered collection of active LeaderCards is given as a parameter
+     * @param cardIndex the position inside the ordered collection of active LeaderCards of the desired LeaderCard
+     * @return the effect of the desired LeaderCard
+     * @throws IllegalArgumentException if the given index is out of bound
+     */
+    public Effect getEffectFromCard(int cardIndex) throws IllegalArgumentException{
+        if(cardIndex >= this.activeCards.size())
+            throw new IllegalArgumentException("The player doesn't hold this card (the given index is out of bound)!");
+        return this.activeCards.get(cardIndex).getEffect();
+    }
+
+    /**
      * Adds the leader Card to the list of activated one shot cards
      *
      * @param leaderCard to be add to oneshot cards

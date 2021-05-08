@@ -183,6 +183,20 @@ public class PlayerBoard {
     }
 
     /**
+     * Returns a list of effects whose LeaderCard is specified via the position they have in the PlayerBoard
+     * @param cardsIndexes the list of indexes of some LeaderCards
+     * @return the effects of the specified LeaderCards
+     * @throws IllegalArgumentException if one of the specified indexes is out of bound
+     */
+    public List<Effect> getEffectsFromCards(List<Integer> cardsIndexes) throws IllegalArgumentException {
+        List<Effect> result = new ArrayList<>();
+        for(Integer i: cardsIndexes)
+            result.add(leaderCards.getEffectFromCard(i));
+
+        return result;
+    }
+
+    /**
      * Returns a copy of all the LeaderCards the player has not played yet
      *
      * @return a copy of the not-played LeaderCards
@@ -274,11 +288,17 @@ public class PlayerBoard {
      * @param quantity:     the quantity of the resource
      * @param shelf:        the number of the shelf on which you want to add the resource
      * @return true if the action is performed without errors
-     * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
-     * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the shelf
+     * @throws IllegalArgumentException if the inputs the player gives are not suitable for the game
+     * @throws IllegalActionException  if what the player wants to do is not suitable for the game
      */
-    public boolean addResourceToDepot(ResourceType resourceType, int quantity, int shelf) throws NotEnoughSpaceException, IllegalArgumentException, AlreadyInAnotherShelfException {
-        return this.depot.addToShelf(resourceType, quantity, shelf);
+    public boolean addResourceToDepot(ResourceType resourceType, int quantity, int shelf) throws IllegalArgumentException, IllegalActionException {
+        try {
+            return this.depot.addToShelf(resourceType, quantity, shelf);
+        } catch (AlreadyInAnotherShelfException e){
+            throw new IllegalActionException(e.getMessage());
+        } catch (NotEnoughSpaceException e){
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     /**
@@ -287,11 +307,19 @@ public class PlayerBoard {
      * @param resourceType: the resourceType to be added
      * @param quantity:     the quantity of the resource
      * @return true if the action is performed without errors
-     * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative
-     * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the extra slot
+     * @throws IllegalArgumentException if the inputs the player gives are not suitable for the game
+     * @throws IllegalActionException  if what the player wants to do is not suitable for the game
      */
-    public boolean addResourceToLeader(ResourceType resourceType, int quantity) throws NotEnoughSpaceException, IllegalArgumentException, NoExtraSlotException, FullExtraSlotException {
-        return this.depot.addToLeader(resourceType, quantity);
+    public boolean addResourceToLeader(ResourceType resourceType, int quantity) throws IllegalArgumentException, IllegalActionException {
+        try{
+            return this.depot.addToLeader(resourceType, quantity);
+        }catch (NotEnoughSpaceException e){
+            throw new IllegalActionException(e.getMessage());
+        }catch (NoExtraSlotException e){
+            throw new IllegalArgumentException(e.getMessage());
+        }catch (FullExtraSlotException e){
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
 
@@ -438,7 +466,6 @@ public class PlayerBoard {
     public int getResourceFromStrongbox(ResourceType resource) {
         return strongbox.getResource(resource);
     }
-
 
     /*
     ##################
