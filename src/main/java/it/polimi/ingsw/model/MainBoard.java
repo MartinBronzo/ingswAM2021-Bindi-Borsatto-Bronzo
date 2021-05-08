@@ -225,6 +225,10 @@ public class MainBoard {
         return this.playerBoardsList.get(position);
     }
 
+    public List<PlayerBoard> getPlayerBoardsList() {
+        return playerBoardsList;
+    }
+
     public int getPlayerBoardsNumber(){
         return this.playerBoardsList.size();
     }
@@ -255,15 +259,13 @@ public class MainBoard {
 
     public int[] getExtraFaithPointsAtBeginning() {
         int[] copy = new int[this.extraFaithPointsAtBeginning.length];
-        for(int i = 0; i < this.extraFaithPointsAtBeginning.length; i++)
-            copy[i] = this.extraFaithPointsAtBeginning[i];
+        System.arraycopy(this.extraFaithPointsAtBeginning, 0, copy, 0, this.extraFaithPointsAtBeginning.length);
         return copy;
     }
 
     public int[] getExtraResourcesAtBeginning() {
         int[] copy = new int[this.extraResourcesAtBeginning.length];
-        for(int i = 0; i < this.extraResourcesAtBeginning.length; i++)
-            copy[i] = this.extraResourcesAtBeginning[i];
+        System.arraycopy(this.extraResourcesAtBeginning, 0, copy, 0, this.extraResourcesAtBeginning.length);
         return copy;
     }
 
