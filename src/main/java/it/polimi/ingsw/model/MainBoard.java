@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.FaithTrack.FaithTrack;
+import it.polimi.ingsw.model.FaithTrack.PopeCell;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.Interfaces.Deck;
@@ -421,6 +422,32 @@ public class MainBoard {
         return new Random().nextInt(this.numberOfPlayers);
     }
 
+    /**
+     * Constructs a copy of the specified MainBoard
+     * @param original the MainBoard to be copied
+     */
+    public MainBoard(MainBoard original){
+        this.faithTrack = new FaithTrack(original.faithTrack);
+        this.popeTiles = PopeTile.copyPopeTiles(original.popeTiles);
+        this.leaderCardsDeck = new LeaderCardDeck((LeaderCardDeck) original.leaderCardsDeck);
+        this.devGrid = new DevGrid(original.devGrid);
+        this.market = new Market(original.market);
+        this.numberOfPlayers = original.numberOfPlayers;
+
+        this.playerBoardsList = new ArrayList<>();
+        for(PlayerBoard pB: original.playerBoardsList)
+            this.playerBoardsList.add(new PlayerBoard(pB));
+
+        this.numberOfLeaderCardsToGive = original.numberOfLeaderCardsToGive;
+
+        this.extraFaithPointsAtBeginning = new int[original.extraFaithPointsAtBeginning.length];
+        System.arraycopy(original.extraFaithPointsAtBeginning, 0, this.extraFaithPointsAtBeginning, 0, original.extraFaithPointsAtBeginning.length);
+
+        this.extraResourcesAtBeginning = new int[original.extraResourcesAtBeginning.length];
+        System.arraycopy(original.extraResourcesAtBeginning, 0, this.extraResourcesAtBeginning, 0, original.extraResourcesAtBeginning.length);
+
+        this.stepForEachDiscardedRes = original.stepForEachDiscardedRes;
+    }
 
     /***************************** OLD STUFF TO BE CHECKED ****************************************/
 

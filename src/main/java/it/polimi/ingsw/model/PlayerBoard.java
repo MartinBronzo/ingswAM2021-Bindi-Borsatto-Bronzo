@@ -760,4 +760,17 @@ public class PlayerBoard {
         this.baseProduction = new BaseProduction();
     }
 
+    /**
+     * Creates a copy of the specified PlayerBoard
+     * @param original the PlayerBoard to be cloned
+     */
+    public PlayerBoard(PlayerBoard original){
+        this.playerFaithLevel = new FaithLevel(original.playerFaithLevel);
+        this.depot = new Depot(original.depot);
+        this.strongbox = new Strongbox(original.strongbox);
+        this.devSlots = new DevSlots(original.devSlots);
+        this.leaderCards = new LeaderCards(original.leaderCards);
+        this.baseProduction = new BaseProduction(original.baseProduction);
+    }
+
 }

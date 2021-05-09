@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -272,6 +273,58 @@ public class PopeTileTest {
             assertEquals(pT.getPoints(), 4);
             assertEquals(pT.getReportNum(), ReportNum.REPORT3);
         }
+    }
+
+    @Test
+    public void ctrlListOfPopeTileListCloning(){
+        PopeTile p1 = new PopeTile(2, ReportNum.REPORT1);
+        PopeTile p2 = new PopeTile(3, ReportNum.REPORT2);
+        PopeTile p3 = new PopeTile(4, ReportNum.REPORT3);
+        List<List<PopeTile>> original = new ArrayList<>();
+
+        //Report1
+        List<PopeTile> tmp = new ArrayList<>();
+        for(int i = 0; i < 3; i++)
+            tmp.add(new PopeTile(p1));
+        assertEquals(tmp.size(), 3);
+        original.add(tmp);
+
+        //Report2
+        tmp = new ArrayList<>();
+        for(int i = 0; i < 3; i++)
+            tmp.add(new PopeTile(p2));
+        assertEquals(tmp.size(), 3);
+        original.add(tmp);
+
+        //Report3
+        tmp = new ArrayList<>();
+        for(int i = 0; i < 3; i++)
+            tmp.add(new PopeTile(p3));
+        assertEquals(tmp.size(), 3);
+        original.add(tmp);
+
+        assertEquals(original.size(), 3);
+
+        List<List<PopeTile>> copy = PopeTile.copyPopeTiles(original);
+
+        assertNotSame(copy, original);
+        assertEquals(copy.size(), original.size());
+
+        //Report1
+        assertEquals(copy.get(0).size(), 3);
+        for(int i = 0; i < 3; i++)
+            assertEquals(copy.get(0).get(i), original.get(0).get(i));
+
+        //Report2
+        assertEquals(copy.get(1).size(), 3);
+        for(int i = 0; i < 3; i++)
+            assertEquals(copy.get(1).get(i), original.get(1).get(i));
+
+
+        //Report3
+        assertEquals(copy.get(2).size(), 3);
+        for(int i = 0; i < 3; i++)
+            assertEquals(copy.get(2).get(i), original.get(2).get(i));
     }
 
 }

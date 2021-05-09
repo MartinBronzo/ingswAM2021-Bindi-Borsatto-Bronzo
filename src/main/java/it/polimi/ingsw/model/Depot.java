@@ -27,6 +27,10 @@ public class Depot {
         shelves = new ResourceType[3];
     }
 
+    /**
+     * Constructs a copy of the specified Deport
+     * @param depot the Depot to be cloned
+     */
     public Depot(Depot depot) {
         this.depotLevel = new HashMap<>(depot.depotLevel);
         shelves = new ResourceType[3];
