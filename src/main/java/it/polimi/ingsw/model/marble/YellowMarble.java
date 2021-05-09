@@ -36,6 +36,11 @@ public class YellowMarble extends Marble {
     }
 
     @Override
+    public boolean isWhiteMarble() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "YellowMarble{}";
     }

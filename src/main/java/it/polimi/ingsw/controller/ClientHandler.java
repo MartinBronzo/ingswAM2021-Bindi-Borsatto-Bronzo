@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
-    //private String nickname;
+    private String nickname;
     private PlayerState state;
     private final Socket socket;
     private final BufferedReader in;
@@ -28,6 +28,13 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
+        this.state = PlayerState.WAITING4NAME;
+    }
+
+    public ClientHandler(Socket socket, GamesManagerSingleton gamesManagerSingleton) throws IOException {
+        this.socket = socket;
+        this.in = new BufferedReader( new InputStreamReader(socket.getInputStream()));
+        this.out = new PrintWriter( socket.getOutputStream(), true);
         this.state = PlayerState.WAITING4NAME;
     }
 
@@ -163,5 +170,9 @@ public class ClientHandler implements Runnable {
 
     public PrintWriter getOut() {
         return out;
+    }
+
+    public String getNickname() {
+        return this.nickname;
     }
 }

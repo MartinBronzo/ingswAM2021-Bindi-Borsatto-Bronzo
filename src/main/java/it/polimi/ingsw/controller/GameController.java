@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
@@ -23,6 +24,13 @@ public class GameController {
     private List<Pair<ClientHandler, PlayerBoard>> players;
     private int numberOfPlayers;
     private int maxPlayersNum;
+
+    public GameState getState() {
+        return GameState.STARTED;
+    }
+
+    public void setState(GameState waiting4players) {
+    }
 
     /**
      * This class represents the relationship between the ClientHandler of the player and the their PlayerBoard.
@@ -98,16 +106,17 @@ public class GameController {
      *
      * @param player the ClientHandler of the player to be added at the game
      */
-    public void setPlayer(ClientHandler player) {
+    public boolean setPlayer(ClientHandler player) {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)
-            return;
+            return false;
         //We can't add an already added player
         //if(this.findClientHandler(player))
         if (this.getPlayerBoardOfPlayer(player) != null)
-            return;
+            return false;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
+        return true;
     }
 
     /*

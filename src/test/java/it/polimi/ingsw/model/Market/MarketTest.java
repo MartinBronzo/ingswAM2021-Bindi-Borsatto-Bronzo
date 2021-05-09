@@ -97,6 +97,7 @@ class MarketTest {
                 whiteCounter++;
             }
         }
+        assertEquals(market.getNumberOfWhiteMarbleInTheRow(i), whiteCounter);
         while (whiteCounter > 0) {
             effects.add(effect);
             whiteCounter--;
@@ -180,6 +181,7 @@ class MarketTest {
                 whiteCounter++;
             }
         }
+        assertEquals(market.getNumberOfWhiteMarbleInTheColumn(i), whiteCounter);
         while (whiteCounter > 0) {
             effects.add(effect);
             whiteCounter--;
@@ -194,20 +196,6 @@ class MarketTest {
         assertEquals(yellowCounter, resourceMap.getOrDefault(coin, 0));
     }
 
-
-    /*to string test is used to study the correct behaviour of the market due the initial configuration of the market grid is randomized*/
-    @Test
-    void toStringTest() throws IllegalArgumentException {
-        effects.add(effect);
-        effects.add(effect);
-        effects.add(effect);
-        effects.add(effect);
-        System.out.println(market.toString());
-        System.out.println(market.moveColumn(1, effects).toString());
-        System.out.println(market.toString());
-        System.out.println(market.moveRow(2, effects).toString());
-        System.out.println(market.toString());
-    }
 
     @Test
     void getResourcesFromRow() {
@@ -234,6 +222,7 @@ class MarketTest {
                 whiteCounter++;
             }
         }
+        assertEquals(market.getNumberOfWhiteMarbleInTheRow(i), whiteCounter);
         while (whiteCounter > 0) {
             effects.add(effect);
             whiteCounter--;
@@ -272,6 +261,7 @@ class MarketTest {
                 whiteCounter++;
             }
         }
+        assertEquals(market.getNumberOfWhiteMarbleInTheColumn(i), whiteCounter);
         while (whiteCounter > 0) {
             effects.add(effect);
             whiteCounter--;

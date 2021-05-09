@@ -1,25 +1,17 @@
 package it.polimi.ingsw.controller;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server
 {
     final private int port;
-    private Collection<GameController> games;
-    private GameController startingGame;
 
     public Server(int port) {
         this.port = port;
-        this.games = new ArrayList<>();
-        startingGame = new GameController();
     }
 
 
@@ -37,16 +29,19 @@ public class Server
         while (true)
         {
             Socket socket = null;
-            ClientHandler client;
             try {
                 socket = serverSocket.accept();
                 System.out.println("A new client is connected : " + socket);
-                client = new ClientHandler(socket);
-                System.out.println("A new client is connected : " + socket);
-
+            }catch (IOException e) {
+                e.printStackTrace();
+                break;
+            }
+            try {
                 System.out.println("Adding Client to thread Pool");
-            } catch (Exception e){
-                    break;
+                executor.submit(new ClientHandler(socket));
+            }catch (IOException e) {
+                e.printStackTrace();
+                break;
             }
         }
         executor.shutdown();
