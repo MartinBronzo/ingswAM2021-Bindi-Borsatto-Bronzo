@@ -6,11 +6,15 @@ import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import java.rmi.UnexpectedException;
 import java.util.*;
 
-public final class GamesManagerSingleton
-{
+public final class GamesManagerSingleton {
 
     private final Collection<GameController> games;
     private GameController startingGame;
+
+    public ClientHandler getClientConfigurator() {
+        return clientConfigurator;
+    }
+
     private ClientHandler clientConfigurator;
     private static GamesManagerSingleton instance;
     private Timer timeOutTimer;
@@ -31,27 +35,47 @@ public final class GamesManagerSingleton
         return instance;
     }
 
-    public synchronized GameController joinOrCreateNewGame(ClientHandler client) throws InterruptedException, UnexpectedException {
-        while (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING))
-            wait();
-        if (startingGame == null){
-            startingGame = new GameController();
-            if (!startingGame.setPlayer(client)) throw new UnexpectedException("bug synchronizing GameManager happened");
-            this.clientConfigurator=client;
-            startingGame.setState(GameState.CONFIGURING);
-            startTimer();
-            return startingGame;
-        }
 
-        GameController returnedGame = startingGame;
-        startingGame.setPlayer(client);
-        /*IDK if I should add method start game or game is automatically started when reaches the correct number of players*/
-        if(startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
-            games.add(startingGame);
-            startingGame = null;
-        }
-        return returnedGame;
+    /**used to add clientHandler to a game.
+     * if a new game is created it must be configured,
+     * if a game is in waiting for players the client is add to the starting game
+     * if client has a occupied nickname of another disconnected client
+     * the client can know if he is the client Configurator using the getClientConfigurator method
+     * if the game is not configured a timer is started, the game must be configured before the timer ends using configure method
+     *
+     * @param client is the clientHandler added to the game, it can be also the clientHandlerConfigurator if the game must be configured
+     * @return the Game where the client will play
+     * @throws UnexpectedException if an unknown error synchronizing GameManager is detected
+     * @throws InterruptedException if a thread is interrupted while it is in waiting
+     * @throws NotAvailableNicknameException if the nickname of client is not available
+     */
+    public synchronized GameController joinOrCreateNewGame(ClientHandler client) throws UnexpectedException, InterruptedException, NotAvailableNicknameException {
+        try {
+            GameController gameWithThatNickname = searchPlayerInGames(client.getNickname());
+            gameWithThatNickname.substitutesClient(client);
+            return gameWithThatNickname;
+        } catch (NoSuchElementException e){
+            while (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING))
+                wait();
+            if (startingGame == null){
+                startingGame = new GameController();
+                if (!startingGame.setPlayer(client)) throw new UnexpectedException("bug synchronizing GameManager happened");
+                this.clientConfigurator=client;
+                startingGame.setState(GameState.CONFIGURING);
+                startTimer();
+                return startingGame;
+            }
 
+            GameController returnedGame = startingGame;
+            startingGame.setPlayer(client);
+            /*IDK if I should add method start game or game is automatically started when reaches the correct number of players*/
+            if(startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
+                games.add(startingGame);
+                startingGame = null;
+            }
+            return returnedGame;
+
+        }
     }
 
     private void startTimer() {
@@ -68,22 +92,30 @@ public final class GamesManagerSingleton
 
     private void stopTimer(){
         this.timeOutTimer.cancel();
-        this.timeOutTimer.purge();
         this.timerCanCancel = false;
-        this.timeOutTimer=null;
+        this.timeOutTimer = null;
     }
 
     private synchronized boolean configurationTimeElapsed(){
         if (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING) && timerCanCancel){
             startingGame=null;
-            //notifyClient
+            //TODO: notifyClient
             clientConfigurator = null;
+            stopTimer();
             notify();
             return true;
         }
         return false;
     }
 
+    /** it is used to configure the game
+     * @param client must be the same client configurator
+     * @param numberOfPlayers the desired number of players in the game, must be between 1 (solitary game) and 4 (max number of Players)
+     * @return true if the method is performed correctly
+     * @throws IllegalStateException if client is not the same client configurator
+     * @throws UnexpectedException if an unknown error synchronizing GameManager is detected
+     * @throws IllegalArgumentException if numberOfPlayers is not between 1 and 4
+     */
     public synchronized boolean configureGame(ClientHandler client, int numberOfPlayers) throws IllegalStateException, UnexpectedException, IllegalArgumentException {
         if (!this.clientConfigurator.equals(client)) throw new IllegalStateException("client is not the same client manager");
         if (this.startingGame == null || !this.startingGame.getState().equals(GameState.CONFIGURING)) throw new UnexpectedException("gamesManager: client IsGameConfigurator but game is null or not in configuring state");
@@ -103,6 +135,7 @@ public final class GamesManagerSingleton
 }
 
     private GameController searchPlayerInGames(String nickname) throws NoSuchElementException, NotAvailableNicknameException {
+        if (nickname == null) throw new IllegalArgumentException("nickname can't be null");
         if (startingGame != null) {
             if (startingGame.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getState().equals(PlayerState.DISCONNECTED))) {
                 throw new NotAvailableNicknameException("Nick is taken");
@@ -116,6 +149,12 @@ public final class GamesManagerSingleton
 
     }
 
+    /** deletes an ended game from the list of the games, allowing clientHandlers to join games with previously occupied nicknames
+     * @param gameEnded the game ended
+     * @return true if the action is performed correctly
+     * @throws NullPointerException if gameEnded is null
+     * @throws IllegalStateException if the game is not in ended state
+     */
     public boolean deleteTerminatedGame(GameController gameEnded) throws NullPointerException, IllegalStateException {
         if (!gameEnded.getState().equals(GameState.ENDED)) throw new IllegalStateException("Game is not in ended state");
         return games.remove(gameEnded);
