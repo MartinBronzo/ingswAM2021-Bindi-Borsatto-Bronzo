@@ -297,8 +297,8 @@ public class GameController {
 
             //TODO: rimuovere le risorse dal deposito
             List<DepotParams> depotRes = buyDevCard.getDepotRes();
-            Map<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
-            Map<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
+            HashMap<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
+            HashMap<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
 
             //Let's check if the description the player gives in the message is valid: all the resources they put are present in the cost of the card
             //(we check both if the indicated ResourceType is present and if it is present with the right quantity)
@@ -332,7 +332,7 @@ public class GameController {
                 }
 
                 cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the res map
-                playerBoard.addResourceToLeader(e.getKey(), e.getValue());
+                playerBoard.removeResourceFromLeader(e.getKey(), e.getValue());
             }
 
             //check if strongbox params are correct
@@ -346,7 +346,7 @@ public class GameController {
                 }
 
                 cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the res map
-                playerBoard.addResourceToLeader(e.getKey(), e.getValue());
+                playerBoard.removeResourcesFromStrongbox(strongboxRes);
             }
 
             //final check
