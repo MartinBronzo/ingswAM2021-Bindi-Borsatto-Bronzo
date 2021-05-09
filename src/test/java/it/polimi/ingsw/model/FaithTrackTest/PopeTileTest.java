@@ -1,9 +1,17 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
+import it.polimi.ingsw.model.FaithTrack.ReportNumOrder;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -223,6 +231,47 @@ public class PopeTileTest {
         assertEquals(p1, p2);
         assertEquals(p1.isActivated(), p2.isActivated());
         assertTrue(p1.isActivated());
+    }
+
+    @Test
+    //Tests that the correct tiles are configured via configuration file
+    public void ctrlConfigurationViaFile() throws ParserConfigurationException, IOException, SAXException, IllegalActionException {
+        FaithTrack faithTrack = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        ReportNumOrder reportNumOrder = faithTrack.getReportNumOrder();
+        List<List<PopeTile>> tiles = PopeTile.popeTileConfig(new File("PopeTileConfig.xml"), reportNumOrder);
+        List<PopeTile> tmp;
+
+        assertEquals(tiles.size(), 3);
+
+        //Report1
+        tmp = tiles.get(0);
+        assertEquals(tmp.size(), 4);
+        for(PopeTile pT: tmp){
+            assertEquals(pT.getPoints(), 0); //The tile is born inactive
+            pT.dealWithVaticanReport(ReportNum.REPORT1, true); //This line is need to activate the tiles in order to be able to extract the actual points
+            assertEquals(pT.getPoints(), 2);
+            assertEquals(pT.getReportNum(), ReportNum.REPORT1);
+        }
+
+        //Report2
+        tmp = tiles.get(1);
+        assertEquals(tmp.size(), 4);
+        for(PopeTile pT: tmp){
+            assertEquals(pT.getPoints(), 0); //The tile is born inactive
+            pT.dealWithVaticanReport(ReportNum.REPORT2, true); //This line is need to activate the tiles in order to be able to extract the actual points
+            assertEquals(pT.getPoints(), 3);
+            assertEquals(pT.getReportNum(), ReportNum.REPORT2);
+        }
+
+        //Report3
+        tmp = tiles.get(2);
+        assertEquals(tmp.size(), 4);
+        for(PopeTile pT: tmp){
+            assertEquals(pT.getPoints(), 0); //The tile is born inactive
+            pT.dealWithVaticanReport(ReportNum.REPORT3, true); //This line is need to activate the tiles in order to be able to extract the actual points
+            assertEquals(pT.getPoints(), 4);
+            assertEquals(pT.getReportNum(), ReportNum.REPORT3);
+        }
     }
 
 }

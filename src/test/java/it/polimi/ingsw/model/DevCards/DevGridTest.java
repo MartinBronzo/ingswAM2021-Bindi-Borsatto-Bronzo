@@ -17,6 +17,7 @@ class DevGridTest {
 
     DevGrid devGrid;
     DevDeck deckGreen1;
+    File xmlDevCardsConfig;
 
     /*
     @Test
@@ -114,10 +115,37 @@ class DevGridTest {
 
     @BeforeEach
     void setUp() throws ParserConfigurationException, NegativeQuantityException, SAXException, IllegalArgumentException, IOException {
-        File xmlDevCardsConfig = new File("DevCardConfig.xsd.xml");
+        xmlDevCardsConfig = new File("DevCardConfig.xsd.xml");
         devGrid = new DevGrid(xmlDevCardsConfig);
         deckGreen1 = devGrid.getDevDeckInTheGrid(2, 0);
         assertEquals(4, deckGreen1.size());
     }
+
+    /*@Test
+    //This methods uses the fakeEquals method which doesn't consider the order of the cards in the deck
+    public void ctrlFakeEqualsTrue() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
+        DevGrid d2 = devGrid.createDevGridWithoutShuffling(xmlDevCardsConfig);
+
+        assertNotSame(devGrid, d2);
+        assertTrue(devGrid.equalsFake(d2));
+    }*/
+
+   @Test
+    //This methods uses the fakeEquals method which doesn't consider the order of the cards in the deck
+    public void ctrlFakeEqualsFalse() throws EmptyDeckException, NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
+        DevGrid d2 = devGrid.createDevGridWithoutShuffling(xmlDevCardsConfig);
+        d2.drawDevCardFromDeck(0,1);
+        assertNotSame(devGrid, d2);
+        assertFalse(devGrid.equalsFake(d2)); //Because they don't contain the same cards anymore
+    }
+
+    @Test
+    public void ctrlCloning(){
+        DevGrid d2 = new DevGrid(devGrid);
+
+        assertNotSame(devGrid, d2);
+        assertEquals(devGrid, d2);
+    }
+    
 
 }

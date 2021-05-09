@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.DevCards;
 
 import it.polimi.ingsw.exceptions.EmptyDeckException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import it.polimi.ingsw.model.FaithTrack.PopeCell;
 import it.polimi.ingsw.model.ResourceType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,15 +15,51 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DevGrid {
     private final DevDeck[][] devDecksGrid;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof DevGrid))
+            return false;
+        DevGrid tmp = (DevGrid) obj;
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                if(!(this.devDecksGrid[i][j].equals(tmp.devDecksGrid[i][j]))){
+                    return false;
+                }
+
+        //If the thread arrives here, then the two grids contain the same decks
+        return true;
+    }
+
+    //This method was used for testing purposes: it says whether two decks are equals without any regard for the order the cards are
+    //in the deck (two decks are considered equal if they store the same cards, the order the cards are in is irrelevant)
+    public boolean equalsFake(Object obj){
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof DevGrid))
+            return false;
+        DevGrid tmp = (DevGrid) obj;
+
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                if(!(this.devDecksGrid[i][j].containsDeck(tmp.devDecksGrid[i][j]))){
+                    return false;
+                }
+
+        //If the thread arrives here, then the two grids contain the same decks
+        return true;
+    }
 
     /**
      * This method distributes the devCards described the xml file passed as parameter according to gameRules in DecCardDecks on a grid
@@ -46,6 +83,36 @@ public class DevGrid {
             }
         }
 
+    }
+
+    public DevGrid(){
+        this.devDecksGrid = new DevDeck[3][4];
+    }
+
+    //This method creates a DevGrid by reading the DevCard from a file as the DevGrid(File config) does but this method doesn't shuffle the cards
+    //This method is used only for testing purposes: by using this method we are able to test the equals method
+    public DevGrid createDevGridWithoutShuffling(File config) throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
+        DevGrid result = new DevGrid();
+        ArrayList<DevCard> devCards = createConfigurationList(config);
+        for (int i = 0; i < result.devDecksGrid.length; i++) {
+            for (int j = 0; j < result.devDecksGrid[i].length; j++) {
+                int level = result.devDecksGrid.length - i;
+                int color = j;
+                result.devDecksGrid[i][j] = new DevDeck(devCards.stream().filter(card -> level == card.getLevel() && color == card.getColour().ordinal()).collect(Collectors.toList()));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Constructs a copy of the specified DevGrid
+     * @param original the DevGrid to be cloned
+     */
+    public DevGrid(DevGrid original){
+        this.devDecksGrid = new DevDeck[3][4];
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                this.devDecksGrid[i][j] = new DevDeck(original.devDecksGrid[i][j]);
     }
 
 

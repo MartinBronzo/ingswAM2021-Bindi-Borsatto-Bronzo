@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
+import it.polimi.ingsw.model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.FaithTrack.ReportNumOrder;
 import org.junit.jupiter.api.Test;
@@ -123,6 +124,69 @@ public class ReportNumOrderTest {
         exception = assertThrows(IllegalArgumentException.class, () -> reportNumOrder.stateOrder(ReportNum.REPORT1, ReportNum.REPORT3));
         assertEquals(exception.getMessage(), "The second element given as a parameter is not in the list");
     }
+
+    @Test
+    //Tests whether the cloning of ReportNumOrders works correctly
+    public void ctrlCloning(){
+        ReportNumOrder original = ReportNumOrder.instance();
+        original.addElementInOrder(ReportNum.REPORT1);
+        original.addElementInOrder(ReportNum.REPORT2);
+        original.addElementInOrder(ReportNum.REPORT3);
+
+        ReportNumOrder clone = new ReportNumOrder(original);
+
+        for(int i = 0; i < 3; i++)
+            assertEquals(clone.getReportNum(i), original.getReportNum(i));
+
+        assertEquals(clone, original);
+    }
+
+    @Test
+    //Tests that the equals methods works correctly: true
+    public void ctrlEqualsTrue(){
+        ReportNumOrder original = ReportNumOrder.instance();
+        original.addElementInOrder(ReportNum.REPORT1);
+        original.addElementInOrder(ReportNum.REPORT2);
+        original.addElementInOrder(ReportNum.REPORT3);
+        ReportNumOrder other = ReportNumOrder.instance();
+        other.addElementInOrder(ReportNum.REPORT1);
+        other.addElementInOrder(ReportNum.REPORT2);
+        other.addElementInOrder(ReportNum.REPORT3);
+
+        assertTrue(original.equals(other));
+        assertEquals(original, other);
+    }
+
+    @Test
+    //Tests that the equals methods works correctly: false (different orders)
+    public void ctrlEqualsFalseDifferentOrders(){
+        ReportNumOrder original = ReportNumOrder.instance();
+        original.addElementInOrder(ReportNum.REPORT1);
+        original.addElementInOrder(ReportNum.REPORT2);
+        original.addElementInOrder(ReportNum.REPORT3);
+        ReportNumOrder other = ReportNumOrder.instance();
+        other.addElementInOrder(ReportNum.REPORT1);
+        other.addElementInOrder(ReportNum.REPORT3);
+        other.addElementInOrder(ReportNum.REPORT2);
+
+        assertFalse(original.equals(other));
+        assertNotEquals(original, other);
+    }
+
+    @Test
+    //Tests that the equals methods works correctly: false (different sizes)
+    public void ctrlEqualsFalseDifferentSizes(){
+        ReportNumOrder original = ReportNumOrder.instance();
+        original.addElementInOrder(ReportNum.REPORT1);
+        original.addElementInOrder(ReportNum.REPORT2);
+        original.addElementInOrder(ReportNum.REPORT3);
+        ReportNumOrder other = ReportNumOrder.instance();
+        other.addElementInOrder(ReportNum.REPORT1);
+
+        assertFalse(original.equals(other));
+        assertNotEquals(original, other);
+    }
+
 
 
 }

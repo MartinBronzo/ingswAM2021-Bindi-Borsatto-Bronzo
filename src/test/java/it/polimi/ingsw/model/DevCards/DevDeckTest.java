@@ -59,4 +59,39 @@ class DevDeckTest {
         assertEquals(10, devDeck.size());
     }
 
+    @Test
+    public void ctrlEqualsTrue(){
+        DevDeck d2 = new DevDeck(devCards);
+
+        assertNotSame(devDeck, d2);
+        assertEquals(devDeck, d2);
+    }
+
+    @Test
+    //The decks differ because of only one card
+    public void ctrlEqualsFalse(){
+        devCards.remove(devCards.size() - 1);
+        DevDeck d2 = new DevDeck(devCards);
+
+        assertNotEquals(devDeck, d2);
+    }
+
+    @Test
+    public void ctrlCloning(){
+        DevDeck d2 = new DevDeck(devDeck);
+
+        assertNotSame(devDeck, d2);
+        assertEquals(devDeck, d2);
+    }
+
+    @Test
+    //Now the deck we compare are not in the original configuration because a card has been drawn before the cloning operation
+    public void ctrlCloningAfterDrawnCard(){
+        devDeck.drawFromDeck();
+        DevDeck d2 = new DevDeck(devDeck);
+
+        assertNotSame(devDeck, d2);
+        assertEquals(devDeck, d2);
+    }
+
 }

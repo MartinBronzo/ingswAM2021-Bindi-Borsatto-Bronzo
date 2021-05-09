@@ -22,6 +22,25 @@ class DevCardTest {
         card = new DevCard(1, DevCardColour.PURPLE, 5, map, map, map, "abc");
     }
 
+    /*
+    @Test
+    public void ctrlEqualsTrue() throws NegativeQuantityException {
+        DevCard d1 = new DevCard(2, DevCardColour.GREEN, 2, new HashMap<>(), new HashMap<>(), new HashMap<>(), "abc");
+        DevCard d2 = new DevCard(2, DevCardColour.GREEN, 2, new HashMap<>(), new HashMap<>(), new HashMap<>(), "abc");
+
+        assertNotSame(d1, d2);
+        assertEquals(d1, d2);
+    }*/
+
+    @Test
+    public void ctrlEqualsFake() throws NegativeQuantityException {
+        DevCard d1 = new DevCard(2, DevCardColour.GREEN, 2, new HashMap<>(), new HashMap<>(), new HashMap<>(), "abc");
+        DevCard d2 = new DevCard(2, DevCardColour.GREEN, 3, new HashMap<>(), new HashMap<>(), new HashMap<>(), "abc");
+
+        assertNotSame(d1, d2);
+        assertNotEquals(d1, d2);
+    }
+
     @Test
     void IllegalParametersTest() {
         assertThrows(IllegalArgumentException.class, () -> new DevCard(4, DevCardColour.GREEN, 2, new HashMap<>(), new HashMap<>(), new HashMap<>(), "abc"));

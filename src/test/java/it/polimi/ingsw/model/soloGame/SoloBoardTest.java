@@ -34,7 +34,7 @@ class SoloBoardTest {
     @Test
     public void moveLorenzosFaith() throws LastVaticanReportException {
         assertTrue(soloBoard.moveLorenzosFaith(2));
-        assertEquals(soloBoard.getFaithTrackPosition(), 2);
+        assertEquals(soloBoard.getLorenzoFaithTrackPosition(), 2);
     }
 
     @RepeatedTest(2)
@@ -50,6 +50,24 @@ class SoloBoardTest {
     @Test
     public void testEmptyColumn() {
         assertFalse(soloBoard.isDevColumnEmpty(DevCardColour.GREEN));
+    }
+
+    @Test
+    public void ctrlCreation() throws ParserConfigurationException, IOException, SAXException {
+        SoloBoard s1 = new SoloBoard();
+        assertNotNull(s1);
+    }
+
+    @Test
+    public void ctrlCreationOnePlayer() throws ParserConfigurationException, IOException, SAXException {
+        SoloBoard s1 = new SoloBoard();
+        assertEquals(s1.getNumberOfPlayers(), 1);
+    }
+
+    @Test
+    public void ctrlCreationLorenzoTrack() throws ParserConfigurationException, IOException, SAXException {
+        SoloBoard s1 = new SoloBoard();
+        assertEquals(s1.getLorenzoFaithTrackPosition(), 0);
     }
 
 

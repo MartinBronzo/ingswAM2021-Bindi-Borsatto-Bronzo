@@ -43,6 +43,11 @@ public class ReportCell extends Cell {
     }
 
     @Override
+    public Cell getClone() {
+        return new ReportCell(this);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null)
             return false;

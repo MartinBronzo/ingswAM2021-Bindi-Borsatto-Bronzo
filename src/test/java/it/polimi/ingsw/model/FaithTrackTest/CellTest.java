@@ -291,4 +291,41 @@ public class CellTest {
         assertNotSame(c1bis, c1);
         assertEquals(c1bis, c1);
     }
+
+    @Test
+    //Tests whether a clone of the Cell is created with the getClone() method which is overridden by the subclasses of Cell: cell
+    public void ctrlCellCloningOverriding(){
+        Cell c1 = new Cell(3, ReportNum.REPORT1);
+        Cell c1bis = c1.getClone();
+
+        assertNotSame(c1bis, c1);
+        assertEquals(c1bis, c1);
+        assertEquals(c1bis.getClass(), Cell.class);
+    }
+
+    @Test
+    //Tests whether a clone of the Cell is created with the getClone() method which is overridden by the subclasses of Cell: Report cell
+    public void ctrlReportCloningOverriding() {
+        ReportCell c1 = new ReportCell(3, ReportNum.REPORT1);
+        ReportCell c1bis = (ReportCell) c1.getClone();
+
+        assertNotSame(c1bis, c1);
+        assertEquals(c1bis, c1);
+        assertEquals(c1bis.getClass(), ReportCell.class);
+    }
+
+    @Test
+    //Tests whether a clone of the Cell is created with the getClone() method which is overridden by the subclasses of Cell: pope cell
+    public void ctrlPopeCloningOverriding() {
+        PopeCell c1 = new PopeCell(3, ReportNum.REPORT1);
+        Observer o1 = new ControllerStub();
+        Observer o2 = new ControllerStub();
+        c1.attach(o1);
+        c1.attach(o2);
+        PopeCell c1bis = (PopeCell) c1.getClone();
+
+        assertNotSame(c1bis, c1);
+        assertEquals(c1bis, c1);
+        assertEquals(c1bis.getClass(), PopeCell.class);
+    }
 }

@@ -71,7 +71,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
 
         assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
 
@@ -100,7 +100,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
         assertEquals(playerBoard.getPositionOnFaithTrack(), 0);
 
@@ -132,7 +132,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
         /*
@@ -162,7 +162,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
         try {
@@ -193,7 +193,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
         assertTrue(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
@@ -222,8 +222,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         assertTrue(playerBoard.getActiveLeaderCards().contains(met));
         assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
 
-        LeaderCard met2 = met;
-        IllegalActionException exception = assertThrows(IllegalActionException.class, () -> playerBoard.getEffectFromCard(met2));
+        IllegalActionException exception = assertThrows(IllegalActionException.class, () -> playerBoard.getEffectFromCard(met));
         assertEquals(exception.getMessage(), "This Card can only be used once: it has already been used!");
 
         assertEquals(playerBoard.getAlreadyUsedOneShotCard().size(), 1);
@@ -245,7 +244,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
         assertTrue(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
@@ -289,7 +288,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
         try {
@@ -314,7 +313,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
         try {
@@ -346,7 +345,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
 
@@ -373,7 +372,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
         LeaderCard fakeLD = new LeaderCard(2, unmetRequirements, effect);
@@ -395,7 +394,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         LeaderCard dumbLD = new LeaderCard(4, metRequirements, effect);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> playerBoard.isLeaderCardActive(dumbLD));
@@ -415,7 +414,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
 
         try {
             playerBoard.activateLeaderCard(met);
@@ -439,14 +438,14 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
 
         assertFalse(playerBoard.isLeaderCardActive(met));
     }
 
     @Test
     //Tests the correct discard of LeaderCards as if we were at the beginning of the game
-    public void ctrlLeaderCardDiscardAtBeginning() throws EndOfGameException {
+    public void ctrlLeaderCardDiscardAtBeginning() throws EndOfGameException, IllegalActionException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -456,7 +455,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         playerBoard.addCardToDevSlot(0, cardLevel1);
         playerBoard.addCardToDevSlot(1, cardLevel2);
         playerBoard.addCardToDevSlot(2, cardLevel3);
-        playerBoard.setNotPlayedLeaderCards(list);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
         playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(ReportNumOrder.instance()));
 
         assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
@@ -465,13 +464,63 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         assertEquals(playerBoard.getPositionOnFaithTrack(), 0);
 
-        playerBoard.discardLeaderCardAtTheBeginning(met);
+        List<LeaderCard> tmp = new ArrayList<>();
+        tmp.add(met);
+        playerBoard.discardLeaderCardsAtTheBeginning(tmp);
 
         assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
         assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
         assertEquals(playerBoard.getPositionOnFaithTrack(), 0); //The player was on position number 0
-
     }
 
+    @Test
+    //Tests multiple discards of LeaderCards as if it were at the beginning of the game
+    public void ctrlMultipleDiscardsLeaderCards() throws IllegalActionException {
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        LeaderCard met = new LeaderCard(3, metRequirements, new Effect());
+        list.add(met); //This card can be activated
+        LeaderCard met2 = new LeaderCard(4, metRequirements, new Effect());
+        list.add(met2);
+        playerBoard = new PlayerBoard();
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
+
+        assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
+        assertTrue(playerBoard.getNotPlayedLeaderCards().contains(met));
+        assertTrue(playerBoard.getNotPlayedLeaderCards().contains(met2));
+        assertEquals(playerBoard.getNotPlayedLeaderCards().size(), 2);
+
+        playerBoard.discardLeaderCardsAtTheBeginning(list);
+        assertTrue(playerBoard.getActiveLeaderCards().isEmpty());
+        assertTrue(playerBoard.getNotPlayedLeaderCards().isEmpty());
+    }
+
+    @Test
+    public void getEffectFromCardsWithIndexes() throws FullExtraSlotException, UnmetRequirementException, EndOfGameException {
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        LeaderCard met = new LeaderCard(3, metRequirements, new WhiteMarbleLeaderEffect(ResourceType.COIN));
+        LeaderCard met2 = new LeaderCard(4, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        list.add(met); //This card can be activated
+        list.add(met2);
+        playerBoard = new PlayerBoard();
+        playerBoard.addCardToDevSlot(0, cardLevel1);
+        playerBoard.addCardToDevSlot(1, cardLevel2);
+        playerBoard.addCardToDevSlot(2, cardLevel3);
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
+
+        playerBoard.activateLeaderCard(met);
+        playerBoard.activateLeaderCard(met2);
+        List<Integer> indexes = new ArrayList<>();
+        indexes.add(0);
+        indexes.add(1);
+
+        List<Effect> effects = playerBoard.getEffectsFromCards(indexes);
+
+        assertEquals(effects.get(0), new WhiteMarbleLeaderEffect(ResourceType.COIN));
+        assertEquals(effects.get(1), new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+    }
 
 }

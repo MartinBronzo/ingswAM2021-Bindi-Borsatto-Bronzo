@@ -93,4 +93,31 @@ public class ReportNumOrder {
     public int getSize() {
         return this.order.size();
     }
+
+    /**
+     * Constructs a copy of the specified ReportNumOrder
+     * @param original the ReportNumOrder to be cloned
+     */
+    public ReportNumOrder(ReportNumOrder original){
+        this();
+        for(ReportNum rN: original.order)
+            this.addElementInOrder(rN);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof ReportNumOrder))
+            return false;
+        ReportNumOrder tmp = (ReportNumOrder) obj;
+        if(this.order.size() != tmp.order.size())
+            return false;
+        for(int i = 0; i < this.order.size(); i++)
+            if(!this.order.get(i).equals(tmp.order.get(i)))
+                return false;
+        return true;
+    }
 }

@@ -42,6 +42,14 @@ class MarketTest {
     }
 
     @Test
+    public void ctrlCloning() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
+        Market m2 = new Market(market);
+
+        assertNotSame(market, m2);
+        assertEquals(market, m2);
+    }
+
+    @Test
     void IllegalBuilderTest() {
         assertThrows(IllegalArgumentException.class, () -> new Market(2, 2, 2, 2, 2, 2));
         assertThrows(IllegalArgumentException.class, () -> new Market(2, 2, -3, 6, 3, 3));

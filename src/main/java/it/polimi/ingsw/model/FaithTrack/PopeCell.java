@@ -110,6 +110,11 @@ public class PopeCell extends ReportCell implements Subject {
     }
 
     @Override
+    public Cell getClone() {
+        return new PopeCell(this);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null)
             return false;
@@ -120,6 +125,5 @@ public class PopeCell extends ReportCell implements Subject {
         PopeCell tmp = (PopeCell) obj;
         return this.getVictoryPoints() == tmp.getVictoryPoints() && this.getReportNum().equals(tmp.getReportNum())
                 && this.activated == tmp.activated && this.observersList.containsAll(tmp.observersList) && tmp.observersList.containsAll(this.observersList);
-
     }
 }

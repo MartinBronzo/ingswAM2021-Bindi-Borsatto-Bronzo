@@ -23,24 +23,6 @@ public class PlayerBoard {
     private final LeaderCards leaderCards;
     private final BaseProduction baseProduction;
 
-    public PlayerBoard(List<LeaderCard> leaderCards) {
-        this.playerFaithLevel = new FaithLevel();
-        this.depot = new Depot();
-        this.strongbox = new Strongbox();
-        this.devSlots = new DevSlots();
-        this.leaderCards = new LeaderCards(leaderCards);
-        this.baseProduction = new BaseProduction();
-    }
-
-    public PlayerBoard() {
-        this.playerFaithLevel = new FaithLevel();
-        this.depot = new Depot();
-        this.strongbox = new Strongbox();
-        this.devSlots = new DevSlots();
-        this.leaderCards = new LeaderCards();
-        this.baseProduction = new BaseProduction();
-    }
-
     /**
      * Returns a copy of the player's FaithLevel
      *
@@ -52,10 +34,6 @@ public class PlayerBoard {
 
     public DevSlots getDevSlots() {
         return new DevSlots(this.devSlots);
-    }
-
-    public BaseProduction getBaseProduction() {
-        return new BaseProduction(this.baseProduction);
     }
 
 
@@ -79,16 +57,6 @@ public class PlayerBoard {
         return allResourcesMap;
     }
 
-    /**
-     * Gets A Collection containing all the DevCards in the Slots.
-     *
-     * @return a collection of Cards
-     */
-    @Deprecated
-    @SuppressWarnings("Deprecated")
-    public Collection<DevCard> getAllDevCards() {
-        return devSlots.getAllDevCards();
-    }
 
     /**
      * Compares the cost of the passed DevCard with all resources owned
@@ -139,7 +107,12 @@ public class PlayerBoard {
     */
 
 
-    public void setNotPlayedLeaderCards(List<LeaderCard> notPlayedLeaderCards) {
+    /**
+     * Sets the LeaderCards this player has at the beginning of the game
+     *
+     * @param notPlayedLeaderCards this player's LeaderCards
+     */
+    public void setNotPlayedLeaderCardsAtGameBeginning(List<LeaderCard> notPlayedLeaderCards) {
         List<LeaderCard> clone = new ArrayList<>();
         for (LeaderCard lD : notPlayedLeaderCards)
             clone.add(new LeaderCard(lD));
@@ -181,14 +154,18 @@ public class PlayerBoard {
     }
 
     /**
-     * Discards the specified LeaderCard from the not-played LeaderCards the player holds and doesn't give the player any benefits. This method is
-     * used at the configuration of the game when the player is given a certain amount of LeaderCards but they can't keel all of them
+     * Discards the specified LeaderCards from the not-played LeaderCards the player holds and doesn't give the player any benefits. This method is
+     * used at the configuration of the game when the player is given a certain amount of LeaderCards but they can't keep all of them
      *
-     * @param leaderCard a LeaderCard to be discarded
-     * @throws IllegalArgumentException if the card can't be discarded
+     * @param cards the LeaderCards to be discarded
+     * @throws IllegalActionException   if the player wants to discard more cards than they have
+     * @throws IllegalArgumentException if one card can't be discarded
      */
-    public void discardLeaderCardAtTheBeginning(LeaderCard leaderCard) throws IllegalArgumentException {
-        this.leaderCards.discardLeaderCard(leaderCard);
+    public void discardLeaderCardsAtTheBeginning(List<LeaderCard> cards) throws IllegalActionException, IllegalArgumentException {
+        if (cards.size() > this.leaderCards.getNotPlayedCards().size())
+            throw new IllegalActionException("There are not enough cards to discard!");
+        for (LeaderCard lC : cards)
+            this.leaderCards.discardLeaderCard(lC);
     }
 
     /**
@@ -202,6 +179,21 @@ public class PlayerBoard {
     @Deprecated
     public Effect getEffectFromCard(LeaderCard leaderCard) throws IllegalArgumentException, IllegalActionException {
         return this.leaderCards.getEffectFromCard(leaderCard);
+    }
+
+    /**
+     * Returns a list of effects whose LeaderCard is specified via the position they have in the PlayerBoard
+     *
+     * @param cardsIndexes the list of indexes of some LeaderCards
+     * @return the effects of the specified LeaderCards
+     * @throws IllegalArgumentException if one of the specified indexes is out of bound
+     */
+    public List<Effect> getEffectsFromCards(List<Integer> cardsIndexes) throws IllegalArgumentException {
+        List<Effect> result = new ArrayList<>();
+        for (Integer i : cardsIndexes)
+            result.add(leaderCards.getEffectFromCard(i));
+
+        return result;
     }
 
     /**
@@ -260,18 +252,34 @@ public class PlayerBoard {
      * @param index   is the DevSlot number starting from 0
      * @param devCard id DevCard to be added, can't be in one of the DevSlots
      * @return true if the DevCard is added in the desired Slot
-     * @throws IndexOutOfBoundsException if index is not valid: must be between 0 and 2
-     * @throws NullPointerException      if devCard is null
-     * @throws IllegalArgumentException  if this card can't be added in the desiredSlot
+     * @throws IllegalArgumentException if index is not valid: must be between 0 and 2
+     * @throws IllegalArgumentException if devCard is null
+     * @throws IllegalArgumentException if this card can't be added in the desiredSlot
+     * @throws EndOfGameException if the player adds the 7th card in the slots
      */
-    public boolean addCardToDevSlot(int index, DevCard devCard) throws IndexOutOfBoundsException, NullPointerException, IllegalArgumentException, EndOfGameException {
-        if (this.devSlots.addDevCard(index, devCard)) {
-            if (this.devSlots.getAllDevCards().size() == 7)
-                throw new EndOfGameException("Added the seventh card in devSlots; it's the last turn");
-            return true;
+    public boolean addCardToDevSlot(int index, DevCard devCard) throws IllegalArgumentException, EndOfGameException {
+        try {
+            if (this.devSlots.addDevCard(index, devCard)) {
+                if (this.devSlots.getAllDevCards().size() == 7)
+                    throw new EndOfGameException("Added the seventh card in devSlots; it's the last turn");
+                return true;
+            }
+        } catch (IndexOutOfBoundsException | NullPointerException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
         return false;
     }
+
+    /**
+     * Returns a collection containing all the DevCards in the this player's slots.
+     *
+     * @return a collection of Cards
+     */
+    public Collection<DevCard> getAllDevCards() {
+        return devSlots.getAllDevCards();
+    }
+
+
 
     /*
     #################
@@ -286,11 +294,15 @@ public class PlayerBoard {
      * @param quantity:     the quantity of the resource
      * @param shelf:        the number of the shelf on which you want to add the resource
      * @return true if the action is performed without errors
-     * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
-     * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the shelf
+     * @throws IllegalArgumentException if the inputs the player gives are not suitable for the game
+     * @throws IllegalActionException   if what the player wants to do is not suitable for the game
      */
-    public boolean addResourceToDepot(ResourceType resourceType, int quantity, int shelf) throws NotEnoughSpaceException, IllegalArgumentException, AlreadyInAnotherShelfException {
-        return this.depot.addToShelf(resourceType, quantity, shelf);
+    public boolean addResourceToDepot(ResourceType resourceType, int quantity, int shelf) throws IllegalArgumentException, IllegalActionException {
+        try {
+            return this.depot.addToShelf(resourceType, quantity, shelf);
+        } catch (AlreadyInAnotherShelfException | NotEnoughSpaceException e) {
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     /**
@@ -299,11 +311,17 @@ public class PlayerBoard {
      * @param resourceType: the resourceType to be added
      * @param quantity:     the quantity of the resource
      * @return true if the action is performed without errors
-     * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative
-     * @throws NotEnoughSpaceException  if the resources to be added are more than the available space in the extra slot
+     * @throws IllegalArgumentException if the inputs the player gives are not suitable for the game
+     * @throws IllegalActionException   if what the player wants to do is not suitable for the game
      */
-    public boolean addResourceToLeader(ResourceType resourceType, int quantity) throws NotEnoughSpaceException, IllegalArgumentException, NoExtraSlotException, FullExtraSlotException {
-        return this.depot.addToLeader(resourceType, quantity);
+    public boolean addResourceToLeader(ResourceType resourceType, int quantity) throws IllegalArgumentException, IllegalActionException {
+        try {
+            return this.depot.addToLeader(resourceType, quantity);
+        } catch (NotEnoughSpaceException | FullExtraSlotException e) {
+            throw new IllegalActionException(e.getMessage());
+        } catch (NoExtraSlotException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
 
@@ -314,9 +332,14 @@ public class PlayerBoard {
      * @param shelf:    the number of the shelf on which you want to remove the resources
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative or if the shelf isn't between 1 and 3
+     * @throws IllegalActionException   if there aren't enough resources to remove
      */
-    public boolean removeResourceFromDepot(int quantity, int shelf) throws IllegalArgumentException, NotEnoughResourcesException {
-        return this.depot.removeFromDepot(shelf, quantity);
+    public boolean removeResourceFromDepot(int quantity, int shelf) throws IllegalArgumentException, IllegalActionException {
+        try {
+            return this.depot.removeFromDepot(shelf, quantity);
+        } catch (NotEnoughResourcesException e) {
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     /**
@@ -338,7 +361,6 @@ public class PlayerBoard {
      * @return the number of resources of the specified type that are currently in the depot
      * @throws IllegalArgumentException if the resource is a faith point
      */
-    @Deprecated
     public int getResourceFromDepot(ResourceType resource) throws IllegalArgumentException {
         return depot.getResourceFromDepot(resource);
     }
@@ -350,7 +372,6 @@ public class PlayerBoard {
      * @return the type of the resource that is contained in the specified shelf
      * @throws IllegalArgumentException if the shelf isn't between 1 and 3
      */
-    @Deprecated
     public ResourceType getResourceTypeFromShelf(int shelf) throws IllegalArgumentException {
         return depot.getShelfType(shelf);
     }
@@ -449,11 +470,9 @@ public class PlayerBoard {
      * @param resource the resource you want to know the quantity
      * @return the quantity of the specified resource that is in the strongbox
      */
-    @Deprecated
     public int getResourceFromStrongbox(ResourceType resource) {
         return strongbox.getResource(resource);
     }
-
 
     /*
     ##################
@@ -476,9 +495,7 @@ public class PlayerBoard {
      * Sets the PopeTiles this FaithLevel of the player has if they haven't been set, yet
      *
      * @param popeTiles a list of PopeTiles
-     * @deprecated Pope Tile must be set using PlayerboardConstructor
      */
-    @Deprecated
     public void setPlayerFaithLevelPopeTiles(List<PopeTile> popeTiles) {
         playerFaithLevel.setPopeTiles(popeTiles);
     }
@@ -508,7 +525,6 @@ public class PlayerBoard {
      *
      * @return the FaithTrack of the player
      */
-    @Deprecated
     public FaithTrack getFaithTrack() {
         return playerFaithLevel.getFaithTrack();
     }
@@ -518,7 +534,6 @@ public class PlayerBoard {
      *
      * @return the position of the player on the FaithTrack
      */
-    @Deprecated
     public int getPositionOnFaithTrack() {
         return this.playerFaithLevel.getPosition();
     }
@@ -546,6 +561,7 @@ public class PlayerBoard {
     public List<PopeTile> getPopeTile() {
         return playerFaithLevel.getPopeTilesSafe();
     }
+
     /*
     ####################
     #PRODUCTION METHODS#
@@ -663,6 +679,63 @@ public class PlayerBoard {
      */
     public boolean setBaseProduction(List<ResourceType> inputResources, List<ResourceType> outputResources) throws IllegalArgumentException, NullPointerException {
         return this.baseProduction.setBaseProduction(inputResources, outputResources);
+    }
+
+    /**
+     * Returns a copy of the player's BaseProduction
+     *
+     * @return a copy of the BaseProduction
+     */
+    public BaseProduction getBaseProduction() {
+        return new BaseProduction(this.baseProduction);
+    }
+
+
+     /*
+    ###############################
+    #BEGINNING OF THE GAME METHODS#
+    ###############################
+    */
+
+    /**
+     * Adds to the depot all the extra resources players might get at the beginning of the game and moves forward the player's faith marker
+     *
+     * @param extraResources  a map of all the extra resources and where to put them
+     * @param extraFaithPoint the extra steps on the FaithTrack this player gets to take
+     * @throws IllegalActionException     if the specified configuration in the depot is invalid
+     * @throws LastVaticanReportException if the player already finished the FaithTrack (they must be very lucky)
+     */
+    public void setBeginningExtraResources(Map<ResourceType, ArrayList<Integer>> extraResources, int extraFaithPoint) throws IllegalActionException, LastVaticanReportException {
+        try {
+            for (Map.Entry<ResourceType, ArrayList<Integer>> e : extraResources.entrySet()) {
+                this.addResourceToDepot(e.getKey(), e.getValue().get(0), e.getValue().get(1));
+            }
+        } catch (Exception e) {
+            throw new IllegalActionException("Can't add to depot in this way!");
+        }
+        this.moveForwardOnFaithTrack(extraFaithPoint);
+    }
+
+    @Deprecated
+    public PlayerBoard(List<LeaderCard> leaderCards) {
+        this.playerFaithLevel = new FaithLevel();
+        this.depot = new Depot();
+        this.strongbox = new Strongbox();
+        this.devSlots = new DevSlots();
+        this.leaderCards = new LeaderCards(leaderCards);
+        this.baseProduction = new BaseProduction();
+    }
+
+    /**
+     * Constructs an empty PlayerBoard (no FaithTrack, no initial LeaderCards are set)
+     */
+    public PlayerBoard() {
+        this.playerFaithLevel = new FaithLevel();
+        this.depot = new Depot();
+        this.strongbox = new Strongbox();
+        this.devSlots = new DevSlots();
+        this.leaderCards = new LeaderCards();
+        this.baseProduction = new BaseProduction();
     }
 
 }

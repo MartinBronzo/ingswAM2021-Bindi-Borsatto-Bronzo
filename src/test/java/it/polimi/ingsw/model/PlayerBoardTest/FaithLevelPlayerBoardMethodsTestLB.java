@@ -98,14 +98,14 @@ public class FaithLevelPlayerBoardMethodsTestLB {
     public void ctrlMarkerPositionManyMoves() {
         playerBoard.setPlayerFaithLevelPopeTiles(popeTileList);
 
-        PopeCell pC = (PopeCell) ft.getCell(8);
+        PopeCell pC = (PopeCell) ft.getCellNotSame(8);
         ControllerStub cS = new ControllerStub(playerBoard);
         pC.detach(pC.getObserversList().get(0));
         pC.attach(cS);
-        pC = (PopeCell) ft.getCell(16);
+        pC = (PopeCell) ft.getCellNotSame(16);
         pC.detach(pC.getObserversList().get(0));
         pC.attach(cS);
-        pC = (PopeCell) ft.getCell(24);
+        pC = (PopeCell) ft.getCellNotSame(24);
         pC.detach(pC.getObserversList().get(0));
         pC.attach(cS);
 
@@ -171,11 +171,11 @@ public class FaithLevelPlayerBoardMethodsTestLB {
     //Tests that a player gets the correct points from their PopeTiles
     public void ctrlPopeTilePoints() {
         playerBoard.setPlayerFaithLevelPopeTiles(popeTileList);
-        PopeCell pC = (PopeCell) ft.getCell(8);
+        PopeCell pC = (PopeCell) ft.getCellNotSame(8);
         ControllerStub cS = new ControllerStub(playerBoard);
         pC.detach(pC.getObserversList().get(0));
         pC.attach(cS);
-        pC = (PopeCell) ft.getCell(16);
+        pC = (PopeCell) ft.getCellNotSame(16);
         pC.detach(pC.getObserversList().get(0));
         pC.attach(cS);
 
