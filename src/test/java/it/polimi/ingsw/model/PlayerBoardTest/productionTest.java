@@ -150,7 +150,6 @@ public class productionTest {
         try {
             playerBoard.addCardToDevSlot(1, cardLevel3_2);
         }catch (EndOfGameException e){
-            e.printStackTrace();
         }
         HashMap<LeaderCard, ResourceType> leaderProductionMap = new HashMap<>();
         for (LeaderCard leadercard : leaderCards) {
@@ -213,7 +212,6 @@ public class productionTest {
         try {
             playerBoard.addCardToDevSlot(1, cardLevel3_2);
         }catch (EndOfGameException e){
-            e.printStackTrace();
         }
         devCards = new ArrayList<>();
         devCards.add(cardLevel3_2);
@@ -231,7 +229,6 @@ public class productionTest {
         try {
             playerBoard.addCardToDevSlot(1, cardLevel3_2);
         }catch (EndOfGameException e){
-            e.printStackTrace();
         }
         assertThrows(IllegalArgumentException.class, () -> playerBoard.getProductionCost(devCards, leaderCards, false));
     }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
@@ -23,6 +24,13 @@ public class GameController {
     private List<Pair<ClientHandler, PlayerBoard>> players;
     private int numberOfPlayers;
     private int maxPlayersNum;
+
+    public GameState getState() {
+        return GameState.STARTED;
+    }
+
+    public void setState(GameState waiting4players) {
+    }
 
     /**
      * This class represents the relationship between the ClientHandler of the player and the their PlayerBoard.

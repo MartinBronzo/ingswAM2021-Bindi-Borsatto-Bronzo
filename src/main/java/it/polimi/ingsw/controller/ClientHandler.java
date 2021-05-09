@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
-    //private String nickname;
+    private String nickname;
     private PlayerState state;
     private final Socket socket;
     private final BufferedReader in;
@@ -170,5 +170,9 @@ public class ClientHandler implements Runnable {
 
     public PrintWriter getOut() {
         return out;
+    }
+
+    public String getNickname() {
+        return this.nickname;
     }
 }

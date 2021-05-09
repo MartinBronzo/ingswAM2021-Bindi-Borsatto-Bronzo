@@ -62,7 +62,7 @@ public class DepotPlayerBoardMethodsTest {
     public void removeFromDepotException() throws IllegalActionException {
         Exception exception;
         playerBoard.addResourceToDepot(shield, 2, 3);
-        exception = assertThrows(NotEnoughResourcesException.class, () -> playerBoard.removeResourceFromDepot(3, 3));
+        exception = assertThrows(IllegalActionException.class, () -> playerBoard.removeResourceFromDepot(3, 3));
         assertEquals(exception.getMessage(), "Not enough resources to remove");
     }
 
