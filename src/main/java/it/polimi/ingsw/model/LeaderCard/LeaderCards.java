@@ -250,6 +250,10 @@ public class LeaderCards {
         return new ArrayList<>(notPlayedCards);
     }*/
 
+    /**
+     * Constructs a copy of the specified LeaderCards object
+     * @param original the LeaderCards object to be cloned
+     */
     public LeaderCards(LeaderCards original) {
         this.activeCards = LeaderCards.cloneList(original.activeCards);
         this.notPlayedCards = LeaderCards.cloneList(original.notPlayedCards);

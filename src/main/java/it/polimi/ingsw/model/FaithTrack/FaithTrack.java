@@ -349,6 +349,10 @@ public class FaithTrack {
                 ((PopeCell) c).attach(observer);
     }
 
+    /**
+     * Constructs a copy of the specified FaithTrack
+     * @param original the FaithTrack to be copied
+     */
     public FaithTrack(FaithTrack original){
         this.track = new ArrayList<>();
         for(Cell c: original.track)
@@ -377,7 +381,7 @@ public class FaithTrack {
         //If the thread arrives here, then the two track must be equals
         if(this.isReportNumOrderSet != tmp.isReportNumOrderSet)
             return false;
-        if(this.isReportNumOrderSet == false)
+        if(!this.isReportNumOrderSet)
             return true; //Since their ReportNumOrder is not set then they are automatically equals
         return this.reportNumOrder.equals(tmp.reportNumOrder);
     }

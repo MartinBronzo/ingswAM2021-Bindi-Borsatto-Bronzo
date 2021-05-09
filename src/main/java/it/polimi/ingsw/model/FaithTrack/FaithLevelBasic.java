@@ -34,7 +34,9 @@ public class FaithLevelBasic {
      * @param original the FaithLevelBasic to be cloned
      */
     public FaithLevelBasic(FaithLevelBasic original) {
-        this(original.faithTrack);
+        this.faithTrack = original.faithTrack;
+        this.position = original.position;
+        this.isFaithTrackSet = original.isFaithTrackSet;
     }
 
     /**
@@ -43,7 +45,7 @@ public class FaithLevelBasic {
      * @param faithTrack a FaithTrack
      */
     public void setFaithTrack(FaithTrack faithTrack) {
-        if (isFaithTrackSet == false) {
+        if (!isFaithTrackSet) {
             this.faithTrack = faithTrack;
             this.isFaithTrackSet = true;
         }
@@ -71,10 +73,7 @@ public class FaithLevelBasic {
         tmp = this.position + step;
         if (tmp < 0)
             this.position = 0;
-        else if (tmp > this.faithTrack.getTrackSize() - 1)
-            this.position = this.faithTrack.getTrackSize() - 1;
-        else
-            this.position = tmp;
+        else this.position = Math.min(tmp, this.faithTrack.getTrackSize() - 1);
     }
 
     /**
@@ -131,8 +130,8 @@ public class FaithLevelBasic {
         if (obj instanceof FaithLevel)
             return false;
         FaithLevelBasic tmp = (FaithLevelBasic) obj;
-        if (tmp.isFaithTrackSet == false)
-            if (this.isFaithTrackSet == false)
+        if (!tmp.isFaithTrackSet)
+            if (!this.isFaithTrackSet)
                 return (tmp.position == this.position);
             else
                 return false;

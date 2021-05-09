@@ -139,6 +139,10 @@ public class PopeTile {
         return tmp;
     }
 
+    /**
+     * Constructs a copy of the specified PopeTile
+     * @param original the PopeTile to be cloned
+     */
     public PopeTile(PopeTile original) {
         this(original.points, original.reportNum);
         this.activated = original.activated;
@@ -237,6 +241,24 @@ public class PopeTile {
 
 
         return tiles;
+    }
+
+    /**
+     * Returns a copy of the specified list of list of PopeTiles
+     * @param original the list to be cloned
+     * @return a copy of the list
+     */
+    public static List<List<PopeTile>> copyPopeTiles(List<List<PopeTile>> original){
+        List<PopeTile> tmp;
+        List<List<PopeTile>> copy = new ArrayList<>();
+        for(List<PopeTile> list: original){
+            tmp = new ArrayList<>();
+            for(PopeTile pT: list)
+                tmp.add(new PopeTile(pT));
+            copy.add(tmp);
+        }
+
+        return copy;
     }
 
 

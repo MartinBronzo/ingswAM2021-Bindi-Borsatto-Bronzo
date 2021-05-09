@@ -95,19 +95,22 @@ public class FaithLevelBasicTest {
 
         //Landing on the last PopeCell which activates the last Vatican Report
         LastVaticanReportException exception = assertThrows(LastVaticanReportException.class, () -> faithLevelBasic.moveFaithMarker(+ft.getTrackSize() + 10));
-        assertEquals(exception.getLastValue(), true);
+        assertTrue(exception.getLastValue());
         assertEquals(exception.getMessage(), "Last Vatican Report was activated!");
 
     }
 
     @Test
     //Tests the cloning of FaithLevelBasic
-    public void ctrlCloning() {
+    public void ctrlCloning() throws LastVaticanReportException {
         ReportNumOrder reportNumOrder = ReportNumOrder.instance();
         FaithTrack ft = FaithTrack.instance(reportNumOrder);
         FaithLevelBasic original = new FaithLevelBasic(ft);
+        original.moveFaithMarker(4);
         FaithLevelBasic clone = new FaithLevelBasic(original);
+
         assertEquals(clone, original);
+        assertEquals(clone.getPosition(), 4);
     }
 
 }
