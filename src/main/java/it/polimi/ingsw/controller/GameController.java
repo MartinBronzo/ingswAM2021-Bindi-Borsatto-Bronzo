@@ -98,16 +98,17 @@ public class GameController {
      *
      * @param player the ClientHandler of the player to be added at the game
      */
-    public void setPlayer(ClientHandler player) {
+    public boolean setPlayer(ClientHandler player) {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)
-            return;
+            return false;
         //We can't add an already added player
         //if(this.findClientHandler(player))
         if (this.getPlayerBoardOfPlayer(player) != null)
-            return;
+            return false;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
+        return true;
     }
 
     /*
