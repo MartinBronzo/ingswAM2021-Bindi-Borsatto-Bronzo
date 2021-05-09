@@ -4,10 +4,12 @@ import it.polimi.ingsw.model.ResourceType;
 
 public class MoveLeaderToShelfMessage {
     private ResourceType res;
+    private int quantity;
     private int destShelf;
 
-    public MoveLeaderToShelfMessage(ResourceType res, int destShelf) {
+    public MoveLeaderToShelfMessage(ResourceType res, int quantity, int destShelf) {
         this.res = res;
+        this.quantity = quantity;
         this.destShelf = destShelf;
     }
 
@@ -17,5 +19,9 @@ public class MoveLeaderToShelfMessage {
 
     public int getDestShelf() {
         return destShelf;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }

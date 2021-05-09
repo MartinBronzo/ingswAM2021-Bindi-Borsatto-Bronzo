@@ -2,11 +2,13 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.controller.enums.PlayerState;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.network.messages.*;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ClientHandler implements Runnable {
     private String nickname;
@@ -33,8 +35,8 @@ public class ClientHandler implements Runnable {
 
     public ClientHandler(Socket socket, GamesManagerSingleton gamesManagerSingleton) throws IOException {
         this.socket = socket;
-        this.in = new BufferedReader( new InputStreamReader(socket.getInputStream()));
-        this.out = new PrintWriter( socket.getOutputStream(), true);
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.out = new PrintWriter(socket.getOutputStream(), true);
         this.state = PlayerState.WAITING4NAME;
     }
 
@@ -53,23 +55,27 @@ public class ClientHandler implements Runnable {
             String line = in.nextLine();
             while (!line.equals("quit")) {
 
-                out.println("Received: " + line);
+                //out.println("Received: " + line);
+                // out.flush();
 
                 command = gson.fromJson(line, Command.class);
                 switch (command.getCmd()) {
 
                     case "login":
-                        //TODO: il parametro del messaggio è solo una stringa: creare comunque una classe o leggerla direttametne?
+                        LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
+                        //call method
                         break;
 
                     case "setNumPlayer":
-                        //TODO: il parametro del messaggio è solo un intero: creare comunque una classe o leggerlo direttametne?
+                        SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
+                        //call method
                         break;
 
                     case "getResourcesFromMarket":
                         GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
-                        //game.getResFromMkt(resFromMkt);
+                        game.getResFromMkt(resFromMkt, this);
                         break;
+
                     case "buyFromMarket":
                         BuyFromMarketMessage buyFromMarket = gson.fromJson(command.getParameters(), BuyFromMarketMessage.class);
                         //game.buyFromMarket(buyFromMarket));
@@ -77,7 +83,7 @@ public class ClientHandler implements Runnable {
 
                     case "getCardCost":
                         GetFromMatrixMessage cardCost = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
-                        //game.getCardCost(cardCost);
+                        game.getCardCost(cardCost, this);
                         break;
 
                     case "buyDevCard":
@@ -102,7 +108,7 @@ public class ClientHandler implements Runnable {
 
                     case "moveBetweenShelves":
                         MoveBetweenShelvesMessage moveBetweenShelves = gson.fromJson(command.getParameters(), MoveBetweenShelvesMessage.class);
-                        //game.moveBetweenShelves(moveBetweenShelves);
+                        game.moveResourcesBetweenShelves(moveBetweenShelves, this);
                         break;
 
                     case "moveLeaderToShelf":
@@ -130,7 +136,6 @@ public class ClientHandler implements Runnable {
                         break;
 
                 }
-                out.flush();
                 line = in.nextLine();
             }
 
@@ -140,13 +145,20 @@ public class ClientHandler implements Runnable {
             socket.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
+        } catch (IllegalActionException e) {
+            ErrorMessage errorMessage = new ErrorMessage("error", e.getMessage());
+            send(gson.toJson(errorMessage));
         }
 
     }
 
-    /*public void setNickname(String nickname) {
+    public void send(String message) {
+        out.println(message);
+    }
+
+    public void setNickname(String nickname) {
         this.nickname = nickname;
-    }*/
+    }
 
     public void setState(PlayerState state) {
         this.state = state;
