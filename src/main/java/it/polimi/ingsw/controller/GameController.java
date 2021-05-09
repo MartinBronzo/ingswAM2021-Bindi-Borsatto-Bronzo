@@ -3,21 +3,21 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.model.PlayerBoard;
 
-import java.util.LinkedHashMap;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
 
-    private LinkedHashMap<ClientHandler, PlayerBoard> players;
+    private List<Pair<ClientHandler, PlayerBoard>> players;
     private ClientHandler actualActive;
-    private int nDesiredPlayers;
+    private int numberOfPlayers;
 
     public ClientHandler getActualActive() {
         return actualActive;
     }
 
-    public Set<ClientHandler> getClients(){
-        return players.keySet();
+    public List<ClientHandler> getPlayersList(){
+        return new ArrayList<>();
     }
 
 
@@ -30,18 +30,21 @@ public class GameController {
         return GameState.ENDED;
     }
 
-    public boolean addClient(ClientHandler client) {
+    public boolean setPlayer(ClientHandler player) {
         return true;
     }
 
-    public int getNumberOfDesiredPlayers() {
-        return nDesiredPlayers;
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
     }
 
     public void setState(GameState configuring) {
     }
 
-    public void setNumberOfPlayers(int numberOfPlayers) {
-        this.nDesiredPlayers=numberOfPlayers;
+    public void startMainBoard(int numberOfPlayers) {
+        this.numberOfPlayers =numberOfPlayers;
+    }
+
+    private class Pair<T, T1> {
     }
 }

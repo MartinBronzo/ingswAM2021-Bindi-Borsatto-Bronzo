@@ -36,7 +36,7 @@ public final class GamesManagerSingleton
             wait();
         if (startingGame == null){
             startingGame = new GameController();
-            if (!startingGame.addClient(client)) throw new UnexpectedException("bug synchronizing GameManager happened");
+            if (!startingGame.setPlayer(client)) throw new UnexpectedException("bug synchronizing GameManager happened");
             this.clientConfigurator=client;
             startingGame.setState(GameState.CONFIGURING);
             startTimer();
@@ -44,9 +44,9 @@ public final class GamesManagerSingleton
         }
 
         GameController returnedGame = startingGame;
-        startingGame.addClient(client);
+        startingGame.setPlayer(client);
         /*IDK if I should add method start game or game is automatically started when reaches the correct number of players*/
-        if(startingGame.getNumberOfDesiredPlayers() == startingGame.getClients().size()) {
+        if(startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
             games.add(startingGame);
             startingGame = null;
         }
@@ -90,12 +90,12 @@ public final class GamesManagerSingleton
         if (numberOfPlayers<1 || numberOfPlayers>4) throw new IllegalArgumentException("configureGame: Not Valid number of players");
 
         stopTimer();
-        this.startingGame.setNumberOfPlayers(numberOfPlayers);
+        this.startingGame.startMainBoard(numberOfPlayers);
         this.startingGame.setState(GameState.WAITING4PLAYERS);
         notifyAll();
         /*IDK if I should add method start game or game is automatically started when reaches the correct number of players*/
         // case client wants play alone
-        if(startingGame.getNumberOfDesiredPlayers() == startingGame.getClients().size()) {
+        if(startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
             games.add(startingGame);
             startingGame = null;
         }
@@ -104,12 +104,12 @@ public final class GamesManagerSingleton
 
     private GameController searchPlayerInGames(String nickname) throws NoSuchElementException, NotAvailableNicknameException {
         if (startingGame != null) {
-            if (startingGame.getClients().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getState().equals(PlayerState.DISCONNECTED))) {
+            if (startingGame.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getState().equals(PlayerState.DISCONNECTED))) {
                 throw new NotAvailableNicknameException("Nick is taken");
             }
         }
-        GameController gameWithThatNick = games.stream().filter(game -> game.getClients().stream().map(ClientHandler::getNickname).anyMatch(clientUsername -> clientUsername.equals(nickname))).findAny().orElseThrow(NoSuchElementException::new);
-        if (gameWithThatNick.getClients().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getState().equals(PlayerState.DISCONNECTED))) {
+        GameController gameWithThatNick = games.stream().filter(game -> game.getPlayersList().stream().map(ClientHandler::getNickname).anyMatch(clientUsername -> clientUsername.equals(nickname))).findAny().orElseThrow(NoSuchElementException::new);
+        if (gameWithThatNick.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getState().equals(PlayerState.DISCONNECTED))) {
             throw new NotAvailableNicknameException("Nick is taken");
         }
         return gameWithThatNick;
