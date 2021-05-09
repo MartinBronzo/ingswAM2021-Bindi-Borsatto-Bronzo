@@ -125,6 +125,8 @@ public class Market {
     public HashMap<ResourceType, Integer> moveRow(int rowNumber, List<Effect> effects) throws IllegalArgumentException, NullPointerException {
         if (rowNumber < 0 || rowNumber >= 3) throw new IllegalArgumentException("moveRow Market: not valid rowNumber");
         if (effects == null) throw new NullPointerException("moveRow Market: not expected NULL effect");
+        if (effects.size() != getNumberOfWhiteMarbleInTheRow(rowNumber)) throw new IllegalArgumentException("moverowRow market: the number of effects is not the number of whitemarble in the row");
+
 
         HashMap<ResourceType, Integer> resources = new HashMap<>();
         Marble tempMarble = marbleOnSlide;
@@ -161,6 +163,7 @@ public class Market {
         if (columnNumber < 0 || columnNumber >= 4)
             throw new IllegalArgumentException("moveColumn Market: not valid columnNumber");
         if (effects == null) throw new NullPointerException("moveColumn Market: not expected NULL effect");
+        if (effects.size() != getNumberOfWhiteMarbleInTheColumn(columnNumber)) throw new IllegalArgumentException("moveColumn market: the number of effects is not the number of whitemarble in the column");
 
         HashMap<ResourceType, Integer> resources = new HashMap<>();
         Marble tempMarble = marbleOnSlide;
@@ -193,8 +196,9 @@ public class Market {
      * @throws NullPointerException     if effects is NULL
      */
     public HashMap<ResourceType, Integer> getResourcesFromRow(int rowNumber, List<Effect> effects) throws IllegalArgumentException, NullPointerException {
-        if (rowNumber < 0 || rowNumber >= 3) throw new IllegalArgumentException("moveRow Market: not valid rowNumber");
-        if (effects == null) throw new NullPointerException("moveRow Market: not expected NULL effect");
+        if (rowNumber < 0 || rowNumber >= 3) throw new IllegalArgumentException("getRow Market: not valid rowNumber");
+        if (effects == null) throw new NullPointerException("getRow Market: not expected NULL effect");
+        if (effects.size() != getNumberOfWhiteMarbleInTheRow(rowNumber)) throw new IllegalArgumentException("getRow market: the number of effects is not the number of whitemarble in the row");
 
         HashMap<ResourceType, Integer> resources = new HashMap<>();
 
@@ -205,7 +209,7 @@ public class Market {
                 System.out.println("moveRow: Something extremely bad happened in the Market");
                 return new HashMap<>();
             } catch (IndexOutOfBoundsException e) {
-                throw new IllegalArgumentException("The effects size is not the numbers of white marbles in the column");
+                throw new IllegalArgumentException("The effects size is not the numbers of white marbles in the row");
             }
         }
         return resources;
@@ -225,8 +229,10 @@ public class Market {
      */
     public HashMap<ResourceType, Integer> getResourcesFromColumn(int columnNumber, List<Effect> effects) throws IllegalArgumentException, NullPointerException {
         if (columnNumber < 0 || columnNumber >= 4)
-            throw new IllegalArgumentException("moveColumn Market: not valid columnNumber");
-        if (effects == null) throw new NullPointerException("moveColumn Market: not expected NULL effect");
+            throw new IllegalArgumentException("getColumn Market: not valid columnNumber");
+        if (effects == null) throw new NullPointerException("getColumn Market: not expected NULL effect");
+        if (effects.size() != getNumberOfWhiteMarbleInTheColumn(columnNumber)) throw new IllegalArgumentException("getColumn market: the number of effects is not the number of whitemarble in the column");
+
 
         HashMap<ResourceType, Integer> resources = new HashMap<>();
         for (int j = 0; j < marketMatrix.length; j++) {
@@ -377,5 +383,29 @@ public class Market {
     private void setMarbleOnSlide(Marble marbleOnSlide) throws NullPointerException {
         if (marbleOnSlide == null) throw new NullPointerException("setMarbleOnSlide: not accepting null parameter");
         this.marbleOnSlide = marbleOnSlide;
+    }
+
+    public int getNumberOfWhiteMarbleInTheRow(int rowNumber){
+        if (rowNumber < 0 || rowNumber >= 3) throw new IllegalArgumentException("getNWhiteRow Market: not valid rowNumber");
+
+        int c=0;
+        for (int j = 0; j < marketMatrix[rowNumber].length; j++) {
+            if (marketMatrix[rowNumber][j].isWhiteMarble())
+                c++;
+        }
+        return c;
+    }
+
+
+    public int getNumberOfWhiteMarbleInTheColumn(int columnNumber) {
+        if (columnNumber < 0 || columnNumber >= 4)
+            throw new IllegalArgumentException("getNWhiteColumn Market: not valid columnNumber");
+
+        int c = 0;
+        for (int j = 0; j < marketMatrix.length; j++) {
+            if (marketMatrix[j][columnNumber].isWhiteMarble())
+                c++;
+        }
+        return c;
     }
 }

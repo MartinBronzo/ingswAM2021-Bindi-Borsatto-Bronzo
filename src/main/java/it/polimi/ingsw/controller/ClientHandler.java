@@ -30,6 +30,13 @@ public class ClientHandler implements Runnable {
         this.state = PlayerState.WAITING4NAME;
     }
 
+    public ClientHandler(Socket socket, GamesManagerSingleton gamesManagerSingleton) throws IOException {
+        this.socket = socket;
+        this.in = new BufferedReader( new InputStreamReader(socket.getInputStream()));
+        this.out = new PrintWriter( socket.getOutputStream(), true);
+        this.state = PlayerState.WAITING4NAME;
+    }
+
     /**
      * When an object implementing interface {@code Runnable} is used
      * to create a thread, starting the thread causes the object's
