@@ -51,8 +51,13 @@ public class DiscountLeaderEffect extends Effect {
         if (!cost.containsKey(this.discountType))
             return false;
         int futureCost = cost.get(this.discountType) - this.discountAmount;
-        if (futureCost < 0)
-            futureCost = 0;
+        /*if (futureCost < 0)
+            futureCost = 0;*/
+        //If the discounted amount for the resource is less than or equal to zero, then the resource is removed from the cost
+        if(futureCost <= 0){
+            cost.remove(this.discountType);
+            return true;
+        }
         //Updates the cost
         cost.put(this.discountType, futureCost);
         return true;

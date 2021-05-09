@@ -132,6 +132,21 @@ public class MainBoard {
      */
 
     /**
+     * Returns the discounted cost of the specified DevCard by applying the specified effects
+     * @param devCard the DevCard to be discounted
+     * @param effects the effects to apply
+     * @return the discounted cost of the card
+     */
+    public HashMap<ResourceType, Integer> applyDiscountToDevCard(DevCard devCard, List<Effect> effects){
+        HashMap<ResourceType, Integer> cost = devCard.getCost();
+
+        for(Effect effect: effects)
+            effect.discountEffect(cost);
+
+        return cost;
+    }
+
+    /**
      * Returns the DevCard at the specified position
      *
      * @param row    is the chosen row of the grid

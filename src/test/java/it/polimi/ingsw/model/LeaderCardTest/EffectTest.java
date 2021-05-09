@@ -26,13 +26,13 @@ public class EffectTest {
         try {
             assertTrue(effect.whiteMarbleEffect(input));
         } catch (NegativeQuantityException e) {
-            assertTrue(false);
+            fail();
         }
         for (ResourceType tP : resources)
             assertEquals(input.get(tP), inputClone.get(tP));
 
         //Tests the effects related to the extra slots return default values
-        assertEquals(effect.extraSlotGetType(), null);
+        assertNull(effect.extraSlotGetType());
         assertEquals(effect.extraSlotGetResourceNumber(), 0);
 
         //Tests the discount effect doesn't change the given cost
@@ -65,7 +65,6 @@ public class EffectTest {
                     assertEquals(input.get(resources[i]), inputClone.get(resources[i]) + 1);
                 for (int t = j + 1; t < resources.length; t++)
                     assertEquals(input.get(resources[t]), inputClone.get(resources[t]));
-                ;
             } catch (NegativeQuantityException e) {
                 e.printStackTrace();
             }
@@ -134,7 +133,7 @@ public class EffectTest {
         costClone = new HashMap<>(cost);
         effect = new DiscountLeaderEffect(ResourceType.COIN, 20);
         assertTrue(effect.discountEffect(cost)); //It discount is greater than the original cost
-        assertEquals(cost.get(ResourceType.COIN), 0);
+        assertFalse(cost.containsKey(ResourceType.COIN));
         for (ResourceType tP : resources)
             if (!tP.equals(ResourceType.COIN))
                 assertEquals(cost.get(tP), costClone.get(tP));
@@ -157,7 +156,7 @@ public class EffectTest {
         HashMap<ResourceType, Integer> input = effect.getRequiredInput();
         for (ResourceType tP : resources)
             if (!tP.equals(ResourceType.COIN))
-                assertEquals(input.get(tP), null);
+                assertNull(input.get(tP));
             else
                 assertEquals(input.get(tP), 4);
 
@@ -171,7 +170,7 @@ public class EffectTest {
         assertEquals(output.get(ResourceType.FAITHPOINT), 1);
         for (ResourceType tP : resources)
             if (!tP.equals(ResourceType.SERVANT) && !tP.equals(ResourceType.FAITHPOINT))
-                assertEquals(output.get(tP), null);
+                assertNull(output.get(tP));
     }
 
 
