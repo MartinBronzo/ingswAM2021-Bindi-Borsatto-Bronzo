@@ -8,7 +8,6 @@ import it.polimi.ingsw.network.messages.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.Set;
 
 public class ClientHandler implements Runnable {
     private String nickname;
@@ -17,6 +16,7 @@ public class ClientHandler implements Runnable {
     private final BufferedReader in;
     private final PrintWriter out;
     private GameController game;
+    private PlayerState playerSate;
 
     /**used only for test purpose
      */
@@ -164,6 +164,10 @@ public class ClientHandler implements Runnable {
         this.game = game;
     }
 
+    public void setPlayerSate(PlayerState playerSate) {
+        this.playerSate = playerSate;
+    }
+
     /*public String getNickname() {
         return nickname;
     }*/
@@ -183,4 +187,9 @@ public class ClientHandler implements Runnable {
     public String getNickname() {
         return this.nickname;
     }
+
+    public PlayerState getPlayerSate() {
+        return playerSate;
+    }
+
 }
