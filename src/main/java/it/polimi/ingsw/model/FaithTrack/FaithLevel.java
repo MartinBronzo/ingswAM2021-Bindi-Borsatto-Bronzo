@@ -36,7 +36,7 @@ public class FaithLevel extends FaithLevelBasic {
 
     public FaithLevel() {
         super();
-        this.popeTiles = null;
+        this.popeTiles = new ArrayList<>();
         this.arePopeTilesSet = false;
     }
 
@@ -49,6 +49,23 @@ public class FaithLevel extends FaithLevelBasic {
         this(original.faithTrack, original.popeTiles);
         this.position = original.position;
         this.arePopeTilesSet = original.arePopeTilesSet;
+    }
+
+    /**
+     * Returns a new FaithLevel with every value but the FaithTrack copied from the specified FaithLevel and the FaithTrack is taken from the specified FaithTrack.
+     * @param original the FaithLevel whose every parameter but the FaithTrack is to be copied
+     * @param faithTrack the FaithTrack to be copied
+     * @return a new FaithLevel object
+     */
+    public FaithLevel getClone(FaithLevel original, FaithTrack faithTrack){
+        FaithLevel clone = new FaithLevel();
+
+        clone.position = original.position;
+        clone.popeTiles = this.cloneList(original.popeTiles);
+        clone.arePopeTilesSet = original.arePopeTilesSet;
+        clone.setFaithTrack(faithTrack);
+
+        return clone;
     }
 
     /**

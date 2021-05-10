@@ -49,11 +49,12 @@ public class MainBoard {
 
     /**
      * Moves the specified row in the market
+     *
      * @param rowNumber the row to be moved
-     * @param effects the effects of LeaderCards the player wants to use
+     * @param effects   the effects of LeaderCards the player wants to use
      * @return the resources the player gets
      * @throws IllegalArgumentException if this move can't be made (the specified row number is invalid or there are not enough effects)
-     * @throws NullPointerException if there are no specified effects
+     * @throws NullPointerException     if there are no specified effects
      */
     //The NullPointerException must be catched in the controller because it's the controller which must remember to at least send an empty list
     public HashMap<ResourceType, Integer> moveRowInMarket(int rowNumber, List<Effect> effects) throws IllegalArgumentException, NullPointerException {
@@ -62,11 +63,12 @@ public class MainBoard {
 
     /**
      * Moves the specified column in the market
+     *
      * @param columnNumber the column to be moved
-     * @param effects the effects of LeaderCards the player wants to use
+     * @param effects      the effects of LeaderCards the player wants to use
      * @return the resources the player gets
      * @throws IllegalArgumentException if this move can't be made (the specified column number is invalid or there are not enough effects)
-     * @throws NullPointerException if there are no specified effects
+     * @throws NullPointerException     if there are no specified effects
      */
     //The NullPointerException must be caught in the controller because it's the controller which must remember to at least send an empty list
     public HashMap<ResourceType, Integer> moveColumnInMarket(int columnNumber, List<Effect> effects) throws IllegalArgumentException, NullPointerException {
@@ -77,7 +79,7 @@ public class MainBoard {
      * Returns the resources the player would get if the chose to move the specified row
      *
      * @param rowNumber the row the player may want to change in the future
-     * @param effects the effects of LeaderCards the player wants to use
+     * @param effects   the effects of LeaderCards the player wants to use
      * @return the resources this move would generate
      * @throws IllegalArgumentException if this move can't be made (the specified row number is invalid or there are not enough effects)
      * @throws NullPointerException     if there are no specified effects
@@ -91,7 +93,7 @@ public class MainBoard {
      * Returns the resources the player would get if the chose to move the specified column
      *
      * @param columnNumber the column the player may want to change in the future
-     * @param effects the effects of LeaderCards the player wants to use
+     * @param effects      the effects of LeaderCards the player wants to use
      * @return the resources this move would generate
      * @throws IllegalArgumentException if this move can't be made (the specified column number is invalid or there are not enough effects)
      * @throws NullPointerException     if there are no specified effects
@@ -109,21 +111,59 @@ public class MainBoard {
      * @return the chosen Marble on the grid
      * @throws IllegalArgumentException when the position is invalid
      */
-    public Marble getMarbleInTheGrid(int row, int column) throws IllegalArgumentException{
+    public Marble getMarbleInMarket(int row, int column) throws IllegalArgumentException {
         return this.market.getMarbleInTheGrid(row, column);
     }
 
     /**
      * Discards the specified resources and gives extra Faith points to each player who is not the one discarding these resources
+     *
      * @param resToDiscard the resources to be discarded
      * @param notToBeGiven the PlayerBoard of the player who is discarding the specified resources
      * @throws LastVaticanReportException if a player reaches the last Vatican Report
      */
     public void discardResources(Map<ResourceType, Integer> resToDiscard, PlayerBoard notToBeGiven) throws LastVaticanReportException {
         int numDiscardedRes = resToDiscard.size();
-        for(PlayerBoard pB: playerBoardsList)
-            if(pB != notToBeGiven)
+        for (PlayerBoard pB : playerBoardsList)
+            if (pB != notToBeGiven)
                 pB.moveForwardOnFaithTrack(numDiscardedRes * this.stepForEachDiscardedRes);
+    }
+
+    /**
+     * Returns how many White Marbles are in the specified row
+     *
+     * @param rowNumber the row where to count the number of White Marbles
+     * @return the number of White Marbles in the row
+     * @throws IllegalArgumentException if the specified row index is invalid
+     */
+    private int getNumberOfWhiteMarbleInMarketRow(int rowNumber) throws IllegalArgumentException {
+        return this.market.getNumberOfWhiteMarbleInTheRow(rowNumber);
+    }
+
+    /**
+     * Returns how many White Marbles are in the specified column
+     *
+     * @param columnNumber the column where to count the number of White Marbles
+     * @return the number of White Marbles in the column
+     * @throws IllegalArgumentException if the specified column index is invalid
+     */
+    private int getNumberOfWhiteMarbleInTheColumn(int columnNumber) throws IllegalArgumentException{
+        return this.market.getNumberOfWhiteMarbleInTheColumn(columnNumber);
+    }
+
+    /**
+     * Returns how many White Marbles are in the specified row or column. Only one of the two parameters must be a number greater than 0 (the other must be equal to zero):
+     * if the rowNumber is greater than 0, then the method computes how many White Marbles are in the row indicated by that number, otherwise the method computes
+     * how many White Marbles are in the column specified by the columnNumber
+     * @param rowNumber the eventual row where to count the number of White Marbles
+     * @param columnNumber the eventual column where to count the number of White Marbles
+     * @return the number of White Marble in the specified row or column
+     */
+    public int getNumberOfWhiteMarbleInMarketRowOrColumn(int rowNumber, int columnNumber){
+        if(rowNumber != 0)
+            return this.getNumberOfWhiteMarbleInMarketRow(rowNumber - 1);
+        //then the rowColumn must be the only number greater than zero
+        return this.getNumberOfWhiteMarbleInTheColumn(columnNumber - 1);
     }
 
     /*
@@ -268,6 +308,8 @@ public class MainBoard {
         return new FaithTrack(this.faithTrack);
     }
 
+    public FaithTrack getFaithTrackReference() { return  this.faithTrack;}
+
     public Deck getLeaderCardsDeck() {
         return new LeaderCardDeck((LeaderCardDeck) this.leaderCardsDeck);
     }
@@ -300,7 +342,9 @@ public class MainBoard {
         return copy;
     }
 
-
+    public int getStepForEachDiscardedRes() {
+        return stepForEachDiscardedRes;
+    }
 
     /*
     ###########################################################################################################
@@ -423,7 +467,7 @@ public class MainBoard {
     }
 
     /**
-     * Constructs a copy of the specified MainBoard
+     * Constructs a copy of the specified MainBoard. The new MainBoard and its PlayerBoards all reference to the same FaithTrack.
      * @param original the MainBoard to be copied
      */
     public MainBoard(MainBoard original){
@@ -436,7 +480,7 @@ public class MainBoard {
 
         this.playerBoardsList = new ArrayList<>();
         for(PlayerBoard pB: original.playerBoardsList)
-            this.playerBoardsList.add(new PlayerBoard(pB));
+            this.playerBoardsList.add(new PlayerBoard(pB, this.faithTrack));
 
         this.numberOfLeaderCardsToGive = original.numberOfLeaderCardsToGive;
 

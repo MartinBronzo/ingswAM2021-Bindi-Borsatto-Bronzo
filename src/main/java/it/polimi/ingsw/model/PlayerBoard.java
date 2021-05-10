@@ -773,4 +773,19 @@ public class PlayerBoard {
         this.baseProduction = new BaseProduction(original.baseProduction);
     }
 
+    /**
+     * Constructs a new PlayerBoard: every parameter but the FaithTrack is copied from the specified PlayerBoard, the FaithTrack of this new PlayerBoard is the same as the one specified
+     * (this is needed in order to make sure that the new PlayerBoard references to the specified PlayerBoard).
+     * @param original the PlayerBoard whose every parameter but the FaithTrack is to be cloned
+     * @param faithTrack the FaithTrack the new PlayerBoard will reference once constructed
+     */
+    public PlayerBoard(PlayerBoard original, FaithTrack faithTrack){
+        this.playerFaithLevel = original.playerFaithLevel.getClone(original.playerFaithLevel, faithTrack);
+        this.depot = new Depot(original.depot);
+        this.strongbox = new Strongbox(original.strongbox);
+        this.devSlots = new DevSlots(original.devSlots);
+        this.leaderCards = new LeaderCards(original.leaderCards);
+        this.baseProduction = new BaseProduction(original.baseProduction);
+    }
+
 }

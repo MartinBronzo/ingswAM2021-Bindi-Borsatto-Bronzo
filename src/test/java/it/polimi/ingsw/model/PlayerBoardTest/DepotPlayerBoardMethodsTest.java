@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -89,7 +90,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void removeFromStrongbox() throws NotEnoughResourcesException, IllegalActionException {
+    public void removeFromStrongbox() throws IllegalActionException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
 
@@ -108,7 +109,7 @@ public class DepotPlayerBoardMethodsTest {
         addMap.put(servant, 24);
         removeMap.put(servant, 25);
         playerBoard.addResourcesToStrongbox(addMap);
-        exception = assertThrows(NotEnoughResourcesException.class, () -> playerBoard.removeResourcesFromStrongbox(removeMap));
+        exception = assertThrows(IllegalActionException.class, () -> playerBoard.removeResourcesFromStrongbox(removeMap));
         assertEquals(exception.getMessage(), "Not enough resources to remove");
     }
 
@@ -130,7 +131,7 @@ public class DepotPlayerBoardMethodsTest {
         playerBoard.addResourceToDepot(coin, 1, 1);
         playerBoard.addResourceToDepot(stone, 2, 3);
 
-        exception = assertThrows(NotEnoughSpaceException.class, () -> playerBoard.moveBetweenShelves(1, 3));
+        exception = assertThrows(IllegalActionException.class, () -> playerBoard.moveBetweenShelves(1, 3));
         assertEquals(exception.getMessage(), "Not enough space in source shelf");
     }
 

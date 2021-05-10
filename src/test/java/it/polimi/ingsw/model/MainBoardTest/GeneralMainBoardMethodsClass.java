@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.MainBoardTest;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
+import it.polimi.ingsw.model.Interfaces.Deck;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.Market.Market;
@@ -18,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -292,6 +295,47 @@ public class GeneralMainBoardMethodsClass {
             assertTrue(result >= 0);
             assertTrue(result < 4);
         }
+    }
+
+    @Test
+
+    public void ctrlMainBoardCloning() throws IllegalActionException, ParserConfigurationException, IOException, SAXException {
+        MainBoard original = new MainBoard(1);
+        original.drawDevCardFromDeckInDevGrid(0, 1);
+        original.giveLeaderCardsToPlayerAtGameBeginning();
+
+        MainBoard clone = new MainBoard(original);
+
+        assertNotSame(clone, original);
+        assertEquals(clone.getFaithTrack(), original.getFaithTrack());
+        assertEquals(clone.getPlayerBoard(0).getPopeTile().size(), original.getPlayerBoard(0).getPopeTile().size());
+        assertEquals(clone.getPlayerBoard(0).getNotPlayedLeaderCards().size(), original.getPlayerBoard(0).getNotPlayedLeaderCards().size());
+        assertEquals(clone.getDevGrid(), original.getDevGrid());
+        assertEquals(clone.getMarket(), original.getMarket());
+        assertEquals(clone.getNumberOfPlayers(), original.getNumberOfPlayers());
+        assertEquals(clone.getPlayerBoardsNumber(), original.getPlayerBoardsNumber());
+        assertEquals(clone.getNumberOfLeaderCardsToGive(), original.getNumberOfLeaderCardsToGive());
+        assertArrayEquals(clone.getExtraFaithPointsAtBeginning(), original.getExtraFaithPointsAtBeginning());
+        assertArrayEquals(clone.getExtraResourcesAtBeginning(), original.getExtraResourcesAtBeginning());
+        assertEquals(clone.getStepForEachDiscardedRes(), original.getStepForEachDiscardedRes());
+
+    }
+
+    @Test
+    //Tests that the PlayerBoard in the MainBoard reference to the same FaithTrack as the one stored in the MainBoard before and
+    //after cloning and that the FaithTrack in the original MainBoard and the one in the new MainBoard are equals but are not the same instance
+    public void ctrlFaithTrackReferences(){
+        assertSame(mainBoard.getPlayerBoard(0).getFaithTrack(), mainBoard.getPlayerBoard(1).getFaithTrack());
+        assertSame(mainBoard.getFaithTrackReference(), mainBoard.getPlayerBoard(0).getFaithTrack());
+
+        MainBoard clone = new MainBoard(mainBoard);
+        assertNotSame(mainBoard.getFaithTrackReference(), clone.getFaithTrackReference());
+        assertEquals(mainBoard.getFaithTrack(), clone.getFaithTrack());
+
+        assertSame(clone.getPlayerBoard(0).getFaithTrack(), clone.getPlayerBoard(1).getFaithTrack());
+        assertSame(clone.getPlayerBoard(0).getFaithTrack(), clone.getFaithTrackReference());
+
+        assertNotSame(clone.getPlayerBoard(0).getFaithTrack(), mainBoard.getPlayerBoard(0).getFaithTrack());
     }
 
 }

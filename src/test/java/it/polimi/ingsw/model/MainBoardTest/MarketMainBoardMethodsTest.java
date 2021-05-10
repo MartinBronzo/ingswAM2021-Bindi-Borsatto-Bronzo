@@ -47,7 +47,7 @@ public class MarketMainBoardMethodsTest {
     @Test
     //Tests that the inside methods of market are called: getMarble
     public void ctrlGetMarble(){
-        assertThrows(IllegalArgumentException.class, () -> mainBoard.getMarbleInTheGrid(155, 155));
+        assertThrows(IllegalArgumentException.class, () -> mainBoard.getMarbleInMarket(155, 155));
     }
 
 
