@@ -24,12 +24,14 @@ public class GameController {
     private List<Pair<ClientHandler, PlayerBoard>> players;
     private int numberOfPlayers;
     private int maxPlayersNum;
+    private GameState state;
 
     public GameState getState() {
-        return GameState.STARTED;
+        return this.state;
     }
 
     public void setState(GameState state) {
+        this.state=state;
     }
 
     public void substitutesClient(ClientHandler client) {
