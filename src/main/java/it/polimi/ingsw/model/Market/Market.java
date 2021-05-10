@@ -405,7 +405,13 @@ public class Market {
         this.marbleOnSlide = marbleOnSlide;
     }
 
-    public int getNumberOfWhiteMarbleInTheRow(int rowNumber){
+    /**
+     * Returns how many White Marbles are in the specified row
+     * @param rowNumber the row where to count the number of White Marbles
+     * @return the number of White Marbles in the row
+     * @throws IllegalArgumentException if the specified row index is invalid (it is greater than 2 or less than 0)
+     */
+    public int getNumberOfWhiteMarbleInTheRow(int rowNumber) throws IllegalArgumentException{
         if (rowNumber < 0 || rowNumber >= 3) throw new IllegalArgumentException("getNWhiteRow Market: not valid rowNumber");
 
         int c=0;
@@ -417,7 +423,13 @@ public class Market {
     }
 
 
-    public int getNumberOfWhiteMarbleInTheColumn(int columnNumber) {
+    /**
+     * Returns how many White Marbles are in the specified column
+     * @param columnNumber the column where to count the number of White Marbles
+     * @return the number of White Marbles in the column
+     * @throws IllegalArgumentException if the specified column index is invalid (it is greater than 3 or less than 0)
+     */
+    public int getNumberOfWhiteMarbleInTheColumn(int columnNumber) throws IllegalArgumentException {
         if (columnNumber < 0 || columnNumber >= 4)
             throw new IllegalArgumentException("getNWhiteColumn Market: not valid columnNumber");
 

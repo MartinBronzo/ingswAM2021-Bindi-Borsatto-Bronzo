@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
@@ -190,27 +191,23 @@ public class GameController {
      ClientHandler-RELATED METHODS
     ###########################################################################################################
      */
-    public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) {
-        //TODO: se il client passa solo la stringa prima recuperare il clienthandler
+
+    public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException{
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
-            return this.sendErrorToClientHandler(clientHandler, "Specify only a column or row!");
+           throw new IllegalArgumentException("Specify only a column or row!");
 
-        try {
-            HashMap<ResourceType, Integer> result = null;
-            PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-            List<Effect> effects = playerBoard.getEffectsFromCards(resFromMkt.getLeaderList());
-            //TODO: chiamare il metodo che controlla il numero di biglie
-            if (false /*mainBoard.checkHowManyWhiteMarble() != effects.size())*/)
-                return this.sendErrorToClientHandler(clientHandler, "There are not enough LeaderCards specified!");
+        HashMap<ResourceType, Integer> result = null;
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        List<Effect> effects = playerBoard.getEffectsFromCards(resFromMkt.getLeaderList());
 
+        //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
+        if(mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow(), resFromMkt.getCol()) > effects.size())
+            throw new IllegalArgumentException("There are not enough LeaderCards specified!");
 
-            if (resFromMkt.getCol() != 0)
-                result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol(), effects);
-            else //if(resFromMkt.getRow() != 0)
-                result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow(), effects);
-        } catch (Exception e) {
-            return this.sendErrorToClientHandler(clientHandler, e.getMessage());
-        }
+        if (resFromMkt.getCol() != 0)
+            result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol(), effects);
+        else //if(resFromMkt.getRow() != 0)
+            result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow(), effects);
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
         //TODO: mandare il messaggio positivo solo al client in questione
@@ -218,34 +215,35 @@ public class GameController {
     }
 
 
-    public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) {
-        //TODO: se il client passa solo la stringa prima recuperare il clienthandler
+    public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         if (buyFromMarket.getRow() != 0 && buyFromMarket.getCol() != 0)
-            return this.sendErrorToClientHandler(clientHandler, "Specify only a column or row!");
+            throw new IllegalArgumentException("Specify only a column or row!");
+
         try {
+            //We save the inner state of the game
+            this.saveState();
+
             PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
             List<Effect> effects = playerBoard.getEffectsFromCards(buyFromMarket.getLeaderList());
-            //TODO: chiamare il metodo che controlla il numero di biglie
-            if (false /*mainBoard.checkHowManyWhiteMarble() != effects.size())*/)
-                return this.sendErrorToClientHandler(clientHandler, "There are not enough LeaderCards specified!");
 
-            //TODO: salvare lo stato interno della mainboard
+            //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
+            if(mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(buyFromMarket.getRow(), buyFromMarket.getCol()) > effects.size())
+                throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+
             HashMap<ResourceType, Integer> res;
             if (buyFromMarket.getCol() != 0)
                 res = mainBoard.moveColumnInMarket(buyFromMarket.getCol(), effects);
             else
                 res = mainBoard.moveRowInMarket(buyFromMarket.getRow(), effects);
 
-            //TODO: aggiungere le risosre al depot, decrementando di volta in volta le risorse che ci sono dentro res
             List<DepotParams> depotRes = buyFromMarket.getDepotRes();
+
             //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
-            //TODO: controllare anche che la dimensione è la stessa tra depotRes e res? e mettere res.get(...) != e.getQt()?
             for (DepotParams e : depotRes) {
                 if (res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt()) {
-                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
-                    //TODO: ripristinare stato precedente
-                    return false;
+                    //this.rollbackState();
+                    throw new IllegalArgumentException("The given input parameters for the Depot don't match the result!");
                 }
 
                 //If the thread arrives here, then the current <ResType, Integer> is fine because at least it is coherent to what has been computed
@@ -258,9 +256,8 @@ public class GameController {
                 //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
                 //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
                 if (res.get(e.getKey()) == null || res.get(e.getKey()) < e.getValue()) {
-                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
-                    //TODO: ripristinare stato precedente
-                    return false;
+                    //this.rollbackState();
+                    throw new IllegalArgumentException("The given input parameters for the LeaderDepot don't match the result!");
                 }
 
                 //If the thread arrives here, then the current <ResType, Integer> is fine because at least it is coherent to what has been computed
@@ -268,16 +265,21 @@ public class GameController {
                 playerBoard.addResourceToLeader(e.getKey(), e.getValue());
             }
 
-            //TODO: potrebbe lanciare LastVaticanReport, non va gestita?
             //Discards the Extra resources
             mainBoard.discardResources(buyFromMarket.getDiscardRes(), playerBoard);
 
-        } catch (Exception e) {
-            return this.sendErrorToClientHandler(clientHandler, e.getMessage());
+        } catch (IllegalActionException e){
+            this.rollbackState();
+            throw new IllegalActionException(e.getMessage());
+        } catch (IllegalArgumentException e){
+            this.rollbackState();
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (LastVaticanReportException e) {
+            //TODO: creare metodo per il last vatican report aftermath
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio positivo solo al client in questione
+        //TODO: mandare il messaggio in broadcast
         return true;
     }
 
