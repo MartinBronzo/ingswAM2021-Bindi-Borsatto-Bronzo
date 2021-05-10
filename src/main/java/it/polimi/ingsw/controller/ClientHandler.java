@@ -63,7 +63,8 @@ public class ClientHandler implements Runnable {
 
                     case "setNumPlayer":
                         SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
-                        //call method
+                        //TODO: controllare correttezza
+                        game.startMainBoard(setNumPlayerMessage.getNumPlayer());
                         break;
 
                     case "getResourcesFromMarket":
@@ -83,7 +84,7 @@ public class ClientHandler implements Runnable {
 
                     case "buyDevCard":
                         BuyDevCardMessage buyDevCard = gson.fromJson(command.getParameters(), BuyDevCardMessage.class);
-                        //game.buyDevCard(buyDevCard);
+                        game.buyDevCard(buyDevCard, this);
                         break;
 
                     case "getProductionCost":
@@ -108,12 +109,12 @@ public class ClientHandler implements Runnable {
 
                     case "moveLeaderToShelf":
                         MoveLeaderToShelfMessage moveLeaderToShelf = gson.fromJson(command.getParameters(), MoveLeaderToShelfMessage.class);
-                        //game.moveLeaderToShelf(moveLeaderToShelf);
+                        game.moveResourcesToShelf(moveLeaderToShelf, this);
                         break;
 
                     case "moveShelfToLeader":
                         MoveShelfToLeaderMessage moveShelfToLeader = gson.fromJson(command.getParameters(), MoveShelfToLeaderMessage.class);
-                        //game.moveShelfToLeader(moveShelfToLeader);
+                        game.moveResourcesToLeader(moveShelfToLeader, this);
                         break;
 
                     case "discardLeader":

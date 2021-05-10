@@ -331,31 +331,42 @@ public class GameController {
         DevCard devCard;
         HashMap<ResourceType, Integer> cost;
 
-        //TODO: bisogna applicare il discount effect ma non so dove si trova
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        List<Effect> effects = playerBoard.getEffectsFromCards(devCardMessage.getLeaderList());
+
         //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
         devCard = mainBoard.getDevCardFromDeckInDevGrid(devCardMessage.getRow() - 1, devCardMessage.getCol() - 1);
-        cost = devCard.getCost();
+        cost = mainBoard.applyDiscountToDevCard(devCard, effects);
 
         //send message only to the client that sent the message
         //TODO: nel messaggio io metterei anche il risultato dell'azione(status) per dire se è andata bene o no
         Gson gson = new Gson();
-        clientHandler.send(gson.toJson(cost));
+        //clientHandler.send(gson.toJson(...));
         return true;
     }
 
     public boolean buyDevCard(BuyDevCardMessage buyDevCard, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
-        //TODO: salvare lo stato interno della mainboard
         DevCard devCard;
         HashMap<ResourceType, Integer> cost;
 
-        //TODO: bisogna applicare il discount effect ma non so dove si trova
-        //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
-        devCard = mainBoard.drawDevCardFromDeckInDevGrid(buyDevCard.getRow() - 1, buyDevCard.getCol() - 1);
-        cost = devCard.getCost();
+        //saves the state of the model
+        this.saveState();
+
 
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        List<Effect> effects = playerBoard.getEffectsFromCards(buyDevCard.getLeaders());
+        try {
+            //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
+            devCard = mainBoard.drawDevCardFromDeckInDevGrid(buyDevCard.getRow() - 1, buyDevCard.getCol() - 1);
+            cost = mainBoard.applyDiscountToDevCard(devCard, effects);
+        }catch (IllegalArgumentException e){
+            this.rollbackState();
+            throw new IllegalArgumentException(e.getMessage());
+        }catch (IllegalActionException e){
+            this.rollbackState();
+            throw new IllegalActionException(e.getMessage());
+        }
 
-        //TODO: rimuovere le risorse dal deposito
         List<DepotParams> depotRes = buyDevCard.getDepotRes();
         HashMap<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
         HashMap<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
@@ -363,7 +374,7 @@ public class GameController {
         //check if depot params are correct
         for (DepotParams e : depotRes) {
             if (cost.get(e.getResourceType()) == null || cost.get(e.getResourceType()) < e.getQt()) {
-                //TODO: ripristinare stato precedente
+                this.rollbackState();
                 throw new IllegalArgumentException("Error with resource quantity in depot");
             }
 
@@ -374,7 +385,7 @@ public class GameController {
         //check if leaderSlot params are correct
         for (Map.Entry<ResourceType, Integer> e : resToLeader.entrySet()) {
             if (cost.get(e.getKey()) == null || cost.get(e.getKey()) < e.getValue()) {
-                //TODO: ripristinare stato precedente
+                this.rollbackState();
                 throw new IllegalArgumentException("Error with resource quantity in leader depot");
             }
 
@@ -385,7 +396,7 @@ public class GameController {
         //check if strongbox params are correct
         for (Map.Entry<ResourceType, Integer> e : strongboxRes.entrySet()) {
             if (cost.get(e.getKey()) == null || cost.get(e.getKey()) < e.getValue()) {
-                //TODO: ripristinare stato precedente
+                this.rollbackState();
                 throw new IllegalArgumentException("Error with resource quantity in strongbox");
             }
 
@@ -396,7 +407,7 @@ public class GameController {
         //final check
         for (Map.Entry<ResourceType, Integer> e : cost.entrySet()) {
             if (cost.get(e.getKey()) != 0) {
-                //TODO: ripristinare stato precedente
+                this.rollbackState();
                 throw new IllegalArgumentException("Error with resource quantity selected");
             }
         }
