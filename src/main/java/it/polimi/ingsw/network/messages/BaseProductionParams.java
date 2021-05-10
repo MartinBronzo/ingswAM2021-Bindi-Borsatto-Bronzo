@@ -1,34 +1,35 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.model.BaseProduction;
 import it.polimi.ingsw.model.ResourceType;
 
-public class BaseProductionParams {
-    private boolean activate;
-    private ResourceType baseInput;
-    private ResourceType baseOutput;
+import java.util.List;
 
-    public BaseProductionParams(boolean activate, ResourceType baseInput){
-        this.activate = activate;
+public class BaseProductionParams {
+    private boolean activated;
+    private List<ResourceType> baseInput;
+    private List<ResourceType> baseOutput;
+
+    public BaseProductionParams(boolean activated, List<ResourceType> baseInput){
+        this.activated = activated;
         this.baseInput = baseInput;
         this.baseOutput = null;
     }
 
-    public BaseProductionParams(boolean activate, ResourceType baseInput, ResourceType baseOutput){
-        this.activate = activate;
+    public BaseProductionParams(boolean activated, List<ResourceType> baseInput, List<ResourceType> baseOutput){
+        this.activated = activated;
         this.baseInput = baseInput;
         this.baseOutput = baseOutput;
     }
 
-    public boolean isActivate() {
-        return activate;
+    public boolean isActivated() {
+        return activated;
     }
 
-    public ResourceType getBaseInput() {
+    public List<ResourceType> getBaseInput() {
         return baseInput;
     }
 
-    public ResourceType getBaseOutput() {
+    public List<ResourceType> getBaseOutput() {
         return baseOutput;
     }
 }

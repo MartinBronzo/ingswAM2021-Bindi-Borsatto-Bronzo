@@ -284,6 +284,10 @@ public class PlayerBoard {
         return false;
     }
 
+    public DevCard getUsableDevCardFromDevSlotIndex(int index){
+        return devSlots.getDevSlot(index).getLastDevCard();
+    }
+
     /**
      * Returns a collection containing all the DevCards in the this player's slots.
      *

@@ -496,7 +496,7 @@ public class GameController {
         return true;
     }
 
-    public boolean moveResourcesToShelf(MoveLeaderToShelfMessage moveLeaderToShelfMessage, ClientHandler clientHandler) throws IllegalActionException {
+    public boolean moveResourcesToShelf(MoveLeaderToShelfMessage moveLeaderToShelfMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         playerBoard.moveFromLeaderToShelf(moveLeaderToShelfMessage.getRes(), moveLeaderToShelfMessage.getQuantity(), moveLeaderToShelfMessage.getDestShelf());
 
@@ -508,6 +508,36 @@ public class GameController {
 
         return true;
     }
+
+    public boolean getProductionCost(GetProductionCostMessage getProductionCostMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
+        HashMap<ResourceType, Integer> prodCost;
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        BaseProductionParams baseProductionParams = getProductionCostMessage.getBaseProd();
+
+        if(baseProductionParams.isActivated()){
+            playerBoard.setBaseProduction(baseProductionParams.getBaseInput(), baseProductionParams.getBaseOutput());
+        }
+
+        //get devCard from devSlot index
+        List<DevCard> devList = new ArrayList<>();
+        for(int index : getProductionCostMessage.getDevCards())
+            devList.add(playerBoard.getUsableDevCardFromDevSlotIndex(index));
+
+        //get leaderCard from index
+        List<LeaderCard>leaderList = new ArrayList<>();
+        for(int index : getProductionCostMessage.getLeaders())
+            leaderList.add(playerBoard.getActiveLeaderCards().get(index));
+
+        prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
+
+        //send message only to the client that sent the message
+        //TODO: nel messaggio io metterei anche il risultato dell'azione(status) per dire se è andata bene o no
+        Gson gson = new Gson();
+        //clientHandler.send(gson.toJson(...));
+        return true;
+    }
+
+
 
 
 

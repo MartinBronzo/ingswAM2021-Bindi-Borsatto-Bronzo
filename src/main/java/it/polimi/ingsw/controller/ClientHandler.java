@@ -89,7 +89,7 @@ public class ClientHandler implements Runnable {
 
                     case "getProductionCost":
                         GetProductionCostMessage productionCost = gson.fromJson(command.getParameters(), GetProductionCostMessage.class);
-                        //game.getProductionCost(productionCost);
+                        game.getProductionCost(productionCost, this);
                         break;
 
                     case "activateProductionMesssage":
@@ -167,10 +167,6 @@ public class ClientHandler implements Runnable {
     public void setPlayerSate(PlayerState playerSate) {
         this.playerSate = playerSate;
     }
-
-    /*public String getNickname() {
-        return nickname;
-    }*/
 
     public PlayerState getState() {
         return state;
