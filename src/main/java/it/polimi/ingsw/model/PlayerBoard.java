@@ -298,6 +298,10 @@ public class PlayerBoard {
         return false;
     }
 
+    public DevCard getUsableDevCardFromDevSlotIndex(int index){
+        return devSlots.getDevSlot(index).getLastDevCard();
+    }
+
     /**
      * Returns a collection containing all the DevCards in the this player's slots.
      *
@@ -683,7 +687,7 @@ public class PlayerBoard {
 
         usableDevCards = this.devSlots.getUsableDevCards();
         if (!usableDevCards.containsAll(ProductiveDevCards))
-            throw new IllegalArgumentException("One or more devCards are not activatable cards in the Slot");
+            throw new IllegalArgumentException("One or more devCards are not activable cards in the Slot");
 
         activeLeaderCards = this.leaderCards.getActiveCards();
         if (!activeLeaderCards.containsAll(productiveLeaderCards))

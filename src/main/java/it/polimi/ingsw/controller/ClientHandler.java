@@ -63,7 +63,8 @@ public class ClientHandler implements Runnable {
 
                     case "setNumPlayer":
                         SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
-                        //call method
+                        //TODO: controllare correttezza
+                        game.startMainBoard(setNumPlayerMessage.getNumPlayer());
                         break;
 
                     case "getResourcesFromMarket":
@@ -88,7 +89,7 @@ public class ClientHandler implements Runnable {
 
                     case "getProductionCost":
                         GetProductionCostMessage productionCost = gson.fromJson(command.getParameters(), GetProductionCostMessage.class);
-                        //game.getProductionCost(productionCost);
+                        game.getProductionCost(productionCost, this);
                         break;
 
                     case "activateProductionMesssage":
@@ -108,12 +109,12 @@ public class ClientHandler implements Runnable {
 
                     case "moveLeaderToShelf":
                         MoveLeaderToShelfMessage moveLeaderToShelf = gson.fromJson(command.getParameters(), MoveLeaderToShelfMessage.class);
-                        //game.moveLeaderToShelf(moveLeaderToShelf);
+                        game.moveResourcesToShelf(moveLeaderToShelf, this);
                         break;
 
                     case "moveShelfToLeader":
                         MoveShelfToLeaderMessage moveShelfToLeader = gson.fromJson(command.getParameters(), MoveShelfToLeaderMessage.class);
-                        //game.moveShelfToLeader(moveShelfToLeader);
+                        game.moveResourcesToLeader(moveShelfToLeader, this);
                         break;
 
                     case "discardLeader":
@@ -166,10 +167,6 @@ public class ClientHandler implements Runnable {
     public void setPlayerSate(PlayerState playerSate) {
         this.playerSate = playerSate;
     }
-
-    /*public String getNickname() {
-        return nickname;
-    }*/
 
     public PlayerState getState() {
         return state;
