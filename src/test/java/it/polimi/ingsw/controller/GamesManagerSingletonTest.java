@@ -6,11 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import java.io.IOException;
-import java.net.Socket;
 import java.rmi.UnexpectedException;
 
-import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GamesManagerSingletonTest {
@@ -19,7 +16,6 @@ class GamesManagerSingletonTest {
     private ClientHandler client2;
     private ClientHandler client3;
     private ClientHandler client4;
-    private Socket socket;
 
     @BeforeAll
     static void setUpAll() {
