@@ -13,11 +13,11 @@ public class BuyDevCardMessage {
     private int row, col;
     private List<Integer> leader;
     private List<DepotParams> depotRes;
-    private Map<ResourceType, Integer> leaderRes;
-    private Map<ResourceType, Integer> strongboxRes;
+    private HashMap<ResourceType, Integer> leaderRes;
+    private HashMap<ResourceType, Integer> strongboxRes;
     private int devSlot;
 
-    public BuyDevCardMessage(int row, int col, List<Integer> leader, List<DepotParams> depotRes, Map<ResourceType, Integer> leaderRes, Map<ResourceType, Integer> strongboxRes, int devSlot) {
+    public BuyDevCardMessage(int row, int col, List<Integer> leader, List<DepotParams> depotRes, HashMap<ResourceType, Integer> leaderRes, HashMap<ResourceType, Integer> strongboxRes, int devSlot) {
         this.row = row;
         this.col = col;
         this.leader = leader;
@@ -43,11 +43,11 @@ public class BuyDevCardMessage {
         return new ArrayList<>(depotRes);
     }
 
-    public Map<ResourceType, Integer> getLeaderRes() {
+    public HashMap<ResourceType, Integer> getLeaderRes() {
         return new HashMap<>(leaderRes);
     }
 
-    public Map<ResourceType, Integer> getStrongboxRes() {
+    public HashMap<ResourceType, Integer> getStrongboxRes() {
         return new HashMap<>(strongboxRes);
     }
 

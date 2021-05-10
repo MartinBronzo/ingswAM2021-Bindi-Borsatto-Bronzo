@@ -1,16 +1,16 @@
 package it.polimi.ingsw.controller;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.controller.enums.GameState;
+import it.polimi.ingsw.exceptions.EndOfGameException;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.network.messages.BuyDevCardMessage;
-import it.polimi.ingsw.network.messages.BuyFromMarketMessage;
-import it.polimi.ingsw.network.messages.DepotParams;
-import it.polimi.ingsw.network.messages.GetFromMatrixMessage;
+import it.polimi.ingsw.network.messages.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -273,116 +273,135 @@ public class GameController {
         return true;
     }
 
-    public boolean getCardCost(GetFromMatrixMessage devCardMessage, ClientHandler clientHandler) {
-        //TODO: se il client passa solo la stringa prima recuperare il clienthandler
+    public boolean getCardCost(GetFromMatrixMessage devCardMessage, ClientHandler clientHandler) throws IllegalArgumentException {
         DevCard devCard;
         HashMap<ResourceType, Integer> cost;
-        try {
-            //TODO: bisogna applicare il discount effect ma non so dove si trova
-            //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
-            devCard = mainBoard.getDevCardFromDeckInDevGrid(devCardMessage.getRow() - 1, devCardMessage.getCol() - 1);
-            cost = devCard.getCost();
 
+        //TODO: bisogna applicare il discount effect ma non so dove si trova
+        //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
+        devCard = mainBoard.getDevCardFromDeckInDevGrid(devCardMessage.getRow() - 1, devCardMessage.getCol() - 1);
+        cost = devCard.getCost();
 
-        } catch (Exception e) {
-            return this.sendErrorToClientHandler(clientHandler, e.getMessage());
-        }
-
-        //TODO: mandare il messaggio positivo solo al client in questione
+        //send message only to the client that sent the message
+        //TODO: nel messaggio io metterei anche il risultato dell'azione(status) per dire se è andata bene o no
+        Gson gson = new Gson();
+        clientHandler.send(gson.toJson(cost));
         return true;
     }
 
-    public boolean buyDevCard(BuyDevCardMessage buyDevCard, ClientHandler clientHandler) {
-        //TODO: se il client passa solo la stringa prima recuperare il clienthandler
-
+    public boolean buyDevCard(BuyDevCardMessage buyDevCard, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         //TODO: salvare lo stato interno della mainboard
+        DevCard devCard;
+        HashMap<ResourceType, Integer> cost;
+
+        //TODO: bisogna applicare il discount effect ma non so dove si trova
+        //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
+        devCard = mainBoard.drawDevCardFromDeckInDevGrid(buyDevCard.getRow() - 1, buyDevCard.getCol() - 1);
+        cost = devCard.getCost();
+
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+
+        //TODO: rimuovere le risorse dal deposito
+        List<DepotParams> depotRes = buyDevCard.getDepotRes();
+        HashMap<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
+        HashMap<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
+
+        //check if depot params are correct
+        for (DepotParams e : depotRes) {
+            if (cost.get(e.getResourceType()) == null || cost.get(e.getResourceType()) < e.getQt()) {
+                //TODO: ripristinare stato precedente
+                throw new IllegalArgumentException("Error with resource quantity in depot");
+            }
+
+            cost.put(e.getResourceType(), cost.get(e.getResourceType()) - e.getQt()); //Updates the cost map
+            playerBoard.removeResourceFromDepot(e.getQt(), e.getShelf());
+        }
+
+        //check if leaderSlot params are correct
+        for (Map.Entry<ResourceType, Integer> e : resToLeader.entrySet()) {
+            if (cost.get(e.getKey()) == null || cost.get(e.getKey()) < e.getValue()) {
+                //TODO: ripristinare stato precedente
+                throw new IllegalArgumentException("Error with resource quantity in leader depot");
+            }
+
+            cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the cost map
+            playerBoard.removeResourceFromLeader(e.getKey(), e.getValue());
+        }
+
+        //check if strongbox params are correct
+        for (Map.Entry<ResourceType, Integer> e : strongboxRes.entrySet()) {
+            if (cost.get(e.getKey()) == null || cost.get(e.getKey()) < e.getValue()) {
+                //TODO: ripristinare stato precedente
+                throw new IllegalArgumentException("Error with resource quantity in strongbox");
+            }
+
+            cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the cost map
+            playerBoard.removeResourcesFromStrongbox(strongboxRes);
+        }
+
+        //final check
+        for (Map.Entry<ResourceType, Integer> e : cost.entrySet()) {
+            if (cost.get(e.getKey()) != 0) {
+                //TODO: ripristinare stato precedente
+                throw new IllegalArgumentException("Error with resource quantity selected");
+            }
+        }
+
+        //TODO: lancia EndOfGameException
         //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
         try {
-            DevCard devCard;
-            HashMap<ResourceType, Integer> cost;
-
-            //TODO: bisogna applicare il discount effect ma non so dove si trova
-            //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
-            devCard = mainBoard.drawDevCardFromDeckInDevGrid(buyDevCard.getRow() - 1, buyDevCard.getCol() - 1);
-            cost = devCard.getCost();
-
-            PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-
-            //TODO: rimuovere le risorse dal deposito
-            List<DepotParams> depotRes = buyDevCard.getDepotRes();
-            Map<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
-            Map<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
-
-            //Let's check if the description the player gives in the message is valid: all the resources they put are present in the cost of the card
-            //(we check both if the indicated ResourceType is present and if it is present with the right quantity)
-            if (depotRes.size() + resToLeader.size() + strongboxRes.size() != cost.size()){
-                this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
-                //TODO: ripristinare stato precedente
-                return false;
-            }
-
-            //check if depot params are correct
-            for (DepotParams e : depotRes) {
-                if (cost.get(e.getResourceType()) == null || cost.get(e.getResourceType()) != e.getQt()) {
-                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
-                    //TODO: ripristinare stato precedente
-                    return false;
-                }
-
-                //If the thread arrives here, then the current <ResType, Integer> is fine because at least it is coherent to what has been computed
-                cost.put(e.getResourceType(), cost.get(e.getResourceType()) - e.getQt()); //Updates the cost map
-                playerBoard.removeResourceFromDepot(e.getQt(), e.getShelf());
-            }
-
-            //check if leaderSlot params are correct
-            for (Map.Entry<ResourceType, Integer> e : resToLeader.entrySet()) {
-                //Let's check if the description the player gives in the message is valid: all the resources they put are present in the cost of the card
-                //(we check both if the indicated ResourceType is present and if it is present with the right quantity)
-                if (cost.get(e.getKey()) == null || cost.get(e.getKey()) < e.getValue()) {
-                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
-                    //TODO: ripristinare stato precedente
-                    return false;
-                }
-
-                cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the res map
-                playerBoard.addResourceToLeader(e.getKey(), e.getValue());
-            }
-
-            //check if strongbox params are correct
-            for (Map.Entry<ResourceType, Integer> e : strongboxRes.entrySet()) {
-                //Let's check if the description the player gives in the message is valid: all the resources they put are present in the cost of the card
-                //(we check both if the indicated ResourceType is present and if it is present with the right quantity)
-                if (cost.get(e.getKey()) == null || cost.get(e.getKey()) < e.getValue()) {
-                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the ");
-                    //TODO: ripristinare stato precedente
-                    return false;
-                }
-
-                cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the res map
-                playerBoard.addResourceToLeader(e.getKey(), e.getValue());
-            }
-
-            //final check
-            for (Map.Entry<ResourceType, Integer> e : cost.entrySet()) {
-                if(cost.get(e.getKey()) != 0){
-                    this.sendErrorToClientHandler(clientHandler, "The given input parameters don't match the cost of the card");
-                    //TODO: ripristinare stato precedente
-                    return false;
-                }
-            }
-
-            //TODO: lancia EndOfGameException
-            //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
             playerBoard.addCardToDevSlot(buyDevCard.getDevSlot() - 1, devCard);
-
-        } catch (Exception e) {
-            return this.sendErrorToClientHandler(clientHandler, e.getMessage());
+        } catch (EndOfGameException e) {
+            //TODO: gestire eccezione
         }
 
-        //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio positivo solo al client in questione
+        //TODO: mandare broadcast a tutti i client
+        //TODO: creare messaggio di update
+        for (Pair<ClientHandler, PlayerBoard> user : players) {
+            //user.getKey().send(update);
+        }
         return true;
     }
+
+    public boolean moveResourcesBetweenShelves(MoveBetweenShelvesMessage moveBtwShelvesMessage, ClientHandler clientHandler) throws IllegalActionException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        playerBoard.moveBetweenShelves(moveBtwShelvesMessage.getSourceShelf(), moveBtwShelvesMessage.getDestShelf());
+
+        //TODO: mandare broadcast a tutti i client
+        //TODO: creare messaggio di update
+        for (Pair<ClientHandler, PlayerBoard> user : players) {
+            //user.getKey().send(update);
+        }
+        return true;
+    }
+
+    public boolean moveResourcesToLeader(MoveShelfToLeaderMessage moveShelfToLeaderMessage, ClientHandler clientHandler) throws IllegalActionException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        playerBoard.moveFromShelfToLeader(moveShelfToLeaderMessage.getNumShelf(), moveShelfToLeaderMessage.getQuantity());
+
+        //TODO: mandare broadcast a tutti i client
+        //TODO: creare messaggio di update
+        for (Pair<ClientHandler, PlayerBoard> user : players) {
+            //user.getKey().send(update);
+        }
+        return true;
+    }
+
+    public boolean moveResourcesToShelf(MoveLeaderToShelfMessage moveLeaderToShelfMessage, ClientHandler clientHandler) throws IllegalActionException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        playerBoard.moveFromLeaderToShelf(moveLeaderToShelfMessage.getRes(), moveLeaderToShelfMessage.getQuantity(), moveLeaderToShelfMessage.getDestShelf());
+
+        //TODO: mandare broadcast a tutti i client
+        //TODO: creare messaggio di update
+        for (Pair<ClientHandler, PlayerBoard> user : players) {
+            //user.getKey().send(update);
+        }
+
+        return true;
+    }
+
+
+
 
 
      /*

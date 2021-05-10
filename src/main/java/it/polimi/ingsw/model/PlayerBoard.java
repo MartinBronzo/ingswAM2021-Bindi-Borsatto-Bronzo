@@ -350,8 +350,12 @@ public class PlayerBoard {
      * @return true if the action is performed without errors
      * @throws IllegalArgumentException if the resource is a faith point or if the quantity is negative
      */
-    public boolean removeResourceFromLeader(ResourceType resourceType, int quantity) throws IllegalArgumentException, NotEnoughResourcesException, NoExtraSlotException {
-        return this.depot.removeFromLeader(resourceType, quantity);
+    public boolean removeResourceFromLeader(ResourceType resourceType, int quantity) throws IllegalArgumentException, IllegalActionException {
+        try {
+            return this.depot.removeFromLeader(resourceType, quantity);
+        }catch (NoExtraSlotException | NotEnoughResourcesException e){
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     /**
@@ -404,10 +408,14 @@ public class PlayerBoard {
      * @param sourceShelf the number of the first shelf, must be between 1 and 3
      * @param destShelf   the number of the second shelf, must be between 1 and 3
      * @return true if the action is performed without errors
-     * @throws NotEnoughSpaceException if the sourceShelf or the destShelf hasn't enough space to store the resources of the other shelf
+     * @throws IllegalActionException if the sourceShelf or the destShelf hasn't enough space to store the resources of the other shelf
      */
-    public boolean moveBetweenShelves(int sourceShelf, int destShelf) throws NotEnoughSpaceException {
-        return depot.moveBetweenShelves(sourceShelf, destShelf);
+    public boolean moveBetweenShelves(int sourceShelf, int destShelf) throws IllegalActionException {
+        try {
+            return depot.moveBetweenShelves(sourceShelf, destShelf);
+        }catch (NotEnoughSpaceException e){
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     /**
@@ -416,13 +424,17 @@ public class PlayerBoard {
      * @param shelfNum the number of the shelf from which remove the resources, must be between 1 and 3
      * @param quantity the number of resources to move to the extraSlot
      * @return true if the action is performed without errors
-     * @throws NotEnoughSpaceException     if there isn't enough space in the extra slot to move the resources
-     * @throws NoExtraSlotException        if there isn't an active extra slot for that type of resource
-     * @throws NotEnoughResourcesException if there aren't enough resources to move from the shelf of the depot
-     * @throws FullExtraSlotException      if the extra slot is already full of resources
+     * @throws IllegalActionException     if there isn't enough space in the extra slot to move the resources
+     * @throws IllegalActionException        if there isn't an active extra slot for that type of resource
+     * @throws IllegalActionException if there aren't enough resources to move from the shelf of the depot
+     * @throws IllegalActionException      if the extra slot is already full of resources
      */
-    public boolean moveFromShelfToLeader(int shelfNum, int quantity) throws NotEnoughSpaceException, NoExtraSlotException, NotEnoughResourcesException, FullExtraSlotException {
-        return depot.moveToLeader(shelfNum, quantity);
+    public boolean moveFromShelfToLeader(int shelfNum, int quantity) throws IllegalActionException {
+        try {
+            return depot.moveToLeader(shelfNum, quantity);
+        }catch (NotEnoughSpaceException | NoExtraSlotException | NotEnoughResourcesException | FullExtraSlotException e){
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     /**
@@ -432,13 +444,19 @@ public class PlayerBoard {
      * @param quantity the number of resources to move to the shelf
      * @param shelfNum the number of the shelf in which you want to move the resources
      * @return true if the action is performed without errors
-     * @throws NotEnoughSpaceException        if there isn't enough space in the specified shelf to contain the specified quantity
-     * @throws AlreadyInAnotherShelfException if exists another shelf that contains the same resource
-     * @throws NoExtraSlotException           if there isn't an extra slot for the specified type of resource
-     * @throws NotEnoughResourcesException    if there aren't enough resources in the extra slot to move to the shelf
+     * @throws IllegalActionException        if there isn't enough space in the specified shelf to contain the specified quantity
+     * @throws IllegalActionException if exists another shelf that contains the same resource
+     * @throws IllegalArgumentException           if there isn't an extra slot for the specified type of resource
+     * @throws IllegalActionException    if there aren't enough resources in the extra slot to move to the shelf
      */
-    public boolean moveFromLeaderToShelf(ResourceType resource, int quantity, int shelfNum) throws NotEnoughSpaceException, AlreadyInAnotherShelfException, NoExtraSlotException, NotEnoughResourcesException {
-        return depot.moveToShelf(resource, quantity, shelfNum);
+    public boolean moveFromLeaderToShelf(ResourceType resource, int quantity, int shelfNum) throws IllegalActionException, IllegalArgumentException {
+        try {
+            return depot.moveToShelf(resource, quantity, shelfNum);
+        }catch (NotEnoughSpaceException | AlreadyInAnotherShelfException | NotEnoughResourcesException e){
+            throw new IllegalActionException(e.getMessage());
+        }catch(NoExtraSlotException e){
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     /**
@@ -458,10 +476,14 @@ public class PlayerBoard {
      *
      * @param resMap the map with the resources to remove
      * @return true if the action is performed without errors
-     * @throws NotEnoughResourcesException if there aren't enough resources to remove
+     * @throws IllegalActionException if there aren't enough resources to remove
      */
-    public boolean removeResourcesFromStrongbox(HashMap<ResourceType, Integer> resMap) throws NotEnoughResourcesException {
-        return strongbox.removeResource(resMap);
+    public boolean removeResourcesFromStrongbox(HashMap<ResourceType, Integer> resMap) throws IllegalActionException {
+        try {
+            return strongbox.removeResource(resMap);
+        }catch(NotEnoughResourcesException e){
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     /**
@@ -736,6 +758,19 @@ public class PlayerBoard {
         this.devSlots = new DevSlots();
         this.leaderCards = new LeaderCards();
         this.baseProduction = new BaseProduction();
+    }
+
+    /**
+     * Creates a copy of the specified PlayerBoard
+     * @param original the PlayerBoard to be cloned
+     */
+    public PlayerBoard(PlayerBoard original){
+        this.playerFaithLevel = new FaithLevel(original.playerFaithLevel);
+        this.depot = new Depot(original.depot);
+        this.strongbox = new Strongbox(original.strongbox);
+        this.devSlots = new DevSlots(original.devSlots);
+        this.leaderCards = new LeaderCards(original.leaderCards);
+        this.baseProduction = new BaseProduction(original.baseProduction);
     }
 
 }

@@ -22,6 +22,10 @@ public class Strongbox {
         }
     }
 
+    /**
+     * Constructs a copy of the specified Strongbox
+     * @param strongbox the Strongbox to be cloned
+     */
     public Strongbox(Strongbox strongbox) {
         this.strongBoxResources = new HashMap<>(strongbox.strongBoxResources);
     }
