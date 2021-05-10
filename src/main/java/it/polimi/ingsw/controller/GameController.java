@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.controller.enums.GameState;
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
@@ -28,17 +29,7 @@ public class GameController {
     private GameState state;
     private MainBoard modelCopy;
 
-    public GameState getState() {
-        return this.state;
-    }
 
-    public void setState(GameState state) {
-        this.state=state;
-    }
-
-    public void substitutesClient(ClientHandler client) {
-        //TODO
-    }
 
     /**
      * This class represents the relationship between the ClientHandler of the player and the their PlayerBoard.
@@ -70,6 +61,46 @@ public class GameController {
         public void setValue(playerBoard r) {
             this.r = r;
         }
+    }
+
+    /*
+    ###########################################################################################################
+     GENERAL SETTERS
+    ###########################################################################################################
+     */
+
+    /**
+     * Returns the GameState of the game at the moment this method is called
+     * @return the GameState the game is in
+     */
+    public GameState getState() {
+        return this.state;
+    }
+
+    /**
+     * Changes the GameState of the game to the specified value
+     * @param state the new GameState the game will be in
+     */
+    public void setState(GameState state) {
+        this.state=state;
+    }
+
+    /**
+     * Substitutes a ClientHandler with the one specified. This method is used when a player loses their connection and they reconnect to the server (the new
+     * ClientHandler they get is the one specified as a parameter) and their PlayerState is set to WAITING4TURN because they are back in the game
+     * @param newClientHandler the ClientHandler which is going to substitute the one ClientHandler present in the game which has the same nickname as the one stored inside the
+     *                      specified object
+     * @return true if the substitution took place correctly, false if there was no substitution because the client associated with the specified ClientHandler is not in this game
+     */
+    public boolean substitutesClient(ClientHandler newClientHandler) {
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(e.getKey().getNickname().equals(newClientHandler.getNickname())){
+                newClientHandler.setPlayerSate(PlayerState.WAITING4TURN);
+                e.setKey(newClientHandler);
+                return true;
+        }
+
+        return false;
     }
 
     /*
@@ -188,11 +219,66 @@ public class GameController {
     public MainBoard getMainBoard(){
         return this.mainBoard;
     }
+
+    /**
+     * Returns the ClientHandler whose player's nickname is specified as a parameter
+     * @param nickname the player's nickname the returned ClientHandler is associated with
+     * @return a ClientHandler if there is in this game a ClientHandler with a nickname equals to the one specified, null otherwisef
+     */
+    public ClientHandler getClientHandlerFromNickname(String nickname){
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(e.getKey().getNickname().equals(nickname))
+                return e.getKey();
+        return null;
+    }
+
     /*
     ###########################################################################################################
      ClientHandler-RELATED METHODS
     ###########################################################################################################
      */
+
+    public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException{
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        if(discardLeader.getLeader() < 0)
+            throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
+
+        LeaderCard leaderCard = playerBoard.getNoPlayedLeaderCardFromIndex(discardLeader.getLeader());
+
+        try {
+            this.saveState();
+            boolean outcome = playerBoard.discardLeaderCard(leaderCard);
+        } catch (IllegalArgumentException e){
+            this.rollbackState();
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (LastVaticanReportException e) {
+            //TODO: creare metodo per il last vatican report aftermath
+        }
+
+        //If we are here, then everything is going fine so result is containing something useful and must returned to the client
+        //TODO: mandare il messaggio in broadcast
+        return true;
+    }
+
+    public boolean activateLeader(LeaderMessage activateLeader, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        if(activateLeader.getLeader() < 0)
+            throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
+
+        LeaderCard leaderCard = playerBoard.getNoPlayedLeaderCardFromIndex(activateLeader.getLeader());
+
+        try {
+            this.saveState();
+            boolean outcome = playerBoard.activateLeaderCard(leaderCard);
+        } catch (IllegalActionException e) {
+            this.rollbackState();
+            throw new IllegalActionException(e.getMessage());
+        }
+
+        //If we are here, then everything is going fine so result is containing something useful and must returned to the client
+        //TODO: mandare il messaggio in broadcast
+        return true;
+    }
 
     public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException{
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)

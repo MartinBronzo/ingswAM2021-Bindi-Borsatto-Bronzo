@@ -124,21 +124,23 @@ public class PlayerBoard {
      *
      * @param leaderCard the LeaderCard to be activated
      * @return true if the card was activated
-     * @throws UnmetRequirementException if the player doesn't meet the requirements
-     * @throws FullExtraSlotException    if the maximum number of extraSlotLeaderCards had been reached
-     * @throws NullPointerException      if leader card is null
+     * @throws IllegalActionException if the player doesn't meet all the requirements in order to activate the specified card or the ExtraSlot effect of the card cannot be applied
+     * @throws IllegalArgumentException if the LeaderCard is a null pointer
      */
-    public boolean activateLeaderCard(LeaderCard leaderCard) throws UnmetRequirementException, FullExtraSlotException, NullPointerException {
-        if (leaderCard == null) throw new NullPointerException("LeaderCard can't be null");
+    public boolean activateLeaderCard(LeaderCard leaderCard) throws IllegalActionException, IllegalArgumentException {
+        try {
+            if (leaderCard == null) throw new IllegalArgumentException("LeaderCard can't be null");
 
-        PlayerResourcesAndCards playerResourcesAndCards = new PlayerResourcesAndCards(getAllResources(), devSlots.getAllDevCards());
-        if (this.leaderCards.activateLeaderCard(leaderCard, playerResourcesAndCards)) {
-            if (this.leaderCards.addCardToActivatedOneShotCards(leaderCard))
-                this.depot.addExtraSlot(leaderCard.getEffect());
-            return true;
+            PlayerResourcesAndCards playerResourcesAndCards = new PlayerResourcesAndCards(getAllResources(), devSlots.getAllDevCards());
+            if (this.leaderCards.activateLeaderCard(leaderCard, playerResourcesAndCards)) {
+                if (this.leaderCards.addCardToActivatedOneShotCards(leaderCard))
+                    this.depot.addExtraSlot(leaderCard.getEffect());
+                return true;
+            }
+            return false;
+        } catch (UnmetRequirementException | FullExtraSlotException e){
+            throw new IllegalActionException(e.getMessage());
         }
-        return false;
-
     }
 
     /**
@@ -148,9 +150,11 @@ public class PlayerBoard {
      * @throws IllegalArgumentException   if the card can't be discarded
      * @throws LastVaticanReportException if the last Vatican Report was activated
      */
-    public void discardLeaderCard(LeaderCard leaderCard) throws IllegalArgumentException, LastVaticanReportException {
+    public boolean discardLeaderCard(LeaderCard leaderCard) throws IllegalArgumentException, LastVaticanReportException {
         HashMap<ResourceType, Integer> outputWhenDiscarded = this.leaderCards.discardLeaderCard(leaderCard);
+        //By default, when the player discards a LeaderCard they get one FaithPoint
         this.moveForwardOnFaithTrack(outputWhenDiscarded.get(ResourceType.FAITHPOINT));
+        return true;
     }
 
     /**
@@ -182,7 +186,7 @@ public class PlayerBoard {
     }
 
     /**
-     * Returns a list of effects whose LeaderCard is specified via the position they have in the PlayerBoard
+     * Returns a list of effects whose active LeaderCard is specified via the position they have in the PlayerBoard
      *
      * @param cardsIndexes the list of indexes of some LeaderCards
      * @return the effects of the specified LeaderCards
@@ -194,6 +198,16 @@ public class PlayerBoard {
             result.add(leaderCards.getEffectFromCard(i));
 
         return result;
+    }
+
+    /**
+     * Returns the not played LeaderCard whose position it holds in the PlayerBoard is specified as a parameter
+     * @param cardIndex the position inside the ordered collection of not player LeaderCards of the desired LeaderCard (it is a non-negative integer)
+     * @return the desired not played LeaderCard
+     * @throws IllegalArgumentException if the given index is out of bound
+     */
+    public LeaderCard getNoPlayedLeaderCardFromIndex(int cardIndex) throws IllegalArgumentException {
+        return this.leaderCards.getNotPlayedLeaderCardFromIndex(cardIndex);
     }
 
     /**

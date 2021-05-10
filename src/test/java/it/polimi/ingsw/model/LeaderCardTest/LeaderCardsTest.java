@@ -922,4 +922,38 @@ public class LeaderCardsTest {
         Exception e = assertThrows(IllegalArgumentException.class, () -> leaderCards.getEffectFromCard(1));
         assertEquals(e.getMessage(), "The player doesn't hold this card (the given index is out of bound)!");
     }
+
+    @Test
+    public void ctrlGetCardWithGoodIndex(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        metRequirements.add(req3);
+        LeaderCard met = new LeaderCard(3, metRequirements, new WhiteMarbleLeaderEffect(ResourceType.COIN));
+        LeaderCard met2 = new LeaderCard(4, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        list.add(met);
+        list.add(met2);
+        LeaderCards leaderCards = new LeaderCards(list);
+
+        LeaderCard result = leaderCards.getNotPlayedLeaderCardFromIndex(1);
+
+        assertNotNull(result);
+        assertEquals(result, met2);
+    }
+
+    @Test
+    public void ctrlGetCardWithOutOfBoundIndex(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        metRequirements.add(req3);
+        LeaderCard met = new LeaderCard(3, metRequirements, new WhiteMarbleLeaderEffect(ResourceType.COIN));
+        LeaderCard met2 = new LeaderCard(4, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        list.add(met);
+        list.add(met2);
+        LeaderCards leaderCards = new LeaderCards(list);
+
+        Exception e = assertThrows(IllegalArgumentException.class, () -> leaderCards.getNotPlayedLeaderCardFromIndex(3));
+        assertEquals(e.getMessage(), "The player doesn't hold this card (the given index is out of bound)!");
+    }
 }
