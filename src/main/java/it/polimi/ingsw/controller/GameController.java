@@ -24,6 +24,7 @@ public class GameController {
     private List<Pair<ClientHandler, PlayerBoard>> players;
     private int numberOfPlayers;
     private int maxPlayersNum;
+    private MainBoard modelCopy;
 
     public GameState getState() {
         return GameState.STARTED;
@@ -59,11 +60,11 @@ public class GameController {
             return r;
         }
 
-        public void setL(clientHandler l) {
+        public void setKey(clientHandler l) {
             this.l = l;
         }
 
-        public void setR(playerBoard r) {
+        public void setValue(playerBoard r) {
             this.r = r;
         }
     }
@@ -177,6 +178,13 @@ public class GameController {
         return null;
     }*/
 
+    public MainBoard getModelCopy(){
+        return this.modelCopy;
+    }
+
+    public MainBoard getMainBoard(){
+        return this.mainBoard;
+    }
     /*
     ###########################################################################################################
      ClientHandler-RELATED METHODS
@@ -414,6 +422,35 @@ public class GameController {
     private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
         //TODO: mandare un messaggio al client handler in questione passandogli il messaggio d'errore
         return false;
+    }
+
+    /**
+     * Saves the inner state of the Model by saving a copy of the MainBoard (and, therefore, a copy of all the PlayerBoards).
+     */
+    private void saveState(){
+        this.modelCopy = new MainBoard(mainBoard);
+    }
+
+    /**
+     * Rollbacks the current changes by restoring the previous inner state.
+     */
+    private void rollbackState(){
+        this.mainBoard = modelCopy;
+        int i = 0;
+        for(Pair<ClientHandler, PlayerBoard> e: players) {
+            e.setValue(mainBoard.getPlayerBoard(i));
+            i++;
+        }
+    }
+
+    //This method was used for testing purposes
+    public void doSaveState(){
+        this.saveState();
+    }
+
+    //This method was used for testing purposes
+    public void doRollbackState(){
+        this.rollbackState();
     }
 
     /*

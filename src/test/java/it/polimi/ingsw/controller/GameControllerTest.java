@@ -1,5 +1,9 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
+import it.polimi.ingsw.model.FaithTrack.ReportNum;
+import it.polimi.ingsw.model.MainBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -105,6 +109,79 @@ public class GameControllerTest {
         assertEquals(gameController.getPlayersList().size(), 1);
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
 
+    }
+
+    @Test
+    //Tests that the GameController saves the correct copy of the model of the game
+    public void ctrlSavingState() throws LastVaticanReportException, IllegalActionException {
+        gameController.startMainBoard(4);
+        MainBoard original = gameController.getMainBoard();
+
+        //We change the inner state of the MainBoard
+        original.getPlayerBoard(0).moveForwardOnFaithTrack(6);
+        original.dealWithVaticanReportAllPlayers(ReportNum.REPORT1);
+        assertTrue(original.getPlayerBoard(0).getPopeTile().get(0).isActivated());
+        assertTrue(original.getPlayerBoard(1).getPopeTile().get(0).isDiscarded());
+        assertTrue(original.getPlayerBoard(2).getPopeTile().get(0).isDiscarded());
+        assertTrue(original.getPlayerBoard(3).getPopeTile().get(0).isDiscarded());
+
+        gameController.doSaveState();
+        MainBoard copy = gameController.getModelCopy();
+
+        //We check that the inner copy of the MainBoard is equal to the original one but they are two different instances
+        assertNotSame(copy, original);
+        assertTrue(copy.getPlayerBoard(0).getPopeTile().get(0).isActivated());
+        assertTrue(copy.getPlayerBoard(1).getPopeTile().get(0).isDiscarded());
+        assertTrue(copy.getPlayerBoard(2).getPopeTile().get(0).isDiscarded());
+        assertTrue(copy.getPlayerBoard(3).getPopeTile().get(0).isDiscarded());
+    }
+
+    @Test
+    //Tests that the GameController does the rollback correctly
+    public void ctrlRollbackState() throws LastVaticanReportException, IllegalActionException {
+        gameController.startMainBoard(4);
+
+        //First state: the first Vatican Report is activated and the only PopeTile activate is the one belonging to the first player
+        gameController.getMainBoard().getPlayerBoard(0).moveForwardOnFaithTrack(6);
+        gameController.getMainBoard().dealWithVaticanReportAllPlayers(ReportNum.REPORT1);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(0).getPositionOnFaithTrack(), 6);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(1).getPositionOnFaithTrack(), 0);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(2).getPositionOnFaithTrack(), 0);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(3).getPositionOnFaithTrack(), 0);
+        assertTrue(gameController.getMainBoard().getPlayerBoard(0).getPopeTile().get(0).isActivated());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(1).getPopeTile().get(0).isDiscarded());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(2).getPopeTile().get(0).isDiscarded());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(3).getPopeTile().get(0).isDiscarded());
+
+        //We save the first state
+        gameController.doSaveState();
+
+        //We change the state a second time: the second Vatican Report is activated and the second player's PopeTile is the only one active
+        gameController.getMainBoard().getPlayerBoard(1).moveForwardOnFaithTrack(14);
+        gameController.getMainBoard().dealWithVaticanReportAllPlayers(ReportNum.REPORT2);
+        assertTrue(gameController.getMainBoard().getPlayerBoard(0).getPopeTile().get(1).isDiscarded());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(1).getPopeTile().get(1).isActivated());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(2).getPopeTile().get(1).isDiscarded());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(3).getPopeTile().get(1).isDiscarded());
+        assertEquals(gameController.getMainBoard().getPlayerBoard(0).getPositionOnFaithTrack(), 6);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(1).getPositionOnFaithTrack(), 14);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(2).getPositionOnFaithTrack(), 0);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(3).getPositionOnFaithTrack(), 0);
+
+        //We rollback: the state must be the same as the first state
+        gameController.doRollbackState();
+        assertTrue(gameController.getMainBoard().getPlayerBoard(0).getPopeTile().get(0).isActivated());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(1).getPopeTile().get(0).isDiscarded());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(2).getPopeTile().get(0).isDiscarded());
+        assertTrue(gameController.getMainBoard().getPlayerBoard(3).getPopeTile().get(0).isDiscarded());
+        assertFalse(gameController.getMainBoard().getPlayerBoard(0).getPopeTile().get(1).isChanged());
+        assertFalse(gameController.getMainBoard().getPlayerBoard(1).getPopeTile().get(1).isChanged());
+        assertFalse(gameController.getMainBoard().getPlayerBoard(2).getPopeTile().get(1).isChanged());
+        assertFalse(gameController.getMainBoard().getPlayerBoard(3).getPopeTile().get(1).isChanged());
+        assertEquals(gameController.getMainBoard().getPlayerBoard(0).getPositionOnFaithTrack(), 6);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(1).getPositionOnFaithTrack(), 0);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(2).getPositionOnFaithTrack(), 0);
+        assertEquals(gameController.getMainBoard().getPlayerBoard(3).getPositionOnFaithTrack(), 0);
     }
 
 }
