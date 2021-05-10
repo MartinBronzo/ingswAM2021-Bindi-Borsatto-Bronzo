@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
@@ -19,11 +20,12 @@ public class GameControllerTest {
     ClientHandler clientHandler3;
     ClientHandler clientHandler4;
     ClientHandler clientHandler5;
+    Reader inputStreamReader;
 
     @BeforeEach
     public void setup(){
         gameController = new GameController();
-        Reader      inputStreamReader = new InputStreamReader(System.in);
+        inputStreamReader = new InputStreamReader(System.in);
         clientHandler1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
         clientHandler2 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
         clientHandler3 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
@@ -183,5 +185,94 @@ public class GameControllerTest {
         assertEquals(gameController.getMainBoard().getPlayerBoard(2).getPositionOnFaithTrack(), 0);
         assertEquals(gameController.getMainBoard().getPlayerBoard(3).getPositionOnFaithTrack(), 0);
     }
+
+    @Test
+    //Tests whether the substitution of a ClientHandler happens correctly: the player was already in the game
+    public void ctrlClientHandlerSubstitutionPlayerInTheGame(){
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayer(clientHandler1);
+        gameController.setPlayer(clientHandler2);
+        gameController.setPlayer(clientHandler3);
+        gameController.setPlayer(clientHandler4);
+
+        assertSame(gameController.getPlayersList().get(0), clientHandler1);
+        assertSame(gameController.getPlayersList().get(1), clientHandler2);
+        assertSame(gameController.getPlayersList().get(2), clientHandler3);
+        assertSame(gameController.getPlayersList().get(3), clientHandler4);
+
+        assertEquals(gameController.getPlayersList().indexOf(gameController.getClientHandlerFromNickname("Client 3")), 2);
+
+        ClientHandler newCH3 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newCH3.setNickname("Client 3");
+
+        assertTrue(gameController.substitutesClient(newCH3));
+
+        assertEquals(gameController.getPlayersList().size(), 4);
+        assertSame(gameController.getPlayersList().get(0), clientHandler1);
+        assertSame(gameController.getPlayersList().get(1), clientHandler2);
+        assertSame(gameController.getPlayersList().get(3), clientHandler4);
+
+        assertEquals(gameController.getPlayersList().indexOf(gameController.getClientHandlerFromNickname("Client 3")), 2);
+        assertSame(gameController.getPlayersList().get(2), newCH3);
+    }
+
+    @Test
+    //Tests whether the substitution of a ClientHandler happens correctly: the player wasn't even in the game
+    public void ctrlClientHandlerSubstitutionPlayerNotInTheGame(){
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayer(clientHandler1);
+        gameController.setPlayer(clientHandler2);
+        gameController.setPlayer(clientHandler3);
+        gameController.setPlayer(clientHandler4);
+
+        assertSame(gameController.getPlayersList().get(0), clientHandler1);
+        assertSame(gameController.getPlayersList().get(1), clientHandler2);
+        assertSame(gameController.getPlayersList().get(2), clientHandler3);
+        assertSame(gameController.getPlayersList().get(3), clientHandler4);
+
+        assertEquals(gameController.getPlayersList().indexOf(gameController.getClientHandlerFromNickname("AAA")), -1);
+
+        ClientHandler newCH = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newCH.setNickname("AAA");
+
+        assertFalse(gameController.substitutesClient(newCH));
+
+        assertEquals(gameController.getPlayersList().size(), 4);
+        assertSame(gameController.getPlayersList().get(0), clientHandler1);
+        assertSame(gameController.getPlayersList().get(1), clientHandler2);
+        assertSame(gameController.getPlayersList().get(2), clientHandler3);
+        assertSame(gameController.getPlayersList().get(3), clientHandler4);
+
+        assertEquals(gameController.getPlayersList().indexOf(gameController.getClientHandlerFromNickname("AAA")), -1);
+    }
+
+    @Test
+    //Tests whether the substitution of a ClientHandler happens correctly: the player's state is changed correctly
+    public void ctrlClientHandlerSubstitutionPlayerStateCorrectChange(){
+        gameController.startMainBoard(1);
+        clientHandler1.setNickname("Client 1");
+        gameController.setPlayer(clientHandler1);
+        clientHandler1.setPlayerSate(PlayerState.DISCONNECTED);
+
+        assertEquals(gameController.getPlayersList().get(0).getPlayerSate(), PlayerState.DISCONNECTED);
+        assertSame(gameController.getPlayersList().get(0), clientHandler1);
+
+        ClientHandler newCH = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newCH.setNickname("Client 1");
+
+        assertTrue(gameController.substitutesClient(newCH));
+
+        assertEquals(gameController.getPlayersList().get(0).getPlayerSate(), PlayerState.WAITING4TURN);
+        assertSame(gameController.getPlayersList().get(0), newCH);
+    }
+
 
 }
