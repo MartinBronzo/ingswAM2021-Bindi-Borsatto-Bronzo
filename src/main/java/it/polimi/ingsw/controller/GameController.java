@@ -30,7 +30,6 @@ public class GameController {
     private MainBoard modelCopy;
 
 
-
     /**
      * This class represents the relationship between the ClientHandler of the player and the their PlayerBoard.
      *
@@ -71,6 +70,7 @@ public class GameController {
 
     /**
      * Returns the GameState of the game at the moment this method is called
+     *
      * @return the GameState the game is in
      */
     public GameState getState() {
@@ -79,26 +79,28 @@ public class GameController {
 
     /**
      * Changes the GameState of the game to the specified value
+     *
      * @param state the new GameState the game will be in
      */
     public void setState(GameState state) {
-        this.state=state;
+        this.state = state;
     }
 
     /**
      * Substitutes a ClientHandler with the one specified. This method is used when a player loses their connection and they reconnect to the server (the new
      * ClientHandler they get is the one specified as a parameter) and their PlayerState is set to WAITING4TURN because they are back in the game
+     *
      * @param newClientHandler the ClientHandler which is going to substitute the one ClientHandler present in the game which has the same nickname as the one stored inside the
-     *                      specified object
+     *                         specified object
      * @return true if the substitution took place correctly, false if there was no substitution because the client associated with the specified ClientHandler is not in this game
      */
     public boolean substitutesClient(ClientHandler newClientHandler) {
-        for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(e.getKey().getNickname().equals(newClientHandler.getNickname())){
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
                 newClientHandler.setPlayerSate(PlayerState.WAITING4TURN);
                 e.setKey(newClientHandler);
                 return true;
-        }
+            }
 
         return false;
     }
@@ -211,23 +213,23 @@ public class GameController {
                 return e.getValue();
         return null;
     }*/
-
-    public MainBoard getModelCopy(){
+    public MainBoard getModelCopy() {
         return this.modelCopy;
     }
 
-    public MainBoard getMainBoard(){
+    public MainBoard getMainBoard() {
         return this.mainBoard;
     }
 
     /**
      * Returns the ClientHandler whose player's nickname is specified as a parameter
+     *
      * @param nickname the player's nickname the returned ClientHandler is associated with
      * @return a ClientHandler if there is in this game a ClientHandler with a nickname equals to the one specified, null otherwisef
      */
-    public ClientHandler getClientHandlerFromNickname(String nickname){
-        for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(e.getKey().getNickname().equals(nickname))
+    public ClientHandler getClientHandlerFromNickname(String nickname) {
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if (e.getKey().getNickname().equals(nickname))
                 return e.getKey();
         return null;
     }
@@ -238,9 +240,9 @@ public class GameController {
     ###########################################################################################################
      */
 
-    public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException{
+    public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-        if(discardLeader.getLeader() < 0)
+        if (discardLeader.getLeader() < 0)
             throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
 
         LeaderCard leaderCard = playerBoard.getNoPlayedLeaderCardFromIndex(discardLeader.getLeader());
@@ -248,7 +250,7 @@ public class GameController {
         try {
             this.saveState();
             boolean outcome = playerBoard.discardLeaderCard(leaderCard);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         } catch (LastVaticanReportException e) {
@@ -262,7 +264,7 @@ public class GameController {
 
     public boolean activateLeader(LeaderMessage activateLeader, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-        if(activateLeader.getLeader() < 0)
+        if (activateLeader.getLeader() < 0)
             throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
 
         LeaderCard leaderCard = playerBoard.getNoPlayedLeaderCardFromIndex(activateLeader.getLeader());
@@ -280,16 +282,16 @@ public class GameController {
         return true;
     }
 
-    public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException{
+    public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
-           throw new IllegalArgumentException("Specify only a column or row!");
+            throw new IllegalArgumentException("Specify only a column or row!");
 
         HashMap<ResourceType, Integer> result = null;
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         List<Effect> effects = playerBoard.getEffectsFromCards(resFromMkt.getLeaderList());
 
         //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
-        if(mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow(), resFromMkt.getCol()) > effects.size())
+        if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow(), resFromMkt.getCol()) > effects.size())
             throw new IllegalArgumentException("There are not enough LeaderCards specified!");
 
         if (resFromMkt.getCol() != 0)
@@ -315,7 +317,7 @@ public class GameController {
             List<Effect> effects = playerBoard.getEffectsFromCards(buyFromMarket.getLeaderList());
 
             //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
-            if(mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(buyFromMarket.getRow(), buyFromMarket.getCol()) > effects.size())
+            if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(buyFromMarket.getRow(), buyFromMarket.getCol()) > effects.size())
                 throw new IllegalArgumentException("There are not enough LeaderCards specified!");
 
             HashMap<ResourceType, Integer> res;
@@ -356,10 +358,10 @@ public class GameController {
             //Discards the Extra resources
             mainBoard.discardResources(buyFromMarket.getDiscardRes(), playerBoard);
 
-        } catch (IllegalActionException e){
+        } catch (IllegalActionException e) {
             this.rollbackState();
             throw new IllegalActionException(e.getMessage());
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         } catch (LastVaticanReportException e) {
@@ -403,10 +405,10 @@ public class GameController {
             //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
             devCard = mainBoard.drawDevCardFromDeckInDevGrid(buyDevCard.getRow() - 1, buyDevCard.getCol() - 1);
             cost = mainBoard.applyDiscountToDevCard(devCard, effects);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
-        }catch (IllegalActionException e){
+        } catch (IllegalActionException e) {
             this.rollbackState();
             throw new IllegalActionException(e.getMessage());
         }
@@ -514,18 +516,18 @@ public class GameController {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         BaseProductionParams baseProductionParams = getProductionCostMessage.getBaseProd();
 
-        if(baseProductionParams.isActivated()){
+        if (baseProductionParams.isActivated()) {
             playerBoard.setBaseProduction(baseProductionParams.getBaseInput(), baseProductionParams.getBaseOutput());
         }
 
         //get devCard from devSlot index
         List<DevCard> devList = new ArrayList<>();
-        for(int index : getProductionCostMessage.getDevCards())
+        for (int index : getProductionCostMessage.getDevCards())
             devList.add(playerBoard.getUsableDevCardFromDevSlotIndex(index));
 
         //get leaderCard from index
-        List<LeaderCard>leaderList = new ArrayList<>();
-        for(int index : getProductionCostMessage.getLeaders())
+        List<LeaderCard> leaderList = new ArrayList<>();
+        for (int index : getProductionCostMessage.getLeaders())
             leaderList.add(playerBoard.getActiveLeaderCards().get(index));
 
         prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
@@ -537,7 +539,46 @@ public class GameController {
         return true;
     }
 
+    public boolean activateProduction(ActivateProductionMessage activateProductionMessage, ClientHandler clientHandler) throws  IllegalArgumentException{
+        HashMap<LeaderCard, ResourceType> leaderMap = new HashMap<>();
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        BaseProductionParams baseProductionParams = activateProductionMessage.getBaseProduction();
 
+        //save state of the model
+        this.saveState();
+
+        if (baseProductionParams.isActivated()) {
+            try {
+                playerBoard.setBaseProduction(baseProductionParams.getBaseInput(), baseProductionParams.getBaseOutput());
+            } catch (IllegalArgumentException | NullPointerException e) {
+                this.rollbackState();
+                throw new IllegalArgumentException(e.getMessage());
+            }
+        }
+
+        //get devCard from devSlot index
+        List<DevCard> devList = new ArrayList<>();
+        for (int index : activateProductionMessage.getDevCards())
+            devList.add(playerBoard.getUsableDevCardFromDevSlotIndex(index));
+
+        //getMap for leaderCard-output resource
+        LeaderCard leaderCard;
+        for (Map.Entry<Integer, ResourceType> index : activateProductionMessage.getLeaders().entrySet()) {
+            leaderCard = playerBoard.getActiveLeaderCards().get(index.getKey());
+            leaderMap.put(leaderCard, index.getValue());
+        }
+
+        try {
+            playerBoard.activateProduction(devList, leaderMap, baseProductionParams.isActivated());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            this.rollbackState();
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (LastVaticanReportException e) {
+            //TODO: gestire eccezione
+        }
+
+        return true;
+    }
 
 
 
@@ -558,29 +599,29 @@ public class GameController {
     /**
      * Saves the inner state of the Model by saving a copy of the MainBoard (and, therefore, a copy of all the PlayerBoards).
      */
-    private void saveState(){
+    private void saveState() {
         this.modelCopy = new MainBoard(mainBoard);
     }
 
     /**
      * Rollbacks the current changes by restoring the previous inner state.
      */
-    private void rollbackState(){
+    private void rollbackState() {
         this.mainBoard = modelCopy;
         int i = 0;
-        for(Pair<ClientHandler, PlayerBoard> e: players) {
+        for (Pair<ClientHandler, PlayerBoard> e : players) {
             e.setValue(mainBoard.getPlayerBoard(i));
             i++;
         }
     }
 
     //This method was used for testing purposes
-    public void doSaveState(){
+    public void doSaveState() {
         this.saveState();
     }
 
     //This method was used for testing purposes
-    public void doRollbackState(){
+    public void doRollbackState() {
         this.rollbackState();
     }
 
