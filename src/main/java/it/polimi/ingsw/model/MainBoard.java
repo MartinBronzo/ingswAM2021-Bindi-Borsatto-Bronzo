@@ -296,6 +296,10 @@ public class MainBoard {
         return this.playerBoardsList.get(position);
     }
 
+    public int getPlayerBoardIndex(PlayerBoard playerBoard){
+        return this.playerBoardsList.indexOf(playerBoard);
+    }
+
     public List<PlayerBoard> getPlayerBoardsList() {
         return playerBoardsList;
     }

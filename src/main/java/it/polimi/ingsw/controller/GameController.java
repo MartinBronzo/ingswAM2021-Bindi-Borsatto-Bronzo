@@ -28,6 +28,7 @@ public class GameController {
     private int maxPlayersNum;
     private GameState state;
     private MainBoard modelCopy;
+    private int firstPlayer;
 
 
 
@@ -238,6 +239,45 @@ public class GameController {
     ###########################################################################################################
      */
 
+    public boolean discardLeaderAndExtraResBeginning(DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        for(Integer i: discardLeaderCardBeginning.getLeaderCard())
+            if(i < 0)
+                throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
+
+        //Computes how many resources the Player has sent back to the GameController
+        int total = 0;
+        for(DepotParams dP: discardLeaderCardBeginning.getDepotRes())
+            total = total + dP.getQt();
+
+        //The number of quantity sent by the player must be equal to the amount of extra resources they are supposed to send back
+        if(mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)) != total)
+            throw new IllegalArgumentException("You must specify the right amount of extra resources!");
+
+        List<LeaderCard> leaderCard = playerBoard.getNotPlayedLeaderCardsFromIndex(discardLeaderCardBeginning.getLeaderCard());
+
+        try {
+            this.saveState();
+
+            playerBoard.discardLeaderCardsAtTheBeginning(leaderCard);
+
+            for(DepotParams dP: discardLeaderCardBeginning.getDepotRes())
+                playerBoard.addResourceToDepot(dP.getResourceType(), dP.getQt(), dP.getShelf());
+            //TODO: nel metodo che invia ai giocatori quante extra risorse devono dare automaticamente dare i punti fede e inizializzare firstPlayer
+
+        } catch (IllegalArgumentException e){
+            this.rollbackState();
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (IllegalActionException e) {
+            this.rollbackState();
+            throw new IllegalActionException(e.getMessage());
+        }
+
+        //If we are here, then everything is going fine so result is containing something useful and must returned to the client
+        //TODO: mandare il messaggio in broadcast
+        return true;
+    }
+
     public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException{
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         if(discardLeader.getLeader() < 0)
@@ -301,7 +341,6 @@ public class GameController {
         //TODO: mandare il messaggio positivo solo al client in questione
         return true;
     }
-
 
     public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         if (buyFromMarket.getRow() != 0 && buyFromMarket.getCol() != 0)
@@ -507,12 +546,6 @@ public class GameController {
      RESPONSE PRIVATE METHODS
     ###########################################################################################################
      */
-
-
-    private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
-        //TODO: mandare un messaggio al client handler in questione passandogli il messaggio d'errore
-        return false;
-    }
 
     /**
      * Saves the inner state of the Model by saving a copy of the MainBoard (and, therefore, a copy of all the PlayerBoards).

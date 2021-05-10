@@ -188,14 +188,28 @@ public class PlayerBoard {
     /**
      * Returns a list of effects whose active LeaderCard is specified via the position they have in the PlayerBoard
      *
-     * @param cardsIndexes the list of indexes of some LeaderCards
+     * @param cardIndexes the list of indexes of some LeaderCards (indexes are non-negative integers)
      * @return the effects of the specified LeaderCards
      * @throws IllegalArgumentException if one of the specified indexes is out of bound
      */
-    public List<Effect> getEffectsFromCards(List<Integer> cardsIndexes) throws IllegalArgumentException {
+    public List<Effect> getEffectsFromCards(List<Integer> cardIndexes) throws IllegalArgumentException {
         List<Effect> result = new ArrayList<>();
-        for (Integer i : cardsIndexes)
+        for (Integer i : cardIndexes)
             result.add(leaderCards.getEffectFromCard(i));
+
+        return result;
+    }
+
+    /**
+     * Returns a list of LeaderCards who are specified via their position they have in the PlayerBoard
+     * @param cardIndexes the list of indexes of some LeaderCards (indexes are non-negative integers)
+     * @return the list of the desired LeaderCards
+     * @throws IllegalArgumentException if one of the specified indexes is out of bound
+     */
+    public List<LeaderCard> getNotPlayedLeaderCardsFromIndex(List<Integer> cardIndexes) throws IllegalArgumentException {
+        List<LeaderCard> result = new ArrayList<>();
+        for (Integer i : cardIndexes)
+            result.add(leaderCards.getNotPlayedLeaderCardFromIndex(i));
 
         return result;
     }

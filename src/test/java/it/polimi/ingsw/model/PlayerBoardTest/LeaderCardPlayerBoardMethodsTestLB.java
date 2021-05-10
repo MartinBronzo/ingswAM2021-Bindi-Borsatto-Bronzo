@@ -523,4 +523,55 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         assertEquals(effects.get(1), new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
     }
 
+    @Test
+    public void ctrlGettingCardsFromGoodIndexes(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        LeaderCard met = new LeaderCard(3, metRequirements, new WhiteMarbleLeaderEffect(ResourceType.COIN));
+        LeaderCard met2 = new LeaderCard(4, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        LeaderCard met3 = new LeaderCard(5, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        LeaderCard met4 = new LeaderCard(6, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        list.add(met);
+        list.add(met2);
+        list.add(met3);
+        list.add(met4);
+        playerBoard = new PlayerBoard();
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
+
+        List<Integer> indexes = new ArrayList<>();
+        indexes.add(1);
+        indexes.add(3);
+
+        List<LeaderCard> result = playerBoard.getNotPlayedLeaderCardsFromIndex(indexes);
+
+        assertTrue(result.contains(met2));
+        assertTrue(result.contains(met4));
+
+    }
+
+    @Test
+    public void ctlrGettingCardsFromWrongIndexes(){
+        List<LeaderCard> list = new ArrayList<>();
+        List<Requirement> metRequirements = new ArrayList<>();
+        metRequirements.add(requirement1);
+        LeaderCard met = new LeaderCard(3, metRequirements, new WhiteMarbleLeaderEffect(ResourceType.COIN));
+        LeaderCard met2 = new LeaderCard(4, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        LeaderCard met3 = new LeaderCard(5, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        LeaderCard met4 = new LeaderCard(6, metRequirements, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+        list.add(met);
+        list.add(met2);
+        list.add(met3);
+        list.add(met4);
+        playerBoard = new PlayerBoard();
+        playerBoard.setNotPlayedLeaderCardsAtGameBeginning(list);
+
+        List<Integer> indexes = new ArrayList<>();
+        indexes.add(1);
+        indexes.add(4);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, ()->playerBoard.getNotPlayedLeaderCardsFromIndex(indexes));
+        assertEquals(e.getMessage(),"The player doesn't hold this card (the given index is out of bound)!");
+    }
+
 }
