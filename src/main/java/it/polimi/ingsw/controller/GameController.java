@@ -194,6 +194,28 @@ public class GameController {
     ###########################################################################################################
      */
 
+    public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException{
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        if(discardLeader.getLeader() < 0)
+            throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
+
+        LeaderCard leaderCard = playerBoard.getNoPlayedLeaderCardFromIndex(discardLeader.getLeader());
+
+        try {
+            this.saveState();
+            boolean outcome = playerBoard.discardLeaderCard(leaderCard);
+        } catch (IllegalArgumentException e){
+            this.rollbackState();
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (LastVaticanReportException e) {
+            //TODO: creare metodo per il last vatican report aftermath
+        }
+
+        //If we are here, then everything is going fine so result is containing something useful and must returned to the client
+        //TODO: mandare il messaggio in broadcast
+        return true;
+    }
+
     public boolean activateLeader(LeaderMessage activateLeader, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         if(activateLeader.getLeader() < 0)

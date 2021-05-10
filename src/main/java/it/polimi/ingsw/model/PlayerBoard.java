@@ -150,9 +150,11 @@ public class PlayerBoard {
      * @throws IllegalArgumentException   if the card can't be discarded
      * @throws LastVaticanReportException if the last Vatican Report was activated
      */
-    public void discardLeaderCard(LeaderCard leaderCard) throws IllegalArgumentException, LastVaticanReportException {
+    public boolean discardLeaderCard(LeaderCard leaderCard) throws IllegalArgumentException, LastVaticanReportException {
         HashMap<ResourceType, Integer> outputWhenDiscarded = this.leaderCards.discardLeaderCard(leaderCard);
+        //By default, when the player discards a LeaderCard they get one FaithPoint
         this.moveForwardOnFaithTrack(outputWhenDiscarded.get(ResourceType.FAITHPOINT));
+        return true;
     }
 
     /**
@@ -200,7 +202,7 @@ public class PlayerBoard {
 
     /**
      * Returns the not played LeaderCard whose position it holds in the PlayerBoard is specified as a parameter
-     * @param cardIndex the position inside the ordered collection of not player LeaderCards of the desired LeaderCard
+     * @param cardIndex the position inside the ordered collection of not player LeaderCards of the desired LeaderCard (it is a non-negative integer)
      * @return the desired not played LeaderCard
      * @throws IllegalArgumentException if the given index is out of bound
      */

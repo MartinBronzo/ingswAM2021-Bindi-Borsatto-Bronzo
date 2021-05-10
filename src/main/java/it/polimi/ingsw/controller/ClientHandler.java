@@ -118,12 +118,12 @@ public class ClientHandler implements Runnable {
 
                     case "discardLeader":
                         LeaderMessage discardLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
-                        //game.discardLeader(discardLeader);
+                        game.discardLeader(discardLeader, this);
                         break;
 
                     case "ActivateLeader":
                         LeaderMessage activateLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
-                        //game.activateLeader(activateLeader);
+                        game.activateLeader(activateLeader, this);
                         break;
 
                     case "endTurn":

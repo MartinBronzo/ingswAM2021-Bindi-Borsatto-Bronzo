@@ -128,7 +128,7 @@ public class LeaderCards {
 
     /**
      * Returns the LeaderCard whose position in the ordered collection of not player LeaderCards is given as a parameter
-     * @param cardIndex the position inside the ordered collection of not player LeaderCards of the desired LeaderCard
+     * @param cardIndex the position inside the ordered collection of not player LeaderCards of the desired LeaderCard (it is a non-negative integer)
      * @return the desired LeaderCard
      * @throws IllegalArgumentException if the given index is out of bound
      */
