@@ -160,5 +160,27 @@ public final class GamesManagerSingleton {
         return games.remove(gameEnded);
     }
 
+    /**used only for test purpose
+     */
+    @Deprecated
+    public void resetSingleton(){
+        games.removeAll(games);
+        this.startingGame = null;
+    }
 
+
+    /**used only for test purpose
+     */
+    @Deprecated
+    public Collection<GameController> getGames() {
+        return games;
+    }
+
+
+    /**used only for test purpose
+     */
+    @Deprecated
+    public GameController getStartingGame() {
+        return startingGame;
+    }
 }

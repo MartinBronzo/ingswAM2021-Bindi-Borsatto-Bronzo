@@ -18,7 +18,8 @@ public class ClientHandler implements Runnable {
     private final PrintWriter out;
     private GameController game;
 
-
+    /**used only for test purpose
+     */
     @Deprecated
     public ClientHandler(Socket socket, BufferedReader in, PrintWriter out) {
         this.socket = socket;

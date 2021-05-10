@@ -89,7 +89,7 @@ public class DepotPlayerBoardMethodsTest {
     }
 
     @Test
-    public void removeFromStrongbox() throws NotEnoughResourcesException {
+    public void removeFromStrongbox() throws NotEnoughResourcesException, IllegalActionException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
 
