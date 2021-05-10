@@ -29,7 +29,11 @@ public class GameController {
         return GameState.STARTED;
     }
 
-    public void setState(GameState waiting4players) {
+    public void setState(GameState state) {
+    }
+
+    public void substitutesClient(ClientHandler client) {
+        //TODO
     }
 
     /**
