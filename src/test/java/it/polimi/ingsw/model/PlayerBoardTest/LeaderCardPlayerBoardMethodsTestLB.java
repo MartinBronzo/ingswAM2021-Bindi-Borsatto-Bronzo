@@ -77,7 +77,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException | FullExtraSlotException e) {
+        } catch (IllegalActionException e) {
             e.printStackTrace();
         }
 
@@ -167,7 +167,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException | FullExtraSlotException e) {
+        } catch (IllegalActionException e) {
             e.printStackTrace();
         }
 
@@ -205,7 +205,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             assertTrue(playerBoard.activateLeaderCard(met));
-        } catch (UnmetRequirementException | FullExtraSlotException e) {
+        } catch (IllegalActionException e) {
             e.printStackTrace();
         }
         assertFalse(playerBoard.getAlreadyUsedOneShotCard().isEmpty());
@@ -251,7 +251,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException | FullExtraSlotException e) {
+        } catch (IllegalActionException e) {
             e.printStackTrace();
         }
 
@@ -293,7 +293,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException | FullExtraSlotException e) {
+        } catch (IllegalActionException e) {
             e.printStackTrace();
         }
 
@@ -318,7 +318,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException | FullExtraSlotException e) {
+        } catch (IllegalActionException e) {
             e.printStackTrace();
         }
 
@@ -418,7 +418,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
 
         try {
             playerBoard.activateLeaderCard(met);
-        } catch (UnmetRequirementException | FullExtraSlotException e) {
+        } catch (IllegalActionException e) {
             e.printStackTrace();
         }
 
@@ -497,7 +497,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
     }
 
     @Test
-    public void getEffectFromCardsWithIndexes() throws FullExtraSlotException, UnmetRequirementException, EndOfGameException {
+    public void getEffectFromCardsWithIndexes() throws EndOfGameException, IllegalActionException {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);

@@ -127,6 +127,18 @@ public class LeaderCards {
     }
 
     /**
+     * Returns the LeaderCard whose position in the ordered collection of not player LeaderCards is given as a parameter
+     * @param cardIndex the position inside the ordered collection of not player LeaderCards of the desired LeaderCard
+     * @return the desired LeaderCard
+     * @throws IllegalArgumentException if the given index is out of bound
+     */
+    public LeaderCard getNotPlayedLeaderCardFromIndex(int cardIndex) throws IllegalArgumentException{
+        if(cardIndex >= this.notPlayedCards.size())
+            throw new IllegalArgumentException("The player doesn't hold this card (the given index is out of bound)!");
+        return this.notPlayedCards.get(cardIndex);
+    }
+
+    /**
      * Adds the leader Card to the list of activated one shot cards
      *
      * @param leaderCard to be add to oneshot cards

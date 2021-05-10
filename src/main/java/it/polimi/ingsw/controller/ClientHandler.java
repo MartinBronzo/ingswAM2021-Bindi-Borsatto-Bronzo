@@ -73,7 +73,7 @@ public class ClientHandler implements Runnable {
 
                     case "buyFromMarket":
                         BuyFromMarketMessage buyFromMarket = gson.fromJson(command.getParameters(), BuyFromMarketMessage.class);
-                        //game.buyFromMarket(buyFromMarket));
+                        game.buyFromMarket(buyFromMarket, this);
                         break;
 
                     case "getCardCost":

@@ -44,7 +44,7 @@ public class productionTest {
     FaithTrack ft;
 
     @BeforeEach
-    void setUp() throws NegativeQuantityException, FullExtraSlotException, UnmetRequirementException, EndOfGameException {
+    void setUp() throws NegativeQuantityException, EndOfGameException, IllegalActionException {
         requirements = new LinkedList<>();
         leaderCards = new LinkedList<>();
         effect = new ExtraProductionLeaderEffect(ResourceType.SERVANT, 1);
@@ -149,7 +149,7 @@ public class productionTest {
         DevCard cardLevel3_2 = new DevCard(3, DevCardColour.GREEN, 3, cardMap, cardMap, cardMap, "abc");
         try {
             playerBoard.addCardToDevSlot(1, cardLevel3_2);
-        }catch (EndOfGameException e){
+        }catch (EndOfGameException ignored){
         }
         HashMap<LeaderCard, ResourceType> leaderProductionMap = new HashMap<>();
         for (LeaderCard leadercard : leaderCards) {

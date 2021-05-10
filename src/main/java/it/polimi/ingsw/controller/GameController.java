@@ -194,6 +194,26 @@ public class GameController {
     ###########################################################################################################
      */
 
+    public boolean activateLeader(LeaderMessage activateLeader, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        if(activateLeader.getLeader() < 0)
+            throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
+
+        LeaderCard leaderCard = playerBoard.getNoPlayedLeaderCardFromIndex(activateLeader.getLeader());
+
+        try {
+            this.saveState();
+            boolean outcome = playerBoard.activateLeaderCard(leaderCard);
+        } catch (IllegalActionException e) {
+            this.rollbackState();
+            throw new IllegalActionException(e.getMessage());
+        }
+
+        //If we are here, then everything is going fine so result is containing something useful and must returned to the client
+        //TODO: mandare il messaggio in broadcast
+        return true;
+    }
+
     public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException{
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
            throw new IllegalArgumentException("Specify only a column or row!");
