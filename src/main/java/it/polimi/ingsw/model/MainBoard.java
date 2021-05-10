@@ -268,6 +268,8 @@ public class MainBoard {
         return new FaithTrack(this.faithTrack);
     }
 
+    public FaithTrack getFaithTrackReference() { return  this.faithTrack;}
+
     public Deck getLeaderCardsDeck() {
         return new LeaderCardDeck((LeaderCardDeck) this.leaderCardsDeck);
     }
@@ -300,7 +302,9 @@ public class MainBoard {
         return copy;
     }
 
-
+    public int getStepForEachDiscardedRes() {
+        return stepForEachDiscardedRes;
+    }
 
     /*
     ###########################################################################################################
@@ -423,7 +427,7 @@ public class MainBoard {
     }
 
     /**
-     * Constructs a copy of the specified MainBoard
+     * Constructs a copy of the specified MainBoard. The new MainBoard and its PlayerBoards all reference to the same FaithTrack.
      * @param original the MainBoard to be copied
      */
     public MainBoard(MainBoard original){
@@ -436,7 +440,7 @@ public class MainBoard {
 
         this.playerBoardsList = new ArrayList<>();
         for(PlayerBoard pB: original.playerBoardsList)
-            this.playerBoardsList.add(new PlayerBoard(pB));
+            this.playerBoardsList.add(new PlayerBoard(pB, this.faithTrack));
 
         this.numberOfLeaderCardsToGive = original.numberOfLeaderCardsToGive;
 

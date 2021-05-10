@@ -1,8 +1,12 @@
 package it.polimi.ingsw.model.PlayerBoardTest;
 
+import it.polimi.ingsw.exceptions.EndOfGameException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.BaseProduction;
+import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
@@ -96,6 +100,26 @@ public class ConfigurationMethodsPlayerBoardTest {
         assertTrue(bP.getOutputForcedResources().isEmpty());
         assertTrue(bP.getInputHashMap().isEmpty());
         assertTrue(bP.getOutputHashMap().isEmpty());
+    }
+
+    @Test
+    public void ctrlPlayerBoardCloning() throws IllegalActionException, NegativeQuantityException, EndOfGameException, ParserConfigurationException, IOException, SAXException {
+        playerBoard.addResourceToDepot(ResourceType.COIN, 1, 1);
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(new File("FaithTrackConfig.xml")));
+        playerBoard.addCardToDevSlot(1, new DevCard(1, DevCardColour.PURPLE, 1, new HashMap<>(), new HashMap<>(), new HashMap<>(), "url"));
+
+        PlayerBoard copy = new PlayerBoard(playerBoard);
+
+        assertNotSame(copy, playerBoard);
+
+        assertEquals(copy.getPositionOnFaithTrack(), playerBoard.getPositionOnFaithTrack());
+        assertEquals(copy.getResourceFromDepot(ResourceType.COIN), playerBoard.getResourceFromDepot(ResourceType.COIN));
+        assertEquals(copy.getResourceTypeFromShelf(1), playerBoard.getResourceTypeFromShelf(1));
+        assertEquals(playerBoard.getResourceFromStrongbox(ResourceType.COIN), copy.getResourceFromStrongbox(ResourceType.COIN));
+        assertEquals(playerBoard.getAllDevCards().size(), copy.getAllDevCards().size(), 1);
+        assertEquals(((DevCard) playerBoard.getAllDevCards().toArray()[0]).getUrl(), ((DevCard) copy.getAllDevCards().toArray()[0]).getUrl());
+        assertEquals(copy.getNotPlayedLeaderCards().size(), playerBoard.getNotPlayedLeaderCards().size());
+        assertEquals(copy.getBaseProduction().getInputHashMap(), playerBoard.getBaseProduction().getInputHashMap());
     }
 
 }

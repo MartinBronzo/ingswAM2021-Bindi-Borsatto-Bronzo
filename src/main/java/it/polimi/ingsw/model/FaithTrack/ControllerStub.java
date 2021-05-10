@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Interfaces.Subject;
 import it.polimi.ingsw.model.PlayerBoard;
 
 @Deprecated
+@SuppressWarnings("deprecation")
 public class ControllerStub implements Observer {
     private Subject subject;
     private FaithLevel fT1;
