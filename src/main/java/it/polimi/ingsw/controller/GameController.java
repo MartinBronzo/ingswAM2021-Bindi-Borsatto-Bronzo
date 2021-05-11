@@ -578,7 +578,8 @@ public class GameController {
         return true;
     }
 
-    public boolean activateProduction(ActivateProductionMessage activateProductionMessage, ClientHandler clientHandler) throws  IllegalArgumentException{
+    public boolean activateProduction(ActivateProductionMessage activateProductionMessage, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
+        HashMap<ResourceType, Integer> prodCost;
         HashMap<LeaderCard, ResourceType> leaderMap = new HashMap<>();
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         BaseProductionParams baseProductionParams = activateProductionMessage.getBaseProduction();
@@ -586,6 +587,7 @@ public class GameController {
         //save state of the model
         this.saveState();
 
+        //retrieve info from message
         if (baseProductionParams.isActivated()) {
             try {
                 playerBoard.setBaseProduction(baseProductionParams.getBaseInput(), baseProductionParams.getBaseOutput());
@@ -600,11 +602,68 @@ public class GameController {
         for (int index : activateProductionMessage.getDevCards())
             devList.add(playerBoard.getUsableDevCardFromDevSlotIndex(index));
 
-        //getMap for leaderCard-output resource
+        //TODO: gestire lista vuota
+
+        //getMap for leaderCard-output resource and leaderCard list
         LeaderCard leaderCard;
+        List<LeaderCard> leaderList = new ArrayList<>();
         for (Map.Entry<Integer, ResourceType> index : activateProductionMessage.getLeaders().entrySet()) {
             leaderCard = playerBoard.getActiveLeaderCards().get(index.getKey());
             leaderMap.put(leaderCard, index.getValue());
+            leaderList.add(leaderCard);
+        }
+
+        try {
+            prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
+        }catch (IllegalActionException | NullPointerException e){
+            this.rollbackState();
+            throw new IllegalActionException(e.getMessage());
+        }
+
+        //TODO: remove resources from depot/strongbox
+        List<DepotParams> depotRes = activateProductionMessage.getDepotInputRes();
+        HashMap<ResourceType, Integer> resToLeader = activateProductionMessage.getLeaderSlotRes();
+        HashMap<ResourceType, Integer> strongboxRes = activateProductionMessage.getStrongboxInputRes();
+
+        //check if depot params are correct
+        for (DepotParams elem : depotRes) {
+            if (prodCost.get(elem.getResourceType()) == null || prodCost.get(elem.getResourceType()) < elem.getQt()) {
+                this.rollbackState();
+                throw new IllegalArgumentException("Error with resource quantity in depot");
+            }
+
+            prodCost.put(elem.getResourceType(), prodCost.get(elem.getResourceType()) - elem.getQt()); //Updates the cost map
+            playerBoard.removeResourceFromDepot(elem.getQt(), elem.getShelf());
+        }
+
+        //check if leaderSlot params are correct
+        for (Map.Entry<ResourceType, Integer> elem : resToLeader.entrySet()) {
+            if (prodCost.get(elem.getKey()) == null || prodCost.get(elem.getKey()) < elem.getValue()) {
+                this.rollbackState();
+                throw new IllegalArgumentException("Error with resource quantity in leader depot");
+            }
+
+            prodCost.put(elem.getKey(), prodCost.get(elem.getKey()) - elem.getValue()); //Updates the cost map
+            playerBoard.removeResourceFromLeader(elem.getKey(), elem.getValue());
+        }
+
+        //check if strongbox params are correct
+        for (Map.Entry<ResourceType, Integer> elem : strongboxRes.entrySet()) {
+            if (prodCost.get(elem.getKey()) == null || prodCost.get(elem.getKey()) < elem.getValue()) {
+                this.rollbackState();
+                throw new IllegalArgumentException("Error with resource quantity in strongbox");
+            }
+
+            prodCost.put(elem.getKey(), prodCost.get(elem.getKey()) - elem.getValue()); //Updates the cost map
+            playerBoard.removeResourcesFromStrongbox(strongboxRes);
+        }
+
+        //final check
+        for (Map.Entry<ResourceType, Integer> e : prodCost.entrySet()) {
+            if (prodCost.get(e.getKey()) != 0) {
+                this.rollbackState();
+                throw new IllegalArgumentException("Error with resource quantity selected");
+            }
         }
 
         try {
@@ -614,6 +673,12 @@ public class GameController {
             throw new IllegalArgumentException(e.getMessage());
         } catch (LastVaticanReportException e) {
             //TODO: gestire eccezione
+        }
+
+        //TODO: mandare broadcast a tutti i client
+        //TODO: creare messaggio di update
+        for (Pair<ClientHandler, PlayerBoard> user : players) {
+            //user.getKey().send(update);
         }
 
         return true;

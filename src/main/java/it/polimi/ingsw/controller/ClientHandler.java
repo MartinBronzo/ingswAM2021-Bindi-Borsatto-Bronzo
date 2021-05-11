@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.messages.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.TimerTask;
 
 public class ClientHandler implements Runnable {
     private String nickname;
@@ -94,7 +95,7 @@ public class ClientHandler implements Runnable {
 
                     case "activateProductionMesssage":
                         ActivateProductionMessage activateProduction = gson.fromJson(command.getParameters(), ActivateProductionMessage.class);
-                        //game.activateProduction(activateProduction);
+                        game.activateProduction(activateProduction, this);
                         break;
 
                     case "discardLeaderAndExtraResBeginning":

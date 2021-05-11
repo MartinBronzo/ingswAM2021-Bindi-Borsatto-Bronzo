@@ -29,6 +29,7 @@ public class Depot {
 
     /**
      * Constructs a copy of the specified Deport
+     *
      * @param depot the Depot to be cloned
      */
     public Depot(Depot depot) {
@@ -473,7 +474,7 @@ public class Depot {
      * Returns the type of the selected shelf
      *
      * @param shelfNum: the number of the shelf you want to know the type; the value is between 1 and 3: 1 is the smallest shelf and 3 is the largest
-     * @return the ResourceType of that shelf
+     * @return the ResourceType of that shelf; null if the shelf is empty
      * @throws IllegalArgumentException if shelf num isn't between 1 and 3
      */
     public ResourceType getShelfType(int shelfNum) throws IllegalArgumentException {
@@ -511,6 +512,26 @@ public class Depot {
     int getExtraDepotValue(ResourceType resource) throws IllegalArgumentException {
         isFaithPoint(resource);
         return leaderDepot.get(resource);
+    }
+
+    /**
+     * Returns the number of resources on the specified shelf
+     * @param index the index of the shelf (must be between 1 and 3)
+     * @return the number of resources in the specified shelf
+     */
+    int getNumberOfResOnShelf(int index) {
+        int qt;
+        ResourceType resourceType;
+
+        controlShelfNum(index);
+
+        resourceType = getShelfType(index);
+        if(resourceType == null)
+            return 0;
+
+        qt = getResourceFromDepot(resourceType);
+
+        return qt;
     }
 
     /**
