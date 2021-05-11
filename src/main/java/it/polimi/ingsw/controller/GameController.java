@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.client.readOnlyModel.Game;
+import it.polimi.ingsw.client.readOnlyModel.Player;
+import it.polimi.ingsw.client.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -288,8 +290,14 @@ public class GameController {
             total = total + dP.getQt();
 
         //The number of quantity sent by the player must be equal to the amount of extra resources they are supposed to send back
-        if(mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)) != total)
+        if(mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)) != total){
+            System.out.println("COSA HA MANDATO: " + total + "Cosa doveva: " + mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)));
             throw new IllegalArgumentException("You must specify the right amount of extra resources!");
+        }
+
+        //The amount of cards sent back must be equal to the amount they are supposed to discard
+        if(mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning() != discardLeaderCardBeginning.getLeaderCard().size())
+            throw new IllegalArgumentException("You are supposed to discard " + mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning() + " cards!");
 
         List<LeaderCard> leaderCard = playerBoard.getNotPlayedLeaderCardsFromIndex(discardLeaderCardBeginning.getLeaderCard());
 
@@ -310,8 +318,14 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: creare il game model => ci sarà da aggiornare le info che questi hanno sui punti fede!
+        Player player = new Player();
+        player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
+        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+        player.setPopeTiles(playerBoard.getPopeTile());
+        //Adds the three depots
+        //player.addDepotShelf(new DepotShelf(playerBoard.get));
         Game game = new Game();
+        game.addPlayer(player);
         this.sendBroadcastUpdate(game);
         return true;
     }
@@ -721,6 +735,16 @@ public class GameController {
             e.setValue(mainBoard.getPlayerBoard(i));
             i++;
         }
+    }
+
+        /*
+    ###########################################################################################################
+     TESTING METHODS: These methods were used for testing purposes
+    ###########################################################################################################
+     */
+
+    public void setFirstPlayer(int firstPlayer) {
+        this.firstPlayer = firstPlayer;
     }
 
     //This method was used for testing purposes

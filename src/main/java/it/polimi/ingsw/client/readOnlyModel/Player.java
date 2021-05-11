@@ -3,9 +3,11 @@ package it.polimi.ingsw.client.readOnlyModel;
 import it.polimi.ingsw.client.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.client.readOnlyModel.player.Devslot;
 import it.polimi.ingsw.controller.enums.PlayerState;
+import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.ResourceType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,7 +24,25 @@ public class Player {
     private HashMap<ResourceType, Integer> strongBox;
     private HashMap<ResourceType, Integer> leaderSlots;
     private int victoryPoints;
+    private List<PopeTile> popeTiles;
 
+    public void addDepotShelf(DepotShelf depotShelf){
+        if(depotShelves == null)
+            depotShelves = new ArrayList<>();
+        depotShelves.add(depotShelf);
+    }
+
+    public void setPopeTiles(List<PopeTile> popeTiles) {
+        this.popeTiles = popeTiles;
+    }
+
+    public void setFaithPosition(int faithPosition) {
+        this.faithPosition = faithPosition;
+    }
+
+    public void setUnUsedLeaders(List<LeaderCard> unUsedLeaders) {
+        this.unUsedLeaders = unUsedLeaders;
+    }
 
     public String getNickName() {
         return nickName;
@@ -72,6 +92,10 @@ public class Player {
         return victoryPoints;
     }
 
+    public List<PopeTile> getPopeTiles() {
+        return popeTiles;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -87,6 +111,7 @@ public class Player {
                 ", strongBox=" + strongBox +
                 ", leaderSlots=" + leaderSlots +
                 ", victoryPoints=" + victoryPoints +
+                ", popeTiles" + popeTiles +
                 '}';
     }
 }

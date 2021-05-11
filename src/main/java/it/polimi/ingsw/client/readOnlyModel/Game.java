@@ -39,6 +39,24 @@ public class Game {
         return lorenzosPosition;
     }
 
+    public void setPlayers(Collection<Player> players) {
+        this.players = players;
+    }
+
+    public void addPlayer(Player player){
+        if(players == null)
+            players = new ArrayList<>();
+        players.add(player);
+    }
+
+    public void setMainBoard(Board mainBoard) {
+        this.mainBoard = mainBoard;
+    }
+
+    public void setLorenzosPosition(int lorenzosPosition) {
+        this.lorenzosPosition = lorenzosPosition;
+    }
+
     @Override
     public String toString() {
         return "Game{" +
