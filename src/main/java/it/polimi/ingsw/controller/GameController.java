@@ -1,6 +1,9 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.client.readOnlyModel.Game;
+import it.polimi.ingsw.client.readOnlyModel.Player;
+import it.polimi.ingsw.client.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -12,8 +15,11 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
+import it.polimi.ingsw.network.messages.sendToClient.ResGottenFromMarket;
 
+import javax.security.auth.login.AccountLockedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +35,7 @@ public class GameController {
     private GameState state;
     private MainBoard modelCopy;
     private int firstPlayer;
+    private Gson gson;
 
 
     /**
@@ -121,6 +128,7 @@ public class GameController {
         this.players = new ArrayList<>();
         this.numberOfPlayers = -1;
         this.maxPlayersNum = 4;
+        this.gson = new Gson();
     }
 
     /**
@@ -237,9 +245,38 @@ public class GameController {
 
     /*
     ###########################################################################################################
-     ClientHandler-RELATED METHODS
+     TO CLIENT MESSAGES
     ###########################################################################################################
      */
+
+    public boolean sendNumExtraResBeginning(){
+        //Randomly chooses a first player
+        this.firstPlayer = mainBoard.getFirstPlayerRandomly();
+
+        try {
+            mainBoard.giveExtraFaithPointAtBeginning(firstPlayer);
+        } catch (LastVaticanReportException e) {
+            this.setLastTurn();
+        }
+
+        //For each player in the game computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
+        //It sends this information back to all the players
+        ExtraResAndLeadToDiscardBeginningMessage message;
+        for(int i = 0; i < this.numberOfPlayers; i++){
+            message = new ExtraResAndLeadToDiscardBeginningMessage(mainBoard.getExtraResourcesAtBeginningForPlayer(firstPlayer, i), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning(), mainBoard.getPlayerOder(firstPlayer, i));
+            players.get(i).getKey().send(gson.toJson(message));
+        }
+        //TODO: in un primo momento bisognerà mandare un messaggio separato ai giocatori sullo status del model che hanno (le carte leader che gli sono state mandate)
+        return true;
+    }
+
+    /*
+    ###########################################################################################################
+     FROM CLIENT MESSAGES
+    ###########################################################################################################
+     */
+
+    //TODO: i numeri che il client passa degli indici NON sono da informatici (devono essere decrementati per accedere agli indici effettivi delle matrici, delle liste, etc.)
 
     public boolean discardLeaderAndExtraResBeginning(DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
@@ -253,8 +290,14 @@ public class GameController {
             total = total + dP.getQt();
 
         //The number of quantity sent by the player must be equal to the amount of extra resources they are supposed to send back
-        if(mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)) != total)
+        if(mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)) != total){
+            System.out.println("COSA HA MANDATO: " + total + "Cosa doveva: " + mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)));
             throw new IllegalArgumentException("You must specify the right amount of extra resources!");
+        }
+
+        //The amount of cards sent back must be equal to the amount they are supposed to discard
+        if(mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning() != discardLeaderCardBeginning.getLeaderCard().size())
+            throw new IllegalArgumentException("You are supposed to discard " + mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning() + " cards!");
 
         List<LeaderCard> leaderCard = playerBoard.getNotPlayedLeaderCardsFromIndex(discardLeaderCardBeginning.getLeaderCard());
 
@@ -265,7 +308,6 @@ public class GameController {
 
             for(DepotParams dP: discardLeaderCardBeginning.getDepotRes())
                 playerBoard.addResourceToDepot(dP.getResourceType(), dP.getQt(), dP.getShelf());
-            //TODO: nel metodo che invia ai giocatori quante extra risorse devono dare automaticamente dare i punti fede e inizializzare firstPlayer
 
         } catch (IllegalArgumentException e){
             this.rollbackState();
@@ -276,7 +318,15 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio in broadcast
+        Player player = new Player();
+        player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
+        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+        player.setPopeTiles(playerBoard.getPopeTile());
+        //Adds the three depots
+        //player.addDepotShelf(new DepotShelf(playerBoard.get));
+        Game game = new Game();
+        game.addPlayer(player);
+        this.sendBroadcastUpdate(game);
         return true;
     }
 
@@ -294,11 +344,13 @@ public class GameController {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         } catch (LastVaticanReportException e) {
-            //TODO: creare metodo per il last vatican report aftermath
+            this.setLastTurn();
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio in broadcast
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
         return true;
     }
 
@@ -318,10 +370,13 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio in broadcast
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
         return true;
     }
 
+    //Tested
     public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
             throw new IllegalArgumentException("Specify only a column or row!");
@@ -331,16 +386,22 @@ public class GameController {
         List<Effect> effects = playerBoard.getEffectsFromCards(resFromMkt.getLeaderList());
 
         //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
-        if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow(), resFromMkt.getCol()) > effects.size())
-            throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+        /*if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow() - 1, resFromMkt.getCol() - 1) > effects.size())
+            throw new IllegalArgumentException("There are not enough LeaderCards specified!");*/
+        if(resFromMkt.getRow() == 0)
+            if(mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1) > effects.size())
+                throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+        else
+            if(mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1) > effects.size())
+                throw new IllegalArgumentException("There are not enough LeaderCards specified!");
 
         if (resFromMkt.getCol() != 0)
-            result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol(), effects);
+            result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol() -1, effects);
         else //if(resFromMkt.getRow() != 0)
-            result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow(), effects);
+            result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow() - 1, effects);
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio positivo solo al client in questione
+        clientHandler.send(gson.toJson(new ResGottenFromMarket(result)));
         return true;
     }
 
@@ -404,13 +465,17 @@ public class GameController {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         } catch (LastVaticanReportException e) {
-            //TODO: creare metodo per il last vatican report aftermath
+            this.setLastTurn();
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio in broadcast
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
         return true;
     }
+
+    //SATTOOOO's methods
 
     public boolean getCardCost(GetFromMatrixMessage devCardMessage, ClientHandler clientHandler) throws IllegalArgumentException {
         DevCard devCard;
@@ -694,6 +759,24 @@ public class GameController {
     ###########################################################################################################
      */
 
+    public void distributeLeaderCards(){
+        mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
+    }
+
+    private void setLastTurn(){
+        this.state = GameState.LASTTURN;
+    }
+
+    /**
+     * Sends an update message to all the players in the game
+     * @param game the read-only model which contains the updates
+     * @return true if the messages where correctly sent to all the players
+     */
+    private boolean sendBroadcastUpdate(Game game){
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            e.getKey().send(gson.toJson(game));
+        return true;
+    }
 
     private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
         //TODO: mandare un messaggio al client handler in questione passandogli il messaggio d'errore
@@ -717,6 +800,16 @@ public class GameController {
             e.setValue(mainBoard.getPlayerBoard(i));
             i++;
         }
+    }
+
+        /*
+    ###########################################################################################################
+     TESTING METHODS: These methods were used for testing purposes
+    ###########################################################################################################
+     */
+
+    public void setFirstPlayer(int firstPlayer) {
+        this.firstPlayer = firstPlayer;
     }
 
     //This method was used for testing purposes

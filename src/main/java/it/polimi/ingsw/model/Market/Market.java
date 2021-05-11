@@ -218,8 +218,9 @@ public class Market {
     public HashMap<ResourceType, Integer> getResourcesFromRow(int rowNumber, List<Effect> effects) throws IllegalArgumentException, NullPointerException {
         if (rowNumber < 0 || rowNumber >= 3) throw new IllegalArgumentException("getRow Market: not valid rowNumber");
         if (effects == null) throw new NullPointerException("getRow Market: not expected NULL effect");
-        if (effects.size() != getNumberOfWhiteMarbleInTheRow(rowNumber)) throw new IllegalArgumentException("getRow market: the number of effects is not the number of whitemarble in the row");
-
+        if (effects.size() != getNumberOfWhiteMarbleInTheRow(rowNumber)) {
+            throw new IllegalArgumentException("getRow market: the number of effects is not the number of whitemarble in the row");
+        }
         HashMap<ResourceType, Integer> resources = new HashMap<>();
 
         for (int j = 0; j < marketMatrix[rowNumber].length; j++) {

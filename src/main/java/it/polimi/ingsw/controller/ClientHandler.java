@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller;
 import com.google.gson.Gson;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.fromClient.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -151,6 +151,7 @@ public class ClientHandler implements Runnable {
 
     public void send(String message) {
         out.println(message);
+        out.flush();
     }
 
     public void setNickname(String nickname) {
