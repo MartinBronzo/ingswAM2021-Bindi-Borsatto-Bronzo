@@ -320,6 +320,15 @@ public class PlayerBoard {
     */
 
     /**
+     * Returns the number of resources on the specified shelf
+     * @param index the index of the shelf (must be between 1 and 3)
+     * @return the number of resources in the specified shelf
+     */
+    public int getNumberOfResInShelf(int index){
+        return this.depot.getNumberOfResOnShelf(index);
+    }
+
+    /**
      * Adds resources to the selected shelf in the depot
      *
      * @param resourceType: the resourceType to be added

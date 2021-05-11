@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import com.google.gson.Gson;
 import it.polimi.ingsw.client.readOnlyModel.Game;
 import it.polimi.ingsw.client.readOnlyModel.Player;
+import it.polimi.ingsw.client.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -276,6 +277,7 @@ public class GameController {
 
     //TODO: i numeri che il client passa degli indici NON sono da informatici (devono essere decrementati per accedere agli indici effettivi delle matrici, delle liste, etc.)
 
+    //Tested
     public boolean discardLeaderAndExtraResBeginning(DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         for (Integer i : discardLeaderCardBeginning.getLeaderCard())
@@ -322,10 +324,9 @@ public class GameController {
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
         //Adds the three depots with what's inside for all the three elements
-        //player.addDepotShelf(new DepotShelf(playerBoard.get));
-        player.addDepotShelf(new DepotShelf());
-        player.addDepotShelf(new DepotShelf());
-        player.addDepotShelf(new DepotShelf());
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
         Game game = new Game();
         game.addPlayer(player);
         this.sendBroadcastUpdate(game);
@@ -478,6 +479,7 @@ public class GameController {
 
     //SATTOOOO's methods
 
+    //Tested
     public boolean getCardCost(GetFromMatrixMessage devCardMessage, ClientHandler clientHandler) throws IllegalArgumentException {
         DevCard devCard;
         HashMap<ResourceType, Integer> cost;
@@ -566,6 +568,7 @@ public class GameController {
         return true;
     }
 
+    //Tested
     public boolean getProductionCost(GetProductionCostMessage getProductionCostMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         HashMap<ResourceType, Integer> prodCost;
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);

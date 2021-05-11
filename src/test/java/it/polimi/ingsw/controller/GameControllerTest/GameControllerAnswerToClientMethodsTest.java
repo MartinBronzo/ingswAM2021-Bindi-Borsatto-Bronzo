@@ -46,8 +46,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void setup() throws FileNotFoundException, IllegalActionException {
         gameController = new GameController();
         inputStreamReader = new InputStreamReader(System.in);
-        c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(new File("ClientHandler1File.json")));
-        c2 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(new File("ClientHandler2File.json")));
+        c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler1File.json"));
+        c2 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler2File.json"));
         reader = new BufferedReader(new InputStreamReader(System.in));
         c1.setNickname("Client 1");
         c2.setNickname("Client 2");
@@ -146,7 +146,11 @@ public class GameControllerAnswerToClientMethodsTest {
 
         //Checks the inside status of the PlayerBoard
         assertEquals(p1.getResourceTypeFromShelf(1), ResourceType.COIN);
-        assertEquals(p1.getResourceFromDepot(ResourceType.COIN), 1);
+        assertEquals(p1.getNumberOfResInShelf(1), 1);
+        assertNull(p1.getResourceTypeFromShelf(2));
+        assertEquals(p1.getNumberOfResInShelf(2), 0);
+        assertNull(p1.getResourceTypeFromShelf(3));
+        assertEquals(p1.getNumberOfResInShelf(3), 0);
         assertEquals(p1.getNotPlayedLeaderCards().size(), 2);
         assertTrue(p1.getNotPlayedLeaderCards().contains(l1));
         assertTrue(p1.getNotPlayedLeaderCards().contains(l4));
@@ -167,16 +171,16 @@ public class GameControllerAnswerToClientMethodsTest {
         assertFalse(playerModel.getPopeTiles().get(0).isChanged());
         assertFalse(playerModel.getPopeTiles().get(1).isChanged());
         assertFalse(playerModel.getPopeTiles().get(2).isChanged());
-        //assertEquals(playerModel.getDepotShelves().get(0).getResourceType(), ResourceType.COIN);
-        //assertEquals(playerModel.getDepotShelves().get(0).getQuantity(), 1);
+        assertEquals(playerModel.getDepotShelves().get(0).getResourceType(), ResourceType.COIN);
+        assertEquals(playerModel.getDepotShelves().get(0).getQuantity(), 1);
         assertNull(playerModel.getDepotShelves().get(1).getResourceType());
-        assertEquals(playerModel.getDepotShelves().get(1).getQuantity(), -1);
+        assertEquals(playerModel.getDepotShelves().get(1).getQuantity(), 0);
         assertNull(playerModel.getDepotShelves().get(2).getResourceType());
-        assertEquals(playerModel.getDepotShelves().get(2).getQuantity(), -1);
+        assertEquals(playerModel.getDepotShelves().get(2).getQuantity(), 0);
     }
 
     @Test
-    public void getDevCardCost() throws IllegalActionException, IOException {
+    public void getDevCardCost() throws IOException {
         //Initiates the game
         gameController.startMainBoard(1);
         gameController.setPlayer(c1);
@@ -214,7 +218,7 @@ public class GameControllerAnswerToClientMethodsTest {
     }
 
     @Test
-    public void getDevCardCost2() throws IllegalActionException, IOException, NegativeQuantityException {
+    public void getDevCardCost2() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(1);
         gameController.setPlayer(c1);

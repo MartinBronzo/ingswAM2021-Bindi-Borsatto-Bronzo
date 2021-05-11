@@ -30,6 +30,10 @@ public class Player {
         this.nickName = nickName;
     }
 
+    public void doSetNickname(String a){
+        this.nickName = a;
+    }
+
     public void addDepotShelf(DepotShelf depotShelf){
         if(depotShelves == null)
             depotShelves = new ArrayList<>();
