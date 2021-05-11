@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.messages;
+package it.polimi.ingsw.network.messages.fromClient;
 
 public class LeaderMessage {
     private int leader;

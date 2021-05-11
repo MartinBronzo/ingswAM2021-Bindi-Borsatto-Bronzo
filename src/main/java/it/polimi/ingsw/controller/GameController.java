@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.client.readOnlyModel.Game;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -12,7 +13,8 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +31,7 @@ public class GameController {
     private GameState state;
     private MainBoard modelCopy;
     private int firstPlayer;
+    private Gson gson;
 
 
     /**
@@ -121,6 +124,7 @@ public class GameController {
         this.players = new ArrayList<>();
         this.numberOfPlayers = -1;
         this.maxPlayersNum = 4;
+        this.gson = new Gson();
     }
 
     /**
@@ -237,7 +241,34 @@ public class GameController {
 
     /*
     ###########################################################################################################
-     ClientHandler-RELATED METHODS
+     TO CLIENT MESSAGES
+    ###########################################################################################################
+     */
+
+    public boolean sendNumExtraResBeginning(){
+        //Randomly chooses a first player
+        this.firstPlayer = mainBoard.getFirstPlayerRandomly();
+
+        try {
+            mainBoard.giveExtraFaithPointAtBeginning(firstPlayer);
+        } catch (LastVaticanReportException e) {
+            //TODO: metodo che gestice l'aftermath del LastVaticanReport
+        }
+
+        //For each player in the game computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
+        //It sends this information back to all the players
+        ExtraResAndLeadToDiscardBeginningMessage message;
+        for(int i = 0; i < this.numberOfPlayers; i++){
+            message = new ExtraResAndLeadToDiscardBeginningMessage(mainBoard.getExtraResourcesAtBeginningForPlayer(firstPlayer, i), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning(), mainBoard.getPlayerOder(firstPlayer, i));
+            players.get(i).getKey().send(gson.toJson(message));
+        }
+        //TODO: in un primo momento bisognerà mandare un messaggio separato ai giocatori sullo status del model che hanno (le carte leader che gli sono state mandate)
+        return true;
+    }
+
+    /*
+    ###########################################################################################################
+     FROM CLIENT MESSAGES
     ###########################################################################################################
      */
 
@@ -265,7 +296,6 @@ public class GameController {
 
             for(DepotParams dP: discardLeaderCardBeginning.getDepotRes())
                 playerBoard.addResourceToDepot(dP.getResourceType(), dP.getQt(), dP.getShelf());
-            //TODO: nel metodo che invia ai giocatori quante extra risorse devono dare automaticamente dare i punti fede e inizializzare firstPlayer
 
         } catch (IllegalArgumentException e){
             this.rollbackState();
@@ -276,7 +306,9 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio in broadcast
+        //TODO: creare il game model => ci sarà da aggiornare le info che questi hanno sui punti fede!
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
         return true;
     }
 
@@ -298,7 +330,9 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio in broadcast
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
         return true;
     }
 
@@ -318,7 +352,9 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio in broadcast
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
         return true;
     }
 
@@ -408,7 +444,9 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: mandare il messaggio in broadcast
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
         return true;
     }
 
@@ -629,6 +667,16 @@ public class GameController {
     ###########################################################################################################
      */
 
+    /**
+     * Sends an update message to all the players in the game
+     * @param game the read-only model which contains the updates
+     * @return true if the messages where correctly sent to all the players
+     */
+    private boolean sendBroadcastUpdate(Game game){
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            e.getKey().send(gson.toJson(game));
+        return true;
+    }
 
     private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
         //TODO: mandare un messaggio al client handler in questione passandogli il messaggio d'errore

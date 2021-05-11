@@ -285,6 +285,12 @@ public class GeneralMainBoardMethodsClass {
     }
 
     @Test
+    public void ctrlPlayerOrder(){
+        //If there are four players and the first to go is the number two in the array then their are going to be the last to play
+        assertEquals(mainBoard.getPlayerOder(2, 1), 3);
+    }
+
+    @Test
     //Tests that a random player is chosen to be the firs
     public void getFirstPlayerRandomly(){
         int result;

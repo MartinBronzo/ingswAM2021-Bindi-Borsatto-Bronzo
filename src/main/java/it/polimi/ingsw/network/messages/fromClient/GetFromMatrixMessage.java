@@ -1,6 +1,4 @@
-package it.polimi.ingsw.network.messages;
-
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+package it.polimi.ingsw.network.messages.fromClient;
 
 import java.util.ArrayList;
 import java.util.List;

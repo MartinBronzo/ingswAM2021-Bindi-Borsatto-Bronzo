@@ -1,11 +1,7 @@
-package it.polimi.ingsw.network.messages;
-
-import it.polimi.ingsw.model.ResourceType;
+package it.polimi.ingsw.network.messages.fromClient;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DiscardLeaderAndExtraResBeginningMessage {
     private List<Integer> leaderCard;

@@ -33,6 +33,7 @@ public class MainBoard {
     protected int numberOfPlayers;
     protected List<PlayerBoard> playerBoardsList;
     protected int numberOfLeaderCardsToGive;
+    protected int numberOfLeaderCardsToDiscardAtBeginning;
     //other fields...
 
     protected int[] extraFaithPointsAtBeginning;
@@ -350,6 +351,10 @@ public class MainBoard {
         return stepForEachDiscardedRes;
     }
 
+    public int getNumberOfLeaderCardsToDiscardAtBeginning() {
+        return numberOfLeaderCardsToDiscardAtBeginning;
+    }
+
     /*
     ###########################################################################################################
      CONFIGURATION METHODS
@@ -387,6 +392,7 @@ public class MainBoard {
         this.extraFaithPointsAtBeginning = new int[]{0, 0, 1, 1};
         this.extraResourcesAtBeginning = new int[]{0, 1, 1, 2};
         this.stepForEachDiscardedRes = 1;
+        this.numberOfLeaderCardsToDiscardAtBeginning = 2;
         initMainBoard();
     }
 
@@ -446,12 +452,24 @@ public class MainBoard {
     }
 
     /**
-     * Returns the number of extra resources the specified player gets in this game: it calculates this number basing the count the specified first player
+     * Returns the number of extra resources the specified player gets in this game: it calculates this number basing the count on the specified first player (both indexes are the ones in the
+     * list of players that the MainBoard holds).
      * @param firstPlayer the first player of the game
      * @param currentPlayer the player whose number of extra resources we want to compute
      * @return the number of extra resources the specified player gets in this game
      */
     public int getExtraResourcesAtBeginningForPlayer(int firstPlayer, int currentPlayer){
+        return this.extraResourcesAtBeginning[this.getPlayerOder(firstPlayer, currentPlayer)];
+    }
+
+    /**
+     * Returns the order of the specified player in the game: it calculates this number basing the count on the specified first player (both indexes are the ones in the
+     * list of players that the MainBoard holds).
+     * @param firstPlayer the first player of the game
+     * @param currentPlayer the player whose number of extra resources we want to compute
+     * @return the player's order in the game (it is a number in the range [0, this.numberOfPlayers - 1], ends included)
+     */
+    public int getPlayerOder(int firstPlayer, int currentPlayer){
         //Basically this method shifts the order of the player so that the first player is in position 0 because if we do so
         //we can easily get the desired number by directly accessing the extraResourcesAtBeginning array
         int currentPlayerOrder = currentPlayer - firstPlayer;
@@ -459,7 +477,7 @@ public class MainBoard {
         if(currentPlayerOrder < 0)
             currentPlayerOrder = this.numberOfPlayers - Math.abs(currentPlayerOrder);
         //System.out.println("Cur: " + currentPlayerOrder);
-        return this.extraResourcesAtBeginning[currentPlayerOrder];
+        return currentPlayerOrder;
     }
 
     /**
@@ -495,6 +513,8 @@ public class MainBoard {
         System.arraycopy(original.extraResourcesAtBeginning, 0, this.extraResourcesAtBeginning, 0, original.extraResourcesAtBeginning.length);
 
         this.stepForEachDiscardedRes = original.stepForEachDiscardedRes;
+
+        this.numberOfLeaderCardsToDiscardAtBeginning = original.numberOfLeaderCardsToDiscardAtBeginning;
     }
 
     /***************************** OLD STUFF TO BE CHECKED ****************************************/
