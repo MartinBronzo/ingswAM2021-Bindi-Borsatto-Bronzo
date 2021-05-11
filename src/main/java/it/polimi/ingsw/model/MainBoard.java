@@ -137,7 +137,7 @@ public class MainBoard {
      * @return the number of White Marbles in the row
      * @throws IllegalArgumentException if the specified row index is invalid
      */
-    private int getNumberOfWhiteMarbleInMarketRow(int rowNumber) throws IllegalArgumentException {
+    public int getNumberOfWhiteMarbleInMarketRow(int rowNumber) throws IllegalArgumentException {
         return this.market.getNumberOfWhiteMarbleInTheRow(rowNumber);
     }
 
@@ -148,7 +148,7 @@ public class MainBoard {
      * @return the number of White Marbles in the column
      * @throws IllegalArgumentException if the specified column index is invalid
      */
-    private int getNumberOfWhiteMarbleInTheColumn(int columnNumber) throws IllegalArgumentException{
+    public int getNumberOfWhiteMarbleInTheColumn(int columnNumber) throws IllegalArgumentException{
         return this.market.getNumberOfWhiteMarbleInTheColumn(columnNumber);
     }
 
@@ -162,9 +162,9 @@ public class MainBoard {
      */
     public int getNumberOfWhiteMarbleInMarketRowOrColumn(int rowNumber, int columnNumber){
         if(rowNumber != 0)
-            return this.getNumberOfWhiteMarbleInMarketRow(rowNumber - 1);
+            return this.getNumberOfWhiteMarbleInMarketRow(rowNumber);
         //then the rowColumn must be the only number greater than zero
-        return this.getNumberOfWhiteMarbleInTheColumn(columnNumber - 1);
+        return this.getNumberOfWhiteMarbleInTheColumn(columnNumber);
     }
 
     /*

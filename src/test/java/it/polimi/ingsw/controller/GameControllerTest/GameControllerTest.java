@@ -1,5 +1,7 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.GameControllerTest;
 
+import it.polimi.ingsw.controller.ClientHandler;
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;

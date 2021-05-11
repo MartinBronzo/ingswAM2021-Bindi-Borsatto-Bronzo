@@ -150,6 +150,7 @@ public class ClientHandler implements Runnable {
 
     public void send(String message) {
         out.println(message);
+        out.flush();
     }
 
     public void setNickname(String nickname) {
