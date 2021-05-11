@@ -1005,5 +1005,39 @@ class DepotTest {
         assertEquals(depotCopy.getExtraDepotValue(stone), 1);
     }
 
+    @Test
+    public void getResourceNumFromShelf1() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 3, 3);
+        depot.addToShelf(stone, 1, 1);
+        depot.addToShelf(shield, 2, 2);
+
+        assertEquals(depot.getNumberOfResOnShelf(1), 1);
+        assertEquals(depot.getNumberOfResOnShelf(2), 2);
+        assertEquals(depot.getNumberOfResOnShelf(3), 3);
+    }
+
+    @Test
+    public void getResourceNumFromShelf2() throws AlreadyInAnotherShelfException, NotEnoughSpaceException {
+        Depot depot = new Depot();
+
+        depot.addToShelf(servant, 2, 3);
+        depot.addToShelf(shield, 1, 2);
+
+        assertEquals(depot.getNumberOfResOnShelf(1), 0);
+        assertEquals(depot.getNumberOfResOnShelf(2), 1);
+        assertEquals(depot.getNumberOfResOnShelf(3), 2);
+    }
+
+    @Test
+    public void getResourceNumFromShelf3() {
+        Depot depot = new Depot();
+
+        assertEquals(depot.getNumberOfResOnShelf(1), 0);
+        assertEquals(depot.getNumberOfResOnShelf(2), 0);
+        assertEquals(depot.getNumberOfResOnShelf(3), 0);
+    }
+
 
 }

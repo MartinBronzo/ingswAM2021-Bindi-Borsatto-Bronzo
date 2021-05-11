@@ -11,11 +11,11 @@ public class ActivateProductionMessage {
     private List<Integer> devCards;
     private Map<Integer, ResourceType> leaders;
     private BaseProductionParams baseProduction;
-    private DepotParams depotInputRes;
+    private List<DepotParams> depotInputRes;
     private Map<ResourceType, Integer> leaderSlotRes;
     private Map<ResourceType, Integer> strongboxInputRes;
 
-    public ActivateProductionMessage(List<Integer> devCards, Map<Integer, ResourceType> leaderMap, BaseProductionParams baseProduction, DepotParams depotInputRes, Map<ResourceType, Integer> leaderSlotRes, Map<ResourceType, Integer> strongboxInputRes) {
+    public ActivateProductionMessage(List<Integer> devCards, Map<Integer, ResourceType> leaderMap, BaseProductionParams baseProduction, List<DepotParams> depotInputRes, Map<ResourceType, Integer> leaderSlotRes, Map<ResourceType, Integer> strongboxInputRes) {
         this.devCards = devCards;
         this.leaders = leaderMap;
         this.baseProduction = baseProduction;
@@ -28,7 +28,7 @@ public class ActivateProductionMessage {
         return new ArrayList<>(devCards);
     }
 
-    public Map<Integer, ResourceType> getLeaders() {
+    public HashMap<Integer, ResourceType> getLeaders() {
         return new HashMap<>(leaders);
     }
 
@@ -36,15 +36,15 @@ public class ActivateProductionMessage {
         return baseProduction;
     }
 
-    public DepotParams getDepotInputRes() {
+    public List<DepotParams> getDepotInputRes() {
         return depotInputRes;
     }
 
-    public Map<ResourceType, Integer> getLeaderSlotRes() {
+    public HashMap<ResourceType, Integer> getLeaderSlotRes() {
         return new HashMap<>(leaderSlotRes);
     }
 
-    public Map<ResourceType, Integer> getStrongboxInputRes() {
+    public HashMap<ResourceType, Integer> getStrongboxInputRes() {
         return new HashMap<>(strongboxInputRes);
     }
 }
