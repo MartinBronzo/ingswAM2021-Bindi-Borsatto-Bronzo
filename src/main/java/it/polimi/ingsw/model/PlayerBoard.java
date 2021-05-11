@@ -498,7 +498,6 @@ public class PlayerBoard {
      * @return true if the action is performed without errors
      * @deprecated resources to strongbox can be added exclusively using activate production method
      */
-    @Deprecated
     public boolean addResourcesToStrongbox(HashMap<ResourceType, Integer> resMap) {
         return strongbox.addResource(resMap);
     }
@@ -703,7 +702,7 @@ public class PlayerBoard {
         Collection<ResourceType> costKeys = costMap.keySet();
         HashMap<ResourceType, Integer> allResources = this.getAllResources();
         if (costKeys.stream().anyMatch(key -> costMap.getOrDefault(key, 0) > allResources.getOrDefault(key, 0)))
-            throw new IllegalActionException("playerboard_getProductionCost:there is not enough resources to activate these cards");
+            throw new IllegalActionException("playerboard_getProductionCost:there are not enough resources to activate these cards");
         return costMap;
     }
 

@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.network.messages.sendToClient.ErrorMessage;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.TimerTask;
 
 public class ClientHandler implements Runnable {
     private String nickname;
@@ -59,7 +59,7 @@ public class ClientHandler implements Runnable {
 
                     case "login":
                         LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
-                        //call method
+                        //TODO: chiamare metodo
                         break;
 
                     case "setNumPlayer":
@@ -142,11 +142,10 @@ public class ClientHandler implements Runnable {
             socket.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
-        } catch (IllegalActionException e) {
-            ErrorMessage errorMessage = new ErrorMessage("error", e.getMessage());
+        } catch (IllegalActionException | IllegalArgumentException e) {
+            ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
             send(gson.toJson(errorMessage));
         }
-
     }
 
     public void send(String message) {

@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import com.google.gson.Gson;
 import it.polimi.ingsw.client.readOnlyModel.Game;
 import it.polimi.ingsw.client.readOnlyModel.Player;
-import it.polimi.ingsw.client.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -17,9 +16,8 @@ import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
-import it.polimi.ingsw.network.messages.sendToClient.ResGottenFromMarket;
+import it.polimi.ingsw.network.messages.sendToClient.HashMapResources;
 
-import javax.security.auth.login.AccountLockedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -249,7 +247,7 @@ public class GameController {
     ###########################################################################################################
      */
 
-    public boolean sendNumExtraResBeginning(){
+    public boolean sendNumExtraResBeginning() {
         //Randomly chooses a first player
         this.firstPlayer = mainBoard.getFirstPlayerRandomly();
 
@@ -262,7 +260,7 @@ public class GameController {
         //For each player in the game computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
         //It sends this information back to all the players
         ExtraResAndLeadToDiscardBeginningMessage message;
-        for(int i = 0; i < this.numberOfPlayers; i++){
+        for (int i = 0; i < this.numberOfPlayers; i++) {
             message = new ExtraResAndLeadToDiscardBeginningMessage(mainBoard.getExtraResourcesAtBeginningForPlayer(firstPlayer, i), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning(), mainBoard.getPlayerOder(firstPlayer, i));
             players.get(i).getKey().send(gson.toJson(message));
         }
@@ -280,23 +278,23 @@ public class GameController {
 
     public boolean discardLeaderAndExtraResBeginning(DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-        for(Integer i: discardLeaderCardBeginning.getLeaderCard())
-            if(i < 0)
+        for (Integer i : discardLeaderCardBeginning.getLeaderCard())
+            if (i < 0)
                 throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
 
         //Computes how many resources the Player has sent back to the GameController
         int total = 0;
-        for(DepotParams dP: discardLeaderCardBeginning.getDepotRes())
+        for (DepotParams dP : discardLeaderCardBeginning.getDepotRes())
             total = total + dP.getQt();
 
         //The number of quantity sent by the player must be equal to the amount of extra resources they are supposed to send back
-        if(mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)) != total){
+        if (mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)) != total) {
             System.out.println("COSA HA MANDATO: " + total + "Cosa doveva: " + mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)));
             throw new IllegalArgumentException("You must specify the right amount of extra resources!");
         }
 
         //The amount of cards sent back must be equal to the amount they are supposed to discard
-        if(mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning() != discardLeaderCardBeginning.getLeaderCard().size())
+        if (mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning() != discardLeaderCardBeginning.getLeaderCard().size())
             throw new IllegalArgumentException("You are supposed to discard " + mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning() + " cards!");
 
         List<LeaderCard> leaderCard = playerBoard.getNotPlayedLeaderCardsFromIndex(discardLeaderCardBeginning.getLeaderCard());
@@ -306,10 +304,10 @@ public class GameController {
 
             playerBoard.discardLeaderCardsAtTheBeginning(leaderCard);
 
-            for(DepotParams dP: discardLeaderCardBeginning.getDepotRes())
+            for (DepotParams dP : discardLeaderCardBeginning.getDepotRes())
                 playerBoard.addResourceToDepot(dP.getResourceType(), dP.getQt(), dP.getShelf());
 
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         } catch (IllegalActionException e) {
@@ -330,7 +328,7 @@ public class GameController {
         return true;
     }
 
-    public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException{
+    public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         if (discardLeader.getLeader() < 0)
             throw new IllegalArgumentException("The index of the LeaderCard must be a positive integer!");
@@ -388,20 +386,19 @@ public class GameController {
         //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
         /*if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow() - 1, resFromMkt.getCol() - 1) > effects.size())
             throw new IllegalArgumentException("There are not enough LeaderCards specified!");*/
-        if(resFromMkt.getRow() == 0)
-            if(mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1) > effects.size())
+        if (resFromMkt.getRow() == 0)
+            if (mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1) > effects.size())
                 throw new IllegalArgumentException("There are not enough LeaderCards specified!");
-        else
-            if(mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1) > effects.size())
+            else if (mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1) > effects.size())
                 throw new IllegalArgumentException("There are not enough LeaderCards specified!");
 
         if (resFromMkt.getCol() != 0)
-            result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol() -1, effects);
+            result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol() - 1, effects);
         else //if(resFromMkt.getRow() != 0)
             result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow() - 1, effects);
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        clientHandler.send(gson.toJson(new ResGottenFromMarket(result)));
+        clientHandler.send(gson.toJson(new HashMapResources(result)));
         return true;
     }
 
@@ -490,8 +487,7 @@ public class GameController {
 
         //send message only to the client that sent the message
         //TODO: nel messaggio io metterei anche il risultato dell'azione(status) per dire se è andata bene o no
-        Gson gson = new Gson();
-        //clientHandler.send(gson.toJson(...));
+        clientHandler.send(gson.toJson(new HashMapResources(cost)));
         return true;
     }
 
@@ -521,6 +517,139 @@ public class GameController {
         HashMap<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
         HashMap<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
 
+        removeSelectedResources(cost, playerBoard, depotRes, resToLeader, strongboxRes);
+
+        //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
+        try {
+            playerBoard.addCardToDevSlot(buyDevCard.getDevSlot() - 1, devCard);
+        } catch (EndOfGameException e) {
+            this.setLastTurn();
+        }
+
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
+        return true;
+    }
+
+    public boolean moveResourcesBetweenShelves(MoveBetweenShelvesMessage moveBtwShelvesMessage, ClientHandler clientHandler) throws IllegalActionException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        playerBoard.moveBetweenShelves(moveBtwShelvesMessage.getSourceShelf(), moveBtwShelvesMessage.getDestShelf());
+
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
+        return true;
+    }
+
+    public boolean moveResourcesToLeader(MoveShelfToLeaderMessage moveShelfToLeaderMessage, ClientHandler clientHandler) throws IllegalActionException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        playerBoard.moveFromShelfToLeader(moveShelfToLeaderMessage.getNumShelf(), moveShelfToLeaderMessage.getQuantity());
+
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
+        return true;
+    }
+
+    public boolean moveResourcesToShelf(MoveLeaderToShelfMessage moveLeaderToShelfMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        playerBoard.moveFromLeaderToShelf(moveLeaderToShelfMessage.getRes(), moveLeaderToShelfMessage.getQuantity(), moveLeaderToShelfMessage.getDestShelf());
+
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
+        return true;
+    }
+
+    public boolean getProductionCost(GetProductionCostMessage getProductionCostMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
+        HashMap<ResourceType, Integer> prodCost;
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        BaseProductionParams baseProductionParams = getProductionCostMessage.getBaseProd();
+
+        if (baseProductionParams.isActivated()) {
+            playerBoard.setBaseProduction(baseProductionParams.getBaseInput(), baseProductionParams.getBaseOutput());
+        }
+
+        //get devCard from devSlot index
+        List<DevCard> devList = new ArrayList<>();
+        for (int index : getProductionCostMessage.getDevCards())
+            devList.add(playerBoard.getUsableDevCardFromDevSlotIndex(index));
+
+        //get leaderCard from index
+        List<LeaderCard> leaderList = new ArrayList<>();
+        for (int index : getProductionCostMessage.getLeaders())
+            leaderList.add(playerBoard.getActiveLeaderCards().get(index));
+
+        prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
+
+        //send message only to the client that sent the message
+        clientHandler.send(gson.toJson(new HashMapResources(prodCost)));
+        return true;
+    }
+
+    public boolean activateProduction(ActivateProductionMessage activateProductionMessage, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
+        HashMap<ResourceType, Integer> prodCost;
+        HashMap<LeaderCard, ResourceType> leaderMap = new HashMap<>();
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+        BaseProductionParams baseProductionParams = activateProductionMessage.getBaseProduction();
+
+        //save state of the model
+        this.saveState();
+
+        //retrieve info from message
+        if (baseProductionParams.isActivated()) {
+            try {
+                playerBoard.setBaseProduction(baseProductionParams.getBaseInput(), baseProductionParams.getBaseOutput());
+            } catch (IllegalArgumentException | NullPointerException e) {
+                this.rollbackState();
+                throw new IllegalArgumentException(e.getMessage());
+            }
+        }
+
+        //get devCard from devSlot index
+        List<DevCard> devList = new ArrayList<>();
+        for (int index : activateProductionMessage.getDevCards())
+            devList.add(playerBoard.getUsableDevCardFromDevSlotIndex(index));
+
+        //getMap for leaderCard-output resource and leaderCard list
+        LeaderCard leaderCard;
+        List<LeaderCard> leaderList = new ArrayList<>();
+        for (Map.Entry<Integer, ResourceType> index : activateProductionMessage.getLeaders().entrySet()) {
+            leaderCard = playerBoard.getActiveLeaderCards().get(index.getKey());
+            leaderMap.put(leaderCard, index.getValue());
+            leaderList.add(leaderCard);
+        }
+
+        try {
+            prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
+        } catch (IllegalActionException | NullPointerException e) {
+            this.rollbackState();
+            throw new IllegalActionException(e.getMessage());
+        }
+
+        List<DepotParams> depotRes = activateProductionMessage.getDepotInputRes();
+        HashMap<ResourceType, Integer> resToLeader = activateProductionMessage.getLeaderSlotRes();
+        HashMap<ResourceType, Integer> strongboxRes = activateProductionMessage.getStrongboxInputRes();
+
+        removeSelectedResources(prodCost, playerBoard, depotRes, resToLeader, strongboxRes);
+
+        try {
+            playerBoard.activateProduction(devList, leaderMap, baseProductionParams.isActivated());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            this.rollbackState();
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (LastVaticanReportException e) {
+            this.setLastTurn();
+        }
+
+        //TODO: creare il game model
+        Game game = new Game();
+        this.sendBroadcastUpdate(game);
+        return true;
+    }
+
+    private void removeSelectedResources(HashMap<ResourceType, Integer> cost, PlayerBoard playerBoard, List<DepotParams> depotRes, HashMap<ResourceType, Integer> resToLeader, HashMap<ResourceType, Integer> strongboxRes) throws IllegalActionException {
         //check if depot params are correct
         for (DepotParams e : depotRes) {
             if (cost.get(e.getResourceType()) == null || cost.get(e.getResourceType()) < e.getQt()) {
@@ -561,197 +690,7 @@ public class GameController {
                 throw new IllegalArgumentException("Error with resource quantity selected");
             }
         }
-
-        //TODO: lancia EndOfGameException
-        //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
-        try {
-            playerBoard.addCardToDevSlot(buyDevCard.getDevSlot() - 1, devCard);
-        } catch (EndOfGameException e) {
-            //TODO: gestire eccezione
-        }
-
-        //TODO: mandare broadcast a tutti i client
-        //TODO: creare messaggio di update
-        for (Pair<ClientHandler, PlayerBoard> user : players) {
-            //user.getKey().send(update);
-        }
-        return true;
     }
-
-    public boolean moveResourcesBetweenShelves(MoveBetweenShelvesMessage moveBtwShelvesMessage, ClientHandler clientHandler) throws IllegalActionException {
-        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-        playerBoard.moveBetweenShelves(moveBtwShelvesMessage.getSourceShelf(), moveBtwShelvesMessage.getDestShelf());
-
-        //TODO: mandare broadcast a tutti i client
-        //TODO: creare messaggio di update
-        for (Pair<ClientHandler, PlayerBoard> user : players) {
-            //user.getKey().send(update);
-        }
-        return true;
-    }
-
-    public boolean moveResourcesToLeader(MoveShelfToLeaderMessage moveShelfToLeaderMessage, ClientHandler clientHandler) throws IllegalActionException {
-        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-        playerBoard.moveFromShelfToLeader(moveShelfToLeaderMessage.getNumShelf(), moveShelfToLeaderMessage.getQuantity());
-
-        //TODO: mandare broadcast a tutti i client
-        //TODO: creare messaggio di update
-        for (Pair<ClientHandler, PlayerBoard> user : players) {
-            //user.getKey().send(update);
-        }
-        return true;
-    }
-
-    public boolean moveResourcesToShelf(MoveLeaderToShelfMessage moveLeaderToShelfMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
-        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-        playerBoard.moveFromLeaderToShelf(moveLeaderToShelfMessage.getRes(), moveLeaderToShelfMessage.getQuantity(), moveLeaderToShelfMessage.getDestShelf());
-
-        //TODO: mandare broadcast a tutti i client
-        //TODO: creare messaggio di update
-        for (Pair<ClientHandler, PlayerBoard> user : players) {
-            //user.getKey().send(update);
-        }
-
-        return true;
-    }
-
-    public boolean getProductionCost(GetProductionCostMessage getProductionCostMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
-        HashMap<ResourceType, Integer> prodCost;
-        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-        BaseProductionParams baseProductionParams = getProductionCostMessage.getBaseProd();
-
-        if (baseProductionParams.isActivated()) {
-            playerBoard.setBaseProduction(baseProductionParams.getBaseInput(), baseProductionParams.getBaseOutput());
-        }
-
-        //get devCard from devSlot index
-        List<DevCard> devList = new ArrayList<>();
-        for (int index : getProductionCostMessage.getDevCards())
-            devList.add(playerBoard.getUsableDevCardFromDevSlotIndex(index));
-
-        //get leaderCard from index
-        List<LeaderCard> leaderList = new ArrayList<>();
-        for (int index : getProductionCostMessage.getLeaders())
-            leaderList.add(playerBoard.getActiveLeaderCards().get(index));
-
-        prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
-
-        //send message only to the client that sent the message
-        //TODO: nel messaggio io metterei anche il risultato dell'azione(status) per dire se è andata bene o no
-        Gson gson = new Gson();
-        //clientHandler.send(gson.toJson(...));
-        return true;
-    }
-
-    public boolean activateProduction(ActivateProductionMessage activateProductionMessage, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
-        HashMap<ResourceType, Integer> prodCost;
-        HashMap<LeaderCard, ResourceType> leaderMap = new HashMap<>();
-        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
-        BaseProductionParams baseProductionParams = activateProductionMessage.getBaseProduction();
-
-        //save state of the model
-        this.saveState();
-
-        //retrieve info from message
-        if (baseProductionParams.isActivated()) {
-            try {
-                playerBoard.setBaseProduction(baseProductionParams.getBaseInput(), baseProductionParams.getBaseOutput());
-            } catch (IllegalArgumentException | NullPointerException e) {
-                this.rollbackState();
-                throw new IllegalArgumentException(e.getMessage());
-            }
-        }
-
-        //get devCard from devSlot index
-        List<DevCard> devList = new ArrayList<>();
-        for (int index : activateProductionMessage.getDevCards())
-            devList.add(playerBoard.getUsableDevCardFromDevSlotIndex(index));
-
-        //TODO: gestire lista vuota
-
-        //getMap for leaderCard-output resource and leaderCard list
-        LeaderCard leaderCard;
-        List<LeaderCard> leaderList = new ArrayList<>();
-        for (Map.Entry<Integer, ResourceType> index : activateProductionMessage.getLeaders().entrySet()) {
-            leaderCard = playerBoard.getActiveLeaderCards().get(index.getKey());
-            leaderMap.put(leaderCard, index.getValue());
-            leaderList.add(leaderCard);
-        }
-
-        try {
-            prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
-        }catch (IllegalActionException | NullPointerException e){
-            this.rollbackState();
-            throw new IllegalActionException(e.getMessage());
-        }
-
-        //TODO: remove resources from depot/strongbox
-        List<DepotParams> depotRes = activateProductionMessage.getDepotInputRes();
-        HashMap<ResourceType, Integer> resToLeader = activateProductionMessage.getLeaderSlotRes();
-        HashMap<ResourceType, Integer> strongboxRes = activateProductionMessage.getStrongboxInputRes();
-
-        //check if depot params are correct
-        for (DepotParams elem : depotRes) {
-            if (prodCost.get(elem.getResourceType()) == null || prodCost.get(elem.getResourceType()) < elem.getQt()) {
-                this.rollbackState();
-                throw new IllegalArgumentException("Error with resource quantity in depot");
-            }
-
-            prodCost.put(elem.getResourceType(), prodCost.get(elem.getResourceType()) - elem.getQt()); //Updates the cost map
-            playerBoard.removeResourceFromDepot(elem.getQt(), elem.getShelf());
-        }
-
-        //check if leaderSlot params are correct
-        for (Map.Entry<ResourceType, Integer> elem : resToLeader.entrySet()) {
-            if (prodCost.get(elem.getKey()) == null || prodCost.get(elem.getKey()) < elem.getValue()) {
-                this.rollbackState();
-                throw new IllegalArgumentException("Error with resource quantity in leader depot");
-            }
-
-            prodCost.put(elem.getKey(), prodCost.get(elem.getKey()) - elem.getValue()); //Updates the cost map
-            playerBoard.removeResourceFromLeader(elem.getKey(), elem.getValue());
-        }
-
-        //check if strongbox params are correct
-        for (Map.Entry<ResourceType, Integer> elem : strongboxRes.entrySet()) {
-            if (prodCost.get(elem.getKey()) == null || prodCost.get(elem.getKey()) < elem.getValue()) {
-                this.rollbackState();
-                throw new IllegalArgumentException("Error with resource quantity in strongbox");
-            }
-
-            prodCost.put(elem.getKey(), prodCost.get(elem.getKey()) - elem.getValue()); //Updates the cost map
-            playerBoard.removeResourcesFromStrongbox(strongboxRes);
-        }
-
-        //final check
-        for (Map.Entry<ResourceType, Integer> e : prodCost.entrySet()) {
-            if (prodCost.get(e.getKey()) != 0) {
-                this.rollbackState();
-                throw new IllegalArgumentException("Error with resource quantity selected");
-            }
-        }
-
-        try {
-            playerBoard.activateProduction(devList, leaderMap, baseProductionParams.isActivated());
-        } catch (IllegalArgumentException | NullPointerException e) {
-            this.rollbackState();
-            throw new IllegalArgumentException(e.getMessage());
-        } catch (LastVaticanReportException e) {
-            //TODO: gestire eccezione
-        }
-
-        //TODO: mandare broadcast a tutti i client
-        //TODO: creare messaggio di update
-        for (Pair<ClientHandler, PlayerBoard> user : players) {
-            //user.getKey().send(update);
-        }
-
-        return true;
-    }
-
-
-
-
 
      /*
     ###########################################################################################################
@@ -759,21 +698,22 @@ public class GameController {
     ###########################################################################################################
      */
 
-    public void distributeLeaderCards(){
+    public void distributeLeaderCards() {
         mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
     }
 
-    private void setLastTurn(){
+    private void setLastTurn() {
         this.state = GameState.LASTTURN;
     }
 
     /**
      * Sends an update message to all the players in the game
+     *
      * @param game the read-only model which contains the updates
      * @return true if the messages where correctly sent to all the players
      */
-    private boolean sendBroadcastUpdate(Game game){
-        for(Pair<ClientHandler, PlayerBoard> e: players)
+    private boolean sendBroadcastUpdate(Game game) {
+        for (Pair<ClientHandler, PlayerBoard> e : players)
             e.getKey().send(gson.toJson(game));
         return true;
     }

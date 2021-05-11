@@ -4,10 +4,10 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.HashMap;
 
-public class ResGottenFromMarket {
+public class HashMapResources {
     private HashMap<ResourceType, Integer> resources;
 
-    public ResGottenFromMarket(HashMap<ResourceType, Integer> resources) {
+    public HashMapResources(HashMap<ResourceType, Integer> resources) {
         this.resources = resources;
     }
 
