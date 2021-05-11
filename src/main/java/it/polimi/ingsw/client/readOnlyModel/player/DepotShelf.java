@@ -6,6 +6,16 @@ public class DepotShelf {
     private ResourceType resourceType;
     private int quantity;
 
+    public DepotShelf(ResourceType resourceType, int quantity) {
+        this.resourceType = resourceType;
+        this.quantity = quantity;
+    }
+
+    public DepotShelf(){
+        this.resourceType = null;
+        this.quantity = -1;
+    }
+
     public ResourceType getResourceType() {
         return resourceType;
     }

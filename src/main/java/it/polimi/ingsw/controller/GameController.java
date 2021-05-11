@@ -319,11 +319,15 @@ public class GameController {
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
         Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
-        //Adds the three depots
+        //Adds the three depots with what's inside for all the three elements
         //player.addDepotShelf(new DepotShelf(playerBoard.get));
+        player.addDepotShelf(new DepotShelf());
+        player.addDepotShelf(new DepotShelf());
+        player.addDepotShelf(new DepotShelf());
         Game game = new Game();
         game.addPlayer(player);
         this.sendBroadcastUpdate(game);

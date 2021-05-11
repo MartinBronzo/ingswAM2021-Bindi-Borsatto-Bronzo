@@ -26,6 +26,10 @@ public class Player {
     private int victoryPoints;
     private List<PopeTile> popeTiles;
 
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public void addDepotShelf(DepotShelf depotShelf){
         if(depotShelves == null)
             depotShelves = new ArrayList<>();

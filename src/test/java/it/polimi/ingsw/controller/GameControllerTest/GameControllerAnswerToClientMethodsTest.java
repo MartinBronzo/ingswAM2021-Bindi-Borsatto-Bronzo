@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller.GameControllerTest;
 
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.client.readOnlyModel.Game;
+import it.polimi.ingsw.client.readOnlyModel.Player;
 import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.exceptions.IllegalActionException;
@@ -19,12 +21,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameControllerAnswerToClientMethodsTest {
     GameController gameController;
@@ -43,11 +42,13 @@ public class GameControllerAnswerToClientMethodsTest {
     public void setup() throws FileNotFoundException, IllegalActionException {
         gameController = new GameController();
         inputStreamReader = new InputStreamReader(System.in);
-        c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(new File("ClientHandler1File.txt")));
-        c2 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(new File("ClientHandler2File.txt")));
+        c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler1File.txt"));
+        c2 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler2File.txt"));
         reader = new BufferedReader(new InputStreamReader(System.in));
         fileReader1 = new BufferedReader(new FileReader("ClientHandler1File.txt"));
         fileReader2 = new BufferedReader(new FileReader("ClientHandler2File.txt"));
+        c1.setNickname("Client 1");
+        c2.setNickname("Client 2");
 
 
         gson = new Gson();
@@ -112,10 +113,12 @@ public class GameControllerAnswerToClientMethodsTest {
 
         //Creates a list of fake LeaderCards the player will have
         List<LeaderCard> list = new ArrayList<>();
-        list.add(new LeaderCard(4, new ArrayList<>(), new Effect()));
+        LeaderCard l1 = new LeaderCard(4, new ArrayList<>(), new Effect());
+        LeaderCard l4 = new LeaderCard(7, new ArrayList<>(), new Effect());
+        list.add(l1);
         list.add(new LeaderCard(5, new ArrayList<>(), new Effect()));
         list.add(new LeaderCard(6, new ArrayList<>(), new Effect()));
-        list.add(new LeaderCard(7, new ArrayList<>(), new Effect()));
+        list.add(l4);
         p1.setNotPlayedLeaderCardsAtGameBeginning(list);
 
         //Creates a list of indexes of the cards the player wants to discard
@@ -137,7 +140,35 @@ public class GameControllerAnswerToClientMethodsTest {
         String result2 = fileReader2.readLine();
         assertEquals(result1, result2);
 
-        //TO BE continued...
+        //Checks the inside status of the PlayerBoard
+        assertEquals(p1.getResourceTypeFromShelf(1), ResourceType.COIN);
+        assertEquals(p1.getResourceFromDepot(ResourceType.COIN), 1);
+        assertEquals(p1.getNotPlayedLeaderCards().size(), 2);
+        assertTrue(p1.getNotPlayedLeaderCards().contains(l1));
+        assertTrue(p1.getNotPlayedLeaderCards().contains(l4));
+        assertEquals(p1.getPositionOnFaithTrack(), 0);
+        assertFalse(p1.getPopeTile().get(0).isChanged());
+        assertFalse(p1.getPopeTile().get(1).isChanged());
+        assertFalse(p1.getPopeTile().get(2).isChanged());
+
+        //Checks that the message retrieved from the JSON received by the clients is correctly formed
+        Game game = gson.fromJson(result1, Game.class);
+        Collection<Player> playersCollection = game.getPlayers();
+        assertEquals(playersCollection.size(), 1);
+        Player playerModel = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
+        assertEquals(playerModel.getUnUsedLeaders().size(), 2);
+        assertTrue(playerModel.getUnUsedLeaders().contains(l1));
+        assertTrue(playerModel.getUnUsedLeaders().contains(l4));
+        assertEquals(playerModel.getFaithPosition(), 0);
+        assertFalse(playerModel.getPopeTiles().get(0).isChanged());
+        assertFalse(playerModel.getPopeTiles().get(1).isChanged());
+        assertFalse(playerModel.getPopeTiles().get(2).isChanged());
+        //assertEquals(playerModel.getDepotShelves().get(0).getResourceType(), ResourceType.COIN);
+        //assertEquals(playerModel.getDepotShelves().get(0).getQuantity(), 1);
+        assertNull(playerModel.getDepotShelves().get(1).getResourceType());
+        assertEquals(playerModel.getDepotShelves().get(1).getQuantity(), -1);
+        assertNull(playerModel.getDepotShelves().get(2).getResourceType());
+        assertEquals(playerModel.getDepotShelves().get(2).getQuantity(), -1);
     }
 
 }
