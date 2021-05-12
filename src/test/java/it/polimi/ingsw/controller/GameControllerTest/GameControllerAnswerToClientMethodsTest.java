@@ -4,6 +4,7 @@ package it.polimi.ingsw.controller.GameControllerTest;
 import com.google.gson.Gson;
 import it.polimi.ingsw.client.readOnlyModel.Game;
 import it.polimi.ingsw.client.readOnlyModel.Player;
+import it.polimi.ingsw.client.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -14,10 +15,7 @@ import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.DiscountLeaderEffect;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
@@ -312,22 +310,170 @@ public class GameControllerAnswerToClientMethodsTest {
         p1.addResourcesToStrongbox(input1);
         p1.addResourcesToStrongbox(input2);
 
-        List < Integer > devListIndex = new ArrayList<>();
+        List<Integer> devListIndex = new ArrayList<>();
         devListIndex.add(0);
         devListIndex.add(1);
 
-        List < DevCard > devCardList = new ArrayList<>();
+        List<DevCard> devCardList = new ArrayList<>();
         devCardList.add(devCard1);
         devCardList.add(devCard2);
 
-        GetProductionCostMessage message = new GetProductionCostMessage(devListIndex, leaderCards, new BaseProductionParams(false, new ArrayList<>()));
+        GetProductionCostMessage message = new GetProductionCostMessage(devListIndex, leaderCards, new BaseProductionParams(false, new ArrayList<>(), new ArrayList<>()));
         assertTrue(gameController.getProductionCost(message, c1));
 
         String result = fileReader1.readLine();
         HashMapResources resultObject = gson.fromJson(result, HashMapResources.class);
         HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
 
-        HashMap<ResourceType, Integer> supposedResult = p1.getProductionCost(devCardList, new ArrayList<>() , false);
+        HashMap<ResourceType, Integer> supposedResult = p1.getProductionCost(devCardList, new ArrayList<>(), false);
+
+        assertEquals(resultMap, supposedResult);
+        for (Map.Entry<ResourceType, Integer> e : resultMap.entrySet())
+            assertEquals(e.getValue(), supposedResult.get(e.getKey()));
+        for (Map.Entry<ResourceType, Integer> e : supposedResult.entrySet())
+            assertEquals(e.getValue(), resultMap.get(e.getKey()));
+
+        System.out.println(supposedResult + " ... " + result);
+    }
+
+    @Test
+    public void getProdCostWithBaseProd() throws IllegalActionException, IOException, NegativeQuantityException, EndOfGameException {
+        //Initiates the game
+        gameController.startMainBoard(1);
+        gameController.setPlayer(c1);
+
+        PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
+        MainBoard mainBoard = gameController.getMainBoard();
+
+        //Creates a list of fake LeaderCards the player will have and activate them
+        List<LeaderCard> list = new ArrayList<>();
+        list.add(new LeaderCard(4, new ArrayList<>(), new Effect()));
+        list.add(new LeaderCard(5, new ArrayList<>(), new Effect()));
+        p1.setNotPlayedLeaderCardsAtGameBeginning(list);
+
+        List<Integer> leaderCards = new ArrayList<>();
+
+        //Add fake devCards to devSlots
+        HashMap<ResourceType, Integer> input1 = new HashMap<>();
+        input1.put(ResourceType.STONE, 3);
+        input1.put(ResourceType.COIN, 5);
+
+        HashMap<ResourceType, Integer> input2 = new HashMap<>();
+        input2.put(ResourceType.SERVANT, 4);
+        input2.put(ResourceType.SHIELD, 1);
+
+        DevCard devCard1 = new DevCard(1, DevCardColour.GREEN, 1, input1, new HashMap<>(), new HashMap<>(), "");
+        DevCard devCard2 = new DevCard(1, DevCardColour.GREEN, 1, input2, new HashMap<>(), new HashMap<>(), "");
+
+        p1.addCardToDevSlot(0, devCard1);
+        p1.addCardToDevSlot(1, devCard2);
+
+        p1.addResourcesToStrongbox(input1);
+        p1.addResourcesToStrongbox(input2);
+
+        p1.addResourcesToStrongbox(input1);
+        p1.addResourcesToStrongbox(input2);
+
+        List<Integer> devListIndex = new ArrayList<>();
+        devListIndex.add(0);
+        devListIndex.add(1);
+
+        List<DevCard> devCardList = new ArrayList<>();
+        devCardList.add(devCard1);
+        devCardList.add(devCard2);
+
+        ArrayList<ResourceType> inputList = new ArrayList<>();
+        inputList.add(ResourceType.COIN);
+        inputList.add(ResourceType.SHIELD);
+
+        ArrayList<ResourceType> outputList = new ArrayList<>();
+        outputList.add(ResourceType.SERVANT);
+
+        GetProductionCostMessage message = new GetProductionCostMessage(devListIndex, leaderCards, new BaseProductionParams(true, inputList, outputList));
+        assertTrue(gameController.getProductionCost(message, c1));
+
+        String result = fileReader1.readLine();
+        HashMapResources resultObject = gson.fromJson(result, HashMapResources.class);
+        HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
+
+        HashMap<ResourceType, Integer> supposedResult = p1.getProductionCost(devCardList, new ArrayList<>(), true);
+
+        assertEquals(resultMap, supposedResult);
+        for (Map.Entry<ResourceType, Integer> e : resultMap.entrySet())
+            assertEquals(e.getValue(), supposedResult.get(e.getKey()));
+        for (Map.Entry<ResourceType, Integer> e : supposedResult.entrySet())
+            assertEquals(e.getValue(), resultMap.get(e.getKey()));
+
+        System.out.println(supposedResult + " ... " + result);
+    }
+
+    @Test
+    public void getProdCostWithLeaders() throws IllegalActionException, IOException, NegativeQuantityException, EndOfGameException {
+        //Initiates the game
+        gameController.startMainBoard(1);
+        gameController.setPlayer(c1);
+
+        PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
+
+        //Creates a list of fake LeaderCards the player will have and activate them
+        List<LeaderCard> list = new ArrayList<>();
+        LeaderCard leaderCard1 = new LeaderCard(4, new ArrayList<>(), new ExtraProductionLeaderEffect(ResourceType.COIN, 2));
+
+        list.add(leaderCard1);
+        list.add(new LeaderCard(5, new ArrayList<>(), new Effect()));
+        p1.setNotPlayedLeaderCardsAtGameBeginning(list);
+        p1.activateLeaderCard(p1.getNotPlayedLeaderCards().get(0));
+
+        List<Integer> leaderCards = new ArrayList<>();
+        leaderCards.add(0);
+
+        //Add fake devCards to devSlots
+        HashMap<ResourceType, Integer> input1 = new HashMap<>();
+        input1.put(ResourceType.STONE, 3);
+        input1.put(ResourceType.COIN, 5);
+
+        HashMap<ResourceType, Integer> input2 = new HashMap<>();
+        input2.put(ResourceType.SERVANT, 4);
+        input2.put(ResourceType.SHIELD, 1);
+
+        DevCard devCard1 = new DevCard(1, DevCardColour.GREEN, 1, input1, new HashMap<>(), new HashMap<>(), "");
+        DevCard devCard2 = new DevCard(1, DevCardColour.GREEN, 1, input2, new HashMap<>(), new HashMap<>(), "");
+
+        p1.addCardToDevSlot(0, devCard1);
+        p1.addCardToDevSlot(1, devCard2);
+
+        p1.addResourcesToStrongbox(input1);
+        p1.addResourcesToStrongbox(input2);
+
+        p1.addResourcesToStrongbox(input1);
+        p1.addResourcesToStrongbox(input2);
+
+        List<Integer> devListIndex = new ArrayList<>();
+        devListIndex.add(0);
+        devListIndex.add(1);
+
+        List<DevCard> devCardList = new ArrayList<>();
+        devCardList.add(devCard1);
+        devCardList.add(devCard2);
+
+        ArrayList<ResourceType> inputList = new ArrayList<>();
+        inputList.add(ResourceType.COIN);
+        inputList.add(ResourceType.SHIELD);
+
+        ArrayList<ResourceType> outputList = new ArrayList<>();
+        outputList.add(ResourceType.SERVANT);
+
+        GetProductionCostMessage message = new GetProductionCostMessage(devListIndex, leaderCards, new BaseProductionParams(true, inputList, outputList));
+        assertTrue(gameController.getProductionCost(message, c1));
+
+        String result = fileReader1.readLine();
+        HashMapResources resultObject = gson.fromJson(result, HashMapResources.class);
+        HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
+
+        List<LeaderCard> extraProdLeaderList = new ArrayList<>();
+        extraProdLeaderList.add(leaderCard1);
+
+        HashMap<ResourceType, Integer> supposedResult = p1.getProductionCost(devCardList, extraProdLeaderList, true);
 
         assertEquals(resultMap, supposedResult);
         for (Map.Entry<ResourceType, Integer> e : resultMap.entrySet())
@@ -422,7 +568,7 @@ public class GameControllerAnswerToClientMethodsTest {
         CardRequirementResource req = new CardRequirementResource(ResourceType.COIN, 1);
         List<Requirement> reqList = new ArrayList<>();
         reqList.add(req);
-        LeaderCard l1 = new LeaderCard(4, new ArrayList<>() /*reqList*/ , new Effect() /*new ExtraSlotLeaderEffect(ResourceType.COIN, 2)*/);
+        LeaderCard l1 = new LeaderCard(4, new ArrayList<>() /*reqList*/, new Effect() /*new ExtraSlotLeaderEffect(ResourceType.COIN, 2)*/);
         LeaderCard l2 = new LeaderCard(5, new ArrayList<>(), new Effect());
         list.add(l1);
         list.add(l2);
@@ -560,6 +706,194 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(p4.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
     }
 
+    @Test
+    public void moveResBtwShelves() throws IllegalActionException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(2);
+        gameController.setPlayer(c1);
+        gameController.setPlayer(c2);
+
+        PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
+
+        p1.addResourceToDepot(ResourceType.SHIELD, 2, 2);
+        p1.addResourceToDepot(ResourceType.COIN, 1,3);
+
+
+        MoveBetweenShelvesMessage moveBetweenShelvesMessage = new MoveBetweenShelvesMessage(2,3);
+        assertTrue(gameController.moveResourcesBetweenShelves(moveBetweenShelvesMessage, c1));
+
+        assertEquals(p1.getResourceTypeFromShelf(2),ResourceType.COIN);
+        assertEquals(p1.getResourceTypeFromShelf(3),ResourceType.SHIELD);
+        assertEquals(p1.getNumberOfResInShelf(2),1);
+        assertEquals(p1.getNumberOfResInShelf(3),2);
+
+        String result1 = fileReader1.readLine();
+        String result2 = fileReader2.readLine();
+        assertEquals(result1, result2);
+
+        Game game = gson.fromJson(result1, Game.class);
+        Collection<Player> playersCollection = game.getPlayers();
+        Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
+        List<DepotShelf> shelves =  playerModel1.getDepotShelves();
+        assertNull(shelves.get(0).getResourceType());
+        assertEquals(shelves.get(1).getResourceType(), ResourceType.COIN);
+        assertEquals(shelves.get(2).getResourceType(), ResourceType.SHIELD);
+        assertEquals(shelves.get(1).getQuantity(), 1);
+        assertEquals(shelves.get(2).getQuantity(), 2);
+    }
+
+    @Test
+    public void moveToLeader() throws IllegalActionException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(2);
+        gameController.setPlayer(c1);
+        gameController.setPlayer(c2);
+
+        PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
+
+        List<LeaderCard> list = new ArrayList<>();
+        LeaderCard leaderCard1 = new LeaderCard(4, new ArrayList<>(), new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+
+        list.add(leaderCard1);
+        list.add(new LeaderCard(5, new ArrayList<>(), new Effect()));
+        p1.setNotPlayedLeaderCardsAtGameBeginning(list);
+        p1.activateLeaderCard(p1.getNotPlayedLeaderCards().get(0));
+
+        p1.addResourceToDepot(ResourceType.SHIELD, 2, 2);
+        p1.addResourceToDepot(ResourceType.COIN, 3,3);
+
+
+        MoveShelfToLeaderMessage moveLeaderToShelfMessage = new MoveShelfToLeaderMessage(3, 2);
+        assertTrue(gameController.moveResourcesToLeader(moveLeaderToShelfMessage, c1));
+
+        assertEquals(p1.getResourceTypeFromShelf(2),ResourceType.SHIELD);
+        assertEquals(p1.getResourceTypeFromShelf(3),ResourceType.COIN);
+        assertEquals(p1.getNumberOfResInShelf(2),2);
+        assertEquals(p1.getNumberOfResInShelf(3),1);
+
+
+        String result1 = fileReader1.readLine();
+        String result2 = fileReader2.readLine();
+        assertEquals(result1, result2);
+
+        Game game = gson.fromJson(result1, Game.class);
+        Collection<Player> playersCollection = game.getPlayers();
+        Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
+        List<DepotShelf> shelves =  playerModel1.getDepotShelves();
+        assertNull(shelves.get(0).getResourceType());
+        assertEquals(shelves.get(1).getResourceType(), ResourceType.SHIELD);
+        assertEquals(shelves.get(2).getResourceType(), ResourceType.COIN);
+        assertEquals(shelves.get(1).getQuantity(), 2);
+        assertEquals(shelves.get(2).getQuantity(), 1);
+    }
+
+    @Test
+    public void moveToShelf() throws IllegalActionException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(2);
+        gameController.setPlayer(c1);
+        gameController.setPlayer(c2);
+
+        PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
+
+        List<LeaderCard> list = new ArrayList<>();
+        LeaderCard leaderCard1 = new LeaderCard(4, new ArrayList<>(), new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
+
+        list.add(leaderCard1);
+        list.add(new LeaderCard(5, new ArrayList<>(), new Effect()));
+        p1.setNotPlayedLeaderCardsAtGameBeginning(list);
+        p1.activateLeaderCard(p1.getNotPlayedLeaderCards().get(0));
+
+        p1.addResourceToDepot(ResourceType.SHIELD, 2, 2);
+        p1.addResourceToDepot(ResourceType.COIN, 1,3);
+        p1.addResourceToLeader(ResourceType.COIN,1);
+
+        MoveLeaderToShelfMessage moveLeaderToShelfMessage = new MoveLeaderToShelfMessage(ResourceType.COIN, 1, 3);
+        assertTrue(gameController.moveResourcesToShelf(moveLeaderToShelfMessage, c1));
+
+        assertEquals(p1.getResourceTypeFromShelf(2),ResourceType.SHIELD);
+        assertEquals(p1.getResourceTypeFromShelf(3),ResourceType.COIN);
+        assertEquals(p1.getNumberOfResInShelf(2),2);
+        assertEquals(p1.getNumberOfResInShelf(3),2);
+
+
+        String result1 = fileReader1.readLine();
+        String result2 = fileReader2.readLine();
+        assertEquals(result1, result2);
+
+        Game game = gson.fromJson(result1, Game.class);
+        Collection<Player> playersCollection = game.getPlayers();
+        Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
+        List<DepotShelf> shelves =  playerModel1.getDepotShelves();
+        assertNull(shelves.get(0).getResourceType());
+        assertEquals(shelves.get(1).getResourceType(), ResourceType.SHIELD);
+        assertEquals(shelves.get(2).getResourceType(), ResourceType.COIN);
+        assertEquals(shelves.get(1).getQuantity(), 2);
+        assertEquals(shelves.get(2).getQuantity(), 2);
+    }
+
+    @Test
+    public void activateProduction() throws IllegalActionException, NegativeQuantityException, EndOfGameException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(2);
+        gameController.setPlayer(c1);
+        gameController.setPlayer(c2);
+
+        PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
+
+        //Add fake devCards to devSlots
+        HashMap<ResourceType, Integer> input1 = new HashMap<>();
+        input1.put(ResourceType.STONE, 3);
+        input1.put(ResourceType.COIN, 1);
+        HashMap<ResourceType, Integer> output1 = new HashMap<>();
+        output1.put(ResourceType.SHIELD,2);
+
+        HashMap<ResourceType, Integer> input2 = new HashMap<>();
+        input2.put(ResourceType.COIN, 1);
+        HashMap<ResourceType, Integer> output2 = new HashMap<>();
+        output2.put(ResourceType.STONE,1);
+
+        DevCard devCard1 = new DevCard(1, DevCardColour.GREEN, 1, input1, output1, new HashMap<>(), "");
+        DevCard devCard2 = new DevCard(1, DevCardColour.GREEN, 1, input2, output2, new HashMap<>(), "");
+
+        p1.addCardToDevSlot(0, devCard1);
+        p1.addCardToDevSlot(1, devCard2);
+
+        p1.addResourceToDepot(ResourceType.COIN, 2, 2);
+        p1.addResourceToDepot(ResourceType.STONE, 3,3);
+
+        List<Integer> devCardIndexes = new ArrayList<>();
+        devCardIndexes.add(0);
+        devCardIndexes.add(1);
+
+        List<DepotParams> depoRes = new ArrayList<>();
+        depoRes.add(new DepotParams(ResourceType.STONE, 3,3));
+        depoRes.add(new DepotParams(ResourceType.COIN, 2,2));
+        ActivateProductionMessage activateProductionMessage = new ActivateProductionMessage(devCardIndexes, new HashMap<>(), new BaseProductionParams(false, new ArrayList<>(), new ArrayList<>()), depoRes, new HashMap<>(), new HashMap<>());
+        assertTrue(gameController.activateProduction(activateProductionMessage, c1));
+
+        assertNull(p1.getResourceTypeFromShelf(2));
+        assertNull(p1.getResourceTypeFromShelf(3));
+        assertEquals(p1.getNumberOfResInShelf(2),0);
+        assertEquals(p1.getNumberOfResInShelf(3),0);
+
+        String result1 = fileReader1.readLine();
+        String result2 = fileReader2.readLine();
+        assertEquals(result1, result2);
+
+        Game game = gson.fromJson(result1, Game.class);
+        Collection<Player> playersCollection = game.getPlayers();
+        Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
+        List<DepotShelf> shelves =  playerModel1.getDepotShelves();
+        assertNull(shelves.get(0).getResourceType());
+        assertNull(shelves.get(1).getResourceType());
+        assertNull(shelves.get(2).getResourceType());
+        HashMap<ResourceType, Integer> strongboxMap = playerModel1.getStrongBox();
+        assertEquals(strongboxMap.get(ResourceType.COIN),0);
+        assertEquals(strongboxMap.get(ResourceType.STONE),1);
+        assertEquals(strongboxMap.get(ResourceType.SHIELD),2);
+        assertEquals(strongboxMap.get(ResourceType.SERVANT),0);
+    }
     @Test
     public void ctrlShowLeaderCardsAtTheBeginningOnePlayer() throws IllegalActionException, IOException {
         //Initiates the game

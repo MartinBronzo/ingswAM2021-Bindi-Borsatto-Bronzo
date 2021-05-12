@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.readOnlyModel.Board;
 import it.polimi.ingsw.client.readOnlyModel.Game;
 import it.polimi.ingsw.client.readOnlyModel.Player;
@@ -362,10 +363,12 @@ public class GameController {
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
         //Adds the three depots with what's inside for all the three elements
-        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
+        /*player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
+        */
         Game game = new Game();
+        setDepoInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
         game.addPlayer(player);
         this.sendBroadcastUpdate(game);
         return true;
@@ -398,14 +401,15 @@ public class GameController {
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
         game.addPlayer(player);
-        for(Pair<ClientHandler, PlayerBoard> e: players)
+        /*for(Pair<ClientHandler, PlayerBoard> e: players)
             if(!(e.getKey().getNickname().equals(clientHandler.getNickname()))){
                 Player tmp = new Player();
                 tmp.setNickName(e.getKey().getNickname());
                 tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
                 tmp.setPopeTiles(e.getValue().getPopeTile());
                 game.addPlayer(tmp);
-            }
+            }*/
+        setOthersPlayersFaithInClientModel(game, clientHandler); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
         this.sendBroadcastUpdate(game);
         return true;
     }
@@ -564,10 +568,11 @@ public class GameController {
         game.setMainBoard(board);
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
-        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
+        /*player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
-        player.setLeaderSlots(playerBoard.getLeaderDepot());
+        player.setLeaderSlots(playerBoard.getLeaderDepot());*/
+        setDepoInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
         //We get the PopeTiles of all players because a Vatican Report may have occurred
         player.setPopeTiles(playerBoard.getPopeTile());
         game.addPlayer(player);
@@ -610,7 +615,6 @@ public class GameController {
         //saves the state of the model
         this.saveState();
 
-
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         List<Effect> effects = playerBoard.getEffectsFromCards(buyDevCard.getLeaders());
         try {
@@ -638,8 +642,17 @@ public class GameController {
             this.setLastTurn();
         }
 
-        //TODO: creare il game model
         Game game = new Game();
+        Board board = new Board();
+        board.setDevGrid(mainBoard.getDevGrid());
+        game.setMainBoard(board);
+        Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
+        player.setDevSlots(playerBoard.getDevSlots());
+        setDepoInClientModel(player, playerBoard);
+        player.setStrongBox(playerBoard.getStrongboxMap());
+        game.addPlayer(player);
+
         this.sendBroadcastUpdate(game);
         return true;
     }
@@ -648,8 +661,12 @@ public class GameController {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         playerBoard.moveBetweenShelves(moveBtwShelvesMessage.getSourceShelf(), moveBtwShelvesMessage.getDestShelf());
 
-        //TODO: creare il game model
         Game game = new Game();
+        Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
+        setDepoInClientModel(player, playerBoard);
+        game.addPlayer(player);
+
         this.sendBroadcastUpdate(game);
         return true;
     }
@@ -658,8 +675,12 @@ public class GameController {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         playerBoard.moveFromShelfToLeader(moveShelfToLeaderMessage.getNumShelf(), moveShelfToLeaderMessage.getQuantity());
 
-        //TODO: creare il game model
         Game game = new Game();
+        Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
+        setDepoInClientModel(player, playerBoard);
+        game.addPlayer(player);
+
         this.sendBroadcastUpdate(game);
         return true;
     }
@@ -668,8 +689,12 @@ public class GameController {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         playerBoard.moveFromLeaderToShelf(moveLeaderToShelfMessage.getRes(), moveLeaderToShelfMessage.getQuantity(), moveLeaderToShelfMessage.getDestShelf());
 
-        //TODO: creare il game model
         Game game = new Game();
+        Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
+        setDepoInClientModel(player, playerBoard);
+        game.addPlayer(player);
+
         this.sendBroadcastUpdate(game);
         return true;
     }
@@ -756,8 +781,16 @@ public class GameController {
             this.setLastTurn();
         }
 
-        //TODO: creare il game model
         Game game = new Game();
+        Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
+        setDepoInClientModel(player, playerBoard);
+        player.setStrongBox(playerBoard.getStrongboxMap());
+        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+        player.setPopeTiles(playerBoard.getPopeTile());
+        game.addPlayer(player);
+        setOthersPlayersFaithInClientModel(game, clientHandler);
+
         this.sendBroadcastUpdate(game);
         return true;
     }
@@ -805,6 +838,24 @@ public class GameController {
         }
     }
 
+    private void setDepoInClientModel(Player player, PlayerBoard playerBoard){
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
+        player.setLeaderSlots(playerBoard.getLeaderDepot());
+    }
+
+    private void setOthersPlayersFaithInClientModel(Game game, ClientHandler clientHandler){
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(!(e.getKey().getNickname().equals(clientHandler.getNickname()))){
+                Player tmp = new Player();
+                tmp.setNickName(e.getKey().getNickname());
+                tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
+                tmp.setPopeTiles(e.getValue().getPopeTile());
+                game.addPlayer(tmp);
+            }
+    }
+
      /*
     ###########################################################################################################
      RESPONSE PRIVATE METHODS
@@ -828,10 +879,10 @@ public class GameController {
         return true;
     }
 
-    private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
+    /*private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
         //TODO: mandare un messaggio al client handler in questione passandogli il messaggio d'errore
         return false;
-    }
+    }*/
 
     /**
      * Saves the inner state of the Model by saving a copy of the MainBoard (and, therefore, a copy of all the PlayerBoards).

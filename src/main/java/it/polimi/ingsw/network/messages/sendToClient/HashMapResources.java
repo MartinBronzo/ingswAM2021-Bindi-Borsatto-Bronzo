@@ -5,9 +5,11 @@ import it.polimi.ingsw.model.ResourceType;
 import java.util.HashMap;
 
 public class HashMapResources {
+    private String status;
     private HashMap<ResourceType, Integer> resources;
 
     public HashMapResources(HashMap<ResourceType, Integer> resources) {
+        this.status = "Ok";
         this.resources = resources;
     }
 
