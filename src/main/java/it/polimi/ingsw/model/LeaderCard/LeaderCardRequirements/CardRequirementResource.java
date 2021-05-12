@@ -81,4 +81,9 @@ public class CardRequirementResource extends Requirement {
         CardRequirementResource tmp = (CardRequirementResource) obj;
         return this.resourceType.equals(tmp.resourceType) && this.quantity == tmp.quantity;
     }
+
+    @Override
+    public String toString() {
+        return "Resource Type: " + this.resourceType + ", Resource Quantity: " + this.quantity;
+    }
 }

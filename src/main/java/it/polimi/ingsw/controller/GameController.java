@@ -372,6 +372,7 @@ public class GameController {
         return true;
     }
 
+    //Tested
     public boolean activateLeader(LeaderMessage activateLeader, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         if (activateLeader.getLeader() < 0)
@@ -388,8 +389,12 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: creare il game model
         Game game = new Game();
+        Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
+        player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
+        player.setUsedLeaders(playerBoard.getActiveLeaderCards());
+        game.addPlayer(player);
         this.sendBroadcastUpdate(game);
         return true;
     }

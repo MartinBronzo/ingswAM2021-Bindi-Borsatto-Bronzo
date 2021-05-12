@@ -16,6 +16,10 @@ public class WhiteMarbleLeaderEffect extends Effect {
     private final ResourceType extraResourceType;
     private final int extraResourceAmount;
 
+    public WhiteMarbleLeaderEffect(){
+        this.extraResourceType = null;
+        this.extraResourceAmount = 1;
+    }
     /**
      * Constructs a WhiteMarbleLeaderEffect which, by default, make a WhiteMarble worth one resource of the specified type
      *

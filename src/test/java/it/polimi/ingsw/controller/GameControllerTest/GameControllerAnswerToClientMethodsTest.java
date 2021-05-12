@@ -12,8 +12,12 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.DiscountLeaderEffect;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
@@ -385,6 +389,61 @@ public class GameControllerAnswerToClientMethodsTest {
         assertFalse(playerModel2.getPopeTiles().get(1).isChanged());
         assertFalse(playerModel2.getPopeTiles().get(2).isChanged());
     }
+
+    @Test
+    public void ctrlActivateLeaderCard() throws IOException, IllegalActionException {
+        //Initiates the game
+        gameController.startMainBoard(2);
+        gameController.setPlayer(c1);
+        gameController.setPlayer(c2);
+
+        //Let's get PlayerBoard and MainBoard so we can change their values
+        MainBoard mainBoard = gameController.getMainBoard();
+        PlayerBoard p1 = mainBoard.getPlayerBoard(0);
+        PlayerBoard p2 = mainBoard.getPlayerBoard(1);
+
+
+        //Creates a list of fake LeaderCards the player will have (we skipp the passage in which the player should discard the some LeaderCards they
+        //received at the beginning of the game: these two cards are already the ones they'll have for the rest of the game)
+        List<LeaderCard> list = new ArrayList<>();
+        CardRequirementResource req = new CardRequirementResource(ResourceType.COIN, 1);
+        List<Requirement> reqList = new ArrayList<>();
+        reqList.add(req);
+        LeaderCard l1 = new LeaderCard(4, new ArrayList<>() /*reqList*/ , new Effect() /*new ExtraSlotLeaderEffect(ResourceType.COIN, 2)*/);
+        LeaderCard l2 = new LeaderCard(5, new ArrayList<>(), new Effect());
+        list.add(l1);
+        list.add(l2);
+        p1.setNotPlayedLeaderCardsAtGameBeginning(list);
+
+        //We make sure that the player meets all the requirements for the LeaderCard l1
+        //p1.addResourceToDepot(ResourceType.COIN, 1, 1);
+
+        //Creates a mockup message and calls the GameController method which is going to write on a file
+        LeaderMessage message = new LeaderMessage(0);
+        gameController.activateLeader(message, c1);
+
+        //We check that the status of the Client 1 has correctly changed
+        assertEquals(p1.getNotPlayedLeaderCards().size(), 1);
+        assertTrue(p1.getNotPlayedLeaderCards().contains(l2));
+        assertEquals(p1.getActiveLeaderCards().size(), 1);
+        assertTrue(p1.getActiveLeaderCards().contains(l1));
+
+        //Retrieves the JSON results from the files of the two ClientHandlers and checks that they are equal
+        String result1 = fileReader1.readLine();
+        String result2 = fileReader2.readLine();
+        assertEquals(result1, result2);
+
+        //Checks that the message retrieved from the JSON received by the clients is correctly formed
+        Game game = gson.fromJson(result1, Game.class);
+        Collection<Player> playersCollection = game.getPlayers();
+        assertEquals(playersCollection.size(), 1);
+        Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
+        assertEquals(playerModel1.getUnUsedLeaders().size(), 1);
+        assertTrue(playerModel1.getUnUsedLeaders().contains(l2));
+        assertEquals(playerModel1.getUsedLeaders().size(), 1);
+        assertTrue(playerModel1.getUsedLeaders().contains(l1));
+    }
+
 
     //TODO: other tests for base production and leader cards
 }

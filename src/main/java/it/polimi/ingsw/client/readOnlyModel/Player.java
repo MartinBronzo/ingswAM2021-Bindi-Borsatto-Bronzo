@@ -26,6 +26,10 @@ public class Player {
     private int victoryPoints;
     private List<PopeTile> popeTiles;
 
+    public void setUsedLeaders(List<LeaderCard> usedLeaders) {
+        this.usedLeaders = usedLeaders;
+    }
+
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }

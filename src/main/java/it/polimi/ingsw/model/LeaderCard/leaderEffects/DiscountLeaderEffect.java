@@ -12,6 +12,11 @@ public class DiscountLeaderEffect extends Effect {
     private final ResourceType discountType;
     private final int discountAmount;
 
+    public DiscountLeaderEffect(){
+        this.discountType = null;
+        this.discountAmount = 0;
+    }
+
     /**
      * Constructs a DiscountLeaderEffect which will apply a discount of a specified amount on a specified resources type (if the given cost has that type)
      *

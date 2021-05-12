@@ -16,6 +16,14 @@ public class ExtraProductionLeaderEffect extends Effect {
     private final int extraOutputQuantity;
     private final int normalOutputQuantity;
 
+    public ExtraProductionLeaderEffect(){
+        this.requiredInputType = null;
+        this.requiredInputNumber = 0;
+        this.extraOutputType = ResourceType.FAITHPOINT;
+        this.extraOutputQuantity = 1;
+        this.normalOutputQuantity = 1;
+    }
+
     /**
      * Constructs an ExtraProductionLeaderEffect which will require the specified type and amount of resources to be activated and
      * by default it will give one normal output and one FaithPoint as an extra output

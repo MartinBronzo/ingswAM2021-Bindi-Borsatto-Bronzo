@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.LeaderCard.leaderEffects;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.ResourceType;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -11,7 +12,7 @@ import java.util.HashMap;
  * and increasing the production power.
  */
 //
-public class Effect {
+public class Effect implements Serializable {
 
     /**
      * Makes the WithMarble worth of some Resources
@@ -85,9 +86,7 @@ public class Effect {
             return false;
         if (obj instanceof ExtraSlotLeaderEffect)
             return false;
-        if (obj instanceof WhiteMarbleLeaderEffect)
-            return false;
-        return true;
+        return !(obj instanceof WhiteMarbleLeaderEffect);
     }
 
     public boolean isOneShotCard() {

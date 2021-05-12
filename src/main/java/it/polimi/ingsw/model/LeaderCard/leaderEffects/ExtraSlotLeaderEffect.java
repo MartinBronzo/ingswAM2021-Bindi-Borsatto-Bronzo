@@ -10,6 +10,10 @@ public class ExtraSlotLeaderEffect extends Effect {
     private final ResourceType slotType;
     private final int slotNumber;
 
+    public ExtraSlotLeaderEffect(){
+        this.slotType = null;
+        this.slotNumber = 0;
+    }
     /**
      * Constructs an ExtraLeaderEffect which will give a specified number of extra slots that can hold a specified type of resource
      *
