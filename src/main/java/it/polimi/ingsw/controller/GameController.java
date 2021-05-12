@@ -174,6 +174,7 @@ public class GameController {
 
     private void startGame(){
         this.state = GameState.STARTED;
+        //this.distributeLeaderCards();
         //this.sendNumExtraResBeginning();
 
         //TODO: deal with turns
@@ -253,12 +254,21 @@ public class GameController {
         return null;
     }
 
+    /**
+     * Returns the index of the first player in the game (the first player is the one who will be the first to play)
+     * @return the index of the first player
+     */
+    public int getFirstPlayer() {
+        return firstPlayer;
+    }
+
     /*
     ###########################################################################################################
      TO CLIENT MESSAGES
     ###########################################################################################################
      */
 
+    //Tested
     public boolean sendNumExtraResBeginning() {
         //Randomly chooses a first player
         this.firstPlayer = mainBoard.getFirstPlayerRandomly();
