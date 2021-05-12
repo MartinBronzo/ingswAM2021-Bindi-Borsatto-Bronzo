@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import java.rmi.UnexpectedException;
 import java.util.*;
@@ -43,7 +44,7 @@ public final class GamesManagerSingleton {
      * @throws InterruptedException if a thread is interrupted while it is in waiting
      * @throws NotAvailableNicknameException if the nickname of client is not available
      */
-    public synchronized GameController joinOrCreateNewGame(ClientHandler client) throws  InterruptedException, NotAvailableNicknameException {
+    public synchronized GameController joinOrCreateNewGame(ClientHandler client) throws InterruptedException, NotAvailableNicknameException, IllegalActionException {
         if (client == null) throw new NullPointerException("client is null");
         try {
             GameController gameWithThatNickname = searchPlayerInGames(client.getNickname());
@@ -111,7 +112,7 @@ public final class GamesManagerSingleton {
      * @throws UnexpectedException if an unknown error synchronizing GameManager is detected
      * @throws IllegalArgumentException if numberOfPlayers is not between 1 and 4
      */
-    public synchronized GameController configureGame(ClientHandler client, int numberOfPlayers) throws IllegalStateException, UnexpectedException, IllegalArgumentException {
+    public synchronized GameController configureGame(ClientHandler client, int numberOfPlayers) throws IllegalStateException, UnexpectedException, IllegalArgumentException, IllegalActionException {
         if (client == null) throw new NullPointerException("client is null");
         if (!client.equals(this.clientConfigurator)) throw new IllegalStateException("client is not the same client manager or configuration time has elapsed");
         if (this.startingGame == null || !this.startingGame.getState().equals(GameState.CONFIGURING)) throw new UnexpectedException("gamesManager: client IsGameConfigurator but game is null or not in configuring state");

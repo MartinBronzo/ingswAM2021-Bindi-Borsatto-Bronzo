@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.readOnlyModel;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.view.readOnlyModel.player.Devslot;
 import it.polimi.ingsw.controller.enums.PlayerState;
+import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.ResourceType;
@@ -14,7 +15,7 @@ import java.util.List;
 public class Player {
     private String nickName;
     private PlayerState playerState;
-    private List<Devslot> devSlots;
+    private DevSlots devSlots;
     private List<LeaderCard> unUsedLeaders;
     private List<LeaderCard> usedLeaders;
     private int faithPosition;
@@ -25,6 +26,10 @@ public class Player {
     private HashMap<ResourceType, Integer> leaderSlots;
     private int victoryPoints;
     private List<PopeTile> popeTiles;
+
+    public void setLeaderSlots(HashMap<ResourceType, Integer> leaderSlots) {
+        this.leaderSlots = leaderSlots;
+    }
 
     public void setUsedLeaders(List<LeaderCard> usedLeaders) {
         this.usedLeaders = usedLeaders;
@@ -64,9 +69,11 @@ public class Player {
         return playerState;
     }
 
-    public List<Devslot> getDevSlots() {
+    public DevSlots getDevSlots() {
         return devSlots;
     }
+
+    public void setDevSlots(DevSlots devSlots){this.devSlots = devSlots;}
 
     public List<LeaderCard> getUnUsedLeaders() {
         return unUsedLeaders;
@@ -95,6 +102,8 @@ public class Player {
     public HashMap<ResourceType, Integer> getStrongBox() {
         return strongBox;
     }
+
+    public void setStrongBox(HashMap strongBoxMap){this.strongBox = strongBoxMap;}
 
     public HashMap<ResourceType, Integer> getLeaderSlots() {
         return leaderSlots;

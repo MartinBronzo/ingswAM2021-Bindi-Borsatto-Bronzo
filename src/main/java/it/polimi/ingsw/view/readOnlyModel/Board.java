@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.readOnlyModel;
 
 import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.marble.MarbleType;
 
 import java.util.Arrays;
@@ -9,7 +10,15 @@ import java.util.List;
 public class Board {
     private MarbleType[][] marketMatrix;
     private MarbleType marbleOnSlide;
-    private List<DevCard> devGrid;
+    private DevGrid devGrid;
+
+    public void setMarbleOnSlide(MarbleType marbleOnSlide) {
+        this.marbleOnSlide = marbleOnSlide;
+    }
+
+    public void setMarketMatrix(MarbleType[][] marketMatrix) {
+        this.marketMatrix = marketMatrix;
+    }
 
     public MarbleType[][] getMarketMatrix() {
         return marketMatrix;
@@ -19,8 +28,12 @@ public class Board {
         return marbleOnSlide;
     }
 
-    public List<DevCard> getDevGrid() {
+    public DevGrid getDevGrid() {
         return devGrid;
+    }
+
+    public void setDevGrid(DevGrid devGrid){
+        this.devGrid = devGrid;
     }
 
     @Override

@@ -28,6 +28,8 @@ public class LeaderCardDeckTest {
         LeaderCardDeck l2 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
 
         l2.drawFromDeck();
+
+        assertNotSame(l1, l2);
         assertNotEquals(l1, l2);
     }
 

@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.Market.Market;
 import it.polimi.ingsw.model.marble.Marble;
+import it.polimi.ingsw.model.marble.MarbleType;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -134,7 +135,7 @@ public class MainBoard {
      * Returns how many White Marbles are in the specified row
      *
      * @param rowNumber the row where to count the number of White Marbles
-     * @return the number of White Marbles in the row
+     * @return the number of White Marbles in the row (this number is in the range [0, number of rows - 1])
      * @throws IllegalArgumentException if the specified row index is invalid
      */
     public int getNumberOfWhiteMarbleInMarketRow(int rowNumber) throws IllegalArgumentException {
@@ -145,7 +146,7 @@ public class MainBoard {
      * Returns how many White Marbles are in the specified column
      *
      * @param columnNumber the column where to count the number of White Marbles
-     * @return the number of White Marbles in the column
+     * @return the number of White Marbles in the column (this number is in the range [0, number of columns- 1])
      * @throws IllegalArgumentException if the specified column index is invalid
      */
     public int getNumberOfWhiteMarbleInTheColumn(int columnNumber) throws IllegalArgumentException{
@@ -156,8 +157,8 @@ public class MainBoard {
      * Returns how many White Marbles are in the specified row or column. Only one of the two parameters must be a number greater than 0 (the other must be equal to zero):
      * if the rowNumber is greater than 0, then the method computes how many White Marbles are in the row indicated by that number, otherwise the method computes
      * how many White Marbles are in the column specified by the columnNumber
-     * @param rowNumber the eventual row where to count the number of White Marbles
-     * @param columnNumber the eventual column where to count the number of White Marbles
+     * @param rowNumber the eventual row where to count the number of White Marbles (this number is in the range [0, number of rows - 1])
+     * @param columnNumber the eventual column where to count the number of White Marbles (this number is in the range [0, number of columns- 1])
      * @return the number of White Marble in the specified row or column
      */
     public int getNumberOfWhiteMarbleInMarketRowOrColumn(int rowNumber, int columnNumber){
@@ -165,6 +166,22 @@ public class MainBoard {
             return this.getNumberOfWhiteMarbleInMarketRow(rowNumber);
         //then the rowColumn must be the only number greater than zero
         return this.getNumberOfWhiteMarbleInTheColumn(columnNumber);
+    }
+
+    /**
+     * Returns a copy of the MarketMatrix but made of MarbleTypes instead of Marbles
+     * @return a copy of the MarketMatrix made of MarbleTypes
+     */
+    public MarbleType[][] getMarketMatrixWithMarbleType(){
+        return this.market.getMarketMatrixWithMarbleType();
+    }
+
+    /**
+     * Returns the MarbleType of the Marble on the slide
+     * @return the MarbleType of the Marble on the slide
+     */
+    public MarbleType getMarbleOnSlideWithMarbleType(){
+        return this.market.getMarbleOnSlideWithMarbleType();
     }
 
     /*

@@ -9,11 +9,11 @@ public class BaseProductionParams {
     private List<ResourceType> baseInput;
     private List<ResourceType> baseOutput;
 
-    public BaseProductionParams(boolean activated, List<ResourceType> baseInput){
+    /*public BaseProductionParams(boolean activated, List<ResourceType> baseInput){
         this.activated = activated;
         this.baseInput = baseInput;
         this.baseOutput = null;
-    }
+    }*/
 
     public BaseProductionParams(boolean activated, List<ResourceType> baseInput, List<ResourceType> baseOutput){
         this.activated = activated;

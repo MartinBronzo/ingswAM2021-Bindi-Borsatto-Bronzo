@@ -139,7 +139,21 @@ public class LeaderCardDeck implements Deck {
         if (!(obj instanceof LeaderCardDeck))
             return false;
         LeaderCardDeck tmp = (LeaderCardDeck) obj;
-        return this.leaderCards.containsAll(tmp.leaderCards) && tmp.leaderCards.containsAll(this.leaderCards);
+        //return this.leaderCards.containsAll(tmp.leaderCards) && tmp.leaderCards.containsAll(this.leaderCards);
+        return this.containsAllNoDuplicates(this.leaderCards, tmp.leaderCards) && this.containsAllNoDuplicates(tmp.leaderCards, this.leaderCards);
+    }
+
+    /**
+     * Checks whether the first list is contained by the second list
+     * @param l1 the list to be contained by the other
+     * @param l2 the list to contain the other
+     * @return true if the first list is contained by the second one, false otherwise
+     */
+    private boolean containsAllNoDuplicates(List<LeaderCard> l1, List<LeaderCard> l2){
+        List<LeaderCard> l1Copy = new ArrayList<>(l1);
+        for(LeaderCard lD: l2)
+            l1Copy.remove(lD);
+        return l1Copy.isEmpty();
     }
 
     public static LinkedList<LeaderCard> initLeaderCards(File configFile) throws ParserConfigurationException, IOException, SAXException, NegativeQuantityException {
