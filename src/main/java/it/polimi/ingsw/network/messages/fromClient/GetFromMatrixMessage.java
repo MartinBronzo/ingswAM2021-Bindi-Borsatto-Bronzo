@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.messages.fromClient;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetFromMatrixMessage {
+public class GetFromMatrixMessage extends Message{
     private int row, col;
     private List<Integer> leaderList;
 

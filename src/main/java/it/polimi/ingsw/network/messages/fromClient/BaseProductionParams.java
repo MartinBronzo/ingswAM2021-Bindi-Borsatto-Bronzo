@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.List;
 
-public class BaseProductionParams {
+public class BaseProductionParams extends Message{
     private boolean activated;
     private List<ResourceType> baseInput;
     private List<ResourceType> baseOutput;

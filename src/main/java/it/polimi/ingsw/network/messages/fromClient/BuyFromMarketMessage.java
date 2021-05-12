@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BuyFromMarketMessage {
+public class BuyFromMarketMessage extends Message{
     private int row, col;
     private List<Integer> leaderList;
     private List<DepotParams> depotRes;

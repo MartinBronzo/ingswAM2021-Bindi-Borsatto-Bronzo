@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.fromClient;
 
-public class SetNumPlayerMessage {
+public class SetNumPlayerMessage extends Message{
     private int numPlayer;
 
     public SetNumPlayerMessage(int numPlayer) {

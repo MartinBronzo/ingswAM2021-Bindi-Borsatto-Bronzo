@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BuyDevCardMessage {
+public class BuyDevCardMessage extends Message{
     private int row, col;
     private List<Integer> leaders;
     private List<DepotParams> depotRes;
