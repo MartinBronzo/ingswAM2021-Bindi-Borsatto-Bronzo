@@ -185,7 +185,7 @@ public class GameControllerAnswerToClientMethodsTest {
     }
 
     @Test
-    public void getDevCardCost() throws IOException {
+    public void getDevCardCost() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(1);
         gameController.setPlayer(c1);
@@ -327,7 +327,7 @@ public class GameControllerAnswerToClientMethodsTest {
     }
 
     @Test
-    public void ctrlDiscardALeaderCard() throws IOException {
+    public void ctrlDiscardALeaderCard() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(2);
         gameController.setPlayer(c1);

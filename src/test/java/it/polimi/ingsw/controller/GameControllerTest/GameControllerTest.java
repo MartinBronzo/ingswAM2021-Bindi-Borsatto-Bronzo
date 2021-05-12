@@ -70,7 +70,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void ctrlCreationAddingOnePlayer(){
+    public void ctrlCreationAddingOnePlayer() throws IllegalActionException {
         gameController.startMainBoard(4);
         gameController.setPlayer(clientHandler1);
 
@@ -80,7 +80,7 @@ public class GameControllerTest {
 
     @Test
     //Adding an already added player won't change the internal state of the GameController
-    public void ctrlCreationAddingTheSamePlayerAgain(){
+    public void ctrlCreationAddingTheSamePlayerAgain() throws IllegalActionException {
         gameController.startMainBoard(4);
         gameController.setPlayer(clientHandler1);
 
@@ -90,7 +90,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void ctrlCreationAddingAllPlayers(){
+    public void ctrlCreationAddingAllPlayers() throws IllegalActionException {
         gameController.startMainBoard(4);
         gameController.setPlayer(clientHandler1);
         gameController.setPlayer(clientHandler2);
@@ -105,11 +105,12 @@ public class GameControllerTest {
     }
 
     @Test
-    public void ctrlAddingMorePlayersThanNeeded(){
+    public void ctrlAddingMorePlayersThanNeeded() throws IllegalActionException {
         gameController.startMainBoard(1);
         gameController.setPlayer(clientHandler1);
 
-        gameController.setPlayer(clientHandler2);
+        IllegalActionException e = assertThrows(IllegalActionException.class, ()->gameController.setPlayer(clientHandler2));
+        assertEquals(e.getMessage(),"You can't be added to this game!");
         assertEquals(gameController.getPlayersList().size(), 1);
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
 
@@ -190,7 +191,7 @@ public class GameControllerTest {
 
     @Test
     //Tests whether the substitution of a ClientHandler happens correctly: the player was already in the game
-    public void ctrlClientHandlerSubstitutionPlayerInTheGame(){
+    public void ctrlClientHandlerSubstitutionPlayerInTheGame() throws IllegalActionException {
         gameController.startMainBoard(4);
         clientHandler1.setNickname("Client 1");
         clientHandler2.setNickname("Client 2");
@@ -224,7 +225,7 @@ public class GameControllerTest {
 
     @Test
     //Tests whether the substitution of a ClientHandler happens correctly: the player wasn't even in the game
-    public void ctrlClientHandlerSubstitutionPlayerNotInTheGame(){
+    public void ctrlClientHandlerSubstitutionPlayerNotInTheGame() throws IllegalActionException {
         gameController.startMainBoard(4);
         clientHandler1.setNickname("Client 1");
         clientHandler2.setNickname("Client 2");
@@ -258,7 +259,7 @@ public class GameControllerTest {
 
     @Test
     //Tests whether the substitution of a ClientHandler happens correctly: the player's state is changed correctly
-    public void ctrlClientHandlerSubstitutionPlayerStateCorrectChange(){
+    public void ctrlClientHandlerSubstitutionPlayerStateCorrectChange() throws IllegalActionException {
         gameController.startMainBoard(1);
         clientHandler1.setNickname("Client 1");
         gameController.setPlayer(clientHandler1);

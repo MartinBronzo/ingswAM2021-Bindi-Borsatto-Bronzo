@@ -1,8 +1,10 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ErrorMessage;
 
@@ -59,13 +61,23 @@ public class ClientHandler implements Runnable {
 
                     case "login":
                         LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
-                        //TODO: chiamare metodo
+                        this.nickname = loginMessage.getNickName();
+                        this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
+                        if(this.game == null)
+                            this.send("You are creating a game! Tell me how many players you want in this game!");
+                        else {
+                            //game.setPlayer(this);
+                            this.send("You are in Game! You'll soon start play with others!");
+                        }
                         break;
 
                     case "setNumPlayer":
                         SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
-                        //TODO: controllare correttezza
+                        if(game.getNumberOfPlayers() > 0)
+                            throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
                         game.startMainBoard(setNumPlayerMessage.getNumPlayer());
+                        game.setState(GameState.WAITING4PLAYERS);
+                        //game.setPlayer(this);
                         break;
 
                     case "getResourcesFromMarket":
@@ -145,6 +157,10 @@ public class ClientHandler implements Runnable {
         } catch (IllegalActionException | IllegalArgumentException e) {
             ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
             send(gson.toJson(errorMessage));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (NotAvailableNicknameException e) {
+            this.send("This nickname isn't available!");
         }
     }
 
