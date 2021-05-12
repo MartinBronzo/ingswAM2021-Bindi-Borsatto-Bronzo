@@ -21,11 +21,13 @@ import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
 import it.polimi.ingsw.network.messages.sendToClient.HashMapResources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.*;
 
@@ -37,11 +39,15 @@ public class GameControllerAnswerToClientMethodsTest {
     GameController gameController;
     ClientHandler c1;
     ClientHandler c2;
+    ClientHandler c3;
+    ClientHandler c4;
     Reader inputStreamReader;
     BufferedReader reader;
     File file;
     BufferedReader fileReader1;
     BufferedReader fileReader2;
+    BufferedReader fileReader3;
+    BufferedReader fileReader4;
     Gson gson;
 
 
@@ -51,11 +57,15 @@ public class GameControllerAnswerToClientMethodsTest {
         inputStreamReader = new InputStreamReader(System.in);
         c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler1File.json"));
         c2 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler2File.json"));
+        c3 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler3File.json"));
+        c4 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler4File.json"));
         reader = new BufferedReader(new InputStreamReader(System.in));
         c1.setNickname("Client 1");
         c2.setNickname("Client 2");
         fileReader1 = new BufferedReader(new FileReader("ClientHandler1File.json"));
         fileReader2 = new BufferedReader(new FileReader("ClientHandler2File.json"));
+        fileReader3 = new BufferedReader(new FileReader("ClientHandler3File.json"));
+        fileReader4 = new BufferedReader(new FileReader("ClientHandler4File.json"));
 
 
         gson = new Gson();
@@ -183,7 +193,7 @@ public class GameControllerAnswerToClientMethodsTest {
     }
 
     @Test
-    public void getDevCardCost() throws IOException {
+    public void getDevCardCost() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(1);
         gameController.setPlayer(c1);
@@ -473,7 +483,7 @@ public class GameControllerAnswerToClientMethodsTest {
     }
 
     @Test
-    public void ctrlDiscardALeaderCard() throws IOException {
+    public void ctrlDiscardALeaderCard() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(2);
         gameController.setPlayer(c1);
@@ -631,6 +641,67 @@ public class GameControllerAnswerToClientMethodsTest {
         MarbleType marbleOnSlideAfter = mainBoardAfter.getMarbleOnSlideWithMarbleType();
         assertEquals(marketAfter, marketBefore);
         assertEquals(marbleOnSlideAfter, marbleOnSlideBefore);
+    }
+
+    @Test
+    public void ctrlSendingNumberOfExtraResAtBeginning() throws IllegalActionException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(4);
+        gameController.setPlayer(c1);
+        gameController.setPlayer(c2);
+        gameController.setPlayer(c3);
+        gameController.setPlayer(c4);
+
+        MainBoard mainBoard = gameController.getMainBoard();
+        PlayerBoard p1 = mainBoard.getPlayerBoard(0);
+        PlayerBoard p2 = mainBoard.getPlayerBoard(1);
+        PlayerBoard p3 = mainBoard.getPlayerBoard(2);
+        PlayerBoard p4 = mainBoard.getPlayerBoard(3);
+
+        gameController.sendNumExtraResBeginning();
+
+        //For each player we check that the message they received is correct and that they are on the right position on the FaithTrack
+        String message;
+        ExtraResAndLeadToDiscardBeginningMessage result;
+        message = fileReader1.readLine();
+        result = gson.fromJson(message, ExtraResAndLeadToDiscardBeginningMessage.class);
+        assertEquals(result.getOrder(), mainBoard.getPlayerOder(gameController.getFirstPlayer(), 0));
+        assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
+        assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
+        assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 0));
+        if(result.getOrder() == 0)
+            assertEquals(gameController.getFirstPlayer(), 0);
+        assertEquals(p1.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
+
+        message = fileReader2.readLine();
+        result = gson.fromJson(message, ExtraResAndLeadToDiscardBeginningMessage.class);
+        assertEquals(result.getOrder(), mainBoard.getPlayerOder(gameController.getFirstPlayer(), 1));
+        assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
+        assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
+        assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 1));
+        if(result.getOrder() == 1)
+            assertEquals(gameController.getFirstPlayer(), 1);
+        assertEquals(p2.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
+
+        message = fileReader3.readLine();
+        result = gson.fromJson(message, ExtraResAndLeadToDiscardBeginningMessage.class);
+        assertEquals(result.getOrder(), mainBoard.getPlayerOder(gameController.getFirstPlayer(), 2));
+        assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
+        assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
+        assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 2));
+        if(result.getOrder() == 2)
+            assertEquals(gameController.getFirstPlayer(), 2);
+        assertEquals(p3.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
+
+        message = fileReader4.readLine();
+        result = gson.fromJson(message, ExtraResAndLeadToDiscardBeginningMessage.class);
+        assertEquals(result.getOrder(), mainBoard.getPlayerOder(gameController.getFirstPlayer(), 3));
+        assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
+        assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
+        assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 3));
+        if(result.getOrder() == 3)
+            assertEquals(gameController.getFirstPlayer(), 3);
+        assertEquals(p4.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
     }
 
     @Test

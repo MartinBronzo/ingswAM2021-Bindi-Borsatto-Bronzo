@@ -157,17 +157,28 @@ public class GameController {
      *
      * @param player the ClientHandler of the player to be added at the game
      */
-    public boolean setPlayer(ClientHandler player) {
+    public boolean setPlayer(ClientHandler player) throws IllegalActionException {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)
-            return false;
+            throw new IllegalActionException("You can't be added to this game!");
         //We can't add an already added player
         //if(this.findClientHandler(player))
         if (this.getPlayerBoardOfPlayer(player) != null)
             return false;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
+        //We added the last player: the game must begin
+        if(players.size() == this.numberOfPlayers)
+            this.startGame();
         return true;
+    }
+
+    private void startGame(){
+        this.state = GameState.STARTED;
+        //this.distributeLeaderCards();
+        //this.sendNumExtraResBeginning();
+
+        //TODO: deal with turns
     }
 
     /*
@@ -244,12 +255,21 @@ public class GameController {
         return null;
     }
 
+    /**
+     * Returns the index of the first player in the game (the first player is the one who will be the first to play)
+     * @return the index of the first player
+     */
+    public int getFirstPlayer() {
+        return firstPlayer;
+    }
+
     /*
     ###########################################################################################################
      TO CLIENT MESSAGES
     ###########################################################################################################
      */
 
+    //Tested
     public boolean sendNumExtraResBeginning() {
         //Randomly chooses a first player
         this.firstPlayer = mainBoard.getFirstPlayerRandomly();
@@ -293,7 +313,7 @@ public class GameController {
 
         //The number of quantity sent by the player must be equal to the amount of extra resources they are supposed to send back
         if (mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)) != total) {
-            System.out.println("COSA HA MANDATO: " + total + "Cosa doveva: " + mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)));
+            //System.out.println("COSA HA MANDATO: " + total + "Cosa doveva: " + mainBoard.getExtraResourcesAtBeginningForPlayer(this.firstPlayer, mainBoard.getPlayerBoardIndex(playerBoard)));
             throw new IllegalArgumentException("You must specify the right amount of extra resources!");
         }
 

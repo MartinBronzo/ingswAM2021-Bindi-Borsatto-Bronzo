@@ -1,13 +1,13 @@
 package it.polimi.ingsw.network.messages.fromClient;
 
 public class LoginMessage {
-    private String message;
+    private String nickName;
 
-    public LoginMessage(String message) {
-        this.message = message;
+    public LoginMessage(String nickName) {
+        this.nickName = nickName;
     }
 
-    public String getMessage() {
-        return message;
+    public String getNickName() {
+        return nickName;
     }
 }

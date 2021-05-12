@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,12 +37,12 @@ class GamesManagerSingletonTest {
     }
 
     @Test
-    void sequentialAddClients() throws  InterruptedException {
+    void sequentialAddClients() throws  InterruptedException, IllegalArgumentException {
         assertNull(gamesManagerSingleton.getStartingGame());
         Thread thread1 = new Thread(() -> {
             try {
                 assertNull(gamesManagerSingleton.joinOrCreateNewGame(client1));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -52,7 +53,7 @@ class GamesManagerSingletonTest {
         Thread thread2 = new Thread(() -> {
             try {
                 assertNotNull(gamesManagerSingleton.joinOrCreateNewGame(client2));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -60,7 +61,7 @@ class GamesManagerSingletonTest {
         Thread thread3 = new Thread(() -> {
             try {
                 assertNotNull(gamesManagerSingleton.joinOrCreateNewGame(client3));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -68,7 +69,7 @@ class GamesManagerSingletonTest {
         Thread thread4 = new Thread(() -> {
             try {
                 assertNotNull(gamesManagerSingleton.joinOrCreateNewGame(client4));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -81,7 +82,7 @@ class GamesManagerSingletonTest {
         thread1 = new Thread(() -> {
             try {
                 assertNotNull(gamesManagerSingleton.configureGame(client1, 4));
-            } catch (UnexpectedException e) {
+            } catch (UnexpectedException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -101,7 +102,7 @@ class GamesManagerSingletonTest {
             try {
                 assertNull(gamesManagerSingleton.joinOrCreateNewGame(client1));
                 assertNotNull(gamesManagerSingleton.configureGame(client1, 4));
-            } catch (InterruptedException | NotAvailableNicknameException | UnexpectedException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | UnexpectedException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -112,7 +113,7 @@ class GamesManagerSingletonTest {
         Thread thread2 = new Thread(() -> {
             try {
                 assertNotNull(gamesManagerSingleton.joinOrCreateNewGame(client2));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -120,7 +121,7 @@ class GamesManagerSingletonTest {
         Thread thread3 = new Thread(() -> {
             try {
                 assertNotNull(gamesManagerSingleton.joinOrCreateNewGame(client3));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -128,7 +129,7 @@ class GamesManagerSingletonTest {
         Thread thread4 = new Thread(() -> {
             try {
                 assertNotNull(gamesManagerSingleton.joinOrCreateNewGame(client4));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -150,7 +151,7 @@ class GamesManagerSingletonTest {
             try {
                 assertNull(gamesManagerSingleton.joinOrCreateNewGame(client1));
                 assertNotNull(gamesManagerSingleton.configureGame(client1, 1));
-            } catch (InterruptedException | NotAvailableNicknameException | UnexpectedException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | UnexpectedException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -172,7 +173,7 @@ class GamesManagerSingletonTest {
                 assertNull(gamesManagerSingleton.joinOrCreateNewGame(client1));
                 assertThrows(NotAvailableNicknameException.class, () -> gamesManagerSingleton.joinOrCreateNewGame(clientSameNick));
                 assertNotNull(gamesManagerSingleton.configureGame(client1, 2));
-            } catch (InterruptedException | NotAvailableNicknameException | UnexpectedException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | UnexpectedException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -183,7 +184,7 @@ class GamesManagerSingletonTest {
         Thread thread2 = new Thread(() -> {
             try {
                 assertNotNull(gamesManagerSingleton.joinOrCreateNewGame(client2));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
@@ -203,7 +204,7 @@ class GamesManagerSingletonTest {
                 Thread.sleep(31000);
                 assertNull(gamesManagerSingleton.getStartingGame());
                 assertThrows(IllegalStateException.class, () -> gamesManagerSingleton.configureGame(client1, 1));
-            } catch (InterruptedException | NotAvailableNicknameException e) {
+            } catch (InterruptedException | NotAvailableNicknameException | IllegalActionException e) {
                 e.printStackTrace();
             }
         });
