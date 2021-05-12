@@ -333,6 +333,7 @@ public class GameController {
         return true;
     }
 
+    //Tested
     public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         if (discardLeader.getLeader() < 0)
@@ -351,8 +352,22 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: creare il game model
+        //Since the FaithPoints of one player increased, a Vatican Report may have taken place therefore we must save the FaithPosition and the PopeTiles
         Game game = new Game();
+        Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
+        player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
+        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+        player.setPopeTiles(playerBoard.getPopeTile());
+        game.addPlayer(player);
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(!(e.getKey().getNickname().equals(clientHandler.getNickname()))){
+                Player tmp = new Player();
+                tmp.setNickName(e.getKey().getNickname());
+                tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
+                tmp.setPopeTiles(e.getValue().getPopeTile());
+                game.addPlayer(tmp);
+            }
         this.sendBroadcastUpdate(game);
         return true;
     }

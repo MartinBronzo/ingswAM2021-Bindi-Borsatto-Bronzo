@@ -321,5 +321,70 @@ public class GameControllerAnswerToClientMethodsTest {
         System.out.println(supposedResult + " ... " + result);
     }
 
+    @Test
+    public void ctrlDiscardALeaderCard() throws IOException {
+        //Initiates the game
+        gameController.startMainBoard(2);
+        gameController.setPlayer(c1);
+        gameController.setPlayer(c2);
+
+        //Let's get PlayerBoard and MainBoard so we can change their values
+        MainBoard mainBoard = gameController.getMainBoard();
+        PlayerBoard p1 = mainBoard.getPlayerBoard(0);
+        PlayerBoard p2 = mainBoard.getPlayerBoard(1);
+
+
+        //Creates a list of fake LeaderCards the player will have (we skipp the passage in which the player should discard the some LeaderCards they
+        //received at the beginning of the game: these two cards are already the ones they'll have for the rest of the game)
+        List<LeaderCard> list = new ArrayList<>();
+        LeaderCard l1 = new LeaderCard(4, new ArrayList<>(), new Effect());
+        LeaderCard l2 = new LeaderCard(5, new ArrayList<>(), new Effect());
+        list.add(l1);
+        list.add(l2);
+        p1.setNotPlayedLeaderCardsAtGameBeginning(list);
+
+        //Creates a mockup message and calls the GameController method which is going to write on a file
+        LeaderMessage message = new LeaderMessage(1);
+        gameController.discardLeader(message, c1);
+
+        //We check that the status of the Client 1 has correctly changed
+        assertEquals(p1.getNotPlayedLeaderCards().size(), 1);
+        assertTrue(p1.getNotPlayedLeaderCards().contains(l1));
+        assertEquals(p1.getPositionOnFaithTrack(), 1);
+        assertFalse(p1.getPopeTile().get(0).isChanged());
+        assertFalse(p1.getPopeTile().get(1).isChanged());
+        assertFalse(p1.getPopeTile().get(2).isChanged());
+
+        //We check that the status of the other client has also correctly changed (actually, in this case since no Vatican Report took place then
+        //Client 2 has not changed)
+        assertEquals(p2.getPositionOnFaithTrack(), 0);
+        assertFalse(p2.getPopeTile().get(0).isChanged());
+        assertFalse(p2.getPopeTile().get(1).isChanged());
+        assertFalse(p2.getPopeTile().get(2).isChanged());
+
+        //Retrieves the JSON results from the files of the two ClientHandlers and checks that they are equal
+        String result1 = fileReader1.readLine();
+        String result2 = fileReader2.readLine();
+        assertEquals(result1, result2);
+
+
+        //Checks that the message retrieved from the JSON received by the clients is correctly formed
+        Game game = gson.fromJson(result1, Game.class);
+        Collection<Player> playersCollection = game.getPlayers();
+        assertEquals(playersCollection.size(), 2);
+        Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
+        Player playerModel2 = playersCollection.stream().filter(x -> x.getNickName().equals(c2.getNickname())).findFirst().get();
+        assertEquals(playerModel1.getUnUsedLeaders().size(), 1);
+        assertTrue(playerModel1.getUnUsedLeaders().contains(l1));
+        assertEquals(playerModel1.getFaithPosition(), 1);
+        assertFalse(playerModel1.getPopeTiles().get(0).isChanged());
+        assertFalse(playerModel1.getPopeTiles().get(1).isChanged());
+        assertFalse(playerModel1.getPopeTiles().get(2).isChanged());
+        assertEquals(playerModel2.getFaithPosition(), 0);
+        assertFalse(playerModel2.getPopeTiles().get(0).isChanged());
+        assertFalse(playerModel2.getPopeTiles().get(1).isChanged());
+        assertFalse(playerModel2.getPopeTiles().get(2).isChanged());
+    }
+
     //TODO: other tests for base production and leader cards
 }
