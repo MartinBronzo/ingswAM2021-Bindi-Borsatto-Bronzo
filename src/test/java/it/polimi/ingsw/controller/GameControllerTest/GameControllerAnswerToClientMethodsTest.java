@@ -21,6 +21,7 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.HashMapResources;
 import org.junit.jupiter.api.BeforeEach;
@@ -444,6 +445,47 @@ public class GameControllerAnswerToClientMethodsTest {
         assertTrue(playerModel1.getUsedLeaders().contains(l1));
     }
 
+    @Test
+    //Tests that nothing happens if the player gives bad parameters: they don't specify what to do with the resources
+    public void ctrlBuyFromMarketBadParameters() throws IllegalActionException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(1);
+        gameController.setPlayer(c1);
+
+        //Let's get PlayerBoard and MainBoard so we can change their values
+        PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
+        MainBoard mainBoard = gameController.getMainBoard();
+
+        //Creates a list of fake LeaderCards the player will have and activate them
+        List<LeaderCard> list = new ArrayList<>();
+        list.add(new LeaderCard(4, new ArrayList<>(), new Effect()));
+        list.add(new LeaderCard(5, new ArrayList<>(), new Effect()));
+        p1.setNotPlayedLeaderCardsAtGameBeginning(list);
+        p1.activateLeaderCard(p1.getNotPlayedLeaderCards().get(0));
+        p1.activateLeaderCard(p1.getNotPlayedLeaderCards().get(0));
+
+        //Gets the number of white marbles in the game so we are sure how many LeaderCards to pass to the GameController method, getResFromMkt
+        int tmp = mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(1, 0);
+        List<Integer> leaderCards = new ArrayList<>(tmp);
+        for (int i = 0; i < tmp; i++)
+            leaderCards.add(0);
+
+        //We save the status of the Market before trying to make any change
+        String marketBefore = mainBoard.getMarket().toString();
+        MarbleType marbleOnSlideBefore = mainBoard.getMarbleOnSlideWithMarbleType();
+
+        //Creates a mockup message and calls the GameController method which is going to write on a file
+        BuyFromMarketMessage buyFromMarketMessage = new BuyFromMarketMessage(2, 0, leaderCards, new ArrayList<>(), new HashMap<>(), new HashMap<>());
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> gameController.buyFromMarket(buyFromMarketMessage, c1));
+        assertEquals(e.getMessage(), "The given input parameters don't match the result: you are missing out some resources!");
+        //We need to get the new reference to the MainBoard since it changed due to the rollback!
+        MainBoard mainBoardAfter = gameController.getMainBoard();
+        assertNotSame(mainBoard, mainBoardAfter);
+        String marketAfter = mainBoardAfter.getMarket().toString();
+        MarbleType marbleOnSlideAfter = mainBoardAfter.getMarbleOnSlideWithMarbleType();
+        assertEquals(marketAfter, marketBefore);
+        assertEquals(marbleOnSlideAfter, marbleOnSlideBefore);
+    }
 
     //TODO: other tests for base production and leader cards
 }

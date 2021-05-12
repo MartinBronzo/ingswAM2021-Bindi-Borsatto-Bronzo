@@ -11,6 +11,14 @@ public class Board {
     private MarbleType marbleOnSlide;
     private List<DevCard> devGrid;
 
+    public void setMarbleOnSlide(MarbleType marbleOnSlide) {
+        this.marbleOnSlide = marbleOnSlide;
+    }
+
+    public void setMarketMatrix(MarbleType[][] marketMatrix) {
+        this.marketMatrix = marketMatrix;
+    }
+
     public MarbleType[][] getMarketMatrix() {
         return marketMatrix;
     }

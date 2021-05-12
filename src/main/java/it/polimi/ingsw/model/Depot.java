@@ -587,6 +587,14 @@ public class Depot {
         if (shelfNum < 1 || shelfNum > 3)
             throw new IllegalArgumentException("ShelfNum out of bound");
     }
+
+    /**
+     * Returns a copy of the Extra Slots this player has
+     * @return a copy of the Extra Slots
+     */
+    public HashMap<ResourceType, Integer> getLeaderDepot() {
+        return new HashMap<>(leaderDepot);
+    }
 }
 
 

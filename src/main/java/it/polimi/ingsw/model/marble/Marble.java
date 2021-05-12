@@ -26,6 +26,8 @@ public abstract class Marble {
 
     public abstract boolean isWhiteMarble();
 
+    public abstract MarbleType getMarbleType();
+
     @Override
     public abstract String toString();
 }

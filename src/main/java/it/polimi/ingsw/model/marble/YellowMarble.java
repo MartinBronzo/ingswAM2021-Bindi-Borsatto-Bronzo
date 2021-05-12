@@ -44,4 +44,9 @@ public class YellowMarble extends Marble {
     public String toString() {
         return "YellowMarble{}";
     }
+
+    @Override
+    public MarbleType getMarbleType() {
+        return MarbleType.YELLOWMARBLE;
+    }
 }

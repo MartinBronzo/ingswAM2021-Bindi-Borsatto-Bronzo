@@ -378,6 +378,14 @@ public class Market {
     }
 
     /**
+     * Returns the MarbleType of the Marble on the slide
+     * @return the MarbleType of the Marble on the slide
+     */
+    public MarbleType getMarbleOnSlideWithMarbleType(){
+        return marbleOnSlide.getMarbleType();
+    }
+
+    /**
      * set marble on the grid in a specific position
      * is private because only Market methods can change position of the Marbles in the Market
      *
@@ -441,4 +449,23 @@ public class Market {
         }
         return c;
     }
+
+
+    /*public Marble[][] getMarketMatrix() {
+        return marketMatrix;
+    }*/
+
+    /**
+     * Returns a copy of the MarketMatrix but made of MarbleTypes instead of Marbles
+     * @return a copy of the MarketMatrix made of MarbleTypes
+     */
+    public MarbleType[][] getMarketMatrixWithMarbleType(){
+        MarbleType[][] result = new MarbleType[3][4];
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                result[i][j] = this.marketMatrix[i][j].getMarbleType();
+        return result;
+    }
+
+
 }

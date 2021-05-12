@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.client.readOnlyModel.Board;
 import it.polimi.ingsw.client.readOnlyModel.Game;
 import it.polimi.ingsw.client.readOnlyModel.Player;
 import it.polimi.ingsw.client.readOnlyModel.player.DepotShelf;
@@ -411,11 +412,13 @@ public class GameController {
         //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
         /*if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow() - 1, resFromMkt.getCol() - 1) > effects.size())
             throw new IllegalArgumentException("There are not enough LeaderCards specified!");*/
-        if (resFromMkt.getRow() == 0)
+        if (resFromMkt.getRow() != 0) {
             if (mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1) > effects.size())
                 throw new IllegalArgumentException("There are not enough LeaderCards specified!");
-            else if (mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1) > effects.size())
+        }else {
+            if (mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1) > effects.size())
                 throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+        }
 
         if (resFromMkt.getCol() != 0)
             result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol() - 1, effects);
@@ -427,26 +430,36 @@ public class GameController {
         return true;
     }
 
+    //Tested
     public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         if (buyFromMarket.getRow() != 0 && buyFromMarket.getCol() != 0)
             throw new IllegalArgumentException("Specify only a column or row!");
+
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
 
         try {
             //We save the inner state of the game
             this.saveState();
 
-            PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+
             List<Effect> effects = playerBoard.getEffectsFromCards(buyFromMarket.getLeaderList());
 
             //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
-            if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(buyFromMarket.getRow(), buyFromMarket.getCol()) > effects.size())
-                throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+            /*if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow() - 1, resFromMkt.getCol() - 1) > effects.size())
+            throw new IllegalArgumentException("There are not enough LeaderCards specified!");*/
+            if (buyFromMarket.getRow() != 0) {
+                if (mainBoard.getNumberOfWhiteMarbleInMarketRow(buyFromMarket.getRow() - 1) > effects.size())
+                    throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+            }else {
+                if (mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1) > effects.size())
+                    throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+            }
 
             HashMap<ResourceType, Integer> res;
             if (buyFromMarket.getCol() != 0)
-                res = mainBoard.moveColumnInMarket(buyFromMarket.getCol(), effects);
+                res = mainBoard.moveColumnInMarket(buyFromMarket.getCol() - 1, effects);
             else
-                res = mainBoard.moveRowInMarket(buyFromMarket.getRow(), effects);
+                res = mainBoard.moveRowInMarket(buyFromMarket.getRow() - 1, effects);
 
             List<DepotParams> depotRes = buyFromMarket.getDepotRes();
 
@@ -477,8 +490,24 @@ public class GameController {
                 playerBoard.addResourceToLeader(e.getKey(), e.getValue());
             }
 
+            //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
+            //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity which in this case
+            //means that the need to equal to the remaining resources because all resources coming from the market must be dealt with)!
+            for(Map.Entry<ResourceType, Integer> e: buyFromMarket.getDiscardRes().entrySet())
+                if (res.get(e.getKey()) == null || res.get(e.getKey()) != e.getValue())
+                    throw new IllegalArgumentException("The given input parameters for the discarded resources don't match the result!");
+                else
+                    res.put(e.getKey(), res.get(e.getKey()) - e.getValue()); //Updates the res map
+
             //Discards the Extra resources
             mainBoard.discardResources(buyFromMarket.getDiscardRes(), playerBoard);
+
+            //Checks if there are still some resources coming from the market which have not been dealt with: if this happens, the player hasn't where to put all the
+            //resources they are supposed to (this is particular useful to check the case in which the player doesn't specify any parameter: while they don't gain any resource
+            //they still have changed the market composition even if they weren't supposed to).
+            for(Map.Entry<ResourceType, Integer> e: res.entrySet())
+                if(e.getValue() != 0)
+                    throw new IllegalArgumentException("The given input parameters don't match the result: you are missing out some resources!");
 
         } catch (IllegalActionException e) {
             this.rollbackState();
@@ -491,8 +520,27 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        //TODO: creare il game model
         Game game = new Game();
+        Board board = new Board();
+        board.setMarketMatrix(mainBoard.getMarket().getMarketMatrixWithMarbleType());
+        board.setMarbleOnSlide(mainBoard.getMarket().getMarbleOnSlideWithMarbleType());
+        game.setMainBoard(board);
+        Player player = new Player();
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
+        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
+        player.setLeaderSlots(playerBoard.getLeaderDepot());
+        //We get the PopeTiles of all players because a Vatican Report may have occurred
+        player.setPopeTiles(playerBoard.getPopeTile());
+        game.addPlayer(player);
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(!(e.getKey().getNickname().equals(clientHandler.getNickname()))){
+                Player tmp = new Player();
+                tmp.setNickName(e.getKey().getNickname());
+                tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
+                tmp.setPopeTiles(e.getValue().getPopeTile());
+                game.addPlayer(tmp);
+            }
         this.sendBroadcastUpdate(game);
         return true;
     }

@@ -26,6 +26,10 @@ public class Player {
     private int victoryPoints;
     private List<PopeTile> popeTiles;
 
+    public void setLeaderSlots(HashMap<ResourceType, Integer> leaderSlots) {
+        this.leaderSlots = leaderSlots;
+    }
+
     public void setUsedLeaders(List<LeaderCard> usedLeaders) {
         this.usedLeaders = usedLeaders;
     }

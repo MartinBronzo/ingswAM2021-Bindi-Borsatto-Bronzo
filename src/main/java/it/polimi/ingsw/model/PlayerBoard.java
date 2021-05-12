@@ -427,9 +427,16 @@ public class PlayerBoard {
      * @param resourceType the resource of which you want to know the quantity
      * @return the quantity of the required resource that is in the ExtraSlot of the depot
      */
-    @Deprecated
     public int getLeaderSlotResourceQuantity(ResourceType resourceType) {
         return depot.getExtraDepotValue(resourceType);
+    }
+
+    /**
+     * Returns a copy of the Extra Slots this player has
+     * @return a copy of the Extra Slots
+     */
+    public HashMap<ResourceType, Integer> getLeaderDepot(){
+        return this.depot.getLeaderDepot();
     }
 
     /**
