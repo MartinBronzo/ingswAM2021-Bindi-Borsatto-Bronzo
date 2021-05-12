@@ -36,6 +36,8 @@ public class ClientHandler implements Runnable {
         this.state = PlayerState.WAITING4NAME;
     }
 
+    //TODO: creare un timer che ogni tot tempo invia un ping al client
+
     /**
      * Creates a new thread for the communication with the client. This thread receives the message from the client,
      * parses the message in the Command class and reads the name of the command; based on this name it parses

@@ -543,6 +543,10 @@ public class PlayerBoard {
         return strongbox.getResource(resource);
     }
 
+    public HashMap<ResourceType, Integer> getStrongboxMap(){
+        return strongbox.getAllResources();
+    }
+
     /*
     ##################
     #FAITHLEVEL METHODS#
