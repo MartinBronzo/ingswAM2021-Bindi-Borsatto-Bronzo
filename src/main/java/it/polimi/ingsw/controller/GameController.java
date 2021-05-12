@@ -174,7 +174,7 @@ public class GameController {
 
     private void startGame(){
         this.state = GameState.STARTED;
-        //this.distributeLeaderCards();
+        //this.showLeaderCardAtBeginning()
         //this.sendNumExtraResBeginning();
 
         //TODO: deal with turns
@@ -269,6 +269,24 @@ public class GameController {
      */
 
     //Tested
+    public boolean showLeaderCardAtBeginning(){
+        mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
+
+        Game game = new Game();
+        Player player;
+        for(int i = 0; i < this.numberOfPlayers; i++){
+            player = new Player();
+            player.setNickName(players.get(i).getKey().getNickname());
+            player.setUnUsedLeaders(players.get(i).getValue().getNotPlayedLeaderCards());
+            game.addPlayer(player);
+        }
+
+        this.sendBroadcastUpdate(game);
+
+        return true;
+    }
+
+    //Tested
     public boolean sendNumExtraResBeginning() {
         //Randomly chooses a first player
         this.firstPlayer = mainBoard.getFirstPlayerRandomly();
@@ -286,8 +304,7 @@ public class GameController {
             message = new ExtraResAndLeadToDiscardBeginningMessage(mainBoard.getExtraResourcesAtBeginningForPlayer(firstPlayer, i), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning(), mainBoard.getPlayerOder(firstPlayer, i));
             players.get(i).getKey().send(gson.toJson(message));
         }
-        //TODO: in un primo momento bisognerà mandare un messaggio separato ai giocatori sullo status del model che hanno (le carte leader che gli sono state mandate)
-        return true;
+       return true;
     }
 
     /*
@@ -546,6 +563,7 @@ public class GameController {
         board.setMarbleOnSlide(mainBoard.getMarket().getMarbleOnSlideWithMarbleType());
         game.setMainBoard(board);
         Player player = new Player();
+        player.setNickName(clientHandler.getNickname());
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
@@ -793,10 +811,6 @@ public class GameController {
     ###########################################################################################################
      */
 
-    public void distributeLeaderCards() {
-        mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
-    }
-
     private void setLastTurn() {
         this.state = GameState.LASTTURN;
     }
@@ -808,6 +822,7 @@ public class GameController {
      * @return true if the messages where correctly sent to all the players
      */
     private boolean sendBroadcastUpdate(Game game) {
+        //TODO: in realtà ci sarà da inviare un messaggio che contiene game come con i command per i messaggi nel package fromClient!
         for (Pair<ClientHandler, PlayerBoard> e : players)
             e.getKey().send(gson.toJson(game));
         return true;

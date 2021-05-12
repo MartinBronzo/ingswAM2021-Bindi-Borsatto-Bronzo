@@ -64,6 +64,8 @@ public class GameControllerAnswerToClientMethodsTest {
         reader = new BufferedReader(new InputStreamReader(System.in));
         c1.setNickname("Client 1");
         c2.setNickname("Client 2");
+        c3.setNickname("Client 3");
+        c4.setNickname("Client 4");
         fileReader1 = new BufferedReader(new FileReader("ClientHandler1File.json"));
         fileReader2 = new BufferedReader(new FileReader("ClientHandler2File.json"));
         fileReader3 = new BufferedReader(new FileReader("ClientHandler3File.json"));
@@ -533,7 +535,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 1));
-        if(result.getOrder() == 1)
+        if(result.getOrder() == 0)
             assertEquals(gameController.getFirstPlayer(), 1);
         assertEquals(p2.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
 
@@ -543,7 +545,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 2));
-        if(result.getOrder() == 2)
+        if(result.getOrder() == 0)
             assertEquals(gameController.getFirstPlayer(), 2);
         assertEquals(p3.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
 
@@ -553,10 +555,55 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 3));
-        if(result.getOrder() == 3)
+        if(result.getOrder() == 0)
             assertEquals(gameController.getFirstPlayer(), 3);
         assertEquals(p4.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
     }
+
+    @Test
+    public void ctrlShowLeaderCardsAtTheBeginningOnePlayer() throws IllegalActionException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(1);
+        gameController.setPlayer(c1);
+
+        gameController.showLeaderCardAtBeginning();
+
+        String message;
+        Game result;
+        message = fileReader1.readLine();
+        result = gson.fromJson(message, Game.class);
+
+        assertEquals(result.getPlayers().size(), 1);
+
+        Player player = result.getPlayers().stream().filter(x -> x.getNickName().equals("Client 1")).findFirst().get();
+
+        assertEquals(player.getUnUsedLeaders().size(), 4);
+    }
+
+    @Test
+    public void ctrlShowLeaderCardsAtTheBeginningTwoPlayers() throws IllegalActionException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(2);
+        gameController.setPlayer(c1);
+        gameController.setPlayer(c2);
+
+        gameController.showLeaderCardAtBeginning();
+
+        String message1 = fileReader1.readLine();
+        String message2 = fileReader2.readLine();
+        Game result = gson.fromJson(message1, Game.class);
+
+        assertEquals(message1, message2);
+
+        assertEquals(result.getPlayers().size(), 2);
+
+        Player player1 = result.getPlayers().stream().filter(x -> x.getNickName().equals("Client 1")).findFirst().get();
+        Player player2 = result.getPlayers().stream().filter(x -> x.getNickName().equals("Client 2")).findFirst().get();
+
+        assertEquals(player1.getUnUsedLeaders().size(), 4);
+        assertEquals(player2.getUnUsedLeaders().size(), 4);
+    }
+
 
     //TODO: other tests for base production and leader cards
 }
