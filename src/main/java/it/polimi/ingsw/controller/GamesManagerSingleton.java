@@ -94,7 +94,7 @@ public final class GamesManagerSingleton {
     private synchronized boolean configurationTimeElapsed(){
         if (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING) && timerCanCancel){
             startingGame=null;
-            //TODO: notifyClient
+            //TODO: clientConfigurator.send("configurationTimeElapsed\n");
             clientConfigurator = null;
             stopTimer();
             notify();

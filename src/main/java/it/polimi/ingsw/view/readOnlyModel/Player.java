@@ -1,7 +1,7 @@
-package it.polimi.ingsw.client.readOnlyModel;
+package it.polimi.ingsw.view.readOnlyModel;
 
-import it.polimi.ingsw.client.readOnlyModel.player.DepotShelf;
-import it.polimi.ingsw.client.readOnlyModel.player.Devslot;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
+import it.polimi.ingsw.view.readOnlyModel.player.Devslot;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;

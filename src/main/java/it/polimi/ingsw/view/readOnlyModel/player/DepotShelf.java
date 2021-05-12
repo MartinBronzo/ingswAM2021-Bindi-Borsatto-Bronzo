@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.readOnlyModel.player;
+package it.polimi.ingsw.view.readOnlyModel.player;
 
 import it.polimi.ingsw.model.ResourceType;
 

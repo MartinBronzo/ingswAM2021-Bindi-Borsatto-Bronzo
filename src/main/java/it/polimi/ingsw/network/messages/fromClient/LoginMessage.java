@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.fromClient;
 
-public class LoginMessage {
+public class LoginMessage extends Message {
     private String message;
 
     public LoginMessage(String message) {

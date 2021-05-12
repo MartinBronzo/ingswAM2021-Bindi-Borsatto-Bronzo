@@ -1,0 +1,14 @@
+package it.polimi.ingsw.view.cli;
+
+public enum CliCommandType {
+    QUIT,
+    BUYFROMMARKET,
+    BUYDEVCARD,
+    ACTIVATEPRODUCTION,
+    DISCARDLEADER,
+    MOVEBETWEENSHELF,
+    MOVELEADERTOSHELF,
+    MOVESHELFTOLEADER,
+    ACTIVATELEADER,
+    ENDTURN
+}

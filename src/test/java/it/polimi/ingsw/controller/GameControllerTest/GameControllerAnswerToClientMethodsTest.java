@@ -2,8 +2,8 @@ package it.polimi.ingsw.controller.GameControllerTest;
 
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.client.readOnlyModel.Game;
-import it.polimi.ingsw.client.readOnlyModel.Player;
+import it.polimi.ingsw.view.readOnlyModel.Game;
+import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -16,8 +16,6 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementRe
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.DiscountLeaderEffect;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;

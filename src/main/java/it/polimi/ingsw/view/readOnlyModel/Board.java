@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.readOnlyModel;
+package it.polimi.ingsw.view.readOnlyModel;
 
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.marble.MarbleType;
