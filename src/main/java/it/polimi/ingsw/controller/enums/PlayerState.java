@@ -4,6 +4,11 @@ public enum PlayerState {
     DISCONNECTED,
     WAITING4NAME,
     WAITING4TURN,
+    /**
+     * When the player's in this state it means all the players are making their beginning of the game decisions (what LeaderCards to
+     * discard, what extra resources to choose).
+     */
+    WAITING4BEGINNINGDECISIONS,
     PLAYING,
     WAITING4LASTTURN,
     PLAYINGLASTTURN,
