@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
+import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -40,6 +41,7 @@ public class GameController {
     private MainBoard modelCopy;
     private int firstPlayer;
     private Gson gson;
+    private Integer howManyPlayersReady;
 
 
     /**
@@ -119,7 +121,7 @@ public class GameController {
 
     /*
     ###########################################################################################################
-     GENERAL SETTERS
+     BEGINNING OF THE GAME METHODS
     ###########################################################################################################
      */
 
@@ -133,6 +135,7 @@ public class GameController {
         this.numberOfPlayers = -1;
         this.maxPlayersNum = 4;
         this.gson = new Gson();
+        this.howManyPlayersReady = 0;
     }
 
     /**
@@ -169,6 +172,27 @@ public class GameController {
      *
      * @param player the ClientHandler of the player to be added at the game
      */
+    public boolean setPlayerOld(ClientHandler player) throws IllegalActionException {
+        //We can't add more players than the one given by the numberOfPlayers number
+        if (this.players.size() == this.numberOfPlayers)
+            throw new IllegalActionException("You can't be added to this game!");
+        //We can't add an already added player
+        //if(this.findClientHandler(player))
+        if (this.getPlayerBoardOfPlayer(player) != null)
+            return false;
+        PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
+        players.add(new Pair<>(player, playerBoard));
+        //We added the last player: the game must begin
+        this.state = GameState.STARTED;
+        return true;
+    }
+
+    /**
+     * Adds a player represented by the specified ClientHandler to the game if the player hasn't been added, yet, and if the game hasn't reach its maximum
+     * capacity, yet. If the this method is adding the last player this game can hold then it starts the game itselft.
+     *
+     * @param player the ClientHandler of the player to be added at the game
+     */
     public boolean setPlayer(ClientHandler player) throws IllegalActionException {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)
@@ -180,17 +204,43 @@ public class GameController {
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
         //We added the last player: the game must begin
-        if(players.size() == this.numberOfPlayers)
+        /*if(players.size() == this.numberOfPlayers)
             this.startGame();
+            //TODO: aggiungere questo if commentato causa ai test del GamesMangerSingletonTest di fallire
+        */
         return true;
     }
 
     private void startGame(){
         this.state = GameState.STARTED;
-        //this.showLeaderCardAtBeginning()
-        //this.sendNumExtraResBeginning();
+        this.showLeaderCardAtBeginning();
+        this.sendNumExtraResBeginning();
+    }
 
+    private void checkIfGameMustBegin(){
+        synchronized (this.howManyPlayersReady) {
+            this.howManyPlayersReady++;
+            if (this.howManyPlayersReady == this.numberOfPlayers){
+                this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
+                this.sendBroadcastStringMessage("Now turns will begin!");
+                this.updatesTurnAndSendInfo(this.firstPlayer);
+            }
+        }
+    }
+
+    public void specifyNextPlayer(ClientHandler currentPlayer){
         //TODO: deal with turns
+        if(currentPlayer.getPlayerSate() != PlayerState.PLAYING)
+            return;
+        //Retrieves this player's index
+        int index = this.getPlayerNumber(currentPlayer);
+        if(index < 0)
+            throw new IllegalArgumentException("The specified ClientHandler isn't in this game!");
+        //The next active player is the next one in the list of players and the list must be cyclically covered
+        index++;
+        if(index == this.numberOfPlayers)
+            index = 0;
+        this.updatesTurnAndSendInfo(index);
     }
 
     /*
@@ -198,6 +248,18 @@ public class GameController {
      GENERAL GETTERS
     ###########################################################################################################
      */
+
+    /**
+     * Returns the index the specified player (represented by their ClientHandler) has in the list of players of this game
+     * @param player the player whose index must be find
+     * @return the index of the player if the player belongs to this game, -1 otherwise
+     */
+    private int getPlayerNumber(ClientHandler player){
+        for(int i = 0; i < this.numberOfPlayers; i++)
+            if(players.get(i).getKey() == player)
+                return i;
+        return -1;
+    }
 
     /**
      * Returns a list of all the players that are added to the game in the moment this method is invoked
@@ -288,6 +350,7 @@ public class GameController {
         Game game = new Game();
         Player player;
         for(int i = 0; i < this.numberOfPlayers; i++){
+            players.get(i).getKey().setPlayerSate(PlayerState.WAITING4BEGINNINGDECISIONS);
             player = new Player();
             player.setNickName(players.get(i).getKey().getNickname());
             player.setUnUsedLeaders(players.get(i).getValue().getNotPlayedLeaderCards());
@@ -383,6 +446,7 @@ public class GameController {
         setDepotInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
         game.addPlayer(player);
         this.sendBroadcastUpdate(game);
+        this.checkIfGameMustBegin();
         return true;
     }
 
@@ -873,6 +937,39 @@ public class GameController {
      RESPONSE PRIVATE METHODS
     ###########################################################################################################
      */
+
+    /**
+     * Updates the player's state by setting the specified player as the one who can play their turn and by setting the former player as in
+     * waiting for their turn
+     * @param playerToBecomeActive
+     */
+    private void updatesTurnAndSendInfo(int playerToBecomeActive){
+        TurnInfoMessage message;
+        ResponseMessage responseMessage;
+
+        //The specified player becomes the active player
+        this.players.get(playerToBecomeActive).getKey().setPlayerSate(PlayerState.PLAYING);
+        message = new TurnInfoMessage(true);
+        responseMessage = new ResponseMessage(ResponseType.TURNINFO, this.gson.toJson(message));
+        this.players.get(playerToBecomeActive).getKey().send(this.gson.toJson(responseMessage));
+
+        message = new TurnInfoMessage(false);
+        responseMessage = new ResponseMessage(ResponseType.TURNINFO, this.gson.toJson(message));
+        String toBeSent = this.gson.toJson(responseMessage);
+        //All the others players are waiting for their turn
+        for(int i = 0; i < this.numberOfPlayers; i++)
+            if(i != playerToBecomeActive) {
+                this.players.get(i).getKey().setPlayerSate(PlayerState.WAITING4TURN);
+                this.players.get(i).getKey().send(toBeSent);
+            }
+    }
+
+    private void sendBroadcastStringMessage(String message){
+        GeneralInfoStringMessage messageObject = new GeneralInfoStringMessage(message);
+        ResponseMessage responseMessage = new ResponseMessage(ResponseType.INFOSTRING, this.gson.toJson(messageObject));
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            e.getKey().send(this.gson.toJson(responseMessage));
+    }
 
     public Game getWholeUpdateToClient(){
         Game game = new Game();

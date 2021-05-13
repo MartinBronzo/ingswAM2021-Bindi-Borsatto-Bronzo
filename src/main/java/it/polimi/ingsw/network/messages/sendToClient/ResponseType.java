@@ -5,5 +5,7 @@ public enum ResponseType {
     UPDATE,
     ERROR,
     EXTRARESOURCEBLABLA,
-    HASHMAPRESOURCES
+    HASHMAPRESOURCES,
+    INFOSTRING,
+    TURNINFO
 }

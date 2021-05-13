@@ -1,2 +1,1 @@
-{"responseType":"PING","responseContent":"Ping"}
-{"responseType":"ERROR","responseContent":"An error occurred (IOException)"}
+{"players":[{"nickName":"Client 1","faithPosition":0,"depotShelves":[{"quantity":0},{"resourceType":"SHIELD","quantity":2},{"resourceType":"COIN","quantity":1}],"leaderSlots":{"STONE":0,"SHIELD":0,"SERVANT":0,"COIN":2},"victoryPoints":0}],"mainBoard":{},"lorenzosPosition":-1}
