@@ -94,6 +94,7 @@ public class SoloBoard extends MainBoard {
      *
      * @return the position of the lorenzo's Faith point marker in his Faith Treack
      */
+    @Override
     public int getLorenzoFaithTrackPosition() {
         return lorenzosTrack.getPosition();
     }

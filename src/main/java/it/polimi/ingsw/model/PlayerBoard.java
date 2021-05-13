@@ -549,6 +549,7 @@ public class PlayerBoard {
 
     /*
     ##################
+    ##################
     #FAITHLEVEL METHODS#
     ##################
     */
@@ -761,6 +762,14 @@ public class PlayerBoard {
      */
     public BaseProduction getBaseProduction() {
         return new BaseProduction(this.baseProduction);
+    }
+
+    public HashMap<ResourceType, Integer> getBaseProductionInput(){
+        return new HashMap<>(this.baseProduction.getInputHashMap());
+    }
+
+    public HashMap<ResourceType, Integer> getBaseProductionOutput(){
+        return new HashMap<>(this.baseProduction.getOutputHashMap());
     }
 
 

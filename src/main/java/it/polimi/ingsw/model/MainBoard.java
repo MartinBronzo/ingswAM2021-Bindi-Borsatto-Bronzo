@@ -337,7 +337,7 @@ public class MainBoard {
     }
 
     public DevGrid getDevGrid() {
-        return devGrid;
+        return new DevGrid(this.devGrid);
     }
 
     public Market getMarket() {
@@ -370,6 +370,14 @@ public class MainBoard {
 
     public int getNumberOfLeaderCardsToDiscardAtBeginning() {
         return numberOfLeaderCardsToDiscardAtBeginning;
+    }
+
+    /**
+     * Returns -1 because in the multiplayer mode there is no Lorenzo
+     * @return -1
+     */
+    public int getLorenzoFaithTrackPosition(){
+        return -1;
     }
 
     /*

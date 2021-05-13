@@ -7,6 +7,9 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ErrorMessage;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
+import it.polimi.ingsw.view.readOnlyModel.Game;
 
 import java.io.*;
 import java.net.Socket;
@@ -65,17 +68,23 @@ public class ClientHandler implements Runnable {
                         LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
                         this.nickname = loginMessage.getNickName();
                         this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
-                        if(this.game == null)
+                        if (this.game == null)
                             this.send("You are creating a game! Tell me how many players you want in this game!");
-                        else {
-                            //game.setPlayer(this);
+                        else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
+                            //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
+                            //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
+                            //da scartare ed etc. all'inizio che è != da in session che quando il meccanismo a turni è in atto
+                            this.send("You are back in the game!");
+                            ResponseMessage responseMessage = new ResponseMessage(ResponseType.UPDATE, gson.toJson(this.game.getWholeUpdateToClient()));
+                            this.send(gson.toJson(responseMessage));
+                        } else {
                             this.send("You are in Game! You'll soon start play with others!");
                         }
                         break;
 
                     case "setNumPlayer":
                         SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
-                        if(game.getNumberOfPlayers() > 0)
+                        if (game.getNumberOfPlayers() > 0)
                             throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
                         game.startMainBoard(setNumPlayerMessage.getNumPlayer());
                         game.setState(GameState.WAITING4PLAYERS);
@@ -149,8 +158,7 @@ public class ClientHandler implements Runnable {
                 }
                 line = in.nextLine();
             }
-
-            //Close stream and socket
+        //Close stream and socket
             in.close();
             out.close();
             socket.close();

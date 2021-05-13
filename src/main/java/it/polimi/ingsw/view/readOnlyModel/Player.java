@@ -27,6 +27,22 @@ public class Player {
     private int victoryPoints;
     private List<PopeTile> popeTiles;
 
+    public void setVictoryPoints(int victoryPoints) {
+        this.victoryPoints = victoryPoints;
+    }
+
+    public void setBaseProductionInput(HashMap<ResourceType, Integer> baseProductionInput) {
+        this.baseProductionInput = baseProductionInput;
+    }
+
+    public void setBaseProductionOutput(HashMap<ResourceType, Integer> baseProductionOutput) {
+        this.baseProductionOutput = baseProductionOutput;
+    }
+
+    public void setPlayerState(PlayerState playerState) {
+        this.playerState = playerState;
+    }
+
     public void setLeaderSlots(HashMap<ResourceType, Integer> leaderSlots) {
         this.leaderSlots = leaderSlots;
     }
