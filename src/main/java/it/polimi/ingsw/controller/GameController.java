@@ -4,11 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
-import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Board;
-import it.polimi.ingsw.view.readOnlyModel.Game;
-import it.polimi.ingsw.view.readOnlyModel.Player;
-import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -160,6 +156,21 @@ public class GameController {
      *
      * @param player the ClientHandler of the player to be added at the game
      */
+    public boolean setPlayerOld(ClientHandler player) throws IllegalActionException {
+        //We can't add more players than the one given by the numberOfPlayers number
+        if (this.players.size() == this.numberOfPlayers)
+            throw new IllegalActionException("You can't be added to this game!");
+        //We can't add an already added player
+        //if(this.findClientHandler(player))
+        if (this.getPlayerBoardOfPlayer(player) != null)
+            return false;
+        PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
+        players.add(new Pair<>(player, playerBoard));
+        //We added the last player: the game must begin
+        this.state = GameState.STARTED;
+        return true;
+    }
+
     public boolean setPlayer(ClientHandler player) throws IllegalActionException {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)
@@ -371,7 +382,7 @@ public class GameController {
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
         */
         Game game = new Game();
-        setDepoInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
+        setDepotInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
         game.addPlayer(player);
         this.sendBroadcastUpdate(game);
         return true;
@@ -575,7 +586,7 @@ public class GameController {
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
         player.setLeaderSlots(playerBoard.getLeaderDepot());*/
-        setDepoInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
+        setDepotInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
         //We get the PopeTiles of all players because a Vatican Report may have occurred
         player.setPopeTiles(playerBoard.getPopeTile());
         game.addPlayer(player);
@@ -652,7 +663,7 @@ public class GameController {
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
         player.setDevSlots(playerBoard.getDevSlots());
-        setDepoInClientModel(player, playerBoard);
+        setDepotInClientModel(player, playerBoard);
         player.setStrongBox(playerBoard.getStrongboxMap());
         game.addPlayer(player);
 
@@ -667,7 +678,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
-        setDepoInClientModel(player, playerBoard);
+        setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
         this.sendBroadcastUpdate(game);
@@ -681,7 +692,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
-        setDepoInClientModel(player, playerBoard);
+        setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
         this.sendBroadcastUpdate(game);
@@ -695,7 +706,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
-        setDepoInClientModel(player, playerBoard);
+        setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
         this.sendBroadcastUpdate(game);
@@ -787,7 +798,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
-        setDepoInClientModel(player, playerBoard);
+        setDepotInClientModel(player, playerBoard);
         player.setStrongBox(playerBoard.getStrongboxMap());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
@@ -841,7 +852,7 @@ public class GameController {
         }
     }
 
-    private void setDepoInClientModel(Player player, PlayerBoard playerBoard){
+    private void setDepotInClientModel(Player player, PlayerBoard playerBoard){
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
@@ -864,6 +875,38 @@ public class GameController {
      RESPONSE PRIVATE METHODS
     ###########################################################################################################
      */
+
+    public Game getWholeUpdateToClient(){
+        Game game = new Game();
+        Board board = new Board();
+        board.setMarketMatrix(this.mainBoard.getMarketMatrixWithMarbleType());
+        board.setMarbleOnSlide(this.mainBoard.getMarbleOnSlideWithMarbleType());
+        board.setDevGrid(this.mainBoard.getDevGrid());
+        game.setMainBoard(board);
+        for(int i = 0; i < this.numberOfPlayers; i++){
+            PlayerBoard playerBoard = players.get(i).getValue();
+            ClientHandler clientHandler = players.get(i).getKey();
+            Player player = new Player();
+            player.setNickName(clientHandler.getNickname());
+            player.setPlayerState(clientHandler.getState());
+            player.setDevSlots(playerBoard.getDevSlots());
+            player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
+            player.setUsedLeaders(playerBoard.getActiveLeaderCards());
+            player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+            player.setBaseProductionInput(playerBoard.getBaseProductionInput());
+            player.setBaseProductionOutput(playerBoard.getBaseProductionOutput());
+            this.setDepotInClientModel(player, playerBoard);
+            player.setStrongBox(playerBoard.getStrongboxMap());
+            player.setLeaderSlots(playerBoard.getLeaderDepot());
+            player.setVictoryPoints(playerBoard.calculateVictoryPoints());
+            player.setPopeTiles(playerBoard.getPopeTile());
+            game.addPlayer(player);
+        }
+
+        game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
+
+        return game;
+    }
 
     private void setLastTurn() {
         this.state = GameState.LASTTURN;

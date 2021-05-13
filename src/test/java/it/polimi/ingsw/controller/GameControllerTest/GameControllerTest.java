@@ -72,7 +72,7 @@ public class GameControllerTest {
     @Test
     public void ctrlCreationAddingOnePlayer() throws IllegalActionException {
         gameController.startMainBoard(4);
-        gameController.setPlayer(clientHandler1);
+        gameController.setPlayerOld(clientHandler1);
 
         assertEquals(gameController.getPlayersList().size(), 1);
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
@@ -82,9 +82,9 @@ public class GameControllerTest {
     //Adding an already added player won't change the internal state of the GameController
     public void ctrlCreationAddingTheSamePlayerAgain() throws IllegalActionException {
         gameController.startMainBoard(4);
-        gameController.setPlayer(clientHandler1);
+        gameController.setPlayerOld(clientHandler1);
 
-        gameController.setPlayer(clientHandler1);
+        gameController.setPlayerOld(clientHandler1);
         assertEquals(gameController.getPlayersList().size(), 1);
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
     }
@@ -92,10 +92,10 @@ public class GameControllerTest {
     @Test
     public void ctrlCreationAddingAllPlayers() throws IllegalActionException {
         gameController.startMainBoard(4);
-        gameController.setPlayer(clientHandler1);
-        gameController.setPlayer(clientHandler2);
-        gameController.setPlayer(clientHandler3);
-        gameController.setPlayer(clientHandler4);
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
 
         assertEquals(gameController.getPlayersList().size(), 4);
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
@@ -107,9 +107,9 @@ public class GameControllerTest {
     @Test
     public void ctrlAddingMorePlayersThanNeeded() throws IllegalActionException {
         gameController.startMainBoard(1);
-        gameController.setPlayer(clientHandler1);
+        gameController.setPlayerOld(clientHandler1);
 
-        IllegalActionException e = assertThrows(IllegalActionException.class, ()->gameController.setPlayer(clientHandler2));
+        IllegalActionException e = assertThrows(IllegalActionException.class, ()->gameController.setPlayerOld(clientHandler2));
         assertEquals(e.getMessage(),"You can't be added to this game!");
         assertEquals(gameController.getPlayersList().size(), 1);
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
@@ -197,10 +197,10 @@ public class GameControllerTest {
         clientHandler2.setNickname("Client 2");
         clientHandler3.setNickname("Client 3");
         clientHandler4.setNickname("Client 4");
-        gameController.setPlayer(clientHandler1);
-        gameController.setPlayer(clientHandler2);
-        gameController.setPlayer(clientHandler3);
-        gameController.setPlayer(clientHandler4);
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
 
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
         assertSame(gameController.getPlayersList().get(1), clientHandler2);
@@ -231,10 +231,10 @@ public class GameControllerTest {
         clientHandler2.setNickname("Client 2");
         clientHandler3.setNickname("Client 3");
         clientHandler4.setNickname("Client 4");
-        gameController.setPlayer(clientHandler1);
-        gameController.setPlayer(clientHandler2);
-        gameController.setPlayer(clientHandler3);
-        gameController.setPlayer(clientHandler4);
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
 
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
         assertSame(gameController.getPlayersList().get(1), clientHandler2);
@@ -262,7 +262,7 @@ public class GameControllerTest {
     public void ctrlClientHandlerSubstitutionPlayerStateCorrectChange() throws IllegalActionException {
         gameController.startMainBoard(1);
         clientHandler1.setNickname("Client 1");
-        gameController.setPlayer(clientHandler1);
+        gameController.setPlayerOld(clientHandler1);
         clientHandler1.setPlayerSate(PlayerState.DISCONNECTED);
 
         assertEquals(gameController.getPlayersList().get(0).getPlayerSate(), PlayerState.DISCONNECTED);
