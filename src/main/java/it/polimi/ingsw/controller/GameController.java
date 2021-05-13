@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -19,7 +20,10 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
 import it.polimi.ingsw.network.messages.sendToClient.HashMapResources;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,11 +145,20 @@ public class GameController {
             throw new IllegalArgumentException("The number of players must be a number between 1 and " + this.maxPlayersNum + " included!");
         if (this.numberOfPlayers > 0)
             return;
-        try {
-            this.mainBoard = new MainBoard(numberOfPlayers);
-        } catch (Exception e) {
-            //System.out.println("Can't create the MainBoard because there are problems with the configuration files!");
-            e.printStackTrace();
+        if (numberOfPlayers == 1) {
+            try {
+                this.mainBoard = new SoloBoard();
+            } catch (ParserConfigurationException | IOException | SAXException e) {
+                e.printStackTrace();
+                //throw new IllegalActionException("Error in SoloBoardCreation");
+            }
+        }else {
+            try {
+                this.mainBoard = new MainBoard(numberOfPlayers);
+            } catch (Exception e) {
+                //System.out.println("Can't create the MainBoard because there are problems with the configuration files!");
+                e.printStackTrace();
+            }
         }
         this.numberOfPlayers = numberOfPlayers;
     }

@@ -132,7 +132,7 @@ public final class GamesManagerSingleton {
             return returnedGame;
         }
         return startingGame;
-}
+    }
 
     private GameController searchPlayerInGames(String nickname) throws NoSuchElementException, NotAvailableNicknameException {
         if (nickname == null) throw new IllegalArgumentException("nickname can't be null");
