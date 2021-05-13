@@ -156,6 +156,21 @@ public class GameController {
      *
      * @param player the ClientHandler of the player to be added at the game
      */
+    public boolean setPlayerOld(ClientHandler player) throws IllegalActionException {
+        //We can't add more players than the one given by the numberOfPlayers number
+        if (this.players.size() == this.numberOfPlayers)
+            throw new IllegalActionException("You can't be added to this game!");
+        //We can't add an already added player
+        //if(this.findClientHandler(player))
+        if (this.getPlayerBoardOfPlayer(player) != null)
+            return false;
+        PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
+        players.add(new Pair<>(player, playerBoard));
+        //We added the last player: the game must begin
+        this.state = GameState.STARTED;
+        return true;
+    }
+
     public boolean setPlayer(ClientHandler player) throws IllegalActionException {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)

@@ -4,8 +4,6 @@ package it.polimi.ingsw.controller.GameControllerTest;
 import com.google.gson.Gson;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
-import it.polimi.ingsw.view.readOnlyModel.Game;
-import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
@@ -31,7 +29,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.*;
 
@@ -81,7 +78,7 @@ public class GameControllerAnswerToClientMethodsTest {
     public void ctrlGetResFromMarket() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(1);
-        gameController.setPlayer(c1);
+        gameController.setPlayerOld(c1);
 
         //Let's get PlayerBoard and MainBoard so we can change their values
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
@@ -127,8 +124,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void ctrlDiscardLeaderAtBeginning() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(2);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
 
         //Let's get PlayerBoard and MainBoard so we can change their values
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
@@ -202,7 +199,7 @@ public class GameControllerAnswerToClientMethodsTest {
     public void getDevCardCost() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(1);
-        gameController.setPlayer(c1);
+        gameController.setPlayerOld(c1);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
         MainBoard mainBoard = gameController.getMainBoard();
@@ -240,7 +237,7 @@ public class GameControllerAnswerToClientMethodsTest {
     public void getDevCardCost2() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(1);
-        gameController.setPlayer(c1);
+        gameController.setPlayerOld(c1);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
         MainBoard mainBoard = gameController.getMainBoard();
@@ -283,7 +280,7 @@ public class GameControllerAnswerToClientMethodsTest {
     public void getProdCost() throws IllegalActionException, IOException, NegativeQuantityException, EndOfGameException {
         //Initiates the game
         gameController.startMainBoard(1);
-        gameController.setPlayer(c1);
+        gameController.setPlayerOld(c1);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
         MainBoard mainBoard = gameController.getMainBoard();
@@ -344,7 +341,7 @@ public class GameControllerAnswerToClientMethodsTest {
     public void getProdCostWithBaseProd() throws IllegalActionException, IOException, NegativeQuantityException, EndOfGameException {
         //Initiates the game
         gameController.startMainBoard(1);
-        gameController.setPlayer(c1);
+        gameController.setPlayerOld(c1);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
         MainBoard mainBoard = gameController.getMainBoard();
@@ -415,7 +412,7 @@ public class GameControllerAnswerToClientMethodsTest {
     public void getProdCostWithLeaders() throws IllegalActionException, IOException, NegativeQuantityException, EndOfGameException {
         //Initiates the game
         gameController.startMainBoard(1);
-        gameController.setPlayer(c1);
+        gameController.setPlayerOld(c1);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
 
@@ -492,8 +489,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void ctrlDiscardALeaderCard() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(2);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
 
         //Let's get PlayerBoard and MainBoard so we can change their values
         MainBoard mainBoard = gameController.getMainBoard();
@@ -557,8 +554,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void ctrlActivateLeaderCard() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(2);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
 
         //Let's get PlayerBoard and MainBoard so we can change their values
         MainBoard mainBoard = gameController.getMainBoard();
@@ -612,7 +609,7 @@ public class GameControllerAnswerToClientMethodsTest {
     public void ctrlBuyFromMarketBadParameters() throws IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(1);
-        gameController.setPlayer(c1);
+        gameController.setPlayerOld(c1);
 
         //Let's get PlayerBoard and MainBoard so we can change their values
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
@@ -653,10 +650,10 @@ public class GameControllerAnswerToClientMethodsTest {
     public void ctrlSendingNumberOfExtraResAtBeginning() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(4);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
-        gameController.setPlayer(c3);
-        gameController.setPlayer(c4);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
+        gameController.setPlayerOld(c3);
+        gameController.setPlayerOld(c4);
 
         MainBoard mainBoard = gameController.getMainBoard();
         PlayerBoard p1 = mainBoard.getPlayerBoard(0);
@@ -714,8 +711,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void moveResBtwShelves() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(2);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
 
@@ -750,8 +747,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void moveToLeader() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(2);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
 
@@ -795,8 +792,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void moveToShelf() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(2);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
 
@@ -840,8 +837,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void activateProduction() throws IllegalActionException, NegativeQuantityException, EndOfGameException, IOException {
         //Initiates the game
         gameController.startMainBoard(2);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
 
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
 
@@ -902,7 +899,7 @@ public class GameControllerAnswerToClientMethodsTest {
     public void ctrlShowLeaderCardsAtTheBeginningOnePlayer() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(1);
-        gameController.setPlayer(c1);
+        gameController.setPlayerOld(c1);
 
         gameController.showLeaderCardAtBeginning();
 
@@ -922,8 +919,8 @@ public class GameControllerAnswerToClientMethodsTest {
     public void ctrlShowLeaderCardsAtTheBeginningTwoPlayers() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(2);
-        gameController.setPlayer(c1);
-        gameController.setPlayer(c2);
+        gameController.setPlayerOld(c1);
+        gameController.setPlayerOld(c2);
 
         gameController.showLeaderCardAtBeginning();
 
