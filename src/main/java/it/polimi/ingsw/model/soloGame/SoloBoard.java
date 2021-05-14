@@ -22,6 +22,13 @@ public class SoloBoard extends MainBoard {
     private final FaithLevelBasic lorenzosTrack;
     private final SoloActionDeck tokenDeck;
 
+    @Deprecated
+    public SoloBoard(DevGrid devGrid, FaithLevelBasic lorenzosTrack, SoloActionDeck tokenDeck) {
+        super(devGrid);
+        this.lorenzosTrack = lorenzosTrack;
+        this.tokenDeck = tokenDeck;
+    }
+
     public SoloBoard() throws ParserConfigurationException, IOException, SAXException {
         super(1);
         this.lorenzosTrack = new FaithLevelBasic(this.faithTrack);
