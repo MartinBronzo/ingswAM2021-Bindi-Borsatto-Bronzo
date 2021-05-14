@@ -21,6 +21,7 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
 import it.polimi.ingsw.network.messages.sendToClient.HashMapResources;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
