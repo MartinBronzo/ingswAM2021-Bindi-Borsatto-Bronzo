@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model.soloGame;
-
+/*
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
@@ -38,3 +38,5 @@ class DiscardTokenObserverTest {
     }
 
 }
+
+ */

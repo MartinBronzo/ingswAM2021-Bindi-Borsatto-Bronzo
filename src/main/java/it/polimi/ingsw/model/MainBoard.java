@@ -544,6 +544,12 @@ public class MainBoard {
 
     /***************************** OLD STUFF TO BE CHECKED ****************************************/
 
+
+    @Deprecated
+    public MainBoard(DevGrid devGrid) {
+        this.devGrid = devGrid;
+    }
+
     //This method is only used for testing purposes
     public void addPlayerBoard(PlayerBoard playerBoard) {
         this.playerBoardsList.add(playerBoard);
