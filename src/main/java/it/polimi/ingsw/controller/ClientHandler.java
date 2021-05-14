@@ -8,7 +8,6 @@ import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
-import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import java.io.*;
 import java.net.Socket;
@@ -66,7 +65,7 @@ public class ClientHandler implements Runnable {
                 } catch (SocketException e) {
                     //e.printStackTrace();
                     setState(PlayerState.DISCONNECTED);
-                    //INVIARE UPDATE A TUTTI I CLIENT passando nickname e playerState
+                    //TODO: INVIARE UPDATE A TUTTI I CLIENT passando nickname e playerState
                 }
             }
         }, 0, 5000);
@@ -171,12 +170,13 @@ public class ClientHandler implements Runnable {
                         case "endTurn":
 
                             if(game.getNumberOfPlayers() == 1){
-                                //TODO: AZIONI LORENZO
                                 game.drawSoloToken(this);
                             }
                             else{
                                 //TODO: FINE TURNO CLASSICA
                             }
+
+                            //TODO: FINE TURNO COMUNE
 
                             break;
 
@@ -194,7 +194,7 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (IOException)")));
         } catch (IllegalActionException | IllegalArgumentException e) {
-            send(gson.toJson(new ResponseMessage(ResponseType.ERROR, e.getMessage())));
+          send(gson.toJson(new ResponseMessage(ResponseType.ERROR, e.getMessage())));
         } catch (InterruptedException e) {
             e.printStackTrace();
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (InterruptedException)")));

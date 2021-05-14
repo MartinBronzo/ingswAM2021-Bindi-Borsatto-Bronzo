@@ -86,7 +86,7 @@ public class SoloBoard extends MainBoard {
         for (int i = 0; i < numCards; i++) {
             level = 1;
             card = devGrid.getDevCardFromDeck(level, colour);
-            while (card == null && level < 4) {
+            while (card == null && level < 3) {
                 level++;
                 card = devGrid.getDevCardFromDeck(level, colour);
             }
@@ -98,7 +98,7 @@ public class SoloBoard extends MainBoard {
             try {
                 devGrid.drawDevCardFromDeck(level, colour);
             } catch (EmptyDeckException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 throw new EmptyDevColumnException("Empty column");
             }
         }
