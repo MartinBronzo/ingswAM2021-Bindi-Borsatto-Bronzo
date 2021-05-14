@@ -24,6 +24,13 @@ public class SoloBoard extends MainBoard {
     DiscardTokenObserver discardTokenObserver;
     FaithPointTokenObserver faithPointTokenObserver;
 
+    @Deprecated
+    public SoloBoard(DevGrid devGrid, FaithLevelBasic lorenzosTrack, SoloActionDeck tokenDeck) {
+        super(devGrid);
+        this.lorenzosTrack = lorenzosTrack;
+        this.tokenDeck = tokenDeck;
+    }
+
     public SoloBoard() throws ParserConfigurationException, IOException, SAXException {
         super(1);
         discardTokenObserver = new DiscardTokenObserver(this);

@@ -86,7 +86,6 @@ public class ClientHandler implements Runnable {
                         this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
                         if (this.game == null)
                             this.send("You are creating a game! Tell me how many players you want in this game!");
-                        //TODO: ma se il game è vuoto quando è che lo creiamo l'istanza del game?
                         else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
                             //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
                             //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
@@ -99,14 +98,15 @@ public class ClientHandler implements Runnable {
                         }
                         break;
 
-                        case "setNumPlayer":
-                            SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
-                            if (game.getNumberOfPlayers() > 0)
-                                throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
-                            game.startMainBoard(setNumPlayerMessage.getNumPlayer());
-                            game.setState(GameState.WAITING4PLAYERS);
-                            //game.setPlayer(this);
-                            break;
+                    case "setNumPlayer":
+                        if (game != null)
+                            throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
+                        SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
+                        this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
+                        //TODO: ma se il game è vuoto quando è che lo creiamo l'istanza del game?
+                        game.setState(GameState.WAITING4PLAYERS);
+                        //game.setPlayer(this);
+                        break;
 
                         case "getResourcesFromMarket":
                             GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);

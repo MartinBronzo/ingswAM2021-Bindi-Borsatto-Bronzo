@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
 import com.google.gson.Gson;
-import com.sun.rowset.internal.Row;
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.BuyFromMarketMessage;
