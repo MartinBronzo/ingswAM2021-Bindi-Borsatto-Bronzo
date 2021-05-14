@@ -30,6 +30,10 @@ public enum MarbleType {
         public Marble getMarble() {
             return whiteMarble;
         }
+        @Override
+        public Boolean isWhiteMarble() {
+            return false;
+        }
     },
     YELLOWMARBLE {
         @Override
@@ -47,6 +51,9 @@ public enum MarbleType {
 
     public Marble getMarble() {
         return null;
+    }
+    public Boolean isWhiteMarble() {
+        return false;
     }
 
 }

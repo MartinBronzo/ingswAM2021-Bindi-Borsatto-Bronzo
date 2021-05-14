@@ -10,10 +10,9 @@ public abstract class Client {
 
     public abstract void sendMessage(Command message) throws NullPointerException;
 
-    public abstract void manageLogin();
-
-    protected abstract void printWelcome();
-
+    protected abstract void manageLogin();
     protected abstract void manageGameStarting();
+
+    protected abstract void buyFromMarket() throws InterruptedException, IOException;
 }
 
