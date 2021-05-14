@@ -1,8 +1,10 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -931,6 +933,40 @@ public class GameController {
                 game.addPlayer(tmp);
             }
     }
+
+    /*
+    ###########################################################################################################
+     SOLO BOARD ACTIONS
+    ###########################################################################################################
+     */
+
+    public void drawSoloToken(ClientHandler clientHandler){
+        SoloBoard soloBoard = (SoloBoard)mainBoard;
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+
+        try {
+            soloBoard.drawSoloToken();
+        } catch (LastVaticanReportException | EmptyDevColumnException e) {
+            //e.printStackTrace();
+            this.setLastTurn();
+        }
+        //TODO: UPDATE DEL CLIENT
+        Game game = new Game();
+        Board board = new Board();
+        Player player = new Player();
+
+        board.setDevGrid(soloBoard.getDevGrid());
+        game.setMainBoard(board);
+        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+        player.setPopeTiles(playerBoard.getPopeTile());
+        game.addPlayer(player);
+        game.setLorenzosPosition(soloBoard.getLorenzoFaithTrackPosition());
+
+        //clientHandler.send(gson.toJson(......));
+        this.sendBroadcastUpdate(game);
+    }
+
+
 
      /*
     ###########################################################################################################

@@ -23,8 +23,8 @@ import java.util.LinkedList;
 public class SoloActionDeck implements Deck {
     private final LinkedList<SoloActionToken> soloDeck;
 
-    public SoloActionDeck(File configFile) throws ParserConfigurationException, IOException, SAXException {
-        soloDeck = createDeck(configFile);
+    public SoloActionDeck(File configFile, DiscardTokenObserver discardTokenObserver, FaithPointTokenObserver faithPointTokenObserver) throws ParserConfigurationException, IOException, SAXException {
+        soloDeck = createDeck(configFile, discardTokenObserver, faithPointTokenObserver);
         Collections.shuffle(soloDeck);
     }
 
@@ -41,7 +41,7 @@ public class SoloActionDeck implements Deck {
      * @throws IOException                  if the read of the xml file has errors
      * @throws SAXException                 if the read of the xml file has errors
      */
-    private LinkedList<SoloActionToken> createDeck(File configFile) throws ParserConfigurationException, IOException, SAXException {
+    private LinkedList<SoloActionToken> createDeck(File configFile, DiscardTokenObserver discardTokenObserver, FaithPointTokenObserver faithPointTokenObserver) throws ParserConfigurationException, IOException, SAXException {
         LinkedList<SoloActionToken> deck = new LinkedList<>();
 
         //variables for xml read
@@ -80,6 +80,7 @@ public class SoloActionDeck implements Deck {
                     numCards = Integer.parseInt(tokenElement.getElementsByTagName("NumCards").item(0).getTextContent());
 
                     discardToken = new DiscardToken(color, numCards);
+                    discardToken.attach(discardTokenObserver);
                     deck.add(discardToken);
                 }
             }
@@ -99,6 +100,7 @@ public class SoloActionDeck implements Deck {
                     else
                         faithPointToken = new ShuffleToken(numPoints);
 
+                    faithPointToken.attach(faithPointTokenObserver);
                     deck.add(faithPointToken);
                 }
             }
@@ -113,7 +115,7 @@ public class SoloActionDeck implements Deck {
      * @return the drew card
      */
     @Override
-    public Object drawFromDeck() {
+    public SoloActionToken drawFromDeck() {
         SoloActionToken drewToken;
         drewToken = soloDeck.removeFirst();
         soloDeck.addLast(drewToken);

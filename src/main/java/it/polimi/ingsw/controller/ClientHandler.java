@@ -66,6 +66,7 @@ public class ClientHandler implements Runnable {
                 } catch (SocketException e) {
                     //e.printStackTrace();
                     setState(PlayerState.DISCONNECTED);
+                    //INVIARE UPDATE A TUTTI I CLIENT passando nickname e playerState
                 }
             }
         }, 0, 5000);
@@ -169,6 +170,14 @@ public class ClientHandler implements Runnable {
 
                         case "endTurn":
 
+                            if(game.getNumberOfPlayers() == 1){
+                                //TODO: AZIONI LORENZO
+                                game.drawSoloToken(this);
+                            }
+                            else{
+                                //TODO: FINE TURNO CLASSICA
+                            }
+
                             break;
 
                     }
@@ -220,6 +229,7 @@ public class ClientHandler implements Runnable {
                         state = PlayerState.WAITING4NAME;
                         break;
                 }
+                //TODO UPDATE BROADCAST QUANDO CAMBIA STATO
             }
         } catch (IOException e) {
             e.printStackTrace();

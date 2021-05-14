@@ -21,11 +21,15 @@ import java.io.IOException;
 public class SoloBoard extends MainBoard {
     private final FaithLevelBasic lorenzosTrack;
     private final SoloActionDeck tokenDeck;
+    DiscardTokenObserver discardTokenObserver;
+    FaithPointTokenObserver faithPointTokenObserver;
 
     public SoloBoard() throws ParserConfigurationException, IOException, SAXException {
         super(1);
+        discardTokenObserver = new DiscardTokenObserver(this);
+        faithPointTokenObserver = new FaithPointTokenObserver(this);
         this.lorenzosTrack = new FaithLevelBasic(this.faithTrack);
-        this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
+        this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"), discardTokenObserver, faithPointTokenObserver);
     }
 
     /**
@@ -46,6 +50,17 @@ public class SoloBoard extends MainBoard {
      */
     public boolean shuffleTokenDeck() {
         tokenDeck.shuffle();
+        return true;
+    }
+
+    /**
+     * Draws the token from the token deck and activates its effect
+     * @return true if the action is performed without errors
+     * @throws LastVaticanReportException if a vatican report is called during the action
+     * @throws EmptyDevColumnException if an entire column of devGrid is empty
+     */
+    public boolean drawSoloToken() throws LastVaticanReportException, EmptyDevColumnException {
+        tokenDeck.drawFromDeck().playEffect();
         return true;
     }
 
