@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model.soloGame;
-/*
+
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
@@ -22,10 +22,10 @@ class DiscardTokenObserverTest {
 
     @BeforeEach
     public void initSoloBoard() throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
-        DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
+        /*DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
         FaithLevelBasic lorenzosFaith = new FaithLevelBasic(FaithTrack.instance(ReportNumOrder.instance()));
-        SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
-        soloBoard = new SoloBoard(devGrid, lorenzosFaith, soloActionDeck);
+        SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));*/
+        soloBoard = new SoloBoard();
     }
 
     @Test
@@ -38,5 +38,3 @@ class DiscardTokenObserverTest {
     }
 
 }
-
- */

@@ -39,11 +39,11 @@ class ShuffleTokenTest {
 
     @Test
     public void attachObserver() throws LastVaticanReportException, IOException, SAXException, ParserConfigurationException, NegativeQuantityException {
-        DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
+        /*DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
         FaithLevelBasic faithLevelBasic = new FaithLevelBasic(FaithTrack.instance(new File("FaithTrackConfig.xml")));
         //FaithLevelBasic faithLevelBasic = new FaithLevelBasic();
-        SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
-        SoloBoard soloBoard = new SoloBoard(devGrid, faithLevelBasic, soloActionDeck);
+        SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));*/
+        SoloBoard soloBoard = new SoloBoard();
 
         FaithPointTokenObserver observer = new FaithPointTokenObserver(soloBoard);
 

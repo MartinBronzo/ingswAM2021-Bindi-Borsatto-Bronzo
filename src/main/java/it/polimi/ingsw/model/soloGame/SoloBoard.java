@@ -21,6 +21,8 @@ import java.io.IOException;
 public class SoloBoard extends MainBoard {
     private final FaithLevelBasic lorenzosTrack;
     private final SoloActionDeck tokenDeck;
+    DiscardTokenObserver discardTokenObserver;
+    FaithPointTokenObserver faithPointTokenObserver;
 
     @Deprecated
     public SoloBoard(DevGrid devGrid, FaithLevelBasic lorenzosTrack, SoloActionDeck tokenDeck) {
@@ -31,8 +33,10 @@ public class SoloBoard extends MainBoard {
 
     public SoloBoard() throws ParserConfigurationException, IOException, SAXException {
         super(1);
+        discardTokenObserver = new DiscardTokenObserver(this);
+        faithPointTokenObserver = new FaithPointTokenObserver(this);
         this.lorenzosTrack = new FaithLevelBasic(this.faithTrack);
-        this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
+        this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"), discardTokenObserver, faithPointTokenObserver);
     }
 
     /**
@@ -57,6 +61,17 @@ public class SoloBoard extends MainBoard {
     }
 
     /**
+     * Draws the token from the token deck and activates its effect
+     * @return true if the action is performed without errors
+     * @throws LastVaticanReportException if a vatican report is called during the action
+     * @throws EmptyDevColumnException if an entire column of devGrid is empty
+     */
+    public boolean drawSoloToken() throws LastVaticanReportException, EmptyDevColumnException {
+        tokenDeck.drawFromDeck().playEffect();
+        return true;
+    }
+
+    /**
      * Discards "numCards" DevCards with color "colour" from the devGrid
      *
      * @param colour   the color of the card to discard
@@ -71,7 +86,7 @@ public class SoloBoard extends MainBoard {
         for (int i = 0; i < numCards; i++) {
             level = 1;
             card = devGrid.getDevCardFromDeck(level, colour);
-            while (card == null && level < 4) {
+            while (card == null && level < 3) {
                 level++;
                 card = devGrid.getDevCardFromDeck(level, colour);
             }
@@ -83,7 +98,7 @@ public class SoloBoard extends MainBoard {
             try {
                 devGrid.drawDevCardFromDeck(level, colour);
             } catch (EmptyDeckException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 throw new EmptyDevColumnException("Empty column");
             }
         }

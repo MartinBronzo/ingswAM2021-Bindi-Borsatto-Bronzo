@@ -1,8 +1,51 @@
-/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/src/test/java/it/polimi/ingsw/StrongboxTest.java
-/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/src/test/java/it/polimi/ingsw/marble/WhiteMarbleTest.java
-/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/src/test/java/it/polimi/ingsw/marble/BlueMarbleTest.java
-/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/src/test/java/it/polimi/ingsw/marble/YellowMarbleTest.java
-/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/src/test/java/it/polimi/ingsw/marble/RedMarbleTest.java
-/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/src/test/java/it/polimi/ingsw/marble/GreyMarbleTest.java
-/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/src/test/java/it/polimi/ingsw/marble/PurpleMarbleTest.java
-/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/src/test/java/it/polimi/ingsw/ResourceTypeTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\FaithPointTokenObserverTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\marble\GreyMarbleTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\BaseProductionTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\marble\WhiteMarbleTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\JsonTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\PlayerBoardTest\LeaderCardPlayerBoardMethodsTestLB.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\DevCards\DevSlotsTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\marble\RedMarbleTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\ResourceTypeTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\DiscardTokenTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\FaithLevelTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\ShuffleTokenTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCard\LeaderCardRequirements\CardRequirementColorTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\PlayerBoardTest\FaithLevelPlayerBoardMethodsTestLB.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\DevCards\DevGridTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\SoloActionDeckTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\DiscardTokenObserverTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\FaithPointTokenTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCard\LeaderCardRequirements\CardRequirementColorAndLevelTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MarketFactoryTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\GeneralMainBoardMethodsClass.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\ReportNumOrderTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\GameControllerTest\GameControllerAnswerToClientMethodsTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\GameControllerTest\GameControllerTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCard\LeaderCardRequirements\CardRequirementResourceTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\LeaderCardDeckTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\FaithLevelBasicTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\FaithTrackTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\PlayerBoardTest\DepotPlayerBoardMethodsTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\PopeTileTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\FaithTrackMainBoardMethodsTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\StrongboxTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\CellTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCardTest\LeaderCardDeckTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\PlayerBoardTest\ConfigurationMethodsPlayerBoardTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCardTest\EffectTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\marble\PurpleMarbleTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCardTest\LeaderCardTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\marble\BlueMarbleTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\DevCards\DevSlotTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\DevGridMainBoardMethodsTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\marble\YellowMarbleTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\DevCards\DevDeckTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\SoloBoardTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\DevCards\DevCardTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\PlayerBoardTest\productionTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\MarketMainBoardMethodsTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\GamesManagerSingletonTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\Market\MarketTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\DepotTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCardTest\LeaderCardsTest.java

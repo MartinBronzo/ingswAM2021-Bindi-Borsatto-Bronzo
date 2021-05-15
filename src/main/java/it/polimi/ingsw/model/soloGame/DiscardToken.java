@@ -41,7 +41,7 @@ public class DiscardToken extends SoloActionToken {
      * Attaches an observer to the token, waiting to be notified
      *
      * @param observer the Observer
-     * @return true if the observer is added wothout errors
+     * @return true if the observer is added without errors
      */
     public boolean attach(DiscardTokenObserver observer) {
         return observersList.add(observer);
@@ -51,7 +51,7 @@ public class DiscardToken extends SoloActionToken {
      * Detaches the observer from the token
      *
      * @param observer the Observer
-     * @return true if the observer is removed wothout errors
+     * @return true if the observer is removed without errors
      */
     public boolean detach(DiscardTokenObserver observer) {
         return observersList.remove(observer);

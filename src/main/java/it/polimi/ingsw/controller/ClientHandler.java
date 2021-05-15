@@ -8,7 +8,6 @@ import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
-import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import java.io.*;
 import java.net.Socket;
@@ -66,6 +65,7 @@ public class ClientHandler implements Runnable {
                 } catch (SocketException e) {
                     //e.printStackTrace();
                     setState(PlayerState.DISCONNECTED);
+                    //TODO: INVIARE UPDATE A TUTTI I CLIENT passando nickname e playerState
                 }
             }
         }, 0, 5000);
@@ -85,7 +85,6 @@ public class ClientHandler implements Runnable {
                         this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
                         if (this.game == null)
                             this.send("You are creating a game! Tell me how many players you want in this game!");
-                        //TODO: ma se il game è vuoto quando è che lo creiamo l'istanza del game?
                         else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
                             //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
                             //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
@@ -98,14 +97,15 @@ public class ClientHandler implements Runnable {
                         }
                         break;
 
-                        case "setNumPlayer":
-                            SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
-                            if (game.getNumberOfPlayers() > 0)
-                                throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
-                            game.startMainBoard(setNumPlayerMessage.getNumPlayer());
-                            game.setState(GameState.WAITING4PLAYERS);
-                            //game.setPlayer(this);
-                            break;
+                    case "setNumPlayer":
+                        if (game != null)
+                            throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
+                        SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
+                        this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
+                        //TODO: ma se il game è vuoto quando è che lo creiamo l'istanza del game?
+                        game.setState(GameState.WAITING4PLAYERS);
+                        //game.setPlayer(this);
+                        break;
 
                         case "getResourcesFromMarket":
                             GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
@@ -169,6 +169,15 @@ public class ClientHandler implements Runnable {
 
                         case "endTurn":
 
+                            if(game.getNumberOfPlayers() == 1){
+                                game.drawSoloToken(this);
+                            }
+                            else{
+                                //TODO: FINE TURNO CLASSICA
+                            }
+
+                            //TODO: FINE TURNO COMUNE
+
                             break;
 
                     }
@@ -185,7 +194,7 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (IOException)")));
         } catch (IllegalActionException | IllegalArgumentException e) {
-            send(gson.toJson(new ResponseMessage(ResponseType.ERROR, e.getMessage())));
+          send(gson.toJson(new ResponseMessage(ResponseType.ERROR, e.getMessage())));
         } catch (InterruptedException e) {
             e.printStackTrace();
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (InterruptedException)")));
@@ -220,6 +229,7 @@ public class ClientHandler implements Runnable {
                         state = PlayerState.WAITING4NAME;
                         break;
                 }
+                //TODO UPDATE BROADCAST QUANDO CAMBIA STATO
             }
         } catch (IOException e) {
             e.printStackTrace();

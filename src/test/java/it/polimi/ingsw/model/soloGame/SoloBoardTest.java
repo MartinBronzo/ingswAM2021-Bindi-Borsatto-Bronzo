@@ -25,10 +25,10 @@ class SoloBoardTest {
 
     @BeforeEach
     public void init() throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
-        DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
+        /*DevGrid devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
         FaithLevelBasic lorenzosFaith = new FaithLevelBasic(FaithTrack.instance(ReportNumOrder.instance()));
-        SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));
-        soloBoard = new SoloBoard(devGrid, lorenzosFaith, soloActionDeck);
+        SoloActionDeck soloActionDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"));*/
+        soloBoard = new SoloBoard();
     }
 
     @Test

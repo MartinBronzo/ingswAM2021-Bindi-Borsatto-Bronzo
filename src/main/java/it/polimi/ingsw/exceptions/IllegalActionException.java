@@ -5,3 +5,4 @@ public class IllegalActionException extends Exception {
         super(s);
     }
 }
+

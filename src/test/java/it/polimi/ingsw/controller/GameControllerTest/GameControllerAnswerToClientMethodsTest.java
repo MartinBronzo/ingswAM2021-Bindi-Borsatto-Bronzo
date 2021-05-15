@@ -2,6 +2,9 @@ package it.polimi.ingsw.controller.GameControllerTest;
 
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -563,6 +566,7 @@ public class GameControllerAnswerToClientMethodsTest {
         PlayerBoard p2 = mainBoard.getPlayerBoard(1);
 
 
+        p1.addResourceToDepot(ResourceType.COIN, 3, 3);
         //Creates a list of fake LeaderCards the player will have (we skipp the passage in which the player should discard the some LeaderCards they
         //received at the beginning of the game: these two cards are already the ones they'll have for the rest of the game)
         List<LeaderCard> list = new ArrayList<>();
@@ -592,6 +596,8 @@ public class GameControllerAnswerToClientMethodsTest {
         String result1 = fileReader1.readLine();
         String result2 = fileReader2.readLine();
         assertEquals(result1, result2);
+
+        System.out.println(result1);
 
         //Checks that the message retrieved from the JSON received by the clients is correctly formed
         Game game = gson.fromJson(result1, Game.class);
@@ -937,5 +943,21 @@ public class GameControllerAnswerToClientMethodsTest {
 
         assertEquals(player1.getUnUsedLeaders().size(), 4);
         assertEquals(player2.getUnUsedLeaders().size(), 4);
+    }
+
+    @Test
+    public void soloBoard() throws IllegalActionException, IOException {
+        //Initiates the game
+        gameController.startMainBoard(1);
+        gameController.setPlayerOld(c1);
+
+        gameController.drawSoloToken(c1);
+        String message1 = fileReader1.readLine();
+
+        ResponseMessage result = gson.fromJson(message1, ResponseMessage.class);
+        System.out.println(message1);
+        assertEquals(ResponseType.UPDATE, result.getResponseType());
+        Game game = gson.fromJson(result.getResponseContent(), Game.class);
+        System.out.println(game);
     }
 }

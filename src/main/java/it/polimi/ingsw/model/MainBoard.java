@@ -239,7 +239,7 @@ public class MainBoard {
      * @throws IllegalArgumentException when the chosen position on the grid is not valid
      * @throws IllegalActionException if the specified DevDeck is empty
      */
-    public DevCard drawDevCardFromDeckInDevGrid(int row, int column) throws IllegalArgumentException, IllegalActionException{
+    public DevCard drawDevCardFromDeckInDevGrid(int row, int column) throws IllegalArgumentException, IllegalActionException {
         DevCard result;
 
         try{

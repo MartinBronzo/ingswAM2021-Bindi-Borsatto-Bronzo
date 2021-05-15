@@ -1,16 +1,18 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.exceptions.EmptyDevColumnException;
+import it.polimi.ingsw.controller.enums.PlayerState;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.controller.enums.GameState;
-import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EndOfGameException;
-import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
@@ -21,6 +23,7 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
 import it.polimi.ingsw.network.messages.sendToClient.HashMapResources;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -153,7 +156,7 @@ public class GameController {
                 this.mainBoard = new SoloBoard();
             } catch (ParserConfigurationException | IOException | SAXException e) {
                 e.printStackTrace();
-                //throw new IllegalActionException("Error in SoloBoardCreation");
+                //TODO: throw new IllegalActionException("Error in SoloBoardCreation");?
             }
         }else {
             try {
@@ -196,7 +199,7 @@ public class GameController {
     public boolean setPlayer(ClientHandler player) throws IllegalActionException {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)
-            throw new IllegalActionException("You can't be added to this game!");
+           throw new IllegalActionException("You can't be added to this game!");
         //We can't add an already added player
         //if(this.findClientHandler(player))
         if (this.getPlayerBoardOfPlayer(player) != null)
@@ -761,7 +764,7 @@ public class GameController {
         return true;
     }
 
-    public boolean moveResourcesToShelf(MoveLeaderToShelfMessage moveLeaderToShelfMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
+    public boolean moveResourcesToShelf(MoveLeaderToShelfMessage moveLeaderToShelfMessage, ClientHandler clientHandler) throws IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         playerBoard.moveFromLeaderToShelf(moveLeaderToShelfMessage.getRes(), moveLeaderToShelfMessage.getQuantity(), moveLeaderToShelfMessage.getDestShelf());
 
@@ -931,6 +934,41 @@ public class GameController {
                 game.addPlayer(tmp);
             }
     }
+
+    /*
+    ###########################################################################################################
+     SOLO BOARD ACTIONS
+    ###########################################################################################################
+     */
+
+    public void drawSoloToken(ClientHandler clientHandler){
+        SoloBoard soloBoard = (SoloBoard)mainBoard;
+        PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+
+        try {
+            soloBoard.drawSoloToken();
+        } catch (LastVaticanReportException | EmptyDevColumnException e) {
+            //e.printStackTrace();
+            this.setLastTurn();
+        }
+
+        Game game = new Game();
+        Board board = new Board();
+        Player player = new Player();
+
+        board.setDevGrid(soloBoard.getDevGrid());
+        game.setMainBoard(board);
+        player.setNickName(clientHandler.getNickname());
+        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+        player.setPopeTiles(playerBoard.getPopeTile());
+        game.addPlayer(player);
+        game.setLorenzosPosition(soloBoard.getLorenzoFaithTrackPosition());
+
+        clientHandler.send(gson.toJson(new ResponseMessage(ResponseType.UPDATE, gson.toJson(game))));
+        //this.sendBroadcastUpdate(game);
+    }
+
+
 
      /*
     ###########################################################################################################
