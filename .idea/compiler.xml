@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="15">
-      <module name="ingswAM2021-Bindi-Borsatto-Bronzo" target="15" />
+      <module name="ingswAM2021-Bindi-Borsatto-Bronzo" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

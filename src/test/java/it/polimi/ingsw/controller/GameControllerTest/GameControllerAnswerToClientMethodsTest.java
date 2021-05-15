@@ -2,7 +2,11 @@ package it.polimi.ingsw.controller.GameControllerTest;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 import it.polimi.ingsw.view.readOnlyModel.Game;
@@ -74,7 +78,22 @@ public class GameControllerAnswerToClientMethodsTest {
         fileReader4 = new BufferedReader(new FileReader("ClientHandler4File.json"));
 
 
-        gson = new Gson();
+        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
+                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
+        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
+        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
+
+        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
+                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
+        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
+
+        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
+                .registerTypeAdapterFactory(effectTypeFactory).create();
     }
 
     @Test
@@ -573,7 +592,7 @@ public class GameControllerAnswerToClientMethodsTest {
         CardRequirementResource req = new CardRequirementResource(ResourceType.COIN, 1);
         List<Requirement> reqList = new ArrayList<>();
         reqList.add(req);
-        LeaderCard l1 = new LeaderCard(4, new ArrayList<>() /*reqList*/, new Effect() /*new ExtraSlotLeaderEffect(ResourceType.COIN, 2)*/);
+        LeaderCard l1 = new LeaderCard(4, reqList, new ExtraSlotLeaderEffect(ResourceType.COIN, 2));
         LeaderCard l2 = new LeaderCard(5, new ArrayList<>(), new Effect());
         list.add(l1);
         list.add(l2);

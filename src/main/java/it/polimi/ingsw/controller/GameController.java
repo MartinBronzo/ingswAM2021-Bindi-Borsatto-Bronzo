@@ -1,9 +1,17 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
+import it.polimi.ingsw.model.marble.WhiteMarble;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.Client;
@@ -16,7 +24,6 @@ import it.polimi.ingsw.exceptions.EndOfGameException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
@@ -137,7 +144,24 @@ public class GameController {
         this.players = new ArrayList<>();
         this.numberOfPlayers = -1;
         this.maxPlayersNum = 4;
-        this.gson = new Gson();
+
+        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
+                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
+        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
+        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
+
+        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
+                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
+        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
+
+        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
+                .registerTypeAdapterFactory(effectTypeFactory).create();
+
         this.howManyPlayersReady = 0;
     }
 
@@ -158,7 +182,7 @@ public class GameController {
                 e.printStackTrace();
                 //TODO: throw new IllegalActionException("Error in SoloBoardCreation");?
             }
-        }else {
+        } else {
             try {
                 this.mainBoard = new MainBoard(numberOfPlayers);
             } catch (Exception e) {
@@ -199,7 +223,7 @@ public class GameController {
     public boolean setPlayer(ClientHandler player) throws IllegalActionException {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)
-           throw new IllegalActionException("You can't be added to this game!");
+            throw new IllegalActionException("You can't be added to this game!");
         //We can't add an already added player
         //if(this.findClientHandler(player))
         if (this.getPlayerBoardOfPlayer(player) != null)
@@ -214,16 +238,16 @@ public class GameController {
         return true;
     }
 
-    private void startGame(){
+    private void startGame() {
         this.state = GameState.STARTED;
         this.showLeaderCardAtBeginning();
         this.sendNumExtraResBeginning();
     }
 
-    private void checkIfGameMustBegin(){
+    private void checkIfGameMustBegin() {
         synchronized (this.howManyPlayersReady) {
             this.howManyPlayersReady++;
-            if (this.howManyPlayersReady == this.numberOfPlayers){
+            if (this.howManyPlayersReady == this.numberOfPlayers) {
                 this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
                 this.sendBroadcastStringMessage("Now turns will begin!");
                 this.updatesTurnAndSendInfo(this.firstPlayer);
@@ -231,17 +255,17 @@ public class GameController {
         }
     }
 
-    public void specifyNextPlayer(ClientHandler currentPlayer){
+    public void specifyNextPlayer(ClientHandler currentPlayer) {
         //TODO: deal with turns
-        if(currentPlayer.getPlayerSate() != PlayerState.PLAYING)
+        if (currentPlayer.getPlayerSate() != PlayerState.PLAYING)
             return;
         //Retrieves this player's index
         int index = this.getPlayerNumber(currentPlayer);
-        if(index < 0)
+        if (index < 0)
             throw new IllegalArgumentException("The specified ClientHandler isn't in this game!");
         //The next active player is the next one in the list of players and the list must be cyclically covered
         index++;
-        if(index == this.numberOfPlayers)
+        if (index == this.numberOfPlayers)
             index = 0;
         this.updatesTurnAndSendInfo(index);
     }
@@ -254,12 +278,13 @@ public class GameController {
 
     /**
      * Returns the index the specified player (represented by their ClientHandler) has in the list of players of this game
+     *
      * @param player the player whose index must be find
      * @return the index of the player if the player belongs to this game, -1 otherwise
      */
-    private int getPlayerNumber(ClientHandler player){
-        for(int i = 0; i < this.numberOfPlayers; i++)
-            if(players.get(i).getKey() == player)
+    private int getPlayerNumber(ClientHandler player) {
+        for (int i = 0; i < this.numberOfPlayers; i++)
+            if (players.get(i).getKey() == player)
                 return i;
         return -1;
     }
@@ -334,6 +359,7 @@ public class GameController {
 
     /**
      * Returns the index of the first player in the game (the first player is the one who will be the first to play)
+     *
      * @return the index of the first player
      */
     public int getFirstPlayer() {
@@ -347,12 +373,12 @@ public class GameController {
      */
 
     //Tested
-    public boolean showLeaderCardAtBeginning(){
+    public boolean showLeaderCardAtBeginning() {
         mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
 
         Game game = new Game();
         Player player;
-        for(int i = 0; i < this.numberOfPlayers; i++){
+        for (int i = 0; i < this.numberOfPlayers; i++) {
             players.get(i).getKey().setPlayerSate(PlayerState.WAITING4BEGINNINGDECISIONS);
             player = new Player();
             player.setNickName(players.get(i).getKey().getNickname());
@@ -383,7 +409,7 @@ public class GameController {
             message = new ExtraResAndLeadToDiscardBeginningMessage(mainBoard.getExtraResourcesAtBeginningForPlayer(firstPlayer, i), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning(), mainBoard.getPlayerOder(firstPlayer, i));
             players.get(i).getKey().send(gson.toJson(message));
         }
-       return true;
+        return true;
     }
 
     /*
@@ -440,13 +466,9 @@ public class GameController {
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
-        //Adds the three depots with what's inside for all the three elements
-        /*player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
-        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
-        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
-        */
         Game game = new Game();
-        setDepotInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
+        //Adds the three depots with what's inside for all the three elements
+        setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
         this.sendBroadcastUpdate(game);
         this.checkIfGameMustBegin();
@@ -480,15 +502,7 @@ public class GameController {
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
         game.addPlayer(player);
-        /*for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(!(e.getKey().getNickname().equals(clientHandler.getNickname()))){
-                Player tmp = new Player();
-                tmp.setNickName(e.getKey().getNickname());
-                tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
-                tmp.setPopeTiles(e.getValue().getPopeTile());
-                game.addPlayer(tmp);
-            }*/
-        setOthersPlayersFaithInClientModel(game, clientHandler); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
+        setOthersPlayersFaithInClientModel(game, clientHandler);
         this.sendBroadcastUpdate(game);
         return true;
     }
@@ -535,7 +549,7 @@ public class GameController {
         if (resFromMkt.getRow() != 0) {
             if (mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1) > effects.size())
                 throw new IllegalArgumentException("There are not enough LeaderCards specified!");
-        }else {
+        } else {
             if (mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1) > effects.size())
                 throw new IllegalArgumentException("There are not enough LeaderCards specified!");
         }
@@ -570,7 +584,7 @@ public class GameController {
             if (buyFromMarket.getRow() != 0) {
                 if (mainBoard.getNumberOfWhiteMarbleInMarketRow(buyFromMarket.getRow() - 1) > effects.size())
                     throw new IllegalArgumentException("There are not enough LeaderCards specified!");
-            }else {
+            } else {
                 if (mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1) > effects.size())
                     throw new IllegalArgumentException("There are not enough LeaderCards specified!");
             }
@@ -613,7 +627,7 @@ public class GameController {
             //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity which in this case
             //means that the need to equal to the remaining resources because all resources coming from the market must be dealt with)!
-            for(Map.Entry<ResourceType, Integer> e: buyFromMarket.getDiscardRes().entrySet())
+            for (Map.Entry<ResourceType, Integer> e : buyFromMarket.getDiscardRes().entrySet())
                 if (res.get(e.getKey()) == null || res.get(e.getKey()) != e.getValue())
                     throw new IllegalArgumentException("The given input parameters for the discarded resources don't match the result!");
                 else
@@ -625,8 +639,8 @@ public class GameController {
             //Checks if there are still some resources coming from the market which have not been dealt with: if this happens, the player hasn't where to put all the
             //resources they are supposed to (this is particular useful to check the case in which the player doesn't specify any parameter: while they don't gain any resource
             //they still have changed the market composition even if they weren't supposed to).
-            for(Map.Entry<ResourceType, Integer> e: res.entrySet())
-                if(e.getValue() != 0)
+            for (Map.Entry<ResourceType, Integer> e : res.entrySet())
+                if (e.getValue() != 0)
                     throw new IllegalArgumentException("The given input parameters don't match the result: you are missing out some resources!");
 
         } catch (IllegalActionException e) {
@@ -647,16 +661,12 @@ public class GameController {
         game.setMainBoard(board);
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
-        /*player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
-        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
-        player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
-        player.setLeaderSlots(playerBoard.getLeaderDepot());*/
-        setDepotInClientModel(player, playerBoard); //TODO: COSA NE PENSI LUDO DI UNA COSA DEL GENERE?
+        setDepotInClientModel(player, playerBoard);
         //We get the PopeTiles of all players because a Vatican Report may have occurred
         player.setPopeTiles(playerBoard.getPopeTile());
         game.addPlayer(player);
-        for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(!(e.getKey().getNickname().equals(clientHandler.getNickname()))){
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if (!(e.getKey().getNickname().equals(clientHandler.getNickname()))) {
                 Player tmp = new Player();
                 tmp.setNickName(e.getKey().getNickname());
                 tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
@@ -917,16 +927,16 @@ public class GameController {
         }
     }
 
-    private void setDepotInClientModel(Player player, PlayerBoard playerBoard){
+    private void setDepotInClientModel(Player player, PlayerBoard playerBoard) {
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(1), playerBoard.getNumberOfResInShelf(1)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(2), playerBoard.getNumberOfResInShelf(2)));
         player.addDepotShelf(new DepotShelf(playerBoard.getResourceTypeFromShelf(3), playerBoard.getNumberOfResInShelf(3)));
         player.setLeaderSlots(playerBoard.getLeaderDepot());
     }
 
-    private void setOthersPlayersFaithInClientModel(Game game, ClientHandler clientHandler){
-        for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(!(e.getKey().getNickname().equals(clientHandler.getNickname()))){
+    private void setOthersPlayersFaithInClientModel(Game game, ClientHandler clientHandler) {
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if (!(e.getKey().getNickname().equals(clientHandler.getNickname()))) {
                 Player tmp = new Player();
                 tmp.setNickName(e.getKey().getNickname());
                 tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
@@ -941,8 +951,8 @@ public class GameController {
     ###########################################################################################################
      */
 
-    public void drawSoloToken(ClientHandler clientHandler){
-        SoloBoard soloBoard = (SoloBoard)mainBoard;
+    public void drawSoloToken(ClientHandler clientHandler) {
+        SoloBoard soloBoard = (SoloBoard) mainBoard;
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
 
         try {
@@ -979,9 +989,10 @@ public class GameController {
     /**
      * Updates the player's state by setting the specified player as the one who can play their turn and by setting the former player as in
      * waiting for their turn
+     *
      * @param playerToBecomeActive
      */
-    private void updatesTurnAndSendInfo(int playerToBecomeActive){
+    private void updatesTurnAndSendInfo(int playerToBecomeActive) {
         TurnInfoMessage message;
         ResponseMessage responseMessage;
 
@@ -995,28 +1006,28 @@ public class GameController {
         responseMessage = new ResponseMessage(ResponseType.TURNINFO, this.gson.toJson(message));
         String toBeSent = this.gson.toJson(responseMessage);
         //All the others players are waiting for their turn
-        for(int i = 0; i < this.numberOfPlayers; i++)
-            if(i != playerToBecomeActive) {
+        for (int i = 0; i < this.numberOfPlayers; i++)
+            if (i != playerToBecomeActive) {
                 this.players.get(i).getKey().setPlayerSate(PlayerState.WAITING4TURN);
                 this.players.get(i).getKey().send(toBeSent);
             }
     }
 
-    private void sendBroadcastStringMessage(String message){
+    private void sendBroadcastStringMessage(String message) {
         GeneralInfoStringMessage messageObject = new GeneralInfoStringMessage(message);
         ResponseMessage responseMessage = new ResponseMessage(ResponseType.INFOSTRING, this.gson.toJson(messageObject));
-        for(Pair<ClientHandler, PlayerBoard> e: players)
+        for (Pair<ClientHandler, PlayerBoard> e : players)
             e.getKey().send(this.gson.toJson(responseMessage));
     }
 
-    public Game getWholeUpdateToClient(){
+    public Game getWholeUpdateToClient() {
         Game game = new Game();
         Board board = new Board();
         board.setMarketMatrix(this.mainBoard.getMarketMatrixWithMarbleType());
         board.setMarbleOnSlide(this.mainBoard.getMarbleOnSlideWithMarbleType());
         board.setDevGrid(this.mainBoard.getDevGrid());
         game.setMainBoard(board);
-        for(int i = 0; i < this.numberOfPlayers; i++){
+        for (int i = 0; i < this.numberOfPlayers; i++) {
             PlayerBoard playerBoard = players.get(i).getValue();
             ClientHandler clientHandler = players.get(i).getKey();
             Player player = new Player();
