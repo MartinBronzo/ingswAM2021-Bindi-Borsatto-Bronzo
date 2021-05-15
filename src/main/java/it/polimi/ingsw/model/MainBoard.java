@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.EmptyDeckException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
@@ -448,7 +449,6 @@ public class MainBoard {
     public void giveLeaderCardsToPlayerAtGameBeginning() {
         this.leaderCardsDeck.shuffle();
         //Collections.shuffle(this.playerBoardList);
-
         List<LeaderCard> tmpList;
         for (PlayerBoard pB : this.playerBoardsList) {
             tmpList = new ArrayList<>();

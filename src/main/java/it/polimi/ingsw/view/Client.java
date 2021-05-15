@@ -14,5 +14,9 @@ public abstract class Client {
     protected abstract void manageGameStarting();
 
     protected abstract void buyFromMarket() throws InterruptedException, IOException;
+
+    protected abstract void buyDevCard() throws InterruptedException, IOException;
+
+    protected abstract void getDevCardCost() throws InterruptedException, IOException;
 }
 

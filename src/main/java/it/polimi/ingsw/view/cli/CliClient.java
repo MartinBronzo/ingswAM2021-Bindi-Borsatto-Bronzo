@@ -70,6 +70,8 @@ public class CliClient extends Client implements Runnable {
             try {
                 cliCommandType = CliCommandType.valueOf(stdIn.readLine());
                 switch (cliCommandType) {
+                    case QUIT:
+                        break;
                     case BUYFROMMARKET:
                         this.buyFromMarket();
                         break;
@@ -89,6 +91,8 @@ public class CliClient extends Client implements Runnable {
                         break;
                     case ENDTURN:
                         break;
+                    default:
+                        System.out.println("Command not Valid\n");
                 }
             } catch (IOException e) {
                 System.err.println("can't read your stream");
@@ -275,6 +279,17 @@ public class CliClient extends Client implements Runnable {
         else
             buyFromMarket = new Command("buyFromMarket", new BuyFromMarketMessage(0, rowColumnNumber, leaderCardsId, depotParamsList, leaderMap, discardsMap));
         sendMessage(buyFromMarket);
+    }
+
+    @Override
+    protected synchronized void buyDevCard() throws InterruptedException, IOException {
+
+    }
+
+    @Override
+    protected synchronized void getDevCardCost() throws InterruptedException, IOException {
+        String userResponse = stdIn.readLine();
+
     }
 
     @Override
