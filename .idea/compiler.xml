@@ -9,8 +9,8 @@
         <module name="ingswAM2021-Bindi-Borsatto-Bronzo" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ingswAM2021-Bindi-Borsatto-Bronzo" target="1.8" />
+    <bytecodeTargetLevel target="15">
+      <module name="ingswAM2021-Bindi-Borsatto-Bronzo" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>
