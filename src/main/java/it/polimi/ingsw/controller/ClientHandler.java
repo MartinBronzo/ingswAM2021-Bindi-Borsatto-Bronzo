@@ -65,6 +65,7 @@ public class ClientHandler implements Runnable {
                 } catch (SocketException e) {
                     //e.printStackTrace();
                     setState(PlayerState.DISCONNECTED);
+
                     //TODO: INVIARE UPDATE A TUTTI I CLIENT passando nickname e playerState
                 }
             }
@@ -79,33 +80,33 @@ public class ClientHandler implements Runnable {
                     command = gson.fromJson(line, Command.class);
                     switch (command.getCmd()) {
 
-                    case "login":
-                        LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
-                        this.nickname = loginMessage.getNickName();
-                        this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
-                        if (this.game == null)
-                            this.send("You are creating a game! Tell me how many players you want in this game!");
-                        else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
-                            //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
-                            //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
-                            //da scartare ed etc. all'inizio che è != da in session che quando il meccanismo a turni è in atto
-                            this.send("You are back in the game!");
-                            ResponseMessage responseMessage = new ResponseMessage(ResponseType.UPDATE, gson.toJson(this.game.getWholeUpdateToClient()));
-                            this.send(gson.toJson(responseMessage));
-                        } else {
-                            this.send("You are in Game! You'll soon start play with others!");
-                        }
-                        break;
+                        case "login":
+                            LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
+                            this.nickname = loginMessage.getNickName();
+                            this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
+                            if (this.game == null)
+                                this.send("You are creating a game! Tell me how many players you want in this game!");
+                            else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
+                                //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
+                                //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
+                                //da scartare ed etc. all'inizio che è != da in session che quando il meccanismo a turni è in atto
+                                this.send("You are back in the game!");
+                                ResponseMessage responseMessage = new ResponseMessage(ResponseType.UPDATE, gson.toJson(this.game.getWholeUpdateToClient()));
+                                this.send(gson.toJson(responseMessage));
+                            } else {
+                                this.send("You are in Game! You'll soon start play with others!");
+                            }
+                            break;
 
-                    case "setNumPlayer":
-                        if (game != null)
-                            throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
-                        SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
-                        this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
-                        //TODO: ma se il game è vuoto quando è che lo creiamo l'istanza del game?
-                        game.setState(GameState.WAITING4PLAYERS);
-                        //game.setPlayer(this);
-                        break;
+                        case "setNumPlayer":
+                            if (game != null)
+                                throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
+                            SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
+                            this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
+                            //TODO: ma se il game è vuoto quando è che lo creiamo l'istanza del game?
+                            game.setState(GameState.WAITING4PLAYERS);
+                            //game.setPlayer(this);
+                            break;
 
                         case "getResourcesFromMarket":
                             GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
@@ -169,10 +170,9 @@ public class ClientHandler implements Runnable {
 
                         case "endTurn":
 
-                            if(game.getNumberOfPlayers() == 1){
+                            if (game.getNumberOfPlayers() == 1) {
                                 game.drawSoloToken(this);
-                            }
-                            else{
+                            } else {
                                 //TODO: FINE TURNO CLASSICA
                             }
 
@@ -194,7 +194,7 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (IOException)")));
         } catch (IllegalActionException | IllegalArgumentException e) {
-          send(gson.toJson(new ResponseMessage(ResponseType.ERROR, e.getMessage())));
+            send(gson.toJson(new ResponseMessage(ResponseType.ERROR, e.getMessage())));
         } catch (InterruptedException e) {
             e.printStackTrace();
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (InterruptedException)")));
@@ -228,6 +228,10 @@ public class ClientHandler implements Runnable {
                     case CONFIGURING:
                         state = PlayerState.WAITING4NAME;
                         break;
+                    case STARTED:
+                        state = PlayerState.WAITING4BEGINNINGDECISIONS;
+                        break;
+                    //TODO: WAITINGGAMEEND?
                 }
                 //TODO UPDATE BROADCAST QUANDO CAMBIA STATO
             }
