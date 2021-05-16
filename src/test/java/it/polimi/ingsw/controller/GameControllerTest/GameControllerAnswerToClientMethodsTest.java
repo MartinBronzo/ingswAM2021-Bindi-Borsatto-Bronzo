@@ -79,6 +79,7 @@ public class GameControllerAnswerToClientMethodsTest {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
@@ -143,7 +144,7 @@ public class GameControllerAnswerToClientMethodsTest {
             assertEquals(e.getValue(), resultMap.get(e.getKey()));
     }
 
-    /*@Test
+    @Test
     public void ctrlDiscardLeaderAtBeginning() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(2);
@@ -219,7 +220,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(playerModel.getDepotShelves().get(1).getQuantity(), 0);
         assertNull(playerModel.getDepotShelves().get(2).getResourceType());
         assertEquals(playerModel.getDepotShelves().get(2).getQuantity(), 0);
-    }*/
+    }
 
     @Test
     public void getDevCardCost() throws IOException, IllegalActionException {
@@ -521,7 +522,7 @@ public class GameControllerAnswerToClientMethodsTest {
         System.out.println(supposedResult + " ... " + result);
     }
 
-    /*@Test
+    @Test
     public void ctrlDiscardALeaderCard() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(2);
@@ -587,9 +588,9 @@ public class GameControllerAnswerToClientMethodsTest {
         assertFalse(playerModel2.getPopeTiles().get(0).isChanged());
         assertFalse(playerModel2.getPopeTiles().get(1).isChanged());
         assertFalse(playerModel2.getPopeTiles().get(2).isChanged());
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void ctrlActivateLeaderCard() throws IOException, IllegalActionException {
         //Initiates the game
         gameController.startMainBoard(2);
@@ -647,7 +648,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertTrue(playerModel1.getUnUsedLeaders().contains(l2));
         assertEquals(playerModel1.getUsedLeaders().size(), 1);
         assertTrue(playerModel1.getUsedLeaders().contains(l1));
-    }*/
+    }
 
     @Test
     //Tests that nothing happens if the player gives bad parameters: they don't specify what to do with the resources
@@ -962,7 +963,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(strongboxMap.get(ResourceType.SERVANT),0);
     }
 
-    /*@Test
+    @Test
     public void ctrlShowLeaderCardsAtTheBeginningOnePlayer() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(1);
@@ -981,9 +982,9 @@ public class GameControllerAnswerToClientMethodsTest {
         Player player = result.getPlayers().stream().filter(x -> x.getNickName().equals("Client 1")).findFirst().get();
 
         assertEquals(player.getUnUsedLeaders().size(), 4);
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void ctrlShowLeaderCardsAtTheBeginningTwoPlayers() throws IllegalActionException, IOException {
         //Initiates the game
         gameController.startMainBoard(2);
@@ -1008,7 +1009,7 @@ public class GameControllerAnswerToClientMethodsTest {
 
         assertEquals(player1.getUnUsedLeaders().size(), 4);
         assertEquals(player2.getUnUsedLeaders().size(), 4);
-    }*/
+    }
 
     @Test
     public void soloBoard() throws IllegalActionException, IOException {

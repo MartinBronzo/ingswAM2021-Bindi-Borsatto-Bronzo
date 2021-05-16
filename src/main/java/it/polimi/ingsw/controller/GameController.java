@@ -48,7 +48,6 @@ public class GameController {
     private GameState state;
     private MainBoard modelCopy;
     private int firstPlayer;
-    private Gson gson;
     private Integer howManyPlayersReady;
 
 
@@ -142,24 +141,6 @@ public class GameController {
         this.players = new ArrayList<>();
         this.numberOfPlayers = -1;
         this.maxPlayersNum = 4;
-
-        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
-                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
-        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
-        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
-
-        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
-                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
-        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
-        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
-        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
-        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
-
-        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
-                .registerTypeAdapterFactory(effectTypeFactory).create();
-
         this.howManyPlayersReady = 0;
     }
 
@@ -255,9 +236,10 @@ public class GameController {
 
     /**
      * Changes the player's state after someone ends their turn
+     *
      * @param currentPlayer the player who is ending their turn
      */
-    public void specifyNextPlayer(ClientHandler currentPlayer) throws IllegalStateException{
+    public void specifyNextPlayer(ClientHandler currentPlayer) throws IllegalStateException {
         //TODO: attenzione che se in caso di disconnessione del giocatore che sta giocando il proprio turno si vuole usare questo metodo bisogna togliere questo if
         if (currentPlayer.getPlayerState() != PlayerState.PLAYING)
             return;
@@ -269,17 +251,17 @@ public class GameController {
         index++;
         if (index == this.numberOfPlayers)
             index = 0;
-        if(players.get(index).getKey().getPlayerState() == PlayerState.DISCONNECTED){
+        if (players.get(index).getKey().getPlayerState() == PlayerState.DISCONNECTED) {
             int tmp = index;
             index++;
             if (index == this.numberOfPlayers)
                 index = 0;
-            while(players.get(index).getKey().getPlayerState() == PlayerState.DISCONNECTED && index != tmp){
+            while (players.get(index).getKey().getPlayerState() == PlayerState.DISCONNECTED && index != tmp) {
                 index++;
                 if (index == this.numberOfPlayers)
                     index = 0;
             }
-            if(index == tmp)
+            if (index == tmp)
                 //Then we have gone through the whole list without finding any player who wasn't active
                 throw new IllegalStateException("All the players are disconnected!");
         }
@@ -1005,13 +987,14 @@ public class GameController {
 
     /**
      * Updates all the player that the specified player has been disconnected
+     *
      * @param disconnectedPlayer
      */
-    public void updatesAfterDisconnection(ClientHandler disconnectedPlayer){
+    public void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
         int index = this.getPlayerNumber(disconnectedPlayer);
 
         Game game = new Game();
-        for (int i = 0; i < this.numberOfPlayers; i++){
+        for (int i = 0; i < this.numberOfPlayers; i++) {
             if (i != index) {
                 this.players.get(i).getKey().setPlayerState(PlayerState.WAITING4TURN);
             }
@@ -1032,21 +1015,21 @@ public class GameController {
      * @param playerToBecomeActive the playing who is about to be play
      */
     private void updatesTurnAndSendInfo(int playerToBecomeActive) {
-    Game game = new Game();
+        Game game = new Game();
 
-    for (int i = 0; i < this.numberOfPlayers; i++){
-        if(players.get(i).getKey().getPlayerState() != PlayerState.DISCONNECTED) {
-            if (i != playerToBecomeActive) {
-                this.players.get(i).getKey().setPlayerState(PlayerState.WAITING4TURN);
-            } else {
-                this.players.get(i).getKey().setPlayerState(PlayerState.PLAYING);
+        for (int i = 0; i < this.numberOfPlayers; i++) {
+            if (players.get(i).getKey().getPlayerState() != PlayerState.DISCONNECTED) {
+                if (i != playerToBecomeActive) {
+                    this.players.get(i).getKey().setPlayerState(PlayerState.WAITING4TURN);
+                } else {
+                    this.players.get(i).getKey().setPlayerState(PlayerState.PLAYING);
+                }
             }
+            Player player = new Player();
+            player.setNickName(this.players.get(i).getKey().getNickname());
+            player.setPlayerState(this.players.get(i).getKey().getPlayerState());
+            game.addPlayer(player);
         }
-        Player player = new Player();
-        player.setNickName(this.players.get(i).getKey().getNickname());
-        player.setPlayerState(this.players.get(i).getKey().getPlayerState());
-        game.addPlayer(player);
-    }
 
         this.sendBroadcastUpdate(new ModelUpdate(game));
     }
@@ -1106,13 +1089,14 @@ public class GameController {
 
     /**
      * Sends an update message to every player in the game but the one specified because they have been found disconnected
-     * @param broadcastMessage the message to be sent to every player in the game
+     *
+     * @param broadcastMessage   the message to be sent to every player in the game
      * @param disconnectedPlayer the player who has been found disconnected
      * @return true if the messages were sent correctly to all the players
      */
-    private boolean sendBroadcastUpdate(ResponseInterface broadcastMessage, ClientHandler disconnectedPlayer){
+    private boolean sendBroadcastUpdate(ResponseInterface broadcastMessage, ClientHandler disconnectedPlayer) {
         for (Pair<ClientHandler, PlayerBoard> e : players)
-            if(e.getKey() != disconnectedPlayer)
+            if (e.getKey() != disconnectedPlayer)
                 e.getKey().send(broadcastMessage);
         return true;
     }

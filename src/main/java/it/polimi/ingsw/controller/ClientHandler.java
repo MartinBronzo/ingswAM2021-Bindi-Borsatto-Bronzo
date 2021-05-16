@@ -1,10 +1,17 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseInterface;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
@@ -35,7 +42,24 @@ public class ClientHandler implements Runnable {
         this.in = in;
         this.out = out;
         this.playerSate = PlayerState.WAITING4NAME;
-        this.gson = new Gson();
+
+        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
+                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
+        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
+        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
+
+        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
+                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
+        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
+
+        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
+                .registerTypeAdapterFactory(effectTypeFactory).create();
     }
 
     public ClientHandler(Socket socket) throws IOException {

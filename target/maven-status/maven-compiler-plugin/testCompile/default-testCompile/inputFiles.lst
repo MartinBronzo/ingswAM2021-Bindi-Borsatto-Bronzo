@@ -17,6 +17,7 @@ C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\po
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\DiscardTokenObserverTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\FaithPointTokenTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCard\LeaderCardRequirements\CardRequirementColorAndLevelTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\GameControllerTest\GameControllerTurnsManagementTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MarketFactoryTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\GeneralMainBoardMethodsClass.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\ReportNumOrderTest.java
@@ -45,6 +46,7 @@ C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\po
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\DevCards\DevCardTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\PlayerBoardTest\productionTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\MarketMainBoardMethodsTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\view\stringToMessageTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\GamesManagerSingletonTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\Market\MarketTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\DepotTest.java
