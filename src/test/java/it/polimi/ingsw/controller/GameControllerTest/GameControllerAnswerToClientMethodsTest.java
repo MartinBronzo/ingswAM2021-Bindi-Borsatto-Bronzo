@@ -55,6 +55,7 @@ public class GameControllerAnswerToClientMethodsTest {
     BufferedReader fileReader4;
     Gson gson;
 
+    //RISOLTO:
     //Nei test commentati non funziona il parsing delle LeaderCard per colpa degli effetti e dei requirements.Esempio di Stack Trace:
     //com.google.gson.JsonParseException: cannot deserialize class it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect because it does not define a field named type
 

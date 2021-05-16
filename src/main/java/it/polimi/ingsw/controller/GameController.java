@@ -1034,12 +1034,13 @@ public class GameController {
         this.sendBroadcastUpdate(new ModelUpdate(game));
     }
 
+    @Deprecated
     private void sendBroadcastStringMessage(String message) {
         for (Pair<ClientHandler, PlayerBoard> e : players)
             e.getKey().send(message);
     }
 
-    public Game getWholeUpdateToClient() {
+    public ModelUpdate getWholeMessageUpdateToClient() {
         Game game = new Game();
         Board board = new Board();
         board.setMarketMatrix(this.mainBoard.getMarketMatrixWithMarbleType());
@@ -1068,7 +1069,7 @@ public class GameController {
 
         game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
 
-        return game;
+        return new ModelUpdate(game);
     }
 
     private void setLastTurn() {

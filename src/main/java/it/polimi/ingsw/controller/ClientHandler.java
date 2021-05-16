@@ -13,9 +13,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementRe
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.network.messages.fromClient.*;
-import it.polimi.ingsw.network.messages.sendToClient.ResponseInterface;
-import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
-import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
+import it.polimi.ingsw.network.messages.sendToClient.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -108,16 +106,15 @@ public class ClientHandler implements Runnable {
                             this.nickname = loginMessage.getNickName();
                             this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
                             if (this.game == null)
-                                this.send("You are creating a game! Tell me how many players you want in this game!");
+                                this.send(new GeneralInfoStringMessage("You are creating a game! Tell me how many players you want in this game!"));
                             else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
                                 //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
                                 //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
                                 //da scartare ed etc. all'inizio che è != da in session che quando il meccanismo a turni è in atto
-                                this.send("You are back in the game!");
-                                ResponseMessage responseMessage = new ResponseMessage(ResponseType.UPDATE, gson.toJson(this.game.getWholeUpdateToClient()));
-                                this.send(gson.toJson(responseMessage));
+                                this.send(new GeneralInfoStringMessage("You are back in the game!"));
+                                this.send(this.game.getWholeMessageUpdateToClient());
                             } else {
-                                this.send("You are in Game! You'll soon start play with others!");
+                                this.send(new GeneralInfoStringMessage("You are in Game! You'll soon start play with others!"));
                             }
                             break;
 
@@ -204,7 +201,7 @@ public class ClientHandler implements Runnable {
 
                     }
                 } else {
-                    this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "Wait your turn to do the action")));
+                    this.send(new ErrorMessage("Wait your turn to do the action"));
                 }
                 line = in.nextLine();
             }
@@ -214,14 +211,14 @@ public class ClientHandler implements Runnable {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-            this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (IOException)")));
+            this.send(new ErrorMessage("An error occurred (IOException)"));
         } catch (IllegalActionException | IllegalArgumentException e) {
-            send(gson.toJson(new ResponseMessage(ResponseType.ERROR, e.getMessage())));
+            this.send(new ErrorMessage(e.getMessage()));
         } catch (InterruptedException e) {
             e.printStackTrace();
-            this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (InterruptedException)")));
+            this.send(new ErrorMessage("An error occurred (InterruptedException)"));
         } catch (NotAvailableNicknameException e) {
-            this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "This nickname isn't available!")));
+            this.send(new ErrorMessage("This nickname isn't available!"));
         } catch (IllegalStateException e){
             //TODO: cosa facciamo se non ci sono più player connessi?
             e.printStackTrace();
@@ -241,7 +238,7 @@ public class ClientHandler implements Runnable {
 
     private void pingClient(Socket socket) throws SocketException {
         //TODO: da testare
-        this.send(gson.toJson(new ResponseMessage(ResponseType.PING, "Ping")));
+        this.send(new PingMessage("Ping"));
         socket.setSoTimeout(2000);
         try {
             in.readLine();
