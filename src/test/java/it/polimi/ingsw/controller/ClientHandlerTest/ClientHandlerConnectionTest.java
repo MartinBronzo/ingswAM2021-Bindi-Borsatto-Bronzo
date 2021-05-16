@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
@@ -16,6 +17,10 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ClientHandlerConnectionTest {
 
@@ -38,7 +43,7 @@ public class ClientHandlerConnectionTest {
     PrintWriter fileWriter4;
 
     @BeforeEach
-    public void setup() throws FileNotFoundException, IllegalActionException {
+    public void setup() throws IOException, IllegalActionException {
         gameController = new GameController();
 
         //The ClientHandlers read from the Client files and write to the ClientHandler files
@@ -78,4 +83,19 @@ public class ClientHandlerConnectionTest {
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
                 .registerTypeAdapterFactory(effectTypeFactory).create();
     }
+
+    /*@Test
+    public void waitYourTurn() throws IOException {
+
+        //Writes the json that the client handler will read
+        fileWriter1.write("{\"cmd\": \"getResourcesFromMarket\",\"parameter\":\"\"}");
+        fileWriter1.write("\n{\"cmd\": \"quit\",\"parameter\":\"\"}");
+        fileWriter1.close();
+
+        assertEquals(c1.getPlayerState(), PlayerState.WAITING4NAME);
+        new Thread(c1).start();
+        System.out.println(fileReader1.readLine());
+    }*/
+
+
 }
