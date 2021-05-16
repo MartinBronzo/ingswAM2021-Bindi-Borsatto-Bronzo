@@ -300,4 +300,10 @@ public class ClientHandler implements Runnable {
         return playerSate;
     }
 
+    public String getInput() throws IOException {
+        Scanner in = new Scanner(socket.getInputStream());
+
+        return in.nextLine();
+    }
+
 }
