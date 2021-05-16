@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseInterface;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 
@@ -18,7 +19,6 @@ import java.util.TimerTask;
 
 public class ClientHandler implements Runnable {
     private String nickname;
-    private PlayerState state;
     private final Socket socket;
     private final BufferedReader in;
     private final PrintWriter out;
@@ -34,7 +34,7 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
         this.in = in;
         this.out = out;
-        this.state = PlayerState.WAITING4NAME;
+        this.playerSate = PlayerState.WAITING4NAME;
         this.gson = new Gson();
     }
 
@@ -42,7 +42,7 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        this.state = PlayerState.WAITING4NAME;
+        this.playerSate = PlayerState.WAITING4NAME;
         this.gson = new Gson();
     }
 
@@ -64,8 +64,7 @@ public class ClientHandler implements Runnable {
                     pingClient(socket);
                 } catch (SocketException e) {
                     //e.printStackTrace();
-                    setState(PlayerState.DISCONNECTED);
-
+                    setPlayerState(PlayerState.DISCONNECTED);
                     //TODO: INVIARE UPDATE A TUTTI I CLIENT passando nickname e playerState
                 }
             }
@@ -76,7 +75,7 @@ public class ClientHandler implements Runnable {
 
             String line = in.nextLine();
             while (!line.equals("quit")) {
-                if (state == PlayerState.PLAYING) {
+                if (playerSate == PlayerState.PLAYING) {
                     command = gson.fromJson(line, Command.class);
                     switch (command.getCmd()) {
 
@@ -170,14 +169,13 @@ public class ClientHandler implements Runnable {
 
                         case "endTurn":
 
-                            if (game.getNumberOfPlayers() == 1) {
+                            if(game.getNumberOfPlayers() == 1){
+                                this.playerSate = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
                                 game.drawSoloToken(this);
-                            } else {
-                                //TODO: FINE TURNO CLASSICA
                             }
-
-                            //TODO: FINE TURNO COMUNE
-
+                            else{
+                                game.specifyNextPlayer(this);
+                            }
                             break;
 
                     }
@@ -200,11 +198,20 @@ public class ClientHandler implements Runnable {
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (InterruptedException)")));
         } catch (NotAvailableNicknameException e) {
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "This nickname isn't available!")));
+        } catch (IllegalStateException e){
+            //TODO: cosa facciamo se non ci sono più player connessi?
+            e.printStackTrace();
         }
     }
 
     public synchronized void send(String message) {
         out.println(message);
+        out.flush();
+    }
+
+    public synchronized void send(ResponseInterface response){
+        ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
+        out.println(gson.toJson(responseMessage));
         out.flush();
     }
 
@@ -214,26 +221,28 @@ public class ClientHandler implements Runnable {
         socket.setSoTimeout(2000);
         try {
             in.readLine();
-            if (state == PlayerState.DISCONNECTED) {
+            if (playerSate == PlayerState.DISCONNECTED) {
                 switch (game.getState()) {
                     case LASTTURN:
-                        state = PlayerState.WAITING4LASTTURN; //waiting and not playing4lastturn because we assume that the turn of a disconnected player is skipped
+                        playerSate = PlayerState.WAITING4LASTTURN; //waiting and not playing4lastturn because we assume that the turn of a disconnected player is skipped
                         break;
                     case INSESSION:
-                        state = PlayerState.WAITING4TURN;
+                        playerSate = PlayerState.WAITING4TURN;
                         break;
                     case WAITING4PLAYERS:
-                        state = PlayerState.WAITINGGAMESTART;
+                        playerSate = PlayerState.WAITINGGAMESTART;
                         break;
                     case CONFIGURING:
-                        state = PlayerState.WAITING4NAME;
+                        playerSate = PlayerState.WAITING4NAME;
                         break;
                     case STARTED:
-                        state = PlayerState.WAITING4BEGINNINGDECISIONS;
+                        playerSate = PlayerState.WAITING4BEGINNINGDECISIONS;
                         break;
                     //TODO: WAITINGGAMEEND?
                 }
                 //TODO UPDATE BROADCAST QUANDO CAMBIA STATO
+                //game.updatesAfterDisconnection(this);
+                //TODO: cosa succede se il giocatore si disconnette mentre gioca? Ci sarà da fare il rollback dello state del game e da cambiare i turni!
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -246,20 +255,12 @@ public class ClientHandler implements Runnable {
         this.nickname = nickname;
     }
 
-    public void setState(PlayerState state) {
-        this.state = state;
+    public void setPlayerState(PlayerState state) {
+        this.playerSate = state;
     }
 
     public void setGame(GameController game) {
         this.game = game;
-    }
-
-    public void setPlayerSate(PlayerState playerSate) {
-        this.playerSate = playerSate;
-    }
-
-    public PlayerState getState() {
-        return state;
     }
 
     public BufferedReader getIn() {
@@ -274,7 +275,7 @@ public class ClientHandler implements Runnable {
         return this.nickname;
     }
 
-    public PlayerState getPlayerSate() {
+    public PlayerState getPlayerState() {
         return playerSate;
     }
 

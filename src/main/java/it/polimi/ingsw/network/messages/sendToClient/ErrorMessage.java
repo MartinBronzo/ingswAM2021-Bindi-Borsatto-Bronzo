@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-public class ErrorMessage {
+public class ErrorMessage implements ResponseInterface{
     private String errorMessage;
 
     public ErrorMessage(String errorMessage) {
@@ -9,5 +9,10 @@ public class ErrorMessage {
 
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    @Override
+    public ResponseType getResponseType() {
+        return ResponseType.ERROR;
     }
 }

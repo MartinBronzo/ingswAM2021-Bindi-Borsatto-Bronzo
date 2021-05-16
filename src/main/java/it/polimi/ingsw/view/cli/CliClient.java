@@ -306,7 +306,7 @@ public class CliClient extends Client implements Runnable {
                         break;
                     case ERROR:
                         break;
-                    case EXTRARESOURCEBLABLA:
+                    case EXTRARESOURCEANDLEADERCARDBEGINNING:
                         break;
                     case HASHMAPRESOURCES:
                         break;

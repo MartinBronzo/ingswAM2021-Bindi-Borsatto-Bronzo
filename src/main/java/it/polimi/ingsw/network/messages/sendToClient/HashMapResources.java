@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.HashMap;
 
-public class HashMapResources {
+public class HashMapResources implements ResponseInterface{
     private HashMap<ResourceType, Integer> resources;
 
     public HashMapResources(HashMap<ResourceType, Integer> resources) {
@@ -13,5 +13,10 @@ public class HashMapResources {
 
     public HashMap<ResourceType, Integer> getResources() {
         return resources;
+    }
+
+    @Override
+    public ResponseType getResponseType() {
+        return ResponseType.HASHMAPRESOURCES;
     }
 }

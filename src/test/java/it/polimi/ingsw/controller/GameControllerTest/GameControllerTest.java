@@ -263,9 +263,9 @@ public class GameControllerTest {
         gameController.startMainBoard(1);
         clientHandler1.setNickname("Client 1");
         gameController.setPlayerOld(clientHandler1);
-        clientHandler1.setPlayerSate(PlayerState.DISCONNECTED);
+        clientHandler1.setPlayerState(PlayerState.DISCONNECTED);
 
-        assertEquals(gameController.getPlayersList().get(0).getPlayerSate(), PlayerState.DISCONNECTED);
+        assertEquals(gameController.getPlayersList().get(0).getPlayerState(), PlayerState.DISCONNECTED);
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
 
         ClientHandler newCH = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
@@ -273,7 +273,7 @@ public class GameControllerTest {
 
         assertTrue(gameController.substitutesClient(newCH));
 
-        assertEquals(gameController.getPlayersList().get(0).getPlayerSate(), PlayerState.WAITING4TURN);
+        assertEquals(gameController.getPlayersList().get(0).getPlayerState(), PlayerState.WAITING4TURN);
         assertSame(gameController.getPlayersList().get(0), newCH);
     }
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-public class ExtraResAndLeadToDiscardBeginningMessage {
+public class ExtraResAndLeadToDiscardBeginningMessage implements ResponseInterface{
     private int numRes;
     private int numLeader;
     private int order;
@@ -21,5 +21,10 @@ public class ExtraResAndLeadToDiscardBeginningMessage {
 
     public int getOrder() {
         return order;
+    }
+
+    @Override
+    public ResponseType getResponseType() {
+        return ResponseType.EXTRARESOURCEANDLEADERCARDBEGINNING;
     }
 }
