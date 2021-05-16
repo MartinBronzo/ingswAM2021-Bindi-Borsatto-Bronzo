@@ -35,6 +35,13 @@ class DevGridTest {
     */
 
     @Test
+    public void initialization(){
+        for(int i = 0; i < 3; i++)
+            for(int j = 0 ; j < 4; j++)
+                assertEquals(4, devGrid.getDevDeckInTheGrid(i, j).size());
+    }
+
+    @Test
     void toStringTest() {
         System.out.println(devGrid.toString());
     }
