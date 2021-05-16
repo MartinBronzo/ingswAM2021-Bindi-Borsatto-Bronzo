@@ -18,7 +18,6 @@ import java.util.TimerTask;
 
 public class ClientHandler implements Runnable {
     private String nickname;
-    private PlayerState state;
     private final Socket socket;
     private final BufferedReader in;
     private final PrintWriter out;
@@ -34,7 +33,7 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
         this.in = in;
         this.out = out;
-        this.state = PlayerState.WAITING4NAME;
+        this.playerSate = PlayerState.WAITING4NAME;
         this.gson = new Gson();
     }
 
@@ -42,7 +41,7 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        this.state = PlayerState.WAITING4NAME;
+        this.playerSate = PlayerState.WAITING4NAME;
         this.gson = new Gson();
     }
 
@@ -64,7 +63,7 @@ public class ClientHandler implements Runnable {
                     pingClient(socket);
                 } catch (SocketException e) {
                     //e.printStackTrace();
-                    setState(PlayerState.DISCONNECTED);
+                    setPlayerState(PlayerState.DISCONNECTED);
                     //TODO: INVIARE UPDATE A TUTTI I CLIENT passando nickname e playerState
                 }
             }
@@ -75,7 +74,7 @@ public class ClientHandler implements Runnable {
 
             String line = in.nextLine();
             while (!line.equals("quit")) {
-                if (state == PlayerState.PLAYING) {
+                if (playerSate == PlayerState.PLAYING) {
                     command = gson.fromJson(line, Command.class);
                     switch (command.getCmd()) {
 
@@ -170,14 +169,12 @@ public class ClientHandler implements Runnable {
                         case "endTurn":
 
                             if(game.getNumberOfPlayers() == 1){
+                                this.playerSate = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
                                 game.drawSoloToken(this);
                             }
                             else{
-                                //TODO: FINE TURNO CLASSICA
+                                game.specifyNextPlayer(this);
                             }
-
-                            //TODO: FINE TURNO COMUNE
-
                             break;
 
                     }
@@ -200,6 +197,9 @@ public class ClientHandler implements Runnable {
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "An error occurred (InterruptedException)")));
         } catch (NotAvailableNicknameException e) {
             this.send(gson.toJson(new ResponseMessage(ResponseType.ERROR, "This nickname isn't available!")));
+        } catch (IllegalStateException e){
+            //TODO: cosa facciamo se non ci sono più player connessi?
+            e.printStackTrace();
         }
     }
 
@@ -214,22 +214,24 @@ public class ClientHandler implements Runnable {
         socket.setSoTimeout(2000);
         try {
             in.readLine();
-            if (state == PlayerState.DISCONNECTED) {
+            if (playerSate == PlayerState.DISCONNECTED) {
                 switch (game.getState()) {
                     case LASTTURN:
-                        state = PlayerState.WAITING4LASTTURN; //waiting and not playing4lastturn because we assume that the turn of a disconnected player is skipped
+                        playerSate = PlayerState.WAITING4LASTTURN; //waiting and not playing4lastturn because we assume that the turn of a disconnected player is skipped
                         break;
                     case INSESSION:
-                        state = PlayerState.WAITING4TURN;
+                        playerSate = PlayerState.WAITING4TURN;
                         break;
                     case WAITING4PLAYERS:
-                        state = PlayerState.WAITINGGAMESTART;
+                        playerSate = PlayerState.WAITINGGAMESTART;
                         break;
                     case CONFIGURING:
-                        state = PlayerState.WAITING4NAME;
+                        playerSate = PlayerState.WAITING4NAME;
                         break;
                 }
                 //TODO UPDATE BROADCAST QUANDO CAMBIA STATO
+                //game.updatesAfterDisconnection(this);
+                //TODO: cosa succede se il giocatore si disconnette mentre gioca? Ci sarà da fare il rollback dello state del game e da cambiare i turni!
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -242,20 +244,12 @@ public class ClientHandler implements Runnable {
         this.nickname = nickname;
     }
 
-    public void setState(PlayerState state) {
-        this.state = state;
+    public void setPlayerState(PlayerState state) {
+        this.playerSate = state;
     }
 
     public void setGame(GameController game) {
         this.game = game;
-    }
-
-    public void setPlayerSate(PlayerState playerSate) {
-        this.playerSate = playerSate;
-    }
-
-    public PlayerState getState() {
-        return state;
     }
 
     public BufferedReader getIn() {
@@ -270,7 +264,7 @@ public class ClientHandler implements Runnable {
         return this.nickname;
     }
 
-    public PlayerState getPlayerSate() {
+    public PlayerState getPlayerState() {
         return playerSate;
     }
 

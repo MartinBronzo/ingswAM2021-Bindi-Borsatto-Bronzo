@@ -137,7 +137,7 @@ public final class GamesManagerSingleton {
     private GameController searchPlayerInGames(String nickname) throws NoSuchElementException, NotAvailableNicknameException {
         if (nickname == null) throw new IllegalArgumentException("nickname can't be null");
         if (startingGame != null) {
-            if (startingGame.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getState().equals(PlayerState.DISCONNECTED))) {
+            if (startingGame.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getPlayerState().equals(PlayerState.DISCONNECTED))) {
                 throw new NotAvailableNicknameException("Nick is taken");
             }
         }
@@ -145,7 +145,7 @@ public final class GamesManagerSingleton {
             if (clientConfigurator.getNickname().equals(nickname)) throw new NotAvailableNicknameException("Nick is the same of the actual configurator");
         }
         GameController gameWithThatNick = games.stream().filter(game -> game.getPlayersList().stream().map(ClientHandler::getNickname).anyMatch(clientUsername -> clientUsername.equals(nickname))).findAny().orElseThrow(NoSuchElementException::new);
-        if (gameWithThatNick.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getState().equals(PlayerState.DISCONNECTED))) {
+        if (gameWithThatNick.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getPlayerState().equals(PlayerState.DISCONNECTED))) {
             throw new NotAvailableNicknameException("Nick is taken");
         }
         return gameWithThatNick;

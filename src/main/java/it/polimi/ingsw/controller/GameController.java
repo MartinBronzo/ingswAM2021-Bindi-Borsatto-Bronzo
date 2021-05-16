@@ -11,10 +11,8 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementCo
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.model.marble.WhiteMarble;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -121,7 +119,7 @@ public class GameController {
     public boolean substitutesClient(ClientHandler newClientHandler) {
         for (Pair<ClientHandler, PlayerBoard> e : players)
             if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
-                newClientHandler.setPlayerSate(PlayerState.WAITING4TURN);
+                newClientHandler.setPlayerState(PlayerState.WAITING4TURN);
                 e.setKey(newClientHandler);
                 return true;
             }
@@ -255,9 +253,13 @@ public class GameController {
         }
     }
 
-    public void specifyNextPlayer(ClientHandler currentPlayer) {
-        //TODO: deal with turns
-        if (currentPlayer.getPlayerSate() != PlayerState.PLAYING)
+    /**
+     * Changes the player's state after someone ends their turn
+     * @param currentPlayer the player who is ending their turn
+     */
+    public void specifyNextPlayer(ClientHandler currentPlayer) throws IllegalStateException{
+        //TODO: attenzione che se in caso di disconnessione del giocatore che sta giocando il proprio turno si vuole usare questo metodo bisogna togliere questo if
+        if (currentPlayer.getPlayerState() != PlayerState.PLAYING)
             return;
         //Retrieves this player's index
         int index = this.getPlayerNumber(currentPlayer);
@@ -267,6 +269,20 @@ public class GameController {
         index++;
         if (index == this.numberOfPlayers)
             index = 0;
+        if(players.get(index).getKey().getPlayerState() == PlayerState.DISCONNECTED){
+            int tmp = index;
+            index++;
+            if (index == this.numberOfPlayers)
+                index = 0;
+            while(players.get(index).getKey().getPlayerState() == PlayerState.DISCONNECTED && index != tmp){
+                index++;
+                if (index == this.numberOfPlayers)
+                    index = 0;
+            }
+            if(index == tmp)
+                //Then we have gone through the whole list without finding any player who wasn't active
+                throw new IllegalStateException("All the players are disconnected!");
+        }
         this.updatesTurnAndSendInfo(index);
     }
 
@@ -379,7 +395,7 @@ public class GameController {
         Game game = new Game();
         Player player;
         for (int i = 0; i < this.numberOfPlayers; i++) {
-            players.get(i).getKey().setPlayerSate(PlayerState.WAITING4BEGINNINGDECISIONS);
+            players.get(i).getKey().setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
             player = new Player();
             player.setNickName(players.get(i).getKey().getNickname());
             player.setUnUsedLeaders(players.get(i).getValue().getNotPlayedLeaderCards());
@@ -971,6 +987,7 @@ public class GameController {
         player.setNickName(clientHandler.getNickname());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
+        player.setPlayerState(PlayerState.PLAYING);
         game.addPlayer(player);
         game.setLorenzosPosition(soloBoard.getLorenzoFaithTrackPosition());
 
@@ -982,35 +999,56 @@ public class GameController {
 
      /*
     ###########################################################################################################
-     RESPONSE PRIVATE METHODS
+     RESPONSE METHODS
     ###########################################################################################################
      */
+
+    /**
+     * Updates all the player that the specified player has been disconnected
+     * @param disconnectedPlayer
+     */
+    public void updatesAfterDisconnection(ClientHandler disconnectedPlayer){
+        int index = this.getPlayerNumber(disconnectedPlayer);
+
+        Game game = new Game();
+        for (int i = 0; i < this.numberOfPlayers; i++){
+            if (i != index) {
+                this.players.get(i).getKey().setPlayerState(PlayerState.WAITING4TURN);
+            }
+            Player player = new Player();
+            player.setNickName(this.players.get(i).getKey().getNickname());
+            player.setPlayerState(this.players.get(i).getKey().getPlayerState());
+            game.addPlayer(player);
+        }
+
+        this.sendBroadcastUpdate(game, disconnectedPlayer);
+
+    }
 
     /**
      * Updates the player's state by setting the specified player as the one who can play their turn and by setting the former player as in
      * waiting for their turn
      *
-     * @param playerToBecomeActive
+     * @param playerToBecomeActive the playing who is about to be play
      */
     private void updatesTurnAndSendInfo(int playerToBecomeActive) {
-        TurnInfoMessage message;
-        ResponseMessage responseMessage;
+    Game game = new Game();
 
-        //The specified player becomes the active player
-        this.players.get(playerToBecomeActive).getKey().setPlayerSate(PlayerState.PLAYING);
-        message = new TurnInfoMessage(true);
-        responseMessage = new ResponseMessage(ResponseType.TURNINFO, this.gson.toJson(message));
-        this.players.get(playerToBecomeActive).getKey().send(this.gson.toJson(responseMessage));
-
-        message = new TurnInfoMessage(false);
-        responseMessage = new ResponseMessage(ResponseType.TURNINFO, this.gson.toJson(message));
-        String toBeSent = this.gson.toJson(responseMessage);
-        //All the others players are waiting for their turn
-        for (int i = 0; i < this.numberOfPlayers; i++)
+    for (int i = 0; i < this.numberOfPlayers; i++){
+        if(players.get(i).getKey().getPlayerState() != PlayerState.DISCONNECTED) {
             if (i != playerToBecomeActive) {
-                this.players.get(i).getKey().setPlayerSate(PlayerState.WAITING4TURN);
-                this.players.get(i).getKey().send(toBeSent);
+                this.players.get(i).getKey().setPlayerState(PlayerState.WAITING4TURN);
+            } else {
+                this.players.get(i).getKey().setPlayerState(PlayerState.PLAYING);
             }
+        }
+        Player player = new Player();
+        player.setNickName(this.players.get(i).getKey().getNickname());
+        player.setPlayerState(this.players.get(i).getKey().getPlayerState());
+        game.addPlayer(player);
+    }
+
+    this.sendBroadcastUpdate(game);
     }
 
     private void sendBroadcastStringMessage(String message) {
@@ -1032,7 +1070,7 @@ public class GameController {
             ClientHandler clientHandler = players.get(i).getKey();
             Player player = new Player();
             player.setNickName(clientHandler.getNickname());
-            player.setPlayerState(clientHandler.getState());
+            player.setPlayerState(clientHandler.getPlayerState());
             player.setDevSlots(playerBoard.getDevSlots());
             player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
             player.setUsedLeaders(playerBoard.getActiveLeaderCards());
@@ -1060,12 +1098,26 @@ public class GameController {
      * Sends an update message to all the players in the game
      *
      * @param game the read-only model which contains the updates
-     * @return true if the messages where correctly sent to all the players
+     * @return true if the messages were correctly sent to all the players
      */
     private boolean sendBroadcastUpdate(Game game) {
         //TODO: in realtà ci sarà da inviare un messaggio che contiene game come con i command per i messaggi nel package fromClient!
         for (Pair<ClientHandler, PlayerBoard> e : players)
             e.getKey().send(gson.toJson(game));
+        return true;
+    }
+
+    /**
+     * Sends an update message to every player in the game but the one specified because they have been found disconnected
+     * @param game the read-only model which contains the updates
+     * @param disconnectedPlayer the player who has been found disconnected
+     * @return true if the messages were sent correctly to all the players
+     */
+    private boolean sendBroadcastUpdate(Game game, ClientHandler disconnectedPlayer){
+        //TODO: in realtà ci sarà da inviare un messaggio che contiene game come con i command per i messaggi nel package fromClient!
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if(e.getKey() != disconnectedPlayer)
+                e.getKey().send(gson.toJson(game));
         return true;
     }
 
