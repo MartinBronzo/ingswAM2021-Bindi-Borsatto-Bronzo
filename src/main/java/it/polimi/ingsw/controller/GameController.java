@@ -247,7 +247,7 @@ public class GameController {
             this.howManyPlayersReady++;
             if (this.howManyPlayersReady == this.numberOfPlayers) {
                 this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
-                this.sendBroadcastStringMessage("Now turns will begin!");
+                this.sendBroadcastUpdate(new GeneralInfoStringMessage("Now turns will begin!"));
                 this.updatesTurnAndSendInfo(this.firstPlayer);
             }
         }
@@ -402,7 +402,7 @@ public class GameController {
             game.addPlayer(player);
         }
 
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
 
         return true;
     }
@@ -423,7 +423,7 @@ public class GameController {
         ExtraResAndLeadToDiscardBeginningMessage message;
         for (int i = 0; i < this.numberOfPlayers; i++) {
             message = new ExtraResAndLeadToDiscardBeginningMessage(mainBoard.getExtraResourcesAtBeginningForPlayer(firstPlayer, i), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning(), mainBoard.getPlayerOder(firstPlayer, i));
-            players.get(i).getKey().send(gson.toJson(message));
+            players.get(i).getKey().send(message);
         }
         return true;
     }
@@ -486,7 +486,7 @@ public class GameController {
         //Adds the three depots with what's inside for all the three elements
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         this.checkIfGameMustBegin();
         return true;
     }
@@ -519,7 +519,7 @@ public class GameController {
         player.setPopeTiles(playerBoard.getPopeTile());
         game.addPlayer(player);
         setOthersPlayersFaithInClientModel(game, clientHandler);
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
 
@@ -546,7 +546,7 @@ public class GameController {
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setUsedLeaders(playerBoard.getActiveLeaderCards());
         game.addPlayer(player);
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
 
@@ -576,7 +576,7 @@ public class GameController {
             result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow() - 1, effects);
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        clientHandler.send(gson.toJson(new HashMapResources(result)));
+        clientHandler.send(new HashMapResources(result));
         return true;
     }
 
@@ -689,7 +689,7 @@ public class GameController {
                 tmp.setPopeTiles(e.getValue().getPopeTile());
                 game.addPlayer(tmp);
             }
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
 
@@ -709,7 +709,7 @@ public class GameController {
 
         //send message only to the client that sent the message
         //TODO: nel messaggio io metterei anche il risultato dell'azione(status) per dire se è andata bene o no
-        clientHandler.send(gson.toJson(new HashMapResources(cost)));
+        clientHandler.send(new HashMapResources(cost));
         return true;
     }
 
@@ -758,7 +758,7 @@ public class GameController {
         player.setStrongBox(playerBoard.getStrongboxMap());
         game.addPlayer(player);
 
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
 
@@ -772,7 +772,7 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
 
@@ -786,7 +786,7 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
 
@@ -800,7 +800,7 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
 
@@ -827,7 +827,7 @@ public class GameController {
         prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
 
         //send message only to the client that sent the message
-        clientHandler.send(gson.toJson(new HashMapResources(prodCost)));
+        clientHandler.send(new HashMapResources(prodCost));
         return true;
     }
 
@@ -896,7 +896,7 @@ public class GameController {
         game.addPlayer(player);
         setOthersPlayersFaithInClientModel(game, clientHandler);
 
-        this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
 
@@ -991,7 +991,7 @@ public class GameController {
         game.addPlayer(player);
         game.setLorenzosPosition(soloBoard.getLorenzoFaithTrackPosition());
 
-        clientHandler.send(gson.toJson(new ResponseMessage(ResponseType.UPDATE, gson.toJson(game))));
+        clientHandler.send(new ModelUpdate(game));
         //this.sendBroadcastUpdate(game);
     }
 
@@ -1021,7 +1021,7 @@ public class GameController {
             game.addPlayer(player);
         }
 
-        this.sendBroadcastUpdate(game, disconnectedPlayer);
+        this.sendBroadcastUpdate(new ModelUpdate(game), disconnectedPlayer);
 
     }
 
@@ -1048,14 +1048,12 @@ public class GameController {
         game.addPlayer(player);
     }
 
-    this.sendBroadcastUpdate(game);
+        this.sendBroadcastUpdate(new ModelUpdate(game));
     }
 
     private void sendBroadcastStringMessage(String message) {
-        GeneralInfoStringMessage messageObject = new GeneralInfoStringMessage(message);
-        ResponseMessage responseMessage = new ResponseMessage(ResponseType.INFOSTRING, this.gson.toJson(messageObject));
         for (Pair<ClientHandler, PlayerBoard> e : players)
-            e.getKey().send(this.gson.toJson(responseMessage));
+            e.getKey().send(message);
     }
 
     public Game getWholeUpdateToClient() {
@@ -1097,27 +1095,25 @@ public class GameController {
     /**
      * Sends an update message to all the players in the game
      *
-     * @param game the read-only model which contains the updates
+     * @param broadcastMessage the message to be sent to every player in the game
      * @return true if the messages were correctly sent to all the players
      */
-    private boolean sendBroadcastUpdate(Game game) {
-        //TODO: in realtà ci sarà da inviare un messaggio che contiene game come con i command per i messaggi nel package fromClient!
+    private boolean sendBroadcastUpdate(ResponseInterface broadcastMessage) {
         for (Pair<ClientHandler, PlayerBoard> e : players)
-            e.getKey().send(gson.toJson(game));
+            e.getKey().send(broadcastMessage);
         return true;
     }
 
     /**
      * Sends an update message to every player in the game but the one specified because they have been found disconnected
-     * @param game the read-only model which contains the updates
+     * @param broadcastMessage the message to be sent to every player in the game
      * @param disconnectedPlayer the player who has been found disconnected
      * @return true if the messages were sent correctly to all the players
      */
-    private boolean sendBroadcastUpdate(Game game, ClientHandler disconnectedPlayer){
-        //TODO: in realtà ci sarà da inviare un messaggio che contiene game come con i command per i messaggi nel package fromClient!
+    private boolean sendBroadcastUpdate(ResponseInterface broadcastMessage, ClientHandler disconnectedPlayer){
         for (Pair<ClientHandler, PlayerBoard> e : players)
             if(e.getKey() != disconnectedPlayer)
-                e.getKey().send(gson.toJson(game));
+                e.getKey().send(broadcastMessage);
         return true;
     }
 

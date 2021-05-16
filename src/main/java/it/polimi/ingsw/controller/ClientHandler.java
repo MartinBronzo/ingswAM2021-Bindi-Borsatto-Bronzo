@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseInterface;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 
@@ -205,6 +206,12 @@ public class ClientHandler implements Runnable {
 
     public synchronized void send(String message) {
         out.println(message);
+        out.flush();
+    }
+
+    public synchronized void send(ResponseInterface response){
+        ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
+        out.println(gson.toJson(responseMessage));
         out.flush();
     }
 

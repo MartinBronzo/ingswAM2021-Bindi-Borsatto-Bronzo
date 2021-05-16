@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-public class GeneralInfoStringMessage {
+public class GeneralInfoStringMessage implements ResponseInterface {
     String message;
 
     public GeneralInfoStringMessage(String message) {
@@ -9,5 +9,10 @@ public class GeneralInfoStringMessage {
 
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public ResponseType getResponseType() {
+        return ResponseType.INFOSTRING;
     }
 }
