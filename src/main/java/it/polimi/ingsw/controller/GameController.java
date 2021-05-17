@@ -50,6 +50,10 @@ public class GameController {
     private MainBoard modelCopy;
     private int firstPlayer;
     private Integer howManyPlayersReady;
+    /**
+     * List of all the disconnected players who have not specified their beginning decisions
+     */
+    private List<ClientHandler> disconnectedBeforeStarting;
 
 
     /**
@@ -143,6 +147,7 @@ public class GameController {
         this.numberOfPlayers = -1;
         this.maxPlayersNum = 4;
         this.howManyPlayersReady = 0;
+        this.disconnectedBeforeStarting = new ArrayList<>();
     }
 
     /**
@@ -211,9 +216,9 @@ public class GameController {
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
         //We added the last player: the game must begin
+        player.setPlayerState(PlayerState.WAITINGGAMESTART); //TODO: va bene metterlo qua?
         if(players.size() == this.numberOfPlayers)
             this.startGame();
-
         return true;
     }
 
@@ -225,12 +230,31 @@ public class GameController {
 
     private void checkIfGameMustBegin() {
         synchronized (this.howManyPlayersReady) {
-            this.howManyPlayersReady++;
-            if (this.howManyPlayersReady == this.numberOfPlayers) {
-                this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
-                this.sendBroadcastUpdate(new GeneralInfoStringMessage("Now turns will begin!"));
-                this.updatesTurnAndSendInfo(this.firstPlayer);
+            synchronized (this.disconnectedBeforeStarting){
+                //We may end up here if a player send their beginning decisions after the game has become INSESSION
+                if(!(this.state.equals(GameState.STARTED)))
+                    return;
+                this.howManyPlayersReady++;
+                if (this.howManyPlayersReady + this.disconnectedBeforeStarting.size() == this.numberOfPlayers) {
+                    this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
+                    this.sendBroadcastUpdate(new GeneralInfoStringMessage("Now turns will begin!"));
+                    this.updatesTurnAndSendInfo(this.firstPlayer);
+                }
             }
+        }
+    }
+
+    /**
+     * Communicates to the GameController that the specified player (represented by their ClientHandler) has been found disconnected before they were able to
+     * specify their beginning decisions
+     *
+     * @param disconnectedPlayer the player who disconnected before taking their beginning decisions
+     */
+    public void registerPlayerDisconnectionBeforeStarting(ClientHandler disconnectedPlayer){
+        synchronized (this.disconnectedBeforeStarting){
+            if(this.disconnectedBeforeStarting.contains(disconnectedPlayer))
+                return;
+            this.disconnectedBeforeStarting.add(disconnectedPlayer);
         }
     }
 
@@ -410,6 +434,18 @@ public class GameController {
         return true;
     }
 
+    public boolean sendNumExtraResBeginningToDisconnectedPlayer(ClientHandler usedToBeDisconnected) throws IllegalActionException {
+        if(!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
+            throw new IllegalActionException("The player has already given their beginning decisions!");
+
+        //For the specified player it computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
+        //It sends this information back to all the players
+        int index = this.getPlayerNumber(usedToBeDisconnected);
+        ExtraResAndLeadToDiscardBeginningMessage message = new ExtraResAndLeadToDiscardBeginningMessage(mainBoard.getExtraResourcesAtBeginningForPlayer(firstPlayer, index), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning(), mainBoard.getPlayerOder(firstPlayer, index));
+        usedToBeDisconnected.send(message);
+        return true;
+    }
+
     /*
     ###########################################################################################################
      FROM CLIENT MESSAGES
@@ -469,6 +505,10 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
         this.sendBroadcastUpdate(new ModelUpdate(game));
+        synchronized (this.disconnectedBeforeStarting){
+            if(this.disconnectedBeforeStarting.contains(clientHandler))
+                this.disconnectedBeforeStarting.remove(clientHandler);
+        }
         this.checkIfGameMustBegin();
         return true;
     }

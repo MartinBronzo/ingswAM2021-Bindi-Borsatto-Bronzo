@@ -41,7 +41,7 @@ public class ClientHandler implements Runnable {
     public ClientHandler(Socket socket, BufferedReader in, PrintWriter out) {
         this.socket = socket;
         this.in = in;
-        this.out = out;
+        this.out = new PrintWriter(out, true);
         this.playerSate = PlayerState.WAITING4NAME;
         mainActionDone = false;
         numLeaderActionDone = 0;
@@ -117,9 +117,11 @@ public class ClientHandler implements Runnable {
         }, 0, 5000);
 
         try {
-            Scanner scanner = new Scanner(in);
+            //Scanner scanner = new Scanner(in);
 
-            String line = scanner.nextLine();
+            //String line = scanner.nextLine();
+            String line = in.readLine();
+            //System.out.println(line);
             command = gson.fromJson(line, Command.class);
             while (!command.getCmd().equals("quit")) {
                 if (playerSate == PlayerState.PLAYING) {
@@ -252,7 +254,8 @@ public class ClientHandler implements Runnable {
                 } else {
                     this.send(new ErrorMessage("Wait your turn to do the action"));
                 }
-                line = scanner.nextLine();
+                //line = scanner.nextLine();
+                line = in.readLine();
                 command = gson.fromJson(line, Command.class);
 
             }
@@ -280,13 +283,13 @@ public class ClientHandler implements Runnable {
 
     public synchronized void send(String message) {
         out.println(message);
-        out.flush();
+        //out.flush();
     }
 
     public synchronized void send(ResponseInterface response) {
         ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
         out.println(gson.toJson(responseMessage));
-        out.flush();
+        //out.flush();
     }
 
     private void pingClient(Socket socket) throws IOException {
@@ -348,9 +351,9 @@ public class ClientHandler implements Runnable {
     }
 
     public String getInput() throws IOException {
-        Scanner in = new Scanner(socket.getInputStream());
-
-        return in.nextLine();
+        //Scanner in = new Scanner(socket.getInputStream());
+        String s = this.in.readLine();
+        return s;
     }
 
 }
