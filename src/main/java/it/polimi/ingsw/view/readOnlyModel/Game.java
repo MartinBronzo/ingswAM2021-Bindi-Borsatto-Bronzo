@@ -82,28 +82,6 @@ public class Game {
         return true;
     }
 
-    /* merge using class methods
-    public boolean merge(Game update) throws NullPointerException {
-        //TODO: no idea how works game update
-        if (update==null) throw new NullPointerException("update is Null");
-        Class updateClass = update.getClass();
-        Arrays.stream(updateClass.getDeclaredFields()).filter(field -> {
-            try {
-                return field.get(update) != null;
-            } catch (IllegalAccessException e) {
-                return false;
-            }
-        }).forEach(field -> {
-            try {
-                field.set(this, field.get(update));
-            } catch (IllegalAccessException e) {
-                System.err.println("Error happened merging model with update");
-                System.exit(1);
-            }
-        });
-        return true;
-    }
-     */
 
     @Override
     public String toString() {

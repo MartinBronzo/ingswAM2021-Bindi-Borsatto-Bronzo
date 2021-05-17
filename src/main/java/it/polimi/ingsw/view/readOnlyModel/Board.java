@@ -83,6 +83,15 @@ public class Board {
     }
 
     public boolean merge(Board updateBoard) {
+        MarbleType[][] marbleMarketUpdate = updateBoard.getMarketMatrix();
+        if (marbleMarketUpdate != null) this.marketMatrix = marbleMarketUpdate;
+
+        MarbleType marbleUpdate = updateBoard.getMarbleOnSlide();
+        if (marbleUpdate != null) this.marbleOnSlide = marbleUpdate;
+
+        DevGrid updateDev = updateBoard.getDevGrid();
+        if (updateDev!=null) this.devGrid = updateDev;
+
         return false;
     }
 }
