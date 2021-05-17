@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 
 public class DepotShelf {
     private ResourceType resourceType;
-    private int quantity;
+    private Integer quantity;
 
     public DepotShelf(ResourceType resourceType, int quantity) {
         this.resourceType = resourceType;
@@ -20,7 +20,7 @@ public class DepotShelf {
         return resourceType;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 

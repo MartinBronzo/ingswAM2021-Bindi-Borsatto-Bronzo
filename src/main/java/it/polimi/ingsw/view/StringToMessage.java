@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class stringToMessage {
+public class StringToMessage {
 
     public static GetFromMatrixMessage toMatrixMessage(String string) throws IllegalArgumentException{
         int colNumber;
@@ -56,7 +56,7 @@ public class stringToMessage {
             }
             String[] leaderIds = infos[1].split(",");
             leaderList = Arrays.stream(leaderIds).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
-            depotParamsList = Arrays.stream(infos[2].split(",")).map(stringToMessage::toDepotParams).collect(Collectors.toList());
+            depotParamsList = Arrays.stream(infos[2].split(",")).map(StringToMessage::toDepotParams).collect(Collectors.toList());
             leaderMap = toResourceHashMap(infos[3]);
             strongboxMap = toResourceHashMap(infos[4]);
             devslot = Integer.parseInt(infos[5].strip());
@@ -87,7 +87,7 @@ public class stringToMessage {
             }
             String[] leaderIds = infos[1].split(",");
             leaderList = Arrays.stream(leaderIds).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
-            depotParamsList = Arrays.stream(infos[2].split(",")).map(stringToMessage::toDepotParams).collect(Collectors.toList());
+            depotParamsList = Arrays.stream(infos[2].split(",")).map(StringToMessage::toDepotParams).collect(Collectors.toList());
             leaderMap = toResourceHashMap(infos[3]);
             discardMap = toResourceHashMap(infos[4]);
         } catch (Exception e){
@@ -109,7 +109,7 @@ public class stringToMessage {
             devCardList = Arrays.stream(devCardsIds).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
             leaderHashMap = toLeadersHashMap(infos[1]);
             baseProductionParams = toBaseProductionParams(infos[2]);
-            depotParamsList = Arrays.stream(infos[3].split(",")).map(stringToMessage::toDepotParams).collect(Collectors.toList());
+            depotParamsList = Arrays.stream(infos[3].split(",")).map(StringToMessage::toDepotParams).collect(Collectors.toList());
             leaderSlotMap = toResourceHashMap(infos[4]);
             strongboxMap = toResourceHashMap(infos[5]);
         } catch (Exception e){
@@ -207,7 +207,7 @@ public class stringToMessage {
         try {
             String[] infos = Arrays.stream(string.split(";")).map(String::strip).toArray(String[]::new);
             leaderCardIds = Arrays.stream(infos[0].split(",")).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
-            depotParamsList = Arrays.stream(infos[1].split(",")).map(stringToMessage::toDepotParams).collect(Collectors.toList());
+            depotParamsList = Arrays.stream(infos[1].split(",")).map(StringToMessage::toDepotParams).collect(Collectors.toList());
             } catch (Exception e){
             throw new IllegalArgumentException("String is not well formatted");
         }

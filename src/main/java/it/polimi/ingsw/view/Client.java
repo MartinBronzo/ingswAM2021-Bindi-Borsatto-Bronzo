@@ -18,5 +18,21 @@ public abstract class Client {
     protected abstract void buyDevCard() throws InterruptedException, IOException;
 
     protected abstract void getDevCardCost() throws InterruptedException, IOException;
+
+    protected abstract void getResourcesFromMarket() throws IOException;
+
+    protected abstract void getProductionCost() throws InterruptedException, IOException;
+
+    protected abstract void activateProduction() throws IOException;
+
+    protected abstract void moveBetweenShelves() throws IOException;
+
+    protected abstract void moveLeaderToShelf() throws IOException;
+
+    protected abstract void moveShelfToLeader() throws IOException;
+
+    protected abstract void discardLeader() throws IOException;
+
+    protected abstract void activateLeader() throws IOException;
 }
 

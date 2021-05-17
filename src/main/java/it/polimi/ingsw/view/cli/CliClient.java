@@ -3,12 +3,11 @@ package it.polimi.ingsw.view.cli;
 import com.google.gson.Gson;
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.network.messages.fromClient.BuyFromMarketMessage;
-import it.polimi.ingsw.network.messages.fromClient.DepotParams;
-import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
+import it.polimi.ingsw.network.messages.sendToClient.ModelUpdate;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.view.Client;
+import it.polimi.ingsw.view.StringToMessage;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 
 import java.io.BufferedReader;
@@ -55,7 +54,6 @@ public class CliClient extends Client implements Runnable {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }
-
         this.manageLogin();
         CliView.printWelcome();
         this.manageGameStarting();
@@ -71,36 +69,52 @@ public class CliClient extends Client implements Runnable {
                 cliCommandType = CliCommandType.valueOf(stdIn.readLine());
                 switch (cliCommandType) {
                     case QUIT:
+                        //TODO: no Idea what Server Needs
+                        break;
+                    case GETRESOURCESFROMMARKET:
+                        this.getResourcesFromMarket();
                         break;
                     case BUYFROMMARKET:
                         this.buyFromMarket();
                         break;
+                    case GETDEVCARDCOST:
+                        this.getDevCardCost();
+                        break;
                     case BUYDEVCARD:
+                        this.buyDevCard();
+                        break;
+                    case GETPRODUCTIONCOST:
+                        this.getProductionCost();
                         break;
                     case ACTIVATEPRODUCTION:
+                        this.activateProduction();
                         break;
                     case DISCARDLEADER:
+                        this.discardLeader();
                         break;
                     case MOVEBETWEENSHELF:
+                        this.moveBetweenShelves();
                         break;
                     case MOVELEADERTOSHELF:
+                        this.moveLeaderToShelf();
                         break;
                     case MOVESHELFTOLEADER:
+                        this.moveShelfToLeader();
                         break;
                     case ACTIVATELEADER:
+                        this.activateLeader();
                         break;
                     case ENDTURN:
+                        //TODO: no Idea what Server Needs
                         break;
                     default:
-                        System.out.println("Command not Valid\n");
+                        System.err.println("Command not Valid\n");
                 }
             } catch (IOException e) {
                 System.err.println("can't read your stream");
                 System.exit(1);
             }catch (IllegalArgumentException e) {
                 System.err.println("your Command doesn't exists");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }while (cliCommandType.equals(CliCommandType.QUIT));
         try {
@@ -143,9 +157,198 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void manageGameStarting() {
-
+        //TODO: no Idea what Server Needs
     }
 
+
+    @Override
+    protected synchronized void getResourcesFromMarket() throws IOException {
+        System.out.println("getResourcesFromMarket example: row 3; 1, 2, 4;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command getResourcesFromMarket = new Command("getResourcesFromMarket", StringToMessage.toMatrixMessage(usrCommand));
+            sendMessage(getResourcesFromMarket);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void buyFromMarket() throws IOException {
+        System.out.println("buyFromMarket example: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command buyFromMarketCommand = new Command("buyFromMarket", StringToMessage.toBuyFromMarketMessage(usrCommand));
+            sendMessage(buyFromMarketCommand);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void getDevCardCost() throws IOException {
+        System.out.println("getDevCardCost example: row 3; 1, 2, 4;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command getResourcesFromMarket = new Command("getCardCost", StringToMessage.toMatrixMessage(usrCommand));
+            sendMessage(getResourcesFromMarket);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void buyDevCard() throws IOException {
+        System.out.println("buyDevCard example: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command buyDevCard = new Command("buyDevCard", StringToMessage.toBuyDevCardMessage(usrCommand));
+            sendMessage(buyDevCard);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void getProductionCost() throws IOException {
+        System.out.println("getProductionCost example: 1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command getProductionCost = new Command("getProductionCost", StringToMessage.toGetProductionCostMessage(usrCommand));
+            sendMessage(getProductionCost);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void activateProduction() throws IOException {
+        System.out.println("activateProduction example: 1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command activateProduction = new Command("activateProductionMesssage", StringToMessage.toActivateProductionMessage(usrCommand));
+            sendMessage(activateProduction);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void moveBetweenShelves() throws IOException {
+        System.out.println("moveBetweenShelves example: 1; 2;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command moveBetweenShelves = new Command("moveBetweenShelves", StringToMessage.toMoveBetweenShelvesMessage(usrCommand));
+            sendMessage(moveBetweenShelves);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void moveLeaderToShelf() throws IOException {
+        System.out.println("moveLeaderToShelf example: COIN; 2; 1;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command moveLeaderToShelf = new Command("moveLeaderToShelf", StringToMessage.toMoveLeaderToShelfMessage(usrCommand));
+            sendMessage(moveLeaderToShelf);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void moveShelfToLeader() throws IOException {
+        System.out.println("moveShelfToLeader example: 2; 1;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command moveShelfToLeader = new Command("moveShelfToLeader", StringToMessage.toMoveShelfToLeaderMessage(usrCommand));
+            sendMessage(moveShelfToLeader);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void discardLeader() throws IOException {
+        System.out.println("discardLeader example: 2;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command discardLeader = new Command("discardLeader", StringToMessage.toLeaderMessage(usrCommand));
+            sendMessage(discardLeader);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected synchronized void activateLeader() throws IOException {
+        System.out.println("activateLeader example: 2;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command activateLeader = new Command("ActivateLeader", StringToMessage.toLeaderMessage(usrCommand));
+            sendMessage(activateLeader);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+
+    @Override
+    public void run() {
+        String response;
+        ResponseMessage responseMessage;
+        String responseContent;
+        Game update;
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                response = in.readLine();
+                responseMessage = gson.fromJson(response, ResponseMessage.class);
+                switch (responseMessage.getResponseType()) {
+                    case PING:
+                        //TODO: no Idea what Server Needs
+                        break;
+                    case UPDATE:
+                        //TODO no Idea what Server Needs how to de gson fromjson
+                        /*
+                        synchronized (this){
+                            responseContent = responseMessage.getResponseContent();
+                            update = gson.fromJson(responseContent, ModelUpdate.class);
+                            gamemodel.merge(update)
+                            cliView.printGameState();
+                        }
+                        */
+                        break;
+                    case ERROR:
+                        break;
+                    case EXTRARESOURCEANDLEADERCARDBEGINNING:
+                        break;
+                    case HASHMAPRESOURCES:
+                        break;
+                    case INFOSTRING:
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        String hostName ="127.0.0.1";
+        int portNumber = 1234;
+        Client client = new CliClient(portNumber, hostName);
+        client.startConnection();
+        client.doConnection();
+    }
+}
+
+
+
+
+
+    /*
     @Override
     protected synchronized void buyFromMarket() throws InterruptedException, IOException {
         Boolean isRow;
@@ -280,51 +483,4 @@ public class CliClient extends Client implements Runnable {
             buyFromMarket = new Command("buyFromMarket", new BuyFromMarketMessage(0, rowColumnNumber, leaderCardsId, depotParamsList, leaderMap, discardsMap));
         sendMessage(buyFromMarket);
     }
-
-    @Override
-    protected synchronized void buyDevCard() throws InterruptedException, IOException {
-
-    }
-
-    @Override
-    protected synchronized void getDevCardCost() throws InterruptedException, IOException {
-        String userResponse = stdIn.readLine();
-
-    }
-
-    @Override
-    public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            try {
-                String response = in.readLine();
-                ResponseMessage responseMessage = gson.fromJson(response, ResponseMessage.class);
-                switch (responseMessage.getResponseType()) {
-                    case PING:
-                        /*call to method to to ping stuff...*/
-                        break;
-                    case UPDATE:
-                        break;
-                    case ERROR:
-                        break;
-                    case EXTRARESOURCEANDLEADERCARDBEGINNING:
-                        break;
-                    case HASHMAPRESOURCES:
-                        break;
-                }
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        String hostName ="127.0.0.1";
-        int portNumber = 1234;
-        Client client = new CliClient(portNumber, hostName);
-        client.startConnection();
-        client.doConnection();
-    }
-}
+     */

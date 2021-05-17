@@ -12,6 +12,10 @@ public class Command {
         Gson gson = new Gson();
         this.parameters = gson.toJson(message);
     }
+    public Command(String endorquitcmd) {
+        this.cmd = cmd;
+        this.parameters = "";
+    }
 
     public String getCmd() {
         return cmd;

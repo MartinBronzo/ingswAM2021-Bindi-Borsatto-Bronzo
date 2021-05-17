@@ -2,8 +2,11 @@ package it.polimi.ingsw.view.cli;
 
 public enum CliCommandType {
     QUIT,
+    GETRESOURCESFROMMARKET,
     BUYFROMMARKET,
+    GETDEVCARDCOST,
     BUYDEVCARD,
+    GETPRODUCTIONCOST,
     ACTIVATEPRODUCTION,
     DISCARDLEADER,
     MOVEBETWEENSHELF,

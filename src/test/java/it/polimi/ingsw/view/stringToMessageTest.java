@@ -3,7 +3,6 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,7 @@ class stringToMessageTest {
     @Test
     void toMatrixMessageTest() {
         String string = "row 3; 1, 2, 4;";
-        GetFromMatrixMessage message = stringToMessage.toMatrixMessage(string);
+        GetFromMatrixMessage message = StringToMessage.toMatrixMessage(string);
         assertEquals(0, message.getCol());
         assertEquals(3, message.getRow());
         List<Integer> integers = message.getLeaderList();
@@ -28,7 +27,7 @@ class stringToMessageTest {
     @Test
     void toBuyDevCardMessage() {
         String string = "row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;";
-        BuyDevCardMessage message = stringToMessage.toBuyDevCardMessage(string);
+        BuyDevCardMessage message = StringToMessage.toBuyDevCardMessage(string);
         assertEquals(0, message.getCol());
         assertEquals(3, message.getRow());
         List<Integer> integers = message.getLeaders();
@@ -51,7 +50,7 @@ class stringToMessageTest {
     @Test
     void toBuyFromMarketMessage() {
         String string = "row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;";
-        BuyFromMarketMessage message = stringToMessage.toBuyFromMarketMessage(string);
+        BuyFromMarketMessage message = StringToMessage.toBuyFromMarketMessage(string);
         assertEquals(0, message.getCol());
         assertEquals(3, message.getRow());
         List<Integer> integers = message.getLeaderList();
@@ -73,7 +72,7 @@ class stringToMessageTest {
     @Test
     void toActivateProductionMessage() {
         String string = "1, 2, 4; 2 COIN, 1 SERVANT; TRUE, COIN SERVANT, STONE; COIN 2 2, STONE 2 2;  COIN 2, SERVANT 1; STONE 2, SERVANT 2;";
-        ActivateProductionMessage message = stringToMessage.toActivateProductionMessage(string);
+        ActivateProductionMessage message = StringToMessage.toActivateProductionMessage(string);
         List<Integer> integers = message.getDevCards();
         assertEquals(1, integers.get(0));
         assertEquals(2, integers.get(1));
@@ -100,7 +99,7 @@ class stringToMessageTest {
     @Test
     void toDepotParamTest() {
         String string = "COIN 2 3";
-        DepotParams message = stringToMessage.toDepotParams(string);
+        DepotParams message = StringToMessage.toDepotParams(string);
         assertEquals(2, message.getQt());
         assertEquals(3, message.getShelf());
         assertEquals(ResourceType.COIN, message.getResourceType());
@@ -109,7 +108,7 @@ class stringToMessageTest {
     @Test
     void toHashMapTest() {
         String string = "COIN 2, SERVANT 1";
-        HashMap hashMap = stringToMessage.toResourceHashMap(string);
+        HashMap hashMap = StringToMessage.toResourceHashMap(string);
         assertEquals(2, hashMap.get(ResourceType.COIN));
         assertEquals(1, hashMap.get(ResourceType.SERVANT));
     }
@@ -117,7 +116,7 @@ class stringToMessageTest {
     @Test
     void toBaseProductionParamsTest() {
         String string = "TRUE, COIN SERVANT, STONE";
-        BaseProductionParams message = stringToMessage.toBaseProductionParams(string);
+        BaseProductionParams message = StringToMessage.toBaseProductionParams(string);
         assertTrue(message.isActivated());
         assertEquals(ResourceType.COIN, message.getBaseInput().get(0));
         assertEquals(ResourceType.SERVANT, message.getBaseInput().get(1));
@@ -127,7 +126,7 @@ class stringToMessageTest {
     @Test
     void toDiscardLeaderAndExtraResBeginningMessageTest() {
         String string = "1, 2, 4; COIN 2 3, STONE 1 4;";
-        DiscardLeaderAndExtraResBeginningMessage message = stringToMessage.toDiscardLeaderAndExtraResBeginningMessage(string);
+        DiscardLeaderAndExtraResBeginningMessage message = StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(string);
         List<Integer> integers = message.getLeaderCard();
         assertEquals(1, integers.get(0));
         assertEquals(2, integers.get(1));
@@ -145,7 +144,7 @@ class stringToMessageTest {
     @Test
     void toGetProductionCostMessageTest() {
         String string = "1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;";
-        GetProductionCostMessage message = stringToMessage.toGetProductionCostMessage(string);
+        GetProductionCostMessage message = StringToMessage.toGetProductionCostMessage(string);
         List<Integer> integers = message.getDevCards();
         assertEquals(1, integers.get(0));
         assertEquals(2, integers.get(1));

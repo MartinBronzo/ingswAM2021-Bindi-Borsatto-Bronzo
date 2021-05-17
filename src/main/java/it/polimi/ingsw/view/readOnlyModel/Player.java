@@ -18,14 +18,30 @@ public class Player {
     private DevSlots devSlots;
     private List<LeaderCard> unUsedLeaders;
     private List<LeaderCard> usedLeaders;
-    private int faithPosition;
+    private Integer faithPosition;
     private HashMap<ResourceType, Integer> baseProductionInput;
     private HashMap<ResourceType, Integer> baseProductionOutput;
     private List<DepotShelf> depotShelves;
     private HashMap<ResourceType, Integer> strongBox;
     private HashMap<ResourceType, Integer> leaderSlots;
-    private int victoryPoints;
+    private Integer victoryPoints;
     private List<PopeTile> popeTiles;
+
+    public Player() {
+        this.nickName = nickName;
+        this.playerState = playerState;
+        this.devSlots = devSlots;
+        this.unUsedLeaders = unUsedLeaders;
+        this.usedLeaders = usedLeaders;
+        this.faithPosition = faithPosition;
+        this.baseProductionInput = baseProductionInput;
+        this.baseProductionOutput = baseProductionOutput;
+        this.depotShelves = depotShelves;
+        this.strongBox = strongBox;
+        this.leaderSlots = leaderSlots;
+        this.victoryPoints = victoryPoints;
+        this.popeTiles = popeTiles;
+    }
 
     public void setVictoryPoints(int victoryPoints) {
         this.victoryPoints = victoryPoints;
@@ -99,7 +115,7 @@ public class Player {
         return usedLeaders;
     }
 
-    public int getFaithPosition() {
+    public Integer getFaithPosition() {
         return faithPosition;
     }
 
@@ -125,7 +141,7 @@ public class Player {
         return leaderSlots;
     }
 
-    public int getVictoryPoints() {
+    public Integer getVictoryPoints() {
         return victoryPoints;
     }
 
