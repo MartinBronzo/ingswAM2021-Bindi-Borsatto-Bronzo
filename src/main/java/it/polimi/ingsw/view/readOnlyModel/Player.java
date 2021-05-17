@@ -27,22 +27,6 @@ public class Player {
     private Integer victoryPoints;
     private List<PopeTile> popeTiles;
 
-    public Player() {
-        this.nickName = nickName;
-        this.playerState = playerState;
-        this.devSlots = devSlots;
-        this.unUsedLeaders = unUsedLeaders;
-        this.usedLeaders = usedLeaders;
-        this.faithPosition = faithPosition;
-        this.baseProductionInput = baseProductionInput;
-        this.baseProductionOutput = baseProductionOutput;
-        this.depotShelves = depotShelves;
-        this.strongBox = strongBox;
-        this.leaderSlots = leaderSlots;
-        this.victoryPoints = victoryPoints;
-        this.popeTiles = popeTiles;
-    }
-
     public void setVictoryPoints(int victoryPoints) {
         this.victoryPoints = victoryPoints;
     }
@@ -69,10 +53,6 @@ public class Player {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public void doSetNickname(String a){
-        this.nickName = a;
     }
 
     public void addDepotShelf(DepotShelf depotShelf){
@@ -169,5 +149,40 @@ public class Player {
     }
 
     public void merge(Player updatePlayer) {
+        PlayerState updateState = updatePlayer.getPlayerState();
+        if (updateState!=null) this.playerState = updateState;
+
+        DevSlots updateDevslots = updatePlayer.getDevSlots();
+        if (updateDevslots!=null) this.devSlots = updateDevslots;
+
+        List<LeaderCard> leaders = updatePlayer.getUnUsedLeaders();
+        if (leaders!=null) this.unUsedLeaders = leaders;
+
+        leaders = updatePlayer.getUsedLeaders();
+        if (leaders!=null) this.usedLeaders = leaders;
+
+        Integer updateInteger = updatePlayer.getFaithPosition();
+        if (updateInteger!=null) this.faithPosition = updateInteger;
+
+        updateInteger = updatePlayer.getVictoryPoints();
+        if (updateInteger!=null) this.victoryPoints = updateInteger;
+
+        HashMap<ResourceType,Integer> updateMap = updatePlayer.getBaseProductionInput();
+        if (updateMap!=null) this.baseProductionInput = updateMap;
+
+        updateMap = updatePlayer.getBaseProductionOutput();
+        if (updateMap!=null) this.baseProductionOutput = updateMap;
+
+        updateMap = updatePlayer.getStrongBox();
+        if (updateMap!=null) this.strongBox = updateMap;
+
+        updateMap = updatePlayer.getLeaderSlots();
+        if (updateMap!=null) this.leaderSlots = updateMap;
+
+        List<DepotShelf> updateDepotShelves = updatePlayer.getDepotShelves();
+        if (updateDepotShelves!=null) this.depotShelves = updateDepotShelves;
+
+        List<PopeTile> updatePopeTiles = updatePlayer.getPopeTiles();
+        if (updatePopeTiles!=null) this.popeTiles = updatePopeTiles;
     }
 }
