@@ -165,8 +165,8 @@ class GamesManagerSingletonTest {
     }
 
     @Test
-    void sameNicksTest() throws  InterruptedException {
-        ClientHandler clientSameNick = new ClientHandler(null, null, null);
+    void sameNicksTest() throws InterruptedException, FileNotFoundException {
+        ClientHandler clientSameNick = new ClientHandler(null, null, new PrintWriter("ClientHandler1File.json"));
         clientSameNick.setNickname("1");
 
         assertNull(gamesManagerSingleton.getStartingGame());

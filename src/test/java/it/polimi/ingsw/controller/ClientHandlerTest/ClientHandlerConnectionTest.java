@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.ClientHandler;
+import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
@@ -95,6 +96,21 @@ public class ClientHandlerConnectionTest {
         assertEquals(c1.getPlayerState(), PlayerState.WAITING4NAME);
         new Thread(c1).start();
         System.out.println(fileReader1.readLine());
+    }*/
+
+    /*@Test
+    public void ctrlReadingAndWriting() throws IOException {
+        fileWriter1.write("this is a test");
+        fileWriter1.close();
+
+        System.out.println(c1.getInput());
+    }*/
+
+    /*@Test
+    public void ctrlRunMethod(){
+        fileWriter1.write(gson.toJson(new Command("login", null)));
+        fileWriter1.close();
+        new Thread(c1).start(); //Se decommenti la System.out.println() che c'è nel run prima del while allora vedi che legge i comandi
     }*/
 
 
