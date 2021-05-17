@@ -167,4 +167,7 @@ public class Player {
                 ", popeTiles" + popeTiles +
                 '}';
     }
+
+    public void merge(Player updatePlayer) {
+    }
 }

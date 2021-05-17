@@ -225,6 +225,17 @@ public class StringToMessage {
         return new LeaderMessage(leaderId);
     }
 
+    public static SetNumPlayerMessage toSetNumPlayerMessage(String string) throws IllegalArgumentException{
+        int numberOfPlayers;
+        try {
+            String[] infos = Arrays.stream(string.split(";")).map(String::strip).toArray(String[]::new);
+            numberOfPlayers = Integer.parseInt(infos[0]);
+        } catch (Exception e){
+            throw new IllegalArgumentException("String is not well formatted");
+        }
+        return new SetNumPlayerMessage(numberOfPlayers);
+    }
+
     public static MoveBetweenShelvesMessage toMoveBetweenShelvesMessage(String string) throws IllegalArgumentException{
         int sourceShelf, destShelf;
         try {

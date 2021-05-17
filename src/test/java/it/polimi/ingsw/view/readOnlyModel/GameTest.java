@@ -15,7 +15,7 @@ class GameTest {
         game.setLorenzosPosition(2);
         Game update = new Game(2);
         update.setLorenzosPosition(3);
-        update.setMainBoard(new Board());
+        update.setMainBoard(game.getMainBoard());
         update.setPlayers(null);
         Collection<Player> players = game.getPlayers();
         game.merge(update);

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.view.readOnlyModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 
 public class Game {
     private Collection<Player> players;
@@ -11,10 +12,7 @@ public class Game {
 
     public Game(int numberOfPlayers) {
         this.players = new ArrayList<>(numberOfPlayers);
-        for (Player p: this.players) {
-            p = new Player();
-            players.add(p);
-        }
+        IntStream.range(0, numberOfPlayers).forEach(i -> players.add(new Player()));
         this.mainBoard = new Board();
         if (numberOfPlayers == 1)
             this.lorenzosPosition = 0;
@@ -54,14 +52,33 @@ public class Game {
         this.mainBoard = mainBoard;
     }
 
-    public void setLorenzosPosition(int lorenzosPosition) {
+    public void setLorenzosPosition(Integer lorenzosPosition) {
         this.lorenzosPosition = lorenzosPosition;
     }
 
+    private Player findByNick (String nick) throws NoSuchElementException{
+        return players.stream().filter(player -> player.getNickName().equals(nick)).findAny().orElseThrow(NoSuchElementException::new);
+    }
+
     public boolean merge(Game update) throws NullPointerException {
-        //TODO: come si comporta tojson con i primitivi che non possono essere null
         if (update==null) throw new NullPointerException("update is Null");
-        int updateLorenzenzo = update.getLorenzosPosition();
+
+        Integer updateLorenzo = update.getLorenzosPosition();
+        if (updateLorenzo != null) this.lorenzosPosition=updateLorenzo;
+
+        Board updateBoard = update.getMainBoard();
+        if (updateBoard != null) this.mainBoard.merge(updateBoard);
+
+        Collection<Player> updatePlayers = update.players;
+        if (updatePlayers != null) {
+            for (Player updatePlayer: updatePlayers) {
+                try {
+                    this.findByNick(updatePlayer.getNickName()).merge(updatePlayer);
+                } catch (NoSuchElementException e) {
+                    players.add(updatePlayer);
+                }
+            }
+        }
         return true;
     }
 

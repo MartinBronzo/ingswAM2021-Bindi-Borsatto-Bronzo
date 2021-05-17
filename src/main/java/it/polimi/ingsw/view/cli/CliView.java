@@ -1,15 +1,30 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.view;
 
-public class CliView implements view {
-    private final Game gameModel;
+import java.util.Map;
 
-    public CliView(Game gameModel) {
-        this.gameModel = gameModel;
-    }
+public class CliView implements view {
 
     public static void printWelcome(){
+    }
+
+    public static void printGameState(Game gamemodel, String nickname) throws NullPointerException {
+
+    }
+
+    public static void printError(String error) {
+    }
+
+    public static void printinfo(String info) {
+    }
+
+    public static void printSetUpView(int nLeadersToDiscard, int resourcesToTake) {
+    }
+
+    public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap) {
+
     }
 }

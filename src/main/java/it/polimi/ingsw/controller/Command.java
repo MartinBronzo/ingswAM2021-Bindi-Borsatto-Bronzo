@@ -12,8 +12,13 @@ public class Command {
         Gson gson = new Gson();
         this.parameters = gson.toJson(message);
     }
-    public Command(String endorquitcmd) {
-        this.cmd = cmd;
+
+
+    /** this constructor is used when cmd doesn't need any paterameter
+     * @param cmdWithoutParameters can be "quit" or "endTurn" or "pingResponse"
+     */
+    public Command(String cmdWithoutParameters) {
+        this.cmd = cmdWithoutParameters;
         this.parameters = "";
     }
 

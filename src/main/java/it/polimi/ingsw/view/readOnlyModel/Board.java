@@ -81,4 +81,8 @@ public class Board {
         }
         return c;
     }
+
+    public boolean merge(Board updateBoard) {
+        return false;
+    }
 }

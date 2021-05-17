@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
-import it.polimi.ingsw.network.messages.sendToClient.ModelUpdate;
-import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
+import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.StringToMessage;
 import it.polimi.ingsw.view.readOnlyModel.Game;
@@ -21,28 +20,29 @@ import java.util.*;
 public class CliClient extends Client implements Runnable {
     private final int portNumber;
     private final String hostName;
-    private final CliView cliView;
-    private final Game gamemodel;
+    private Game gamemodel;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
     private static final BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-    private static Gson gson = new Gson();
+    private static final Gson gson = new Gson();
     private static Thread thread;
     private Map<ResourceType, Integer> resourcesMap;
-    private boolean errorReceived;
+    private int nLeadersToDiscard;
+    private int resourcesToTake;
     private String nickname;
+    private boolean forceLogout = false;
+    String logoutMessage = "Thanks for Playing, See you next time :D";
 
 
     public CliClient(int portNumber, String hostName) {
+        this.gamemodel = null;
         this.portNumber = portNumber;
         this.hostName = hostName;
-        this.gamemodel = new Game();
-        this.cliView = new CliView(this.gamemodel);
     }
 
     @Override
-    public void startConnection() throws IOException {
+    public void startConnection(){
         try {
             socket = new Socket(hostName, portNumber);
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -54,22 +54,27 @@ public class CliClient extends Client implements Runnable {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }
-        this.manageLogin();
         CliView.printWelcome();
-        this.manageGameStarting();
         thread = new Thread(this);
         thread.start();
     }
 
     @Override
     public void doConnection() {
-        CliCommandType cliCommandType = null;
+        CliCommandType cliCommandType = CliCommandType.SETNICKNAME;
         do {
             try {
-                cliCommandType = CliCommandType.valueOf(stdIn.readLine());
+                cliCommandType = CliCommandType.valueOf(stdIn.readLine().toUpperCase());
+                if (forceLogout)
+                    break;
                 switch (cliCommandType) {
                     case QUIT:
                         //TODO: no Idea what Server Needs
+                        break;
+                    case SETNICKNAME:
+                        this.manageLogin();
+                        break;
+                    case SETNUMOFPLAYERS:
                         break;
                     case GETRESOURCESFROMMARKET:
                         this.getResourcesFromMarket();
@@ -116,14 +121,20 @@ public class CliClient extends Client implements Runnable {
             }catch (IllegalArgumentException e) {
                 System.err.println("your Command doesn't exists");
             }
-        }while (cliCommandType.equals(CliCommandType.QUIT));
+        }while (cliCommandType.equals(CliCommandType.QUIT) && !forceLogout);
+        this.endConnection();
+    }
+
+    @Override
+    protected synchronized void endConnection() {
+        CliView.printinfo(logoutMessage);
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Couldn't get I/O");
+            System.exit(1);
         }
         thread.interrupt();
-
     }
 
 
@@ -134,25 +145,12 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    public synchronized void manageLogin() {
-        boolean isNickValid = false;
-        while (!isNickValid){
-            System.out.println("What's your nickname?\n");
-            try {
-                nickname = stdIn.readLine();
-                Command loginCommand = new Command("login", new LoginMessage(nickname));
-                sendMessage(loginCommand);
-                isNickValid = Boolean.parseBoolean(in.readLine());
-                if (!isNickValid)
-                    System.out.println("Nick not Valid\n");
-            } catch (IOException e) {
-                System.err.println("can't read your stream");
-                System.exit(1);
-            }
-        }
-        /*
-        client configurator message is not created
-         */
+    public synchronized void manageLogin() throws IOException {
+        String nickUnchecked;
+        System.out.println("What's your nickname?\n");
+        nickUnchecked = stdIn.readLine();
+        Command loginCommand = new Command("login", new LoginMessage(nickUnchecked));
+        sendMessage(loginCommand);
     }
 
     @Override
@@ -299,33 +297,70 @@ public class CliClient extends Client implements Runnable {
         String response;
         ResponseMessage responseMessage;
         String responseContent;
-        Game update;
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 response = in.readLine();
                 responseMessage = gson.fromJson(response, ResponseMessage.class);
+                responseContent = responseMessage.getResponseContent();
                 switch (responseMessage.getResponseType()) {
                     case PING:
-                        //TODO: no Idea what Server Needs
+                        sendMessage(new Command("pingResponse"));
                         break;
                     case UPDATE:
-                        //TODO no Idea what Server Needs how to de gson fromjson
-                        /*
                         synchronized (this){
-                            responseContent = responseMessage.getResponseContent();
-                            update = gson.fromJson(responseContent, ModelUpdate.class);
-                            gamemodel.merge(update)
-                            cliView.printGameState();
+                            ModelUpdate modelUpdate = gson.fromJson(responseContent, ModelUpdate.class);
+                            Game update = modelUpdate.getGame();
+                            if (this.gamemodel == null)
+                                gamemodel = update;
+                            else
+                                gamemodel.merge(update);
+                            CliView.printGameState(gamemodel, nickname);
                         }
-                        */
                         break;
                     case ERROR:
+                        synchronized (this){
+                            ErrorMessage errorMessage = gson.fromJson(responseContent, ErrorMessage.class);
+                            String error = errorMessage.getErrorMessage();
+                            CliView.printError(error);
+                        }
                         break;
                     case EXTRARESOURCEANDLEADERCARDBEGINNING:
+                        synchronized (this){
+                            ExtraResAndLeadToDiscardBeginningMessage message = gson.fromJson(responseContent, ExtraResAndLeadToDiscardBeginningMessage.class);
+                            nLeadersToDiscard = message.getNumLeader();
+                            resourcesToTake = message.getNumLeader();
+                            CliView.printSetUpView(nLeadersToDiscard, resourcesToTake);
+                        }
                         break;
                     case HASHMAPRESOURCES:
+                        synchronized (this){
+                            HashMapResources message = gson.fromJson(responseContent, HashMapResources.class);
+                            this.resourcesMap = message.getResources();
+                            CliView.printResourcesMap(resourcesMap);
+                        }
                         break;
                     case INFOSTRING:
+                        synchronized (this){
+                            GeneralInfoStringMessage infoMessage = gson.fromJson(responseContent, GeneralInfoStringMessage.class);
+                            String info = infoMessage.getMessage();
+                            CliView.printinfo(info);
+                        }
+                        break;
+                    case ASKFORNUMPLAYERS:
+                        synchronized (this){
+                            String info = "You are the game Creator, you must set the number of players (1-4)";
+                            CliView.printinfo(info);
+                        }
+                        break;
+                    case KICKEDOUT:
+                        synchronized (this) {
+                            logoutMessage = "You Have been kicked out, please restart the game to connect to a new Game";
+                            forceLogout = true;
+                            stdIn.close();
+                        }
+                        break;
+                    case SETNICK:
+                        //TODO: waiting for nickname message;
                         break;
                 }
             } catch (IOException e) {

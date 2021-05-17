@@ -134,19 +134,21 @@ public final class GamesManagerSingleton {
         return startingGame;
     }
 
-    //TODO: giocatore si disconnette e starting game sta aspettando giocatori
+    //TODO: simplify method
     private GameController searchPlayerInGames(String nickname) throws NoSuchElementException, NotAvailableNicknameException {
         if (nickname == null) throw new IllegalArgumentException("nickname can't be null");
+        GameController gameWithThatNick;
         if (startingGame != null) {
-            //TODO: deve returnare starting game
             if (startingGame.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getPlayerState().equals(PlayerState.DISCONNECTED))) {
                 throw new NotAvailableNicknameException("Nick is taken");
+            } else if (startingGame.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && client.getPlayerState().equals(PlayerState.DISCONNECTED))) {
+                return startingGame;
             }
         }
         if (clientConfigurator!=null){
             if (clientConfigurator.getNickname().equals(nickname)) throw new NotAvailableNicknameException("Nick is the same of the actual configurator");
         }
-        GameController gameWithThatNick = games.stream().filter(game -> game.getPlayersList().stream().map(ClientHandler::getNickname).anyMatch(clientUsername -> clientUsername.equals(nickname))).findAny().orElseThrow(NoSuchElementException::new);
+        gameWithThatNick = games.stream().filter(game -> game.getPlayersList().stream().map(ClientHandler::getNickname).anyMatch(clientUsername -> clientUsername.equals(nickname))).findAny().orElseThrow(NoSuchElementException::new);
         if (gameWithThatNick.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getPlayerState().equals(PlayerState.DISCONNECTED))) {
             throw new NotAvailableNicknameException("Nick is taken");
         }
