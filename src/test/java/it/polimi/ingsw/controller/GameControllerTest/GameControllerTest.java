@@ -2,11 +2,14 @@ package it.polimi.ingsw.controller.GameControllerTest;
 
 import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.MainBoard;
+import it.polimi.ingsw.view.Client;
+import it.polimi.ingsw.view.readOnlyModel.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -201,6 +204,7 @@ public class GameControllerTest {
         gameController.setPlayerOld(clientHandler2);
         gameController.setPlayerOld(clientHandler3);
         gameController.setPlayerOld(clientHandler4);
+        gameController.setState(GameState.INSESSION);
 
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
         assertSame(gameController.getPlayersList().get(1), clientHandler2);
@@ -263,6 +267,7 @@ public class GameControllerTest {
         gameController.startMainBoard(1);
         clientHandler1.setNickname("Client 1");
         gameController.setPlayerOld(clientHandler1);
+        gameController.setState(GameState.INSESSION);
         clientHandler1.setPlayerState(PlayerState.DISCONNECTED);
 
         assertEquals(gameController.getPlayersList().get(0).getPlayerState(), PlayerState.DISCONNECTED);
@@ -275,6 +280,189 @@ public class GameControllerTest {
 
         assertEquals(gameController.getPlayersList().get(0).getPlayerState(), PlayerState.WAITING4TURN);
         assertSame(gameController.getPlayersList().get(0), newCH);
+    }
+
+    @Test
+    public void substituteClientINSESSION() throws IllegalActionException {
+        ClientHandler newClientHandler = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newClientHandler.setNickname("Client 4");
+
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(0);
+        gameController.setActivePlayer(clientHandler2);
+        gameController.setState(GameState.INSESSION);
+
+        assertTrue(gameController.substitutesClient(newClientHandler));
+        assertEquals(PlayerState.WAITING4TURN, gameController.getClientHandlerFromNickname("Client 4").getPlayerState());
+    }
+
+    @Test
+    public void substituteClientLASTTURN1() throws IllegalActionException {
+        ClientHandler newClientHandler = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newClientHandler.setNickname("Client 4");
+
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(0);
+        gameController.setActivePlayer(clientHandler2);
+        gameController.setState(GameState.LASTTURN);
+
+        assertTrue(gameController.substitutesClient(newClientHandler));
+        assertEquals(PlayerState.WAITING4LASTTURN, gameController.getClientHandlerFromNickname("Client 4").getPlayerState());
+    }
+
+    @Test
+    public void substituteClientLASTTURN2() throws IllegalActionException {
+        ClientHandler newClientHandler = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newClientHandler.setNickname("Client 2");
+
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(0);
+        gameController.setActivePlayer(clientHandler4);
+        gameController.setState(GameState.LASTTURN);
+
+        assertTrue(gameController.substitutesClient(newClientHandler));
+        assertEquals(PlayerState.WAITING4GAMEEND, gameController.getClientHandlerFromNickname("Client 2").getPlayerState());
+    }
+
+    @Test
+    public void substituteClientLASTTURN3() throws IllegalActionException {
+        ClientHandler newClientHandler = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newClientHandler.setNickname("Client 2");
+
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(2);
+        gameController.setActivePlayer(clientHandler1);
+        gameController.setState(GameState.LASTTURN);
+
+        assertTrue(gameController.substitutesClient(newClientHandler));
+        assertEquals(PlayerState.WAITING4LASTTURN, gameController.getClientHandlerFromNickname("Client 2").getPlayerState());
+    }
+
+    @Test
+    public void substituteClientLASTTURN4() throws IllegalActionException {
+        ClientHandler newClientHandler = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newClientHandler.setNickname("Client 4");
+
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(2);
+        gameController.setActivePlayer(clientHandler1);
+        gameController.setState(GameState.LASTTURN);
+
+        assertTrue(gameController.substitutesClient(newClientHandler));
+        assertEquals(PlayerState.WAITING4GAMEEND, gameController.getClientHandlerFromNickname("Client 4").getPlayerState());
+    }
+
+    @Test
+    public void substituteClientDisconnectedBeforeStarting() throws IllegalActionException {
+        ClientHandler newClientHandler = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
+        newClientHandler.setNickname("Client 1");
+
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler1.setPlayerState(PlayerState.DISCONNECTED);
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(2);
+        gameController.setActivePlayer(clientHandler3);
+        gameController.setState(GameState.INSESSION);
+        gameController.addDisconnectedBeforeStart(clientHandler1);
+
+        assertTrue(gameController.substitutesClient(newClientHandler));
+        assertEquals(PlayerState.WAITING4BEGINNINGDECISIONS, gameController.getClientHandlerFromNickname("Client 1").getPlayerState());
+    }
+
+    @Test
+    public void playerPositionInTurn() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(0);
+
+        assertEquals(4, gameController.getPlayerPositionInTurn(clientHandler4));
+
+    }
+
+    @Test
+    public void playerPositionInTurn2() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(1);
+
+        assertEquals(3, gameController.getPlayerPositionInTurn(clientHandler4));
+    }
+
+    @Test
+    public void playerPositionInTurn3() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(2);
+
+        assertEquals(4, gameController.getPlayerPositionInTurn(clientHandler2));
     }
 
 

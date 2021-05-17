@@ -114,20 +114,88 @@ public class GameController {
 
     /**
      * Substitutes a ClientHandler with the one specified. This method is used when a player loses their connection and they reconnect to the server (the new
-     * ClientHandler they get is the one specified as a parameter) and their PlayerState is set to WAITING4TURN because they are back in the game
+     * ClientHandler they get is the one specified as a parameter) and their PlayerState value is based on the actual state of the game and the state at which the client disconnected
      *
      * @param newClientHandler the ClientHandler which is going to substitute the one ClientHandler present in the game which has the same nickname as the one stored inside the
      *                         specified object
      * @return true if the substitution took place correctly, false if there was no substitution because the client associated with the specified ClientHandler is not in this game
      */
     public boolean substitutesClient(ClientHandler newClientHandler) {
-        for (Pair<ClientHandler, PlayerBoard> e : players)
+        //Case gameState == STARTED when disconnection happend
+        //If the player was adding the resources and discarding the leaderCards at the beginning of the game, before disconnecting
+        for (ClientHandler ch : disconnectedBeforeStarting) {
+            if (ch.getNickname().equals(newClientHandler.getNickname())) {
+                newClientHandler.setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
+                for (Pair<ClientHandler, PlayerBoard> e : players)
+                    if (e.getKey().getNickname().equals(newClientHandler.getNickname()))
+                        e.setKey(newClientHandler);
+
+                //TODO: INVIA RISORSE E CARTE AL CLIENT
+                return true;
+            }
+        }
+
+        switch (state) {
+            case INSESSION:
+                for (Pair<ClientHandler, PlayerBoard> e : players)
+                    if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
+                        newClientHandler.setPlayerState(PlayerState.WAITING4TURN);
+                        e.setKey(newClientHandler);
+                        return true;
+                    }
+                break;
+
+            //TODO: se un player si disconnette mentre siamo in attesa di avviare il game chiudiamo il socket con lui o aspettiamo che torna? io direi la prima...(e così questo case non serve più)
+            //CASE NOT TESTED
+            case WAITING4PLAYERS:
+                for (Pair<ClientHandler, PlayerBoard> e : players)
+                    if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
+                        newClientHandler.setPlayerState(PlayerState.WAITINGGAMESTART);
+                        e.setKey(newClientHandler);
+                        return true;
+                    }
+                break;
+
+            case LASTTURN:
+                int activePlayerPosition, newPlayerPosition;
+                activePlayerPosition = getPlayerPositionInTurn(activePlayer);
+                newPlayerPosition = getPlayerPositionInTurn(newClientHandler);
+                if(activePlayerPosition == -1 || newPlayerPosition == -1){
+                    //TODO: INVIO MESSAGGIO AL CLIENT/LANCIO ECCEZIONE?
+                }
+
+                //checks if the reconnected player lost his last turn or if will play it
+                if (activePlayerPosition == firstPlayer)
+                    newClientHandler.setPlayerState(PlayerState.WAITING4LASTTURN);
+                else {
+                    if (activePlayerPosition > firstPlayer) {
+                        if (newPlayerPosition > activePlayerPosition || newPlayerPosition < firstPlayer)
+                            newClientHandler.setPlayerState(PlayerState.WAITING4LASTTURN);
+                        else
+                            newClientHandler.setPlayerState(PlayerState.WAITING4GAMEEND);
+                    } else //activePlayerPosition < firstPlayer
+                        if (newPlayerPosition > activePlayerPosition && newPlayerPosition < firstPlayer)
+                            newClientHandler.setPlayerState(PlayerState.WAITING4LASTTURN);
+                        else
+                            newClientHandler.setPlayerState(PlayerState.WAITING4GAMEEND);
+                }
+
+                for (Pair<ClientHandler, PlayerBoard> e : players)
+                    if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
+                        e.setKey(newClientHandler);
+                        return true;
+                    }
+                break;
+        }
+
+
+        /*for (Pair<ClientHandler, PlayerBoard> e : players) {
             if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
                 newClientHandler.setPlayerState(PlayerState.WAITING4TURN);
                 e.setKey(newClientHandler);
                 return true;
             }
-
+        }*/
         return false;
     }
 
@@ -217,7 +285,7 @@ public class GameController {
         players.add(new Pair<>(player, playerBoard));
         //We added the last player: the game must begin
         player.setPlayerState(PlayerState.WAITINGGAMESTART); //TODO: va bene metterlo qua?
-        if(players.size() == this.numberOfPlayers)
+        if (players.size() == this.numberOfPlayers)
             this.startGame();
         return true;
     }
@@ -230,9 +298,9 @@ public class GameController {
 
     private void checkIfGameMustBegin() {
         synchronized (this.howManyPlayersReady) {
-            synchronized (this.disconnectedBeforeStarting){
+            synchronized (this.disconnectedBeforeStarting) {
                 //We may end up here if a player send their beginning decisions after the game has become INSESSION
-                if(!(this.state.equals(GameState.STARTED)))
+                if (!(this.state.equals(GameState.STARTED)))
                     return;
                 this.howManyPlayersReady++;
                 if (this.howManyPlayersReady + this.disconnectedBeforeStarting.size() == this.numberOfPlayers) {
@@ -250,9 +318,9 @@ public class GameController {
      *
      * @param disconnectedPlayer the player who disconnected before taking their beginning decisions
      */
-    public void registerPlayerDisconnectionBeforeStarting(ClientHandler disconnectedPlayer){
-        synchronized (this.disconnectedBeforeStarting){
-            if(this.disconnectedBeforeStarting.contains(disconnectedPlayer))
+    public void registerPlayerDisconnectionBeforeStarting(ClientHandler disconnectedPlayer) {
+        synchronized (this.disconnectedBeforeStarting) {
+            if (this.disconnectedBeforeStarting.contains(disconnectedPlayer))
                 return;
             this.disconnectedBeforeStarting.add(disconnectedPlayer);
         }
@@ -289,6 +357,7 @@ public class GameController {
                 //Then we have gone through the whole list without finding any player who wasn't active
                 throw new IllegalStateException("All the players are disconnected!");
         }
+        activePlayer = players.get(index).getKey();
         this.updatesTurnAndSendInfo(index);
     }
 
@@ -308,6 +377,25 @@ public class GameController {
         for (int i = 0; i < this.numberOfPlayers; i++)
             if (players.get(i).getKey() == player)
                 return i;
+        return -1;
+    }
+
+    //this method should be private but for testing purpose is public
+    public int getPlayerPositionInTurn(ClientHandler clientHandler) {
+        int num = 1;
+        for (int i = firstPlayer; i < players.size(); i++) {
+            if (players.get(i).getKey().getNickname().equals(clientHandler.getNickname())) {
+                return num;
+            }
+            num++;
+        }
+
+        for (int i = 0; i < firstPlayer; i++) {
+            if (players.get(i).getKey().getNickname().equals(clientHandler.getNickname())) {
+                return num;
+            }
+            num++;
+        }
         return -1;
     }
 
@@ -417,6 +505,7 @@ public class GameController {
     public boolean sendNumExtraResBeginning() {
         //Randomly chooses a first player
         this.firstPlayer = mainBoard.getFirstPlayerRandomly();
+        activePlayer = players.get(firstPlayer).getKey();
 
         try {
             mainBoard.giveExtraFaithPointAtBeginning(firstPlayer);
@@ -435,7 +524,7 @@ public class GameController {
     }
 
     public boolean sendNumExtraResBeginningToDisconnectedPlayer(ClientHandler usedToBeDisconnected) throws IllegalActionException {
-        if(!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
+        if (!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
             throw new IllegalActionException("The player has already given their beginning decisions!");
 
         //For the specified player it computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
@@ -505,8 +594,8 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
         this.sendBroadcastUpdate(new ModelUpdate(game));
-        synchronized (this.disconnectedBeforeStarting){
-            if(this.disconnectedBeforeStarting.contains(clientHandler))
+        synchronized (this.disconnectedBeforeStarting) {
+            if (this.disconnectedBeforeStarting.contains(clientHandler))
                 this.disconnectedBeforeStarting.remove(clientHandler);
         }
         this.checkIfGameMustBegin();
@@ -1054,7 +1143,7 @@ public class GameController {
      *
      * @param disconnectedPlayer the player that disconnected from the game
      */
-    public void updatesAfterDisconnection(ClientHandler disconnectedPlayer){
+    public void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
         int index = this.getPlayerNumber(disconnectedPlayer);
 
         Game game = new Game();
@@ -1065,7 +1154,6 @@ public class GameController {
 
         this.sendBroadcastUpdate(new ModelUpdate(game), disconnectedPlayer);
     }
-
 
 
     /**
@@ -1214,6 +1302,16 @@ public class GameController {
 
     public ClientHandler getActivePlayer() {
         return activePlayer;
+    }
+
+    //used only for testing
+    public void setActivePlayer(ClientHandler activePlayer){
+        this.activePlayer = activePlayer;
+    }
+
+    //used only for testing
+    public void addDisconnectedBeforeStart(ClientHandler clientHandler){
+        disconnectedBeforeStarting.add(clientHandler);
     }
 
     private boolean findClientHandler(ClientHandler clientHandler) {

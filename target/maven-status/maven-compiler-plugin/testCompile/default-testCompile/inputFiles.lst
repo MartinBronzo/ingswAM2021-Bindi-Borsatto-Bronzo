@@ -17,6 +17,7 @@ C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\po
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\DiscardTokenObserverTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\soloGame\FaithPointTokenTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCard\LeaderCardRequirements\CardRequirementColorAndLevelTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\GameControllerTest\GameControllerStateTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\GameControllerTest\GameControllerTurnsManagementTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MarketFactoryTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\GeneralMainBoardMethodsClass.java
@@ -27,12 +28,15 @@ C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\po
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\LeaderCardDeckTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\FaithLevelBasicTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\FaithTrackTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\view\readOnlyModel\GameTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\PlayerBoardTest\DepotPlayerBoardMethodsTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\PopeTileTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\ClientHandlerTest\ClientHandlerStateTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\MainBoardTest\FaithTrackMainBoardMethodsTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\StrongboxTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\FaithTrackTest\CellTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCardTest\LeaderCardDeckTest.java
+C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\controller\ClientHandlerTest\ClientHandlerConnectionTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\PlayerBoardTest\ConfigurationMethodsPlayerBoardTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\LeaderCardTest\EffectTest.java
 C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\src\test\java\it\polimi\ingsw\model\marble\PurpleMarbleTest.java

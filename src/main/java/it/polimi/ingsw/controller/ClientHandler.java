@@ -17,9 +17,6 @@ import it.polimi.ingsw.network.messages.sendToClient.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,9 +26,10 @@ public class ClientHandler implements Runnable {
     private final BufferedReader in;
     private final PrintWriter out;
     private GameController game;
-    private PlayerState playerSate;
+    private PlayerState playerState;
     private boolean mainActionDone;
     private int numLeaderActionDone;
+    private boolean pingAnswered;
     private final Gson gson;
 
     /**
@@ -42,9 +40,10 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
         this.in = in;
         this.out = new PrintWriter(out, true);
-        this.playerSate = PlayerState.WAITING4NAME;
+        this.playerState = PlayerState.WAITING4NAME;
         mainActionDone = false;
         numLeaderActionDone = 0;
+        pingAnswered = true;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -69,7 +68,8 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        this.playerSate = PlayerState.WAITING4NAME;
+        this.playerState = PlayerState.WAITING4NAME;
+        pingAnswered = true;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -105,27 +105,63 @@ public class ClientHandler implements Runnable {
         pingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                try {
+                if (pingAnswered) {
+                    send(new PingMessage("Ping"));
+                    pingAnswered = false;
+                } else {
+                    if (playerState == PlayerState.WAITING4NAME) {
+                        try {
+                            socket.close();
+                            pingTimer.cancel();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                            //TODO: cosa fare?
+                        }
+                    } else {
+                        if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS) {
+                            game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
+                        }
+
+                        if (playerState != PlayerState.DISCONNECTED) {
+                            setPlayerState(PlayerState.DISCONNECTED);
+                            game.updatesAfterDisconnection(ClientHandler.this);
+                        }
+
+                    }
+                }
+
+               /* try {
                     pingClient(socket);
                 } catch (IOException e) {
                     //e.printStackTrace();
-                    setPlayerState(PlayerState.DISCONNECTED);
-                    game.updatesAfterDisconnection(ClientHandler.this);
-                    //TODO: SE SI DISCONNETTE PRIMA DEL LOGIN?
-                }
+                    //If the player disconnects before logging in, the socket is closed and the pingTimer is canceled
+                    if (playerSate == PlayerState.WAITING4NAME) {
+                        try {
+                            socket.close();
+                            pingTimer.cancel();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                            //TODO: cosa fare?
+                        }
+                    } else {
+                        setPlayerState(PlayerState.DISCONNECTED);
+                        if (playerSate != PlayerState.DISCONNECTED)
+                            game.updatesAfterDisconnection(ClientHandler.this);
+                    }
+                }*/
             }
         }, 0, 5000);
 
         try {
-            //Scanner scanner = new Scanner(in);
-
-            //String line = scanner.nextLine();
             String line = in.readLine();
-            //System.out.println(line);
             command = gson.fromJson(line, Command.class);
             while (!command.getCmd().equals("quit")) {
-                if (playerSate == PlayerState.PLAYING) {
+                if (playerState == PlayerState.PLAYING) {
                     switch (command.getCmd()) {
+
+                        case "pingResponse":
+                            pingAnswered = true;
+                            break;
 
                         case "login":
                             LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
@@ -242,7 +278,7 @@ public class ClientHandler implements Runnable {
                         case "endTurn":
 
                             if (game.getNumberOfPlayers() == 1) {
-                                this.playerSate = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
+                                this.playerState = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
                                 game.drawSoloToken(this);
                             } else {
                                 game.specifyNextPlayer(this);
@@ -263,22 +299,28 @@ public class ClientHandler implements Runnable {
             in.close();
             out.close();
             socket.close();
-        } catch (IOException e) {
+        } catch (
+                IOException e) {
             e.printStackTrace();
             this.send(new ErrorMessage("An error occurred (IOException)"));
-        } catch (IllegalActionException | IllegalArgumentException e) {
+        } catch (IllegalActionException |
+                IllegalArgumentException e) {
             e.printStackTrace();
             this.send(new ErrorMessage(e.getMessage()));
-        } catch (InterruptedException e) {
+        } catch (
+                InterruptedException e) {
             e.printStackTrace();
             this.send(new ErrorMessage("An error occurred (InterruptedException)"));
-        } catch (NotAvailableNicknameException e) {
+        } catch (
+                NotAvailableNicknameException e) {
             e.printStackTrace();
             this.send(new ErrorMessage("This nickname isn't available!"));
-        } catch (IllegalStateException e) {
+        } catch (
+                IllegalStateException e) {
             //TODO: cosa facciamo se non ci sono più player connessi?
             e.printStackTrace();
         }
+
     }
 
     public synchronized void send(String message) {
@@ -292,34 +334,35 @@ public class ClientHandler implements Runnable {
         //out.flush();
     }
 
-    private void pingClient(Socket socket) throws IOException {
+
+    /*private void pingClient(Socket socket) throws IOException {
         //TODO: da testare
         this.send(new PingMessage("Ping"));
         socket.setSoTimeout(2000);
-            in.readLine();
-            if (playerSate == PlayerState.DISCONNECTED) {
-                switch (game.getState()) {
-                    case LASTTURN:
-                        playerSate = PlayerState.WAITING4LASTTURN; //waiting and not playing4lastturn because we assume that the turn of a disconnected player is skipped
-                        break;
-                    case INSESSION:
-                        playerSate = PlayerState.WAITING4TURN;
-                        break;
-                    case WAITING4PLAYERS:
-                        playerSate = PlayerState.WAITINGGAMESTART;
-                        break;
-                    case CONFIGURING:
-                        playerSate = PlayerState.WAITING4NAME;
-                        break;
-                    case STARTED:
-                        playerSate = PlayerState.WAITING4BEGINNINGDECISIONS;
-                        break;
-                    //TODO: WAITINGGAMEEND?
-                }
-                game.updatesAfterDisconnection(this);
-                //TODO: cosa succede se il giocatore si disconnette mentre gioca? Ci sarà da fare il rollback dello state del game e da cambiare i turni!
+        in.readLine();
+        if (playerSate == PlayerState.DISCONNECTED) {
+            switch (game.getState()) {
+                case LASTTURN:
+                    playerSate = PlayerState.WAITING4LASTTURN; //waiting and not playing4lastturn because we assume that the turn of a disconnected player is skipped
+                    break;
+                case INSESSION:
+                    playerSate = PlayerState.WAITING4TURN;
+                    break;
+                case WAITING4PLAYERS:
+                    playerSate = PlayerState.WAITINGGAMESTART;
+                    break;
+                case CONFIGURING:
+                    playerSate = PlayerState.WAITING4NAME;
+                    break;
+                case STARTED:
+                    playerSate = PlayerState.WAITING4BEGINNINGDECISIONS;
+                    break;
+                //TODO: WAITINGGAMEEND?
             }
-    }
+            game.updatesAfterDisconnection(this);
+            //TODO: cosa succede se il giocatore si disconnette mentre gioca? Ci sarà da fare il rollback dello state del game e da cambiare i turni!
+        }
+    }*/
 
 
     public void setNickname(String nickname) {
@@ -327,7 +370,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void setPlayerState(PlayerState state) {
-        this.playerSate = state;
+        this.playerState = state;
     }
 
     public void setGame(GameController game) {
@@ -347,7 +390,7 @@ public class ClientHandler implements Runnable {
     }
 
     public PlayerState getPlayerState() {
-        return playerSate;
+        return playerState;
     }
 
     public String getInput() throws IOException {
