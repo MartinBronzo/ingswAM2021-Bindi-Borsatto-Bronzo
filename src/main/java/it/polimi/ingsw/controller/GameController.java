@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -210,10 +211,9 @@ public class GameController {
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
         //We added the last player: the game must begin
-        /*if(players.size() == this.numberOfPlayers)
+        if(players.size() == this.numberOfPlayers)
             this.startGame();
-            //TODO: aggiungere questo if commentato causa ai test del GamesMangerSingletonTest di fallire
-        */
+
         return true;
     }
 
@@ -990,6 +990,7 @@ public class GameController {
      *
      * @param disconnectedPlayer
      */
+    /*@Deprecated
     public void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
         int index = this.getPlayerNumber(disconnectedPlayer);
 
@@ -1005,8 +1006,27 @@ public class GameController {
         }
 
         this.sendBroadcastUpdate(new ModelUpdate(game), disconnectedPlayer);
-
     }
+    */
+
+    /**
+     * Updates all the player that the specified player has been disconnected
+     *
+     * @param disconnectedPlayer the player that disconnected from the game
+     */
+    public void updatesAfterDisconnection(ClientHandler disconnectedPlayer){
+        int index = this.getPlayerNumber(disconnectedPlayer);
+
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName(this.players.get(index).getKey().getNickname());
+        player.setPlayerState(this.players.get(index).getKey().getPlayerState());
+        game.addPlayer(player);
+
+        this.sendBroadcastUpdate(new ModelUpdate(game), disconnectedPlayer);
+    }
+
+
 
     /**
      * Updates the player's state by setting the specified player as the one who can play their turn and by setting the former player as in

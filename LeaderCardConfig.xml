@@ -161,4 +161,165 @@
         </ExtraProductionEffect>
     </LeaderCard>
 
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>2</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>BLUE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>PURPLE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <DiscountEffect>
+            <Resource>SHIELD</Resource>
+            <Discount>1</Discount>
+        </DiscountEffect>
+
+        <Url>...</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>3</VictoryPoints>
+        <Requirementlist>
+            <ResourceRequirement>
+                <Resource>COIN</Resource>
+                <Quantity>5</Quantity>
+            </ResourceRequirement>
+        </Requirementlist>
+
+        <ExtraSlotEffect>
+            <Resource>STONE</Resource>
+            <Quantity>2</Quantity>
+        </ExtraSlotEffect>
+
+        <Url>...</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>5</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>YELLOW</Color>
+                <Quantity>2</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>BLUE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <WhiteMarbleEffect>
+            <Resource>SERVANT</Resource>
+        </WhiteMarbleEffect>
+
+        <Url>...</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>4</VictoryPoints>
+        <Requirementlist>
+            <ColorAndLevelRequirement>
+                <Color>YELLOW</Color>
+                <Level>2</Level>
+                <Quantity>1</Quantity>
+            </ColorAndLevelRequirement>
+        </Requirementlist>
+
+        <ExtraProductionEffect>
+            <Resource>SHIELD</Resource>
+            <Quantity>1</Quantity>
+        </ExtraProductionEffect>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>2</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>BLUE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>PURPLE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <DiscountEffect>
+            <Resource>SHIELD</Resource>
+            <Discount>1</Discount>
+        </DiscountEffect>
+
+        <Url>...</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>3</VictoryPoints>
+        <Requirementlist>
+            <ResourceRequirement>
+                <Resource>COIN</Resource>
+                <Quantity>5</Quantity>
+            </ResourceRequirement>
+        </Requirementlist>
+
+        <ExtraSlotEffect>
+            <Resource>STONE</Resource>
+            <Quantity>2</Quantity>
+        </ExtraSlotEffect>
+
+        <Url>...</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>5</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>YELLOW</Color>
+                <Quantity>2</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>BLUE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <WhiteMarbleEffect>
+            <Resource>SERVANT</Resource>
+        </WhiteMarbleEffect>
+
+        <Url>...</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>4</VictoryPoints>
+        <Requirementlist>
+            <ColorAndLevelRequirement>
+                <Color>YELLOW</Color>
+                <Level>2</Level>
+                <Quantity>1</Quantity>
+            </ColorAndLevelRequirement>
+        </Requirementlist>
+
+        <ExtraProductionEffect>
+            <Resource>SHIELD</Resource>
+            <Quantity>1</Quantity>
+        </ExtraProductionEffect>
+    </LeaderCard>
+
 </LeaderCardConfig>

@@ -18,6 +18,7 @@ import it.polimi.ingsw.network.messages.sendToClient.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +30,8 @@ public class ClientHandler implements Runnable {
     private final PrintWriter out;
     private GameController game;
     private PlayerState playerSate;
+    private boolean mainActionDone;
+    private int numLeaderActionDone;
     private final Gson gson;
 
     /**
@@ -40,6 +43,8 @@ public class ClientHandler implements Runnable {
         this.in = in;
         this.out = out;
         this.playerSate = PlayerState.WAITING4NAME;
+        mainActionDone = false;
+        numLeaderActionDone = 0;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -65,7 +70,24 @@ public class ClientHandler implements Runnable {
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.playerSate = PlayerState.WAITING4NAME;
-        this.gson = new Gson();
+
+        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
+                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
+        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
+        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
+
+        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
+                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
+        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
+
+        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
+                .registerTypeAdapterFactory(effectTypeFactory).create();
     }
 
     /**
@@ -76,6 +98,7 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         Command command;
+        final int MAX_LEADER_ACTION = 2;
 
         Timer pingTimer = new Timer();
         //Creates a timer that pings the client every 5 sec
@@ -84,21 +107,22 @@ public class ClientHandler implements Runnable {
             public void run() {
                 try {
                     pingClient(socket);
-                } catch (SocketException e) {
+                } catch (IOException e) {
                     //e.printStackTrace();
                     setPlayerState(PlayerState.DISCONNECTED);
-                    //TODO: INVIARE UPDATE A TUTTI I CLIENT passando nickname e playerState
+                    game.updatesAfterDisconnection(ClientHandler.this);
+                    //TODO: SE SI DISCONNETTE PRIMA DEL LOGIN?
                 }
             }
         }, 0, 5000);
 
         try {
-            Scanner in = new Scanner(socket.getInputStream());
+            Scanner scanner = new Scanner(in);
 
-            String line = in.nextLine();
-            while (!line.equals("quit")) {
+            String line = scanner.nextLine();
+            command = gson.fromJson(line, Command.class);
+            while (!command.getCmd().equals("quit")) {
                 if (playerSate == PlayerState.PLAYING) {
-                    command = gson.fromJson(line, Command.class);
                     switch (command.getCmd()) {
 
                         case "login":
@@ -106,7 +130,7 @@ public class ClientHandler implements Runnable {
                             this.nickname = loginMessage.getNickName();
                             this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
                             if (this.game == null)
-                                this.send(new GeneralInfoStringMessage("You are creating a game! Tell me how many players you want in this game!"));
+                                this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
                             else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
                                 //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
                                 //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
@@ -134,8 +158,13 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "buyFromMarket":
-                            BuyFromMarketMessage buyFromMarket = gson.fromJson(command.getParameters(), BuyFromMarketMessage.class);
-                            game.buyFromMarket(buyFromMarket, this);
+                            if (!mainActionDone) {
+                                mainActionDone = true;
+                                BuyFromMarketMessage buyFromMarket = gson.fromJson(command.getParameters(), BuyFromMarketMessage.class);
+                                game.buyFromMarket(buyFromMarket, this);
+                            } else {
+                                this.send(new ErrorMessage("You've already done your main action in this turn"));
+                            }
                             break;
 
                         case "getCardCost":
@@ -144,8 +173,13 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "buyDevCard":
-                            BuyDevCardMessage buyDevCard = gson.fromJson(command.getParameters(), BuyDevCardMessage.class);
-                            game.buyDevCard(buyDevCard, this);
+                            if (!mainActionDone) {
+                                mainActionDone = true;
+                                BuyDevCardMessage buyDevCard = gson.fromJson(command.getParameters(), BuyDevCardMessage.class);
+                                game.buyDevCard(buyDevCard, this);
+                            } else {
+                                this.send(new ErrorMessage("You've already done your main action in this turn"));
+                            }
                             break;
 
                         case "getProductionCost":
@@ -154,8 +188,13 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "activateProductionMesssage":
-                            ActivateProductionMessage activateProduction = gson.fromJson(command.getParameters(), ActivateProductionMessage.class);
-                            game.activateProduction(activateProduction, this);
+                            if (!mainActionDone) {
+                                mainActionDone = true;
+                                ActivateProductionMessage activateProduction = gson.fromJson(command.getParameters(), ActivateProductionMessage.class);
+                                game.activateProduction(activateProduction, this);
+                            } else {
+                                this.send(new ErrorMessage("You've already done your main action in this turn"));
+                            }
                             break;
 
                         case "discardLeaderAndExtraResBeginning":
@@ -179,31 +218,43 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "discardLeader":
-                            LeaderMessage discardLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
-                            game.discardLeader(discardLeader, this);
+                            if (numLeaderActionDone < MAX_LEADER_ACTION) {
+                                numLeaderActionDone++;
+                                LeaderMessage discardLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
+                                game.discardLeader(discardLeader, this);
+                            } else {
+                                this.send(new ErrorMessage("You've already done all the possible leader actions"));
+                            }
                             break;
 
                         case "ActivateLeader":
-                            LeaderMessage activateLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
-                            game.activateLeader(activateLeader, this);
+                            if (numLeaderActionDone < MAX_LEADER_ACTION) {
+                                numLeaderActionDone++;
+                                LeaderMessage activateLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
+                                game.activateLeader(activateLeader, this);
+                            } else {
+                                this.send(new ErrorMessage("You've already done all the possible leader actions"));
+                            }
                             break;
 
                         case "endTurn":
 
-                            if(game.getNumberOfPlayers() == 1){
+                            if (game.getNumberOfPlayers() == 1) {
                                 this.playerSate = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
                                 game.drawSoloToken(this);
-                            }
-                            else{
+                            } else {
                                 game.specifyNextPlayer(this);
                             }
+                            mainActionDone = false;
                             break;
 
                     }
                 } else {
                     this.send(new ErrorMessage("Wait your turn to do the action"));
                 }
-                line = in.nextLine();
+                line = scanner.nextLine();
+                command = gson.fromJson(line, Command.class);
+
             }
             //Close stream and socket
             in.close();
@@ -213,13 +264,15 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
             this.send(new ErrorMessage("An error occurred (IOException)"));
         } catch (IllegalActionException | IllegalArgumentException e) {
+            e.printStackTrace();
             this.send(new ErrorMessage(e.getMessage()));
         } catch (InterruptedException e) {
             e.printStackTrace();
             this.send(new ErrorMessage("An error occurred (InterruptedException)"));
         } catch (NotAvailableNicknameException e) {
+            e.printStackTrace();
             this.send(new ErrorMessage("This nickname isn't available!"));
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             //TODO: cosa facciamo se non ci sono più player connessi?
             e.printStackTrace();
         }
@@ -230,17 +283,16 @@ public class ClientHandler implements Runnable {
         out.flush();
     }
 
-    public synchronized void send(ResponseInterface response){
+    public synchronized void send(ResponseInterface response) {
         ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
         out.println(gson.toJson(responseMessage));
         out.flush();
     }
 
-    private void pingClient(Socket socket) throws SocketException {
+    private void pingClient(Socket socket) throws IOException {
         //TODO: da testare
         this.send(new PingMessage("Ping"));
         socket.setSoTimeout(2000);
-        try {
             in.readLine();
             if (playerSate == PlayerState.DISCONNECTED) {
                 switch (game.getState()) {
@@ -261,14 +313,9 @@ public class ClientHandler implements Runnable {
                         break;
                     //TODO: WAITINGGAMEEND?
                 }
-                //TODO UPDATE BROADCAST QUANDO CAMBIA STATO
-                //game.updatesAfterDisconnection(this);
+                game.updatesAfterDisconnection(this);
                 //TODO: cosa succede se il giocatore si disconnette mentre gioca? Ci sarà da fare il rollback dello state del game e da cambiare i turni!
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            //TODO: CHE FARE?
-        }
     }
 
 
@@ -298,6 +345,12 @@ public class ClientHandler implements Runnable {
 
     public PlayerState getPlayerState() {
         return playerSate;
+    }
+
+    public String getInput() throws IOException {
+        Scanner in = new Scanner(socket.getInputStream());
+
+        return in.nextLine();
     }
 
 }
