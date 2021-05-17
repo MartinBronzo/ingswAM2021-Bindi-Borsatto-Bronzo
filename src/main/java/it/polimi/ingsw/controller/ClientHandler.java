@@ -130,7 +130,7 @@ public class ClientHandler implements Runnable {
                             this.nickname = loginMessage.getNickName();
                             this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
                             if (this.game == null)
-                                this.send(new GeneralInfoStringMessage("You are creating a game! Tell me how many players you want in this game!"));
+                                this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
                             else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
                                 //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
                                 //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
