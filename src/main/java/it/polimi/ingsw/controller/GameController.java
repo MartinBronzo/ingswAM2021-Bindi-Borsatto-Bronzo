@@ -210,10 +210,9 @@ public class GameController {
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
         //We added the last player: the game must begin
-        /*if(players.size() == this.numberOfPlayers)
+        if(players.size() == this.numberOfPlayers)
             this.startGame();
-            //TODO: aggiungere questo if commentato causa ai test del GamesMangerSingletonTest di fallire
-        */
+
         return true;
     }
 
