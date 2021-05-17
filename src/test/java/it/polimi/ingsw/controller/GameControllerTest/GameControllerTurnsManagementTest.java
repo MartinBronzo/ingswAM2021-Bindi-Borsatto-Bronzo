@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
@@ -39,6 +40,7 @@ public class GameControllerTurnsManagementTest {
     BufferedReader fileReader3;
     BufferedReader fileReader4;
     Gson gson;
+
 
 
     @BeforeEach
@@ -253,5 +255,4 @@ public class GameControllerTurnsManagementTest {
         player = game.getPlayers().stream().filter(x -> x.getNickName().equals("Client 4")).findFirst().get();
         assertEquals(player.getPlayerState(), PlayerState.PLAYING);
     }
-
 }

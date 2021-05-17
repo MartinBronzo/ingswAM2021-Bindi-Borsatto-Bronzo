@@ -216,9 +216,9 @@ public class GameController {
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
         //We added the last player: the game must begin
+        player.setPlayerState(PlayerState.WAITINGGAMESTART); //TODO: va bene metterlo qua?
         if(players.size() == this.numberOfPlayers)
             this.startGame();
-
         return true;
     }
 
