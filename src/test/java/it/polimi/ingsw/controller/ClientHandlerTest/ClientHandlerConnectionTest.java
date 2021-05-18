@@ -85,18 +85,21 @@ public class ClientHandlerConnectionTest {
                 .registerTypeAdapterFactory(effectTypeFactory).create();
     }
 
-    /*@Test
-    public void waitYourTurn() throws IOException {
-
+    @Test
+    public void waitYourTurn() throws IOException, InterruptedException {
         //Writes the json that the client handler will read
-        fileWriter1.write("{\"cmd\": \"getResourcesFromMarket\",\"parameter\":\"\"}");
-        fileWriter1.write("\n{\"cmd\": \"quit\",\"parameter\":\"\"}");
+        fileWriter1.write("{\"cmd\":\"getResourcesFromMarket\",\"parameter\":\"\"}");
+        fileWriter1.write("\n{\"cmd\":\"quit\",\"parameter\":\"\"}");
         fileWriter1.close();
 
         assertEquals(c1.getPlayerState(), PlayerState.WAITING4NAME);
         new Thread(c1).start();
+        Thread.sleep(2000);
         System.out.println(fileReader1.readLine());
-    }*/
+        System.out.println(fileReader1.readLine());
+    }
+
+
 
     /*@Test
     public void ctrlReadingAndWriting() throws IOException {
@@ -104,9 +107,9 @@ public class ClientHandlerConnectionTest {
         fileWriter1.close();
 
         System.out.println(c1.getInput());
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void ctrlRunMethod(){
         fileWriter1.write(gson.toJson(new Command("login", null)));
         fileWriter1.close();

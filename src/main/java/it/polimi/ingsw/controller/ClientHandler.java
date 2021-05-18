@@ -17,6 +17,8 @@ import it.polimi.ingsw.network.messages.sendToClient.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,6 +33,7 @@ public class ClientHandler implements Runnable {
     private int numLeaderActionDone;
     private boolean pingAnswered;
     private final Gson gson;
+    private boolean keepRunning;
 
     /**
      * used only for test purpose
@@ -44,6 +47,7 @@ public class ClientHandler implements Runnable {
         mainActionDone = false;
         numLeaderActionDone = 0;
         pingAnswered = true;
+        keepRunning = true;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -70,6 +74,7 @@ public class ClientHandler implements Runnable {
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.playerState = PlayerState.WAITING4NAME;
         pingAnswered = true;
+        keepRunning = true;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -113,9 +118,12 @@ public class ClientHandler implements Runnable {
                         try {
                             socket.close();
                             pingTimer.cancel();
+                            keepRunning = false;
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
-                            //TODO: cosa fare?
+                            keepRunning = false;
+                            System.out.println("Error while trying to close the socket");
+                            //TODO: cosa fare se ho errore in chiusura socket?
                         }
                     } else {
                         if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS) {
@@ -126,7 +134,6 @@ public class ClientHandler implements Runnable {
                             setPlayerState(PlayerState.DISCONNECTED);
                             game.updatesAfterDisconnection(ClientHandler.this);
                         }
-
                     }
                 }
 
@@ -150,20 +157,32 @@ public class ClientHandler implements Runnable {
                     }
                 }*/
             }
-        }, 0, 5000);
+        }, 0, 300000);
 
-        try {
-            String line = in.readLine();
-            command = gson.fromJson(line, Command.class);
-            while (!command.getCmd().equals("quit")) {
-                if (playerState == PlayerState.PLAYING) {
+        while (keepRunning) {
+            try {
+                String line = in.readLine();
+                //check if the read string respects some basic syntax properties
+                while (!(line.charAt(0) == '{' && line.contains("{\"cmd\":") && line.contains("\"parameters\":") && line.charAt(line.length() - 1) == '}')) {
+                    this.send(new ErrorMessage("Command not correctly formatted"));
+                    line = in.readLine();
+                }
+                command = gson.fromJson(line, Command.class);
+                while (!socket.isClosed() && !command.getCmd().equals("quit")) {
+
                     switch (command.getCmd()) {
 
                         case "pingResponse":
                             pingAnswered = true;
+                            send("ok");
                             break;
 
                         case "login":
+                            if (playerState != PlayerState.WAITING4NAME) {
+                                this.send(new ErrorMessage("You can't do this action now"));
+                                break;
+                            }
+
                             LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
                             this.nickname = loginMessage.getNickName();
                             this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
@@ -181,6 +200,10 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "setNumPlayer":
+                            if (playerState != PlayerState.WAITING4NAME) { //TODO: CHE STATO DEVO METTERE?
+                                this.send(new ErrorMessage("You can't do this action now"));
+                                break;
+                            }
                             if (game != null)
                                 throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
                             SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
@@ -191,11 +214,20 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "getResourcesFromMarket":
+                            //TODO: lo metto anche nei getter?
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
                             game.getResFromMkt(resFromMkt, this);
                             break;
 
                         case "buyFromMarket":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             if (!mainActionDone) {
                                 mainActionDone = true;
                                 BuyFromMarketMessage buyFromMarket = gson.fromJson(command.getParameters(), BuyFromMarketMessage.class);
@@ -206,11 +238,20 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "getCardCost":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             GetFromMatrixMessage cardCost = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
                             game.getCardCost(cardCost, this);
                             break;
 
                         case "buyDevCard":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+
                             if (!mainActionDone) {
                                 mainActionDone = true;
                                 BuyDevCardMessage buyDevCard = gson.fromJson(command.getParameters(), BuyDevCardMessage.class);
@@ -221,11 +262,19 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "getProductionCost":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             GetProductionCostMessage productionCost = gson.fromJson(command.getParameters(), GetProductionCostMessage.class);
                             game.getProductionCost(productionCost, this);
                             break;
 
-                        case "activateProductionMesssage":
+                        case "activateProductionMessage":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             if (!mainActionDone) {
                                 mainActionDone = true;
                                 ActivateProductionMessage activateProduction = gson.fromJson(command.getParameters(), ActivateProductionMessage.class);
@@ -236,26 +285,46 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "discardLeaderAndExtraResBeginning":
+                            if (playerState != PlayerState.WAITING4BEGINNINGDECISIONS) {
+                                this.send(new ErrorMessage("You can't do this action now"));
+                                break;
+                            }
                             DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning = gson.fromJson(command.getParameters(), DiscardLeaderAndExtraResBeginningMessage.class);
                             game.discardLeaderAndExtraResBeginning(discardLeaderCardBeginning, this);
                             break;
 
                         case "moveBetweenShelves":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             MoveBetweenShelvesMessage moveBetweenShelves = gson.fromJson(command.getParameters(), MoveBetweenShelvesMessage.class);
                             game.moveResourcesBetweenShelves(moveBetweenShelves, this);
                             break;
 
                         case "moveLeaderToShelf":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             MoveLeaderToShelfMessage moveLeaderToShelf = gson.fromJson(command.getParameters(), MoveLeaderToShelfMessage.class);
                             game.moveResourcesToShelf(moveLeaderToShelf, this);
                             break;
 
                         case "moveShelfToLeader":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             MoveShelfToLeaderMessage moveShelfToLeader = gson.fromJson(command.getParameters(), MoveShelfToLeaderMessage.class);
                             game.moveResourcesToLeader(moveShelfToLeader, this);
                             break;
 
                         case "discardLeader":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             if (numLeaderActionDone < MAX_LEADER_ACTION) {
                                 numLeaderActionDone++;
                                 LeaderMessage discardLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
@@ -266,6 +335,10 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "ActivateLeader":
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             if (numLeaderActionDone < MAX_LEADER_ACTION) {
                                 numLeaderActionDone++;
                                 LeaderMessage activateLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
@@ -276,7 +349,10 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "endTurn":
-
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
                             if (game.getNumberOfPlayers() == 1) {
                                 this.playerState = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
                                 game.drawSoloToken(this);
@@ -286,38 +362,59 @@ public class ClientHandler implements Runnable {
                             mainActionDone = false;
                             break;
 
+                        default:
+                            this.send(new ErrorMessage("No command found"));
+                            break;
                     }
-                } else {
-                    this.send(new ErrorMessage("Wait your turn to do the action"));
-                }
-                //line = scanner.nextLine();
-                line = in.readLine();
-                command = gson.fromJson(line, Command.class);
 
+                    //line = scanner.nextLine();
+
+                    line = in.readLine();
+                    while (!(line.charAt(0) == '{' && line.contains("{\"cmd\":") && line.contains("\"parameters\":") && line.charAt(line.length() - 1) == '}')) {
+                        this.send(new ErrorMessage("Command not correctly formatted"));
+                        line = in.readLine();
+                    }
+                    command = gson.fromJson(line, Command.class);
+                }
+            } catch (SocketException e) {
+                //If the socket is closed by the timer and the thread was waiting waiting a message from InputStream, this exception is launched
+                //we simply print what happened and we finish the thread. The socket is closed only if the client haven't logged in yet
+                System.out.println("Closed socket while waiting message from client or trying to send a response");
+                keepRunning = false;
+                //e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+                this.send(new ErrorMessage("An error occurred (IOException)"));
+                keepRunning = false; //TODO: se ho IOException termino thread?
+            } catch (IllegalActionException | IllegalArgumentException e) {
+                e.printStackTrace();
+                this.send(new ErrorMessage(e.getMessage()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                this.send(new ErrorMessage("An error occurred (InterruptedException)"));
+                keepRunning = false; //TODO: se ho InterruptedException termino thread?
+            } catch (NotAvailableNicknameException e) {
+                e.printStackTrace();
+                this.send(new ErrorMessage("This nickname isn't available!"));
+            } catch (IllegalStateException e) {
+                //TODO: cosa facciamo se non ci sono più player connessi?
+                e.printStackTrace();
+                keepRunning = false;
             }
-            //Close stream and socket
+        }
+
+        //Close stream and socket
+        try {
             in.close();
-            out.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while closing InputStream");
+            e.printStackTrace();
+        }
+        out.close();
+        try {
             socket.close();
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-            this.send(new ErrorMessage("An error occurred (IOException)"));
-        } catch (IllegalActionException |
-                IllegalArgumentException e) {
-            e.printStackTrace();
-            this.send(new ErrorMessage(e.getMessage()));
-        } catch (
-                InterruptedException e) {
-            e.printStackTrace();
-            this.send(new ErrorMessage("An error occurred (InterruptedException)"));
-        } catch (
-                NotAvailableNicknameException e) {
-            e.printStackTrace();
-            this.send(new ErrorMessage("This nickname isn't available!"));
-        } catch (
-                IllegalStateException e) {
-            //TODO: cosa facciamo se non ci sono più player connessi?
+        } catch (IOException e) {
+            System.out.println("An error occurred while closing Socket");
             e.printStackTrace();
         }
 

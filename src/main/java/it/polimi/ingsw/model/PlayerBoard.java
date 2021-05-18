@@ -99,6 +99,21 @@ public class PlayerBoard {
         return vp;
     }
 
+    /**
+     * returns the amount of victory points, excluding the ones coming from the amount of resources in Depot and Strongbox
+     * @return the amount of victory points, excluding the ones coming from the amount of resources in Depot and Strongbox
+     */
+    public int partialVictoryPoints(){
+        int vp = 0;
+
+        vp += devSlots.getPoints();
+        vp += playerFaithLevel.getCellPoints();
+        vp += playerFaithLevel.getPopeTilesPoints();
+        vp += leaderCards.getLeaderCardsPoints();
+
+        return vp;
+    }
+
 
     /*
     #####################
@@ -514,6 +529,7 @@ public class PlayerBoard {
      * @return true if the action is performed without errors
      * @deprecated resources to strongbox can be added exclusively using activate production method
      */
+    @Deprecated
     public boolean addResourcesToStrongbox(HashMap<ResourceType, Integer> resMap) {
         return strongbox.addResource(resMap);
     }

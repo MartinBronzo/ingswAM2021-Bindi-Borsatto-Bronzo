@@ -628,6 +628,9 @@ public class GameController {
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
+        int vp = playerBoard.partialVictoryPoints();
+        //int vp = e.getValue().calculateVictoryPoints();
+        player.setVictoryPoints(vp);
         game.addPlayer(player);
         setOthersPlayersFaithInClientModel(game, clientHandler);
         this.sendBroadcastUpdate(new ModelUpdate(game));
@@ -656,6 +659,9 @@ public class GameController {
         player.setNickName(clientHandler.getNickname());
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setUsedLeaders(playerBoard.getActiveLeaderCards());
+        int vp = playerBoard.partialVictoryPoints();
+        //int vp = e.getValue().calculateVictoryPoints();
+        player.setVictoryPoints(vp);
         game.addPlayer(player);
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
@@ -791,15 +797,19 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         //We get the PopeTiles of all players because a Vatican Report may have occurred
         player.setPopeTiles(playerBoard.getPopeTile());
+        //int vp = e.getValue().calculateVictoryPoints();
         game.addPlayer(player);
-        for (Pair<ClientHandler, PlayerBoard> e : players)
+        setOthersPlayersFaithInClientModel(game,clientHandler);
+
+        /*for (Pair<ClientHandler, PlayerBoard> e : players)
             if (!(e.getKey().getNickname().equals(clientHandler.getNickname()))) {
                 Player tmp = new Player();
                 tmp.setNickName(e.getKey().getNickname());
                 tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
                 tmp.setPopeTiles(e.getValue().getPopeTile());
                 game.addPlayer(tmp);
-            }
+            }*/
+
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
@@ -867,6 +877,9 @@ public class GameController {
         player.setDevSlots(playerBoard.getDevSlots());
         setDepotInClientModel(player, playerBoard);
         player.setStrongBox(playerBoard.getStrongboxMap());
+        int vp = playerBoard.partialVictoryPoints();
+        //int vp = e.getValue().calculateVictoryPoints();
+        player.setVictoryPoints(vp);
         game.addPlayer(player);
 
         this.sendBroadcastUpdate(new ModelUpdate(game));
@@ -1004,9 +1017,10 @@ public class GameController {
         player.setStrongBox(playerBoard.getStrongboxMap());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
+        int vp = playerBoard.partialVictoryPoints();
+        //int vp = e.getValue().calculateVictoryPoints();
         game.addPlayer(player);
         setOthersPlayersFaithInClientModel(game, clientHandler);
-
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
@@ -1068,6 +1082,9 @@ public class GameController {
                 tmp.setNickName(e.getKey().getNickname());
                 tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
                 tmp.setPopeTiles(e.getValue().getPopeTile());
+                int vp = e.getValue().partialVictoryPoints();
+                //int vp = e.getValue().calculateVictoryPoints();
+                tmp.setVictoryPoints(vp);
                 game.addPlayer(tmp);
             }
     }
