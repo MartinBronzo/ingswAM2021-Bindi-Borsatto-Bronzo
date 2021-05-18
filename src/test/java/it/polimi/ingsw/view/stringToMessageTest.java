@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class stringToMessageTest {
 
-    /*@Test
+    @Test
     void toMatrixMessageTest() {
         String string = "row 3; 1, 2, 4;";
         GetFromMatrixMessage message = StringToMessage.toMatrixMessage(string);
@@ -158,5 +158,5 @@ class stringToMessageTest {
         assertEquals(ResourceType.SERVANT, baseProductionParams.getBaseInput().get(1));
         assertEquals(ResourceType.STONE, baseProductionParams.getBaseOutput().get(0));
 
-    }*/
+    }
 }
