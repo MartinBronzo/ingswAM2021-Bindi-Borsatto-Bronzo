@@ -148,7 +148,6 @@ public class ClientHandler implements Runnable {
                             pingTimer.cancel();
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
-                            //TODO: cosa fare?
                         }
                     } else {
                         setPlayerState(PlayerState.DISCONNECTED);
@@ -174,7 +173,7 @@ public class ClientHandler implements Runnable {
 
                         case "pingResponse":
                             pingAnswered = true;
-                            send("ok");
+                           // send("ok");
                             break;
 
                         case "login":
@@ -188,6 +187,7 @@ public class ClientHandler implements Runnable {
                             this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
                             if (this.game == null)
                                 this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
+                                //TODO: AGGIUNGEREI UNO STATO PER DIRE CHE STO ASPETTANDO SOLO UN SETNUMPLAYER COME PROSSIMO MESSAGGIO
                             else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
                                 //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
                                 //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
@@ -204,6 +204,7 @@ public class ClientHandler implements Runnable {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
+                            //TODO: QUESTO IF MI SEMBRA SBAGLIATO
                             if (game != null)
                                 throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
                             SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
@@ -214,7 +215,6 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "getResourcesFromMarket":
-                            //TODO: lo metto anche nei getter?
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -385,14 +385,14 @@ public class ClientHandler implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
                 this.send(new ErrorMessage("An error occurred (IOException)"));
-                keepRunning = false; //TODO: se ho IOException termino thread?
+                keepRunning = false;
             } catch (IllegalActionException | IllegalArgumentException e) {
                 e.printStackTrace();
                 this.send(new ErrorMessage(e.getMessage()));
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 this.send(new ErrorMessage("An error occurred (InterruptedException)"));
-                keepRunning = false; //TODO: se ho InterruptedException termino thread?
+                keepRunning = false;
             } catch (NotAvailableNicknameException e) {
                 e.printStackTrace();
                 this.send(new ErrorMessage("This nickname isn't available!"));
