@@ -69,12 +69,15 @@ public class CliClient extends Client implements Runnable {
                     break;
                 switch (cliCommandType) {
                     case QUIT:
-                        //TODO: no Idea what Server Needs
+                        synchronized (this){
+                            sendMessage(new Command("quit"));
+                        }
                         break;
                     case SETNICKNAME:
                         this.manageLogin();
                         break;
                     case SETNUMOFPLAYERS:
+                        this.setNumPlayer();
                         break;
                     case GETRESOURCESFROMMARKET:
                         this.getResourcesFromMarket();
@@ -110,7 +113,9 @@ public class CliClient extends Client implements Runnable {
                         this.activateLeader();
                         break;
                     case ENDTURN:
-                        //TODO: no Idea what Server Needs
+                        synchronized (this){
+                            sendMessage(new Command("endTurn"));
+                        }
                         break;
                     default:
                         System.err.println("Command not Valid\n");
@@ -158,6 +163,18 @@ public class CliClient extends Client implements Runnable {
         //TODO: no Idea what Server Needs
     }
 
+
+    @Override
+    protected synchronized void setNumPlayer() throws IOException {
+        System.out.println("set num Player example: 4;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command setNumPlayerCommand = new Command("setNumPlayer", StringToMessage.toSetNumPlayerMessage(usrCommand));
+            sendMessage(setNumPlayerCommand);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
+    }
 
     @Override
     protected synchronized void getResourcesFromMarket() throws IOException {
@@ -360,7 +377,10 @@ public class CliClient extends Client implements Runnable {
                         }
                         break;
                     case SETNICK:
-                        //TODO: waiting for nickname message;
+                        synchronized (this){
+                            LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
+                            nickname = setNickMessage.getConfirmedNickname();
+                        }
                         break;
                 }
             } catch (IOException e) {
@@ -372,7 +392,7 @@ public class CliClient extends Client implements Runnable {
 
     public static void main(String[] args) throws IOException {
         String hostName ="127.0.0.1";
-        int portNumber = 1234;
+        int portNumber = 9047;
         Client client = new CliClient(portNumber, hostName);
         client.startConnection();
         client.doConnection();

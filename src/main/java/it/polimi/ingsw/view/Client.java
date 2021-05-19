@@ -20,6 +20,8 @@ public abstract class Client {
 
     protected abstract void getDevCardCost() throws InterruptedException, IOException;
 
+    protected abstract void setNumPlayer() throws IOException;
+
     protected abstract void getResourcesFromMarket() throws IOException;
 
     protected abstract void getProductionCost() throws InterruptedException, IOException;
