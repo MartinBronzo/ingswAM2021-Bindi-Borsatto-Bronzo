@@ -10,5 +10,6 @@ public enum ResponseType {
     ASKFORNUMPLAYERS,
     KICKEDOUT,
     TURNINFO,
-    SETNICK
+    SETNICK,
+    SETBEGINNINGDECISIONS
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -115,18 +116,24 @@ public class GameController {
         //Case gameState == STARTED when disconnection happend
         //If the player was adding the resources and discarding the leaderCards at the beginning of the game, before disconnecting
 
-        for (ClientHandler ch : disconnectedBeforeStarting) {
-            if (ch.getNickname().equals(newClientHandler.getNickname())) {
-                newClientHandler.setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
-                for (Pair<ClientHandler, PlayerBoard> e : players)
-                    if (e.getKey().getNickname().equals(newClientHandler.getNickname()))
-                        e.setKey(newClientHandler);
+        if(state == GameState.LASTTURN)
+            if(this.disconnectedBeforeStarting.contains(newClientHandler))
+                //TODO: se lui è prima dell'active player deve essere a gameend
+                ;
 
-                //TODO: INVIA RISORSE E CARTE AL CLIENT
-                //this.sendNumExtraResBeginningToDisconnectedPlayer(newClientHandler);
-                return true;
+        if(state != GameState.WAITING4PLAYERS)
+            for (ClientHandler ch : disconnectedBeforeStarting) {
+                if (ch.getNickname().equals(newClientHandler.getNickname())) {
+                    newClientHandler.setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
+                    for (Pair<ClientHandler, PlayerBoard> e : players)
+                        if (e.getKey().getNickname().equals(newClientHandler.getNickname()))
+                            e.setKey(newClientHandler);
+
+                    //TODO: INVIA RISORSE E CARTE AL CLIENT
+                    this.sendNumExtraResBeginningToDisconnectedPlayer(newClientHandler);
+                    return true;
+                }
             }
-        }
 
         switch (state) {
             case INSESSION:
@@ -146,6 +153,8 @@ public class GameController {
                 for (Pair<ClientHandler, PlayerBoard> e : players)
                     if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
                         newClientHandler.setPlayerState(PlayerState.WAITING4GAMESTART);
+                        if(this.disconnectedBeforeStarting.contains(newClientHandler))
+                            this.disconnectedBeforeStarting.remove(newClientHandler);
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
@@ -252,6 +261,7 @@ public class GameController {
      *
      * @param player the ClientHandler of the player to be added at the game
      */
+    @Deprecated
     public boolean setPlayerOld(ClientHandler player) throws IllegalActionException {
         //We can't add more players than the one given by the numberOfPlayers number
         if (this.players.size() == this.numberOfPlayers)
@@ -294,9 +304,11 @@ public class GameController {
     private void startGame() {
         this.state = GameState.STARTED;
         for(Pair<ClientHandler, PlayerBoard> e: players)
-            e.getKey().setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
+            if(e.getKey().getPlayerState() != PlayerState.DISCONNECTED)
+                e.getKey().setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
         this.showLeaderCardAtBeginning();
         this.sendNumExtraResBeginning();
+        this.updatesTurnAndSendInfo(this.firstPlayer);
     }
 
     private void checkIfGameMustBegin() {
@@ -359,13 +371,6 @@ public class GameController {
                 //TODO: chiudiamo tutto (al massimo mettere uno stato che dice gioco è morto e nella substitue non aggiungiamo giocatori a giochi morti)
                 GamesManagerSingleton.getInstance().deleteGame(this);
         }
-
-        //TODO: va bene mettere qui la chiusura del gioco?
-        //If the next player has already played their last turn, then the game must end
-        /*if(players.get(index).getKey().getPlayerState() == PlayerState.WAITING4FINALPOINTS) {
-            this.distribuiteFinalPoints();
-            return;
-        }*/
 
         /*if(players.get(index).getKey().getPlayerState() == PlayerState.WBD _ )
             //send le informazioni particolari
@@ -530,7 +535,8 @@ public class GameController {
         try {
             mainBoard.giveExtraFaithPointAtBeginning(firstPlayer);
         } catch (LastVaticanReportException e) {
-            this.setLastTurn();
+            //this.setLastTurn();
+            System.out.println("FATAL ERROR");
         }
 
         //For each player in the game computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
@@ -544,9 +550,14 @@ public class GameController {
     }
 
     public boolean sendNumExtraResBeginningToDisconnectedPlayer(ClientHandler usedToBeDisconnected) throws IllegalActionException {
-        if (!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
+        /*if (!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
+            throw new IllegalActionException("The player has already given their beginning decisions!");*/
+        boolean tmp = false;
+        for (ClientHandler ch : disconnectedBeforeStarting)
+            if (ch.getNickname().equals(usedToBeDisconnected.getNickname()))
+                tmp = true;
+        if(!tmp)
             throw new IllegalActionException("The player has already given their beginning decisions!");
-
         //For the specified player it computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
         //It sends this information back to all the players
         int index = this.getPlayerNumber(usedToBeDisconnected);
@@ -604,8 +615,6 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        clientHandler.setPlayerState(PlayerState.WAITING4OTHERBEGINNINGDECISIONS);
-
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
@@ -620,7 +629,8 @@ public class GameController {
             if (this.disconnectedBeforeStarting.contains(clientHandler))
                 this.disconnectedBeforeStarting.remove(clientHandler);
         }
-        this.checkIfGameMustBegin();
+        clientHandler.send(new BeggingDecisionsConfirmationMessage());
+        //this.checkIfGameMustBegin();
         return true;
     }
 
@@ -639,7 +649,7 @@ public class GameController {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         } catch (LastVaticanReportException e) {
-            this.setLastTurn();
+            this.setLastTurn(clientHandler);
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
@@ -805,7 +815,7 @@ public class GameController {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         } catch (LastVaticanReportException e) {
-            this.setLastTurn();
+            this.setLastTurn(clientHandler);
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
@@ -887,7 +897,7 @@ public class GameController {
         try {
             playerBoard.addCardToDevSlot(buyDevCard.getDevSlot() - 1, devCard);
         } catch (EndOfGameException e) {
-            this.setLastTurn();
+            this.setLastTurn(clientHandler);
         }
 
         Game game = new Game();
@@ -1029,7 +1039,7 @@ public class GameController {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         } catch (LastVaticanReportException e) {
-            this.setLastTurn();
+            this.setLastTurn(clientHandler);
         }
 
         Game game = new Game();
@@ -1125,7 +1135,7 @@ public class GameController {
             soloBoard.drawSoloToken();
         } catch (LastVaticanReportException | EmptyDevColumnException e) {
             //e.printStackTrace();
-            this.setLastTurn();
+            this.setLastTurn(clientHandler);
         }
 
         Game game = new Game();
@@ -1206,11 +1216,24 @@ public class GameController {
 
         for (int i = 0; i < this.numberOfPlayers; i++) {
             if (players.get(i).getKey().getPlayerState() != PlayerState.DISCONNECTED) {
-                if (i != playerToBecomeActive) {
+                /*if (i != playerToBecomeActive) {
                     this.players.get(i).getKey().setPlayerState(PlayerState.WAITING4TURN);
                 } else {
                     this.players.get(i).getKey().setPlayerState(PlayerState.PLAYING);
-                }
+                }*/
+                if(state != GameState.LASTTURN && (players.get(i).getKey().getPlayerState() == PlayerState.PLAYING || players.get(i).getKey().getPlayerState() == PlayerState.PLAYINGBEGINNINGDECISIONS))
+                    players.get(i).getKey().setPlayerState(PlayerState.WAITING4TURN);
+                else if(state == GameState.LASTTURN && (players.get(i).getKey().getPlayerState() == PlayerState.PLAYINGLASTTURN || players.get(i).getKey().getPlayerState() == PlayerState.PLAYING || players.get(i).getKey().getPlayerState() == PlayerState.PLAYINGBEGINNINGDECISIONS))
+                    players.get(i).getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
+                if(i == playerToBecomeActive)
+                    if(players.get(i).getKey().getPlayerState() == PlayerState.WAITING4GAMEEND)
+                        ; //TODO: sistemare meglio questo metodo
+                    else if(players.get(i).getKey().getPlayerState() == PlayerState.WAITING4BEGINNINGDECISIONS)
+                        players.get(i).getKey().setPlayerState(PlayerState.PLAYINGBEGINNINGDECISIONS);
+                    else if(state == GameState.LASTTURN)
+                        players.get(i).getKey().setPlayerState(PlayerState.PLAYINGLASTTURN);
+                    else
+                        players.get(i).getKey().setPlayerState(PlayerState.PLAYING);
             }
             Player player = new Player();
             player.setNickName(this.players.get(i).getKey().getNickname());
@@ -1218,7 +1241,15 @@ public class GameController {
             game.addPlayer(player);
         }
 
-        this.sendBroadcastUpdate(new ModelUpdate(game));
+        //TODO: va bene mettere qui la chiusura del gioco?
+        boolean tmp = true;
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(!(e.getKey().getPlayerState() == PlayerState.DISCONNECTED || e.getKey().getPlayerState() == PlayerState.WAITING4GAMEEND))
+                tmp = false;
+        if(!tmp)
+            this.sendBroadcastUpdate(new ModelUpdate(game));
+        else
+            ; //TODO: distribuire i punti finali
     }
 
     @Deprecated
@@ -1259,8 +1290,23 @@ public class GameController {
         return new ModelUpdate(game);
     }
 
-    private void setLastTurn() {
+    private void setLastTurn(ClientHandler currentPlayer) {
+        //TODO: SISTEMARRE SECONDO SATTO'S WAY
         this.state = GameState.LASTTURN;
+        int i = this.getPlayerNumber(currentPlayer);
+        i++;
+        if(i == this.numberOfPlayers)
+            i = 0;
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(e.getKey().getPlayerState() != PlayerState.DISCONNECTED && players.get(i).getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS)
+                e.getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
+        while(i != this.firstPlayer){
+            if(players.get(i).getKey().getPlayerState() != PlayerState.DISCONNECTED && players.get(i).getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS)
+                players.get(i).getKey().setPlayerState(PlayerState.WAITING4LASTTURN);
+            i++;
+            if(i == this.numberOfPlayers)
+                i = 0;
+        }
     }
 
     /**

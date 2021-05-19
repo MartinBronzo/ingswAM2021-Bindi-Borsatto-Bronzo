@@ -83,6 +83,8 @@ public class GameControllerTurnsManagementTest {
 
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
                 .registerTypeAdapterFactory(effectTypeFactory).create();
+
+        gameController.setState(GameState.INSESSION);
     }
 
     @Test
