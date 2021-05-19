@@ -550,9 +550,14 @@ public class GameController {
     }
 
     public boolean sendNumExtraResBeginningToDisconnectedPlayer(ClientHandler usedToBeDisconnected) throws IllegalActionException {
-        if (!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
+        /*if (!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
+            throw new IllegalActionException("The player has already given their beginning decisions!");*/
+        boolean tmp = false;
+        for (ClientHandler ch : disconnectedBeforeStarting)
+            if (ch.getNickname().equals(usedToBeDisconnected.getNickname()))
+                tmp = true;
+        if(!tmp)
             throw new IllegalActionException("The player has already given their beginning decisions!");
-
         //For the specified player it computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
         //It sends this information back to all the players
         int index = this.getPlayerNumber(usedToBeDisconnected);

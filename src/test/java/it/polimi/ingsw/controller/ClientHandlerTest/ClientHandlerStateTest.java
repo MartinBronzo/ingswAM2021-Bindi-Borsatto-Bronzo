@@ -66,10 +66,38 @@ public class ClientHandlerStateTest {
 
         gameController.setPlayer(c4);
 
-        assertEquals(c1.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
-        assertEquals(c2.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
-        assertEquals(c3.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
-        assertEquals(c4.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+        if(gameController.getFirstPlayer() == 0){
+            assertEquals(c1.getPlayerState(), PlayerState.PLAYINGBEGINNINGDECISIONS);
+            assertEquals(c2.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c3.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c4.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+
+        }
+
+        if(gameController.getFirstPlayer() == 1){
+            assertEquals(c1.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c2.getPlayerState(), PlayerState.PLAYINGBEGINNINGDECISIONS);
+            assertEquals(c3.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c4.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+
+        }
+
+        if(gameController.getFirstPlayer() == 2){
+            assertEquals(c1.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c2.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c3.getPlayerState(), PlayerState.PLAYINGBEGINNINGDECISIONS);
+            assertEquals(c4.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+
+        }
+        if(gameController.getFirstPlayer() == 3){
+            assertEquals(c1.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c2.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c3.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
+            assertEquals(c4.getPlayerState(), PlayerState.PLAYINGBEGINNINGDECISIONS);
+
+        }
+
+
     }
 
     //TODO: controllare come cambiano gli stati dei client handler dopo che questi hanno mandato le beginning decisions
