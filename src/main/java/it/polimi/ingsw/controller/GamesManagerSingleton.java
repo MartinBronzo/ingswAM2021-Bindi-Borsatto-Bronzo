@@ -124,8 +124,6 @@ public final class GamesManagerSingleton {
         this.startingGame.setPlayer(client);
         this.startingGame.setState(GameState.WAITING4PLAYERS);
         notifyAll();
-        /*IDK if I should add method start game or game is automatically started when reaches the correct number of players*/
-        // case client wants play alone
         if(startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
             GameController returnedGame = startingGame;
             games.add(startingGame);
@@ -161,11 +159,18 @@ public final class GamesManagerSingleton {
      * @param gameEnded the game ended
      * @return true if the action is performed correctly
      * @throws NullPointerException if gameEnded is null
-     * @throws IllegalStateException if the game is not in ended state
+     * @throws IllegalStateException if the game is in configuring state, no need to delete the game, just wait for the timer
      */
-    public boolean deleteGame(GameController gameEnded) throws NullPointerException, IllegalStateException {
-        if (!gameEnded.equals(startingGame)) throw new IllegalStateException("Game is not in ended state");
-       //TODO: controllare se va bene
+    public synchronized boolean deleteGame(GameController gameEnded) throws NullPointerException, IllegalStateException {
+        if (gameEnded == null) throw new NullPointerException();
+        if (gameEnded.equals(startingGame)){
+            if (startingGame.getState().equals(GameState.CONFIGURING)) throw new IllegalStateException("Configuration timer isn't yet elapsed");
+            else {
+                startingGame = null;
+                notifyAll();
+                return true;
+            }
+        }
         return games.remove(gameEnded);
     }
 
