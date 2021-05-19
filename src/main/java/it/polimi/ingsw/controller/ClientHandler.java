@@ -14,11 +14,11 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -114,28 +114,33 @@ public class ClientHandler implements Runnable {
                     send(new PingMessage("Ping"));
                     pingAnswered = false;
                 } else {
-                    if (playerState == PlayerState.WAITING4NAME) {
-                        try {
-                            socket.close();
-                            pingTimer.cancel();
-                            keepRunning = false;
-                        } catch (IOException ioException) {
-                            ioException.printStackTrace();
-                            keepRunning = false;
-                            System.out.println("Error while trying to close the socket");
-                            //TODO: non fare niente
-                        }
-                    } else {
-                        if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS) {
-                            //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato)
-                            game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
-                        }
-
-                        if (playerState != PlayerState.DISCONNECTED) {
-                            setPlayerState(PlayerState.DISCONNECTED);
-                            game.updatesAfterDisconnection(ClientHandler.this);
-                        }
+                    if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART) {
+                        //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato)
+                        game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
                     }
+
+                    PlayerState tmp = playerState;
+
+                    if(!(playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER)) {
+                        setPlayerState(PlayerState.DISCONNECTED);
+                        game.updatesAfterDisconnection(ClientHandler.this);
+                    }else
+                        setPlayerState(PlayerState.DISCONNECTED);
+
+                    if(tmp == PlayerState.PLAYING)
+                        game.specifyNextPlayer(ClientHandler.this);
+
+                    try {
+                        socket.close();
+                        pingTimer.cancel();
+                        keepRunning = false;
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                        keepRunning = false;
+                        System.out.println("Error while trying to close the socket");
+                        //TODO: non fare niente
+                    }
+
                 }
 
                /* try {
@@ -190,13 +195,12 @@ public class ClientHandler implements Runnable {
                             this.send(new LoginConfirmationMessage(this.nickname));
                             if (this.game == null) {
                                 this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
-                                //TODO: AGGIUNGEREI UNO STATO PER DIRE CHE STO ASPETTANDO SOLO UN SETNUMPLAYER COME PROSSIMO MESSAGGIO
-                                this.playerState = PlayerState.WAITINGFORNUM;
+                                this.playerState = PlayerState.WAITING4SETNUMPLAYER;
                             }
                             break;
 
                         case "setNumPlayer":
-                            if (playerState != PlayerState.WAITINGFORNUM) {
+                            if (playerState != PlayerState.WAITING4SETNUMPLAYER) {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
@@ -425,8 +429,8 @@ public class ClientHandler implements Runnable {
     }
 
 
-    /*private void pingClient(Socket socket) throws IOException {
-        //TODO: da testare
+    /* //To be deleted....
+    private void pingClient(Socket socket) throws IOException {
         this.send(new PingMessage("Ping"));
         socket.setSoTimeout(2000);
         in.readLine();
@@ -483,6 +487,7 @@ public class ClientHandler implements Runnable {
         return playerState;
     }
 
+    //This method was used for purposes reasons
     public String getInput() throws IOException {
         //Scanner in = new Scanner(socket.getInputStream());
         return this.in.readLine();

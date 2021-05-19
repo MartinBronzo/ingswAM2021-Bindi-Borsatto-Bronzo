@@ -60,9 +60,9 @@ public class ClientHandlerStateTest {
         gameController.setPlayer(c2);
         gameController.setPlayer(c3);
 
-        assertEquals(c1.getPlayerState(), PlayerState.WAITINGGAMESTART);
-        assertEquals(c2.getPlayerState(), PlayerState.WAITINGGAMESTART);
-        assertEquals(c3.getPlayerState(), PlayerState.WAITINGGAMESTART);
+        assertEquals(c1.getPlayerState(), PlayerState.WAITING4GAMESTART);
+        assertEquals(c2.getPlayerState(), PlayerState.WAITING4GAMESTART);
+        assertEquals(c3.getPlayerState(), PlayerState.WAITING4GAMESTART);
 
         gameController.setPlayer(c4);
 

@@ -196,7 +196,7 @@ class GamesManagerSingletonTest {
         assertEquals(1, gamesManagerSingleton.getGames().size());
         assertThrows(NotAvailableNicknameException.class, () -> gamesManagerSingleton.joinOrCreateNewGame(clientSameNick));
     }
-
+/*
     @Test
     void timerTest() throws  InterruptedException {
         assertNull(gamesManagerSingleton.getStartingGame());
@@ -215,6 +215,6 @@ class GamesManagerSingletonTest {
         assertNull(gamesManagerSingleton.getStartingGame());
         assertEquals(0, gamesManagerSingleton.getGames().size());
 
-    }
+    }*/
 
 }
