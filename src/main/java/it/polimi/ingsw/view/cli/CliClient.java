@@ -126,7 +126,7 @@ public class CliClient extends Client implements Runnable {
             }catch (IllegalArgumentException e) {
                 System.err.println("your Command doesn't exists");
             }
-        }while (cliCommandType.equals(CliCommandType.QUIT) && !forceLogout);
+        }while (!cliCommandType.equals(CliCommandType.QUIT) && !forceLogout);
         this.endConnection();
     }
 
@@ -147,6 +147,7 @@ public class CliClient extends Client implements Runnable {
     public void sendMessage(Command command) throws NullPointerException {
         if (out == null) throw new NullPointerException("PrintWriter is null");
         out.println(gson.toJson(command));
+        System.out.println("Sending:\t"+gson.toJson(command));
     }
 
     @Override
@@ -317,11 +318,12 @@ public class CliClient extends Client implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 response = in.readLine();
+                System.out.println("Received:\t"+response);
                 responseMessage = gson.fromJson(response, ResponseMessage.class);
                 responseContent = responseMessage.getResponseContent();
                 switch (responseMessage.getResponseType()) {
                     case PING:
-                        sendMessage(new Command("pingResponse"));
+                        synchronized (this){sendMessage(new Command("pingResponse"));}
                         break;
                     case UPDATE:
                         synchronized (this){
