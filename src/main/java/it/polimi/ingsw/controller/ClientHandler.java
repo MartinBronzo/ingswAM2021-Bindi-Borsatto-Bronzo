@@ -185,6 +185,8 @@ public class ClientHandler implements Runnable {
                             LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
                             this.nickname = loginMessage.getNickName();
                             this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
+                            //If we arrive here, then the player has a valid login
+                            this.send(new LoginConfirmationMessage(this.nickname));
                             if (this.game == null)
                                 this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
                                 //TODO: AGGIUNGEREI UNO STATO PER DIRE CHE STO ASPETTANDO SOLO UN SETNUMPLAYER COME PROSSIMO MESSAGGIO
@@ -492,8 +494,7 @@ public class ClientHandler implements Runnable {
 
     public String getInput() throws IOException {
         //Scanner in = new Scanner(socket.getInputStream());
-        String s = this.in.readLine();
-        return s;
+        return this.in.readLine();
     }
 
 }
