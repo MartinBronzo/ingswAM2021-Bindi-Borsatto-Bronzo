@@ -1,19 +1,11 @@
 package it.polimi.ingsw.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -29,7 +21,6 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
 import it.polimi.ingsw.network.messages.sendToClient.HashMapResources;
-import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -123,6 +114,7 @@ public class GameController {
     public boolean substitutesClient(ClientHandler newClientHandler) throws IllegalActionException {
         //Case gameState == STARTED when disconnection happend
         //If the player was adding the resources and discarding the leaderCards at the beginning of the game, before disconnecting
+
         for (ClientHandler ch : disconnectedBeforeStarting) {
             if (ch.getNickname().equals(newClientHandler.getNickname())) {
                 newClientHandler.setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
@@ -153,7 +145,7 @@ public class GameController {
             case WAITING4PLAYERS:
                 for (Pair<ClientHandler, PlayerBoard> e : players)
                     if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
-                        newClientHandler.setPlayerState(PlayerState.WAITINGGAMESTART);
+                        newClientHandler.setPlayerState(PlayerState.WAITING4GAMESTART);
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
@@ -265,8 +257,8 @@ public class GameController {
         if (this.players.size() == this.numberOfPlayers)
             throw new IllegalActionException("You can't be added to this game!");
         //We can't add an already added player
-        //if(this.findClientHandler(player))
-        if (this.getPlayerBoardOfPlayer(player) != null)
+        if(this.findClientHandler(player))
+        //if (this.getPlayerBoardOfPlayer(player) != null)
             return false;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
@@ -286,14 +278,14 @@ public class GameController {
         if (this.players.size() == this.numberOfPlayers)
             throw new IllegalActionException("You can't be added to this game!");
         //We can't add an already added player
-        //if(this.findClientHandler(player))
-        if (this.getPlayerBoardOfPlayer(player) != null)
+        if(this.findClientHandler(player))
+        //if (this.getPlayerBoardOfPlayer(player) != null)
             return false;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
         player.send(new GeneralInfoStringMessage("You are in Game! You'll soon start play with others!"));
         //We added the last player: the game must begin
-        player.setPlayerState(PlayerState.WAITINGGAMESTART);
+        player.setPlayerState(PlayerState.WAITING4GAMESTART);
         if (players.size() == this.numberOfPlayers)
             this.startGame();
         return true;
@@ -344,9 +336,6 @@ public class GameController {
      * @param currentPlayer the player who is ending their turn
      */
     public void specifyNextPlayer(ClientHandler currentPlayer) throws IllegalStateException {
-        //TODO: attenzione che se in caso di disconnessione del giocatore che sta giocando il proprio turno si vuole usare questo metodo bisogna togliere questo if
-        if (currentPlayer.getPlayerState() != PlayerState.PLAYING)
-            return;
         //Retrieves this player's index
         int index = this.getPlayerNumber(currentPlayer);
         if (index < 0)
