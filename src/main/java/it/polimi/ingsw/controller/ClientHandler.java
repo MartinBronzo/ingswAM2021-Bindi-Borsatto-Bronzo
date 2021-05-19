@@ -123,10 +123,11 @@ public class ClientHandler implements Runnable {
                             ioException.printStackTrace();
                             keepRunning = false;
                             System.out.println("Error while trying to close the socket");
-                            //TODO: cosa fare se ho errore in chiusura socket?
+                            //TODO: non fare niente
                         }
                     } else {
                         if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS) {
+                            //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato)
                             game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
                         }
 
@@ -187,22 +188,15 @@ public class ClientHandler implements Runnable {
                             this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
                             //If we arrive here, then the player has a valid login
                             this.send(new LoginConfirmationMessage(this.nickname));
-                            if (this.game == null)
+                            if (this.game == null) {
                                 this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
                                 //TODO: AGGIUNGEREI UNO STATO PER DIRE CHE STO ASPETTANDO SOLO UN SETNUMPLAYER COME PROSSIMO MESSAGGIO
-                            else if (this.game.getState() == GameState.INSESSION || this.game.getState() == GameState.STARTED) {
-                                //TODO: we cannot still discern between whether this was the last player added or they had been added back in the game because they lost their connection
-                                //Ho aggiunto l'uguaglianza con started (che nella mia stesa è quanto il game ha raggiunto tutti i giocatori e sta aspettando che anche mandino le leader cards
-                                //da scartare ed etc. all'inizio che è != da in session che quando il meccanismo a turni è in atto
-                                this.send(new GeneralInfoStringMessage("You are back in the game!"));
-                                this.send(this.game.getWholeMessageUpdateToClient());
-                            } else {
-                                this.send(new GeneralInfoStringMessage("You are in Game! You'll soon start play with others!"));
+                                this.playerState = PlayerState.WAITINGFORNUM;
                             }
                             break;
 
                         case "setNumPlayer":
-                            if (playerState != PlayerState.WAITING4NAME) { //TODO: CHE STATO DEVO METTERE?
+                            if (playerState != PlayerState.WAITINGFORNUM) {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
@@ -397,7 +391,6 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
                 this.send(new ErrorMessage("This nickname isn't available!"));
             } catch (IllegalStateException e) {
-                //TODO: cosa facciamo se non ci sono più player connessi?
                 e.printStackTrace();
                 keepRunning = false;
             }
