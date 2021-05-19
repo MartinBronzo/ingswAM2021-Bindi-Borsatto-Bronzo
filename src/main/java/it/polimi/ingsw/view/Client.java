@@ -12,7 +12,7 @@ public abstract class Client {
     public abstract void sendMessage(Command message) throws NullPointerException;
 
     protected abstract void manageLogin() throws IOException;
-    protected abstract void manageGameStarting();
+    protected abstract void manageGameStarting() throws IOException;
 
     protected abstract void buyFromMarket() throws InterruptedException, IOException;
 

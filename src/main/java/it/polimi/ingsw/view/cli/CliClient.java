@@ -79,6 +79,9 @@ public class CliClient extends Client implements Runnable {
                     case SETNUMOFPLAYERS:
                         this.setNumPlayer();
                         break;
+                    case CONFIGURESTART:
+                        this.manageGameStarting();
+                        break;
                     case GETRESOURCESFROMMARKET:
                         this.getResourcesFromMarket();
                         break;
@@ -132,7 +135,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void endConnection() {
-        CliView.printinfo(logoutMessage);
+        CliView.printInfo(logoutMessage);
         try {
             socket.close();
         } catch (IOException e) {
@@ -160,8 +163,15 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void manageGameStarting() {
-        //TODO: no Idea what Server Needs
+    protected synchronized void manageGameStarting() throws IOException {
+        System.out.println("Resources and Leaders to discard example: 1, 3; COIN 1 2, STONE 1 3;\n");
+        String usrCommand = stdIn.readLine();
+        try {
+            Command configureStartCommand = new Command("discardLeaderAndExtraResBeginning", StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(usrCommand));
+            sendMessage(configureStartCommand);
+        } catch (IllegalArgumentException e){
+            System.err.println(e.getMessage());
+        }
     }
 
 
@@ -362,13 +372,13 @@ public class CliClient extends Client implements Runnable {
                         synchronized (this){
                             GeneralInfoStringMessage infoMessage = gson.fromJson(responseContent, GeneralInfoStringMessage.class);
                             String info = infoMessage.getMessage();
-                            CliView.printinfo(info);
+                            CliView.printInfo(info);
                         }
                         break;
                     case ASKFORNUMPLAYERS:
                         synchronized (this){
                             String info = "You are the game Creator, you must set the number of players (1-4)";
-                            CliView.printinfo(info);
+                            CliView.printInfo(info);
                         }
                         break;
                     case KICKEDOUT:
