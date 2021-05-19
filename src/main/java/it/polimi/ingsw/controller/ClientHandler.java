@@ -206,12 +206,10 @@ public class ClientHandler implements Runnable {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
-                            //TODO: QUESTO IF MI SEMBRA SBAGLIATO
                             if (game != null)
                                 throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
                             SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
                             this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
-                            //TODO: ma se il game è vuoto quando è che lo creiamo l'istanza del game?
                             game.setState(GameState.WAITING4PLAYERS);
                             //game.setPlayer(this);
                             break;

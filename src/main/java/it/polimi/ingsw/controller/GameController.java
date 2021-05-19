@@ -120,7 +120,7 @@ public class GameController {
      *                         specified object
      * @return true if the substitution took place correctly, false if there was no substitution because the client associated with the specified ClientHandler is not in this game
      */
-    public boolean substitutesClient(ClientHandler newClientHandler) {
+    public boolean substitutesClient(ClientHandler newClientHandler) throws IllegalActionException {
         //Case gameState == STARTED when disconnection happend
         //If the player was adding the resources and discarding the leaderCards at the beginning of the game, before disconnecting
         for (ClientHandler ch : disconnectedBeforeStarting) {
@@ -131,6 +131,7 @@ public class GameController {
                         e.setKey(newClientHandler);
 
                 //TODO: INVIA RISORSE E CARTE AL CLIENT
+                //this.sendNumExtraResBeginningToDisconnectedPlayer(newClientHandler);
                 return true;
             }
         }
@@ -292,6 +293,8 @@ public class GameController {
 
     private void startGame() {
         this.state = GameState.STARTED;
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            e.getKey().setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
         this.showLeaderCardAtBeginning();
         this.sendNumExtraResBeginning();
     }
@@ -357,6 +360,14 @@ public class GameController {
                 //Then we have gone through the whole list without finding any player who wasn't active
                 throw new IllegalStateException("All the players are disconnected!");
         }
+
+        //TODO: va bene mettere qui la chiusura del gioco?
+        //If the next player has already played their last turn, then the game must end
+        /*if(players.get(index).getKey().getPlayerState() == PlayerState.WAITING4FINALPOINTS) {
+            this.distribuiteFinalPoints();
+            return;
+        }*/
+
         activePlayer = players.get(index).getKey();
         this.updatesTurnAndSendInfo(index);
     }
@@ -489,7 +500,6 @@ public class GameController {
         Game game = new Game();
         Player player;
         for (int i = 0; i < this.numberOfPlayers; i++) {
-            players.get(i).getKey().setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
             player = new Player();
             player.setNickName(players.get(i).getKey().getNickname());
             player.setUnUsedLeaders(players.get(i).getValue().getNotPlayedLeaderCards());
@@ -497,6 +507,13 @@ public class GameController {
         }
 
         this.sendBroadcastUpdate(new ModelUpdate(game));
+
+        //TODO: controllare se va bene
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(e.getKey().getPlayerState() == PlayerState.DISCONNECTED)
+                synchronized (this.disconnectedBeforeStarting){
+                    this.disconnectedBeforeStarting.add(e.getKey());
+                }
 
         return true;
     }
@@ -584,6 +601,8 @@ public class GameController {
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
+        clientHandler.setPlayerState(PlayerState.WAITING4OTHERBEGINNINGDECISIONS);
+
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());

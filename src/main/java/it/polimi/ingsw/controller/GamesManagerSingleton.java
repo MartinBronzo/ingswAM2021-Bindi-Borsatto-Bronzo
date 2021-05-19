@@ -57,6 +57,7 @@ public final class GamesManagerSingleton {
                 startingGame = new GameController();
                 this.clientConfigurator = client;
                 startingGame.setState(GameState.CONFIGURING);
+                //client.setPlayerState();
                 startTimer();
                 return null;
             }
