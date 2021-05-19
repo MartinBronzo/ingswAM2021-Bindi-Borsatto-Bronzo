@@ -142,6 +142,8 @@ public class GameController {
                     if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
                         newClientHandler.setPlayerState(PlayerState.WAITING4TURN);
                         e.setKey(newClientHandler);
+                        newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
+                        newClientHandler.send(this.getWholeMessageUpdateToClient());
                         return true;
                     }
                 break;
@@ -153,6 +155,8 @@ public class GameController {
                     if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
                         newClientHandler.setPlayerState(PlayerState.WAITINGGAMESTART);
                         e.setKey(newClientHandler);
+                        newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
+                        newClientHandler.send(this.getWholeMessageUpdateToClient());
                         return true;
                     }
                 break;
@@ -184,6 +188,8 @@ public class GameController {
                 for (Pair<ClientHandler, PlayerBoard> e : players)
                     if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
                         e.setKey(newClientHandler);
+                        newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
+                        newClientHandler.send(this.getWholeMessageUpdateToClient());
                         return true;
                     }
                 break;
@@ -234,7 +240,7 @@ public class GameController {
                 this.mainBoard = new SoloBoard();
             } catch (ParserConfigurationException | IOException | SAXException e) {
                 e.printStackTrace();
-                //TODO: throw new IllegalActionException("Error in SoloBoardCreation");?
+                System.exit(1); //FATAL ERROR
             }
         } else {
             try {
@@ -242,6 +248,7 @@ public class GameController {
             } catch (Exception e) {
                 //System.out.println("Can't create the MainBoard because there are problems with the configuration files!");
                 e.printStackTrace();
+                System.exit(1); //FATAL ERROR
             }
         }
         this.numberOfPlayers = numberOfPlayers;
@@ -284,8 +291,9 @@ public class GameController {
             return false;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
+        player.send(new GeneralInfoStringMessage("You are in Game! You'll soon start play with others!"));
         //We added the last player: the game must begin
-        player.setPlayerState(PlayerState.WAITINGGAMESTART); //TODO: va bene metterlo qua?
+        player.setPlayerState(PlayerState.WAITINGGAMESTART);
         if (players.size() == this.numberOfPlayers)
             this.startGame();
         return true;
@@ -301,6 +309,7 @@ public class GameController {
 
     private void checkIfGameMustBegin() {
         synchronized (this.howManyPlayersReady) {
+            //TODO: fare un lock unico e metterlo anche dall'altra parte
             synchronized (this.disconnectedBeforeStarting) {
                 //We may end up here if a player send their beginning decisions after the game has become INSESSION
                 if (!(this.state.equals(GameState.STARTED)))
@@ -358,7 +367,8 @@ public class GameController {
             }
             if (index == tmp)
                 //Then we have gone through the whole list without finding any player who wasn't active
-                throw new IllegalStateException("All the players are disconnected!");
+                //TODO: chiudiamo tutto (al massimo mettere uno stato che dice gioco è morto e nella substitue non aggiungiamo giocatori a giochi morti)
+                GamesManagerSingleton.getInstance().deleteGame(this);
         }
 
         //TODO: va bene mettere qui la chiusura del gioco?
@@ -368,6 +378,9 @@ public class GameController {
             return;
         }*/
 
+        /*if(players.get(index).getKey().getPlayerState() == PlayerState.WBD _ )
+            //send le informazioni particolari
+        */
         activePlayer = players.get(index).getKey();
         this.updatesTurnAndSendInfo(index);
     }
@@ -437,12 +450,13 @@ public class GameController {
      *
      * @param clientHandler the ClientHandler of the player
      * @return the PlayerBoard of the player if the player is present in the game, null otherwise
+     * @throws IllegalArgumentException if the specified player isn't in the game
      */
-    private PlayerBoard getPlayerBoardOfPlayer(ClientHandler clientHandler) {
+    private PlayerBoard getPlayerBoardOfPlayer(ClientHandler clientHandler) throws IllegalArgumentException {
         for (Pair<ClientHandler, PlayerBoard> e : players)
             if (e.getKey() == clientHandler)
                 return e.getValue();
-        return null;
+        throw new IllegalArgumentException("The specified ClientHandler isn't in the game!");
     }
 
     /**

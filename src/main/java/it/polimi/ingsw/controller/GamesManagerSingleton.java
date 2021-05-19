@@ -163,8 +163,9 @@ public final class GamesManagerSingleton {
      * @throws NullPointerException if gameEnded is null
      * @throws IllegalStateException if the game is not in ended state
      */
-    public boolean deleteTerminatedGame(GameController gameEnded) throws NullPointerException, IllegalStateException {
-        if (!gameEnded.getState().equals(GameState.ENDED)) throw new IllegalStateException("Game is not in ended state");
+    public boolean deleteGame(GameController gameEnded) throws NullPointerException, IllegalStateException {
+        if (!gameEnded.equals(startingGame)) throw new IllegalStateException("Game is not in ended state");
+       //TODO: controllare se va bene
         return games.remove(gameEnded);
     }
 
