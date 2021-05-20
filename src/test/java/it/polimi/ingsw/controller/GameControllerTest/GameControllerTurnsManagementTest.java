@@ -18,6 +18,7 @@ import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

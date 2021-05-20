@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Player;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

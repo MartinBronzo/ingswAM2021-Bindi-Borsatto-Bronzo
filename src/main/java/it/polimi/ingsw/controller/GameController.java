@@ -799,7 +799,11 @@ public class GameController {
                     res.put(e.getKey(), res.get(e.getKey()) - e.getValue()); //Updates the res map
 
             //Discards the Extra resources
-            mainBoard.discardResources(buyFromMarket.getDiscardRes(), playerBoard);
+            try {
+                mainBoard.discardResources(buyFromMarket.getDiscardRes(), playerBoard);
+            } catch (LastVaticanReportException e) {
+                this.setLastTurn(clientHandler);
+            }
 
             //Checks if there are still some resources coming from the market which have not been dealt with: if this happens, the player hasn't where to put all the
             //resources they are supposed to (this is particular useful to check the case in which the player doesn't specify any parameter: while they don't gain any resource
@@ -814,8 +818,6 @@ public class GameController {
         } catch (IllegalArgumentException e) {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
-        } catch (LastVaticanReportException e) {
-            this.setLastTurn(clientHandler);
         }
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
@@ -1227,7 +1229,7 @@ public class GameController {
                     players.get(i).getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
                 if(i == playerToBecomeActive)
                     if(players.get(i).getKey().getPlayerState() == PlayerState.WAITING4GAMEEND)
-                        ; //TODO: sistemare meglio questo metodo
+                        this.endGame();
                     else if(players.get(i).getKey().getPlayerState() == PlayerState.WAITING4BEGINNINGDECISIONS)
                         players.get(i).getKey().setPlayerState(PlayerState.PLAYINGBEGINNINGDECISIONS);
                     else if(state == GameState.LASTTURN)
@@ -1241,16 +1243,38 @@ public class GameController {
             game.addPlayer(player);
         }
 
-        //TODO: va bene mettere qui la chiusura del gioco?
-        boolean tmp = true;
-        for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(!(e.getKey().getPlayerState() == PlayerState.DISCONNECTED || e.getKey().getPlayerState() == PlayerState.WAITING4GAMEEND))
-                tmp = false;
-        if(!tmp)
+        //If the next player is supposed to be in PLAYING state when the game is still in STARTED state then all the active players have given their beginning
+        //decisions and therefore the game can normally function
+        //TODO: Satto dici che è giusto?
+        if(this.state == GameState.STARTED && players.get(playerToBecomeActive).getKey().getPlayerState() == PlayerState.PLAYING)
+            this.state = GameState.INSESSION;
+
+        if(!hasGameEnded())
             this.sendBroadcastUpdate(new ModelUpdate(game));
         else
-            ; //TODO: distribuire i punti finali
+           this.endGame();
     }
+
+    private void endGame(){
+        this.distributeFinalPoints();
+        GamesManagerSingleton.getInstance().deleteGame(this);
+        //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
+    }
+
+    private void distributeFinalPoints(){
+        FinalScoresMessage message = new FinalScoresMessage();
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            message.addScore(e.getKey().getNickname(), e.getValue().calculateVictoryPoints());
+        this.sendBroadcastUpdate(message);
+    }
+
+    private boolean hasGameEnded(){
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            if(!(e.getKey().getPlayerState() == PlayerState.DISCONNECTED || e.getKey().getPlayerState() == PlayerState.WAITING4GAMEEND))
+               return false;
+        return true;
+    }
+
 
     @Deprecated
     private void sendBroadcastStringMessage(String message) {
