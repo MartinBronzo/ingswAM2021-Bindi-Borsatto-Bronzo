@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.cli;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 class CliViewTest {
 
     @Test
@@ -37,5 +39,6 @@ class CliViewTest {
 
     @Test
     void printResourcesMap() {
+        CliView.printResourcesMap(new HashMap<>(), "DevGrid");
     }
 }

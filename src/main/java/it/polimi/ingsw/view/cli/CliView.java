@@ -29,7 +29,7 @@ public class CliView implements view {
     public static void printGameState(Game gamemodel, String nickname) throws NullPointerException {
 
     }
-//28
+//SPAZI TRA I BORDI DELLA PERGAMENA: 28
     public static void printError(String error) {
         System.out.print(AnsiCommands.clear());
         try {
@@ -103,8 +103,33 @@ public class CliView implements view {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-    public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap) {
+    public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap, String command) {
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.GREEN.getTextColor());
+        System.out.print("   ______________________________\n" +
+                " / \\                             \\.\n");
+        switch (command) {
+            case "DevGrid":
+                System.out.print("|   |");
+                System.out.print(AnsiCommands.BLUE.getTextColor());
+                System.out.print("   Thy desired card costs");
+                System.out.print(AnsiCommands.GREEN.getTextColor());
+                System.out.print("   |.\n");
+        }
 
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+        coins(9);
+        coins(11);
+
+
+
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
+
+    public static void main(String[] args){
+        System.out.println(" thy desired card costs  ".length());
     }
 
     private static String[] splitInLinesBySize(String string, int limit) throws IllegalArgumentException{
@@ -125,5 +150,29 @@ public class CliView implements view {
     }
 
     public static void printFinalScores(Map<String, Integer> results) {
+    }
+
+
+    /*
+    ###########################
+    HELPING METHODS
+    ###########################
+     */
+
+    private static void coins(int quantity){
+        System.out.print("    | ");
+        System.out.print(AnsiCommands.YELLOW.getTextColor());
+        System.out.print("Coins: ");
+        if(quantity < 10) {
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                   |.\n");
+        }
+        else{
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                  |.\n" );
+            System.out.print("");
+        }
     }
 }

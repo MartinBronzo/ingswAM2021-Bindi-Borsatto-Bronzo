@@ -369,7 +369,7 @@ public class CliClient extends Client implements Runnable {
                         synchronized (this){
                             HashMapResFromDevGridMessage message = gson.fromJson(responseContent, HashMapResFromDevGridMessage.class);
                             this.resourcesMap = message.getResources();
-                            CliView.printResourcesMap(resourcesMap);
+                            CliView.printResourcesMap(resourcesMap, "DevGrid");
                         }
                         break;
                     case INFOSTRING:
