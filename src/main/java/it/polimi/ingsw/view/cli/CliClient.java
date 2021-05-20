@@ -428,7 +428,10 @@ public class CliClient extends Client implements Runnable {
                     case FINALSCORES:
                         synchronized (this){
                             FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
-                            CliView.printFinalScores(message.getResults());
+                            //Orders the list of players by their scores
+                            List<Map.Entry<String, Integer>> results = new LinkedList<>(message.getResults().entrySet());
+                            Collections.sort(results, (x, y) -> y.getValue().compareTo(x.getValue()));
+                            CliView.printFinalScores(results);
                         }
                         break;
                 }
