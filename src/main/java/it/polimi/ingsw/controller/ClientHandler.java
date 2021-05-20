@@ -166,7 +166,7 @@ public class ClientHandler implements Runnable {
 
                     PlayerState tmp = playerState;
 
-                    if(!(playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER)) {
+                    if(playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
                         setPlayerState(PlayerState.DISCONNECTED);
                         game.updatesAfterDisconnection(ClientHandler.this);
                     }else
@@ -206,7 +206,7 @@ public class ClientHandler implements Runnable {
                     }
                 }*/
             }
-        }, 0, 300000);
+        }, 0, 20000);
 
         while (keepRunning) {
             try {
@@ -327,7 +327,7 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "discardLeaderAndExtraResBeginning":
-                            if (playerState != PlayerState.WAITING4BEGINNINGDECISIONS) {
+                            if (playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
@@ -422,6 +422,7 @@ public class ClientHandler implements Runnable {
                 //If the socket is closed by the timer and the thread was waiting waiting a message from InputStream, this exception is launched
                 //we simply print what happened and we finish the thread. The socket is closed only if the client haven't logged in yet
                 System.out.println("Closed socket while waiting message from client or trying to send a response");
+
                 keepRunning = false;
                 //e.printStackTrace();
             } catch (IOException e) {
@@ -439,6 +440,7 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
                 this.send(new ErrorMessage("This nickname isn't available!"));
             } catch (IllegalStateException e) {
+                System.out.println("Error in selecting num player or in next player");
                 e.printStackTrace();
                 keepRunning = false;
             }

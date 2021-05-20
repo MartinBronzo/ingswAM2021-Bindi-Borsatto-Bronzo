@@ -59,7 +59,6 @@ public class SoloBoard extends MainBoard {
         this.tokenDeck = new SoloActionDeck(original.tokenDeck);
         this.discardTokenObserver = new DiscardTokenObserver(this);
         this.faithPointTokenObserver = new FaithPointTokenObserver(this);
-
     }
 
     /**

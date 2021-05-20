@@ -39,7 +39,7 @@ public class GameController {
     private int firstPlayer;
     private Integer howManyPlayersReady;
     private Timer turnTimer;
-    private boolean timerElapsed, timerStarted; //timerStarted used for testing purpose
+    private boolean timerElapsed, timerStarted;
     /**
      * List of all the disconnected players who have not specified their beginning decisions
      */
@@ -132,8 +132,9 @@ public class GameController {
                         if (e.getKey().getNickname().equals(newClientHandler.getNickname()))
                             e.setKey(newClientHandler);
 
-                    //TODO: INVIA RISORSE E CARTE AL CLIENT
                     this.sendNumExtraResBeginningToDisconnectedPlayer(newClientHandler);
+                    //updates all the other clients that tha player has reconnected
+                    updatesAfterDisconnection(newClientHandler);
                     return true;
                 }
             }
@@ -146,6 +147,7 @@ public class GameController {
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
+                        updatesAfterDisconnection(newClientHandler);
                         return true;
                     }
                 break;
@@ -160,6 +162,7 @@ public class GameController {
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
+                        updatesAfterDisconnection(newClientHandler);
                         return true;
                     }
                 break;
@@ -176,6 +179,7 @@ public class GameController {
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
+                        updatesAfterDisconnection(newClientHandler);
                         return true;
                     }
                 break;
@@ -327,9 +331,12 @@ public class GameController {
                 e.getKey().setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
         this.showLeaderCardAtBeginning();
         this.sendNumExtraResBeginning();
+        this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
         this.updatesTurnAndSendInfo(this.firstPlayer);
+        this.sendBroadcastUpdate(new GeneralInfoStringMessage("GAME STARTED"));
 
-        startTurnTimer();
+        if(numberOfPlayers != 1) //starts timer only if we are in multiplayer
+            startTurnTimer();
     }
 
     private void startTurnTimer(){
@@ -388,7 +395,6 @@ public class GameController {
             turnTimer.cancel();
             timerStarted = false;
         }
-
 
         //Retrieves this player's index
         int index = this.getPlayerNumber(currentPlayer);
@@ -563,6 +569,7 @@ public class GameController {
         for (int i = 0; i < this.numberOfPlayers; i++) {
             player = new Player();
             player.setNickName(players.get(i).getKey().getNickname());
+            player.setPlayerState(players.get(i).getKey().getPlayerState());
             player.setUnUsedLeaders(players.get(i).getValue().getNotPlayedLeaderCards());
             game.addPlayer(player);
         }
@@ -670,6 +677,7 @@ public class GameController {
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
@@ -710,6 +718,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
@@ -742,6 +751,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setUsedLeaders(playerBoard.getActiveLeaderCards());
         int vp = playerBoard.partialVictoryPoints();
@@ -881,6 +891,7 @@ public class GameController {
         game.setMainBoard(board);
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         setDepotInClientModel(player, playerBoard);
         //We get the PopeTiles of all players because a Vatican Report may have occurred
         player.setPopeTiles(playerBoard.getPopeTile());
@@ -961,6 +972,7 @@ public class GameController {
         game.setMainBoard(board);
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         player.setDevSlots(playerBoard.getDevSlots());
         setDepotInClientModel(player, playerBoard);
         player.setStrongBox(playerBoard.getStrongboxMap());
@@ -980,6 +992,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
@@ -994,6 +1007,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
@@ -1008,6 +1022,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
 
@@ -1100,6 +1115,7 @@ public class GameController {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
+        player.setPlayerState(clientHandler.getPlayerState());
         setDepotInClientModel(player, playerBoard);
         player.setStrongBox(playerBoard.getStrongboxMap());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
@@ -1167,6 +1183,7 @@ public class GameController {
             if (!(e.getKey().getNickname().equals(clientHandler.getNickname()))) {
                 Player tmp = new Player();
                 tmp.setNickName(e.getKey().getNickname());
+                tmp.setPlayerState(e.getKey().getPlayerState());
                 tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
                 tmp.setPopeTiles(e.getValue().getPopeTile());
                 int vp = e.getValue().partialVictoryPoints();
@@ -1243,9 +1260,9 @@ public class GameController {
     */
 
     /**
-     * Updates all the player that the specified player has been disconnected
+     * Updates all the player that the specified player has been disconnected or reconnected
      *
-     * @param disconnectedPlayer the player that disconnected from the game
+     * @param disconnectedPlayer the player that disconnected/reconnected from the game
      */
     public void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
         int index = this.getPlayerNumber(disconnectedPlayer);
