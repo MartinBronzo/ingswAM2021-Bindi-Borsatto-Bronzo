@@ -137,7 +137,14 @@ class stringToMessageTest {
         assertEquals(ResourceType.STONE, depotParamsList.get(1).getResourceType());
         assertEquals(1, depotParamsList.get(1).getQt());
         assertEquals(4, depotParamsList.get(1).getShelf());
+    }
 
+    @Test
+    void toDiscardLeaderAndExtraResBeginningMessageTestEmptyList() {
+        String string = " ; ;";
+        DiscardLeaderAndExtraResBeginningMessage message = StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(string);
+        assertTrue(message.getLeaderCard().isEmpty());
+        assertTrue(message.getDepotRes().isEmpty());
     }
 
     @Test
