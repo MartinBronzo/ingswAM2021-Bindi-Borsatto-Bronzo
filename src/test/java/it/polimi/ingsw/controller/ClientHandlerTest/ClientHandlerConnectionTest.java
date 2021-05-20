@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementCo
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +43,45 @@ public class ClientHandlerConnectionTest {
     PrintWriter fileWriter2;
     PrintWriter fileWriter3;
     PrintWriter fileWriter4;
+
+    /*public static void cleanFiles(){
+        try {
+            final PrintWriter pw1 = new PrintWriter(new FileWriter("ClientHandler1File.json"));
+            pw1.write("{}");
+            pw1.flush();
+            pw1.close();
+            final PrintWriter pw2 = new PrintWriter(new FileWriter("ClientHandler2File.json"));
+            pw2.write("{}");
+            pw2.flush();
+            pw2.close();
+            final PrintWriter pw3 = new PrintWriter(new FileWriter("ClientHandler3File.json"));
+            pw3.write("{}");
+            pw3.flush();
+            pw3.close();
+            final PrintWriter pw4 = new PrintWriter(new FileWriter("ClientHandler4File.json"));
+            pw4.write("{}");
+            pw4.flush();
+            pw4.close();
+            final PrintWriter pw5 = new PrintWriter(new FileWriter("Client1File.json"));
+            pw5.write("{}");
+            pw5.flush();
+            pw5.close();
+            final PrintWriter pw6 = new PrintWriter(new FileWriter("Client2File.json"));
+            pw6.write("{}");
+            pw6.flush();
+            pw6.close();
+            final PrintWriter pw7 = new PrintWriter(new FileWriter("Client3File.json"));
+            pw7.write("{}");
+            pw7.flush();
+            pw7.close();
+            final PrintWriter pw8 = new PrintWriter(new FileWriter("Client4File.json"));
+            pw8.write("{}");
+            pw8.flush();
+            pw8.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }*/
 
     @BeforeEach
     public void setup() throws IOException, IllegalActionException {
@@ -84,6 +124,9 @@ public class ClientHandlerConnectionTest {
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
                 .registerTypeAdapterFactory(effectTypeFactory).create();
     }
+
+
+
 /*
     @Test
     public void waitYourTurn() throws IOException, InterruptedException {

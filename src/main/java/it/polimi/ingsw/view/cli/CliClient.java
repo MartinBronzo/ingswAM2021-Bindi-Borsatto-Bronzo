@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CliClient extends Client implements Runnable {
     private final int portNumber;
@@ -31,14 +32,16 @@ public class CliClient extends Client implements Runnable {
     private int nLeadersToDiscard;
     private int resourcesToTake;
     private String nickname;
-    private boolean forceLogout = false;
-    String logoutMessage = "Thanks for Playing, See you next time :D";
+    private final AtomicBoolean forceLogout;
+    private String logoutMessage = "Thanks for Playing, See you next time :D";
 
 
     public CliClient(int portNumber, String hostName) {
         this.gamemodel = null;
         this.portNumber = portNumber;
         this.hostName = hostName;
+        this.forceLogout = new AtomicBoolean();
+        this.forceLogout.set(false);
     }
 
     @Override
@@ -64,9 +67,10 @@ public class CliClient extends Client implements Runnable {
         CliCommandType cliCommandType = CliCommandType.SETNICKNAME;
         do {
             try {
-                cliCommandType = CliCommandType.valueOf(stdIn.readLine().toUpperCase());
-                if (forceLogout)
+                String line = stdIn.readLine().toUpperCase();
+                if (forceLogout.get())
                     break;
+                cliCommandType = CliCommandType.valueOf(line);
                 switch (cliCommandType) {
                     case QUIT:
                         synchronized (this){
@@ -129,7 +133,7 @@ public class CliClient extends Client implements Runnable {
             }catch (IllegalArgumentException e) {
                 System.err.println("your Command doesn't exists");
             }
-        }while (!cliCommandType.equals(CliCommandType.QUIT) && !forceLogout);
+        }while (!cliCommandType.equals(CliCommandType.QUIT) && !forceLogout.get());
         this.endConnection();
     }
 
@@ -382,21 +386,35 @@ public class CliClient extends Client implements Runnable {
                         }
                         break;
                     case KICKEDOUT:
-                        synchronized (this) {
-                            logoutMessage = "You Have been kicked out, please restart the game to connect to a new Game";
-                            forceLogout = true;
-                            stdIn.close();
-                        }
+                        logoutMessage = "You Have been kicked out, please restart the game to connect to a new Game";
+                        forceLogout.set(true);
+                        thread.interrupt();
                         break;
                     case SETNICK:
                         synchronized (this){
                             LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
                             nickname = setNickMessage.getConfirmedNickname();
+                            CliView.printInfo("From now on thou shall known as master " + nickname + ", thou shall serve under thy liege demands and any committed crime shall causes our Holy Lord disappointed.");
+                        }
+                        break;
+                    case SETBEGINNINGDECISIONS:
+                        synchronized (this){
+                            nLeadersToDiscard = 0;
+                            resourcesToTake = 0;
+                            CliView.printInfo("Master " + nickname + ", I thank thee for showing thy great example of service.");
+                        }
+                        break;
+                    case FINALSCORES:
+                        synchronized (this){
+                            FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
+                            CliView.printFinalScores(message.getResults());
                         }
                         break;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException | NullPointerException e) {
+                logoutMessage = "the server is offline. Please try restart the game.";
+                forceLogout.set(true);
+                thread.interrupt();
             }
         }
     }

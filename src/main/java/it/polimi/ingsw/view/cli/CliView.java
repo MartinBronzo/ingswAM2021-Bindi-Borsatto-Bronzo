@@ -123,4 +123,7 @@ public class CliView implements view {
         }
         return lines.toArray(new String[0]);
     }
+
+    public static void printFinalScores(Map<String, Integer> results) {
+    }
 }

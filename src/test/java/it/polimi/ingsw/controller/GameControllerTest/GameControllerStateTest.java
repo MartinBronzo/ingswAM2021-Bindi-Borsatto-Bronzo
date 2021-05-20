@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,7 @@ public class GameControllerStateTest {
     BufferedReader fileReader3;
     BufferedReader fileReader4;
     Gson gson;
+
 
     @BeforeEach
     public void setup() throws FileNotFoundException {

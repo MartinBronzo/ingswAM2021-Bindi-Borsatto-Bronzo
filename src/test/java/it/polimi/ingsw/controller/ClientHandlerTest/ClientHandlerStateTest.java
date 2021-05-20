@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ public class ClientHandlerStateTest {
     Gson gson;
 
     @BeforeEach
-    public void setup() throws FileNotFoundException {
+    public void setup() throws IOException {
         gameController = new GameController();
         inputStreamReader = new InputStreamReader(System.in);
         c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler1File.json"));

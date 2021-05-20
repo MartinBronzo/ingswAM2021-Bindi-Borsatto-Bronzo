@@ -80,4 +80,15 @@ public class Cell {
         Cell tmp = (Cell) obj;
         return this.victoryPoints == tmp.victoryPoints && this.reportNum.equals(tmp.reportNum);
     }
+
+    /**
+     * Checks whether the specified Cell and this Cell are equal to one another without caring for Observers (that is,
+     * if the Cell can have an Observer attached to itself then this method does not check whether this cell and the
+     * one specified have the same Observers attached).
+     * @param obj the Cell whose likeness to this Cell is being computed
+     * @return true if they are equal to each other (without caring for the Observers), false otherwise
+     */
+    public boolean lighterEquals(Object obj){
+        return this.equals(obj);
+    }
 }

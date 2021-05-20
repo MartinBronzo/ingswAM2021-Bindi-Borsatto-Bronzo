@@ -10,11 +10,13 @@ import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Player;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -600,5 +602,153 @@ public class GameControllerTest {
         assertEquals(PlayerState.WAITING4GAMEEND, clientHandler4.getPlayerState());
     }
 
+    @Test
+    public void ctrlSaveStateWithClientHandlers() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+
+        //We change the inner state of the Players
+        clientHandler1.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler2.setPlayerState(PlayerState.DISCONNECTED);
+        clientHandler3.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler4.setPlayerState(PlayerState.PLAYING);
+
+        gameController.doSaveState();
+        List<ClientHandler> copy = gameController.getClientHandlersCopy();
+
+        //We check that the inner values of the ClientHandlers are the same to the ones stored in the safe copy
+        assertEquals(copy.get(0).getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(copy.get(1).getPlayerState(), PlayerState.DISCONNECTED);
+        assertEquals(copy.get(2).getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(copy.get(3).getPlayerState(), PlayerState.PLAYING);
+    }
+
+    @Test
+    public void ctrlRollBackStateWithClientHandlers() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+
+        //We change the inner state of the Players
+        clientHandler1.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler2.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler3.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler4.setPlayerState(PlayerState.PLAYING);
+
+        gameController.doSaveState();
+
+        //We change again the Players states
+        clientHandler1.setPlayerState(PlayerState.PLAYING);
+        clientHandler2.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler3.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler4.setPlayerState(PlayerState.WAITING4TURN);
+
+        gameController.doRollbackState();
+
+        //We check that the inner values of the ClientHandlers are the same to the ones stored in the safe copy
+        assertEquals(clientHandler1.getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(clientHandler2.getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(clientHandler3.getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(clientHandler4.getPlayerState(), PlayerState.PLAYING);
+    }
+
+    @Test
+    //One player disconnects after the copy has been made
+    public void ctrlRollBackStateWithClientHandlersWithDisconnectedPlayerNowDisconnected() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+
+        //We change the inner state of the Players
+        clientHandler1.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler2.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler3.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler4.setPlayerState(PlayerState.PLAYING);
+
+        gameController.doSaveState();
+
+        //We change again the Players states
+        clientHandler1.setPlayerState(PlayerState.PLAYING);
+        clientHandler2.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler3.setPlayerState(PlayerState.DISCONNECTED);
+        clientHandler4.setPlayerState(PlayerState.WAITING4TURN);
+
+        gameController.doRollbackState();
+
+        //We check that the inner values of the ClientHandlers are the same to the ones stored in the safe copy
+        assertEquals(clientHandler1.getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(clientHandler2.getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(clientHandler3.getPlayerState(), PlayerState.DISCONNECTED);
+        assertEquals(clientHandler4.getPlayerState(), PlayerState.PLAYING);
+    }
+
+    @Test
+    //One player reconnects after the copy has been made
+    public void ctrlRollBackStateWithClientHandlersWithDisconnectedPlayerNowActive() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+
+        //We change the inner state of the Players
+        clientHandler1.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler2.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler3.setPlayerState(PlayerState.DISCONNECTED);
+        clientHandler4.setPlayerState(PlayerState.PLAYING);
+
+        gameController.doSaveState();
+
+        //We change again the Players states
+        clientHandler1.setPlayerState(PlayerState.PLAYING);
+        clientHandler2.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler3.setPlayerState(PlayerState.WAITING4TURN);
+        clientHandler4.setPlayerState(PlayerState.WAITING4TURN);
+
+        gameController.doRollbackState();
+
+        //We check that the inner values of the ClientHandlers are the same to the ones stored in the safe copy
+        assertEquals(clientHandler1.getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(clientHandler2.getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(clientHandler3.getPlayerState(), PlayerState.WAITING4TURN);
+        assertEquals(clientHandler4.getPlayerState(), PlayerState.PLAYING);
+    }
+
+    @Test
+    public void ctrlSaveStateWithGameState() throws IllegalActionException {
+        gameController.startMainBoard(1);
+        gameController.setPlayerOld(clientHandler1);
+
+        gameController.setState(GameState.INSESSION);
+
+        gameController.doSaveState();
+
+        assertEquals(gameController.getGameStateCopy(), GameState.INSESSION);
+    }
+
+    @Test
+    public void ctrlRollBackStateWithGameState() throws IllegalActionException {
+        gameController.startMainBoard(1);
+        gameController.setPlayerOld(clientHandler1);
+
+        gameController.setState(GameState.INSESSION);
+
+        gameController.doSaveState();
+
+        //We change the state another time
+        gameController.setState(GameState.LASTTURN);
+
+        gameController.doRollbackState();
+
+        assertEquals(gameController.getGameStateCopy(), GameState.INSESSION);
+
+    }
 
 }

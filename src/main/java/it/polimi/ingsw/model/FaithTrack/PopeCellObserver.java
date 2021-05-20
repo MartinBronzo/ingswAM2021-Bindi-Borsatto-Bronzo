@@ -9,7 +9,6 @@ public class PopeCellObserver implements Observer {
     MainBoard mainBoard;
 
     public PopeCellObserver(MainBoard mainBoard) {
-        //TODO: chiamare costruttore copia della mainboard
         this.mainBoard = mainBoard;
     }
 
@@ -29,4 +28,14 @@ public class PopeCellObserver implements Observer {
         }
         return true;
     }
+
+    public void setMainBoard(MainBoard mainBoard) {
+        this.mainBoard = mainBoard;
+    }
+
+    //This method is only used for testing purposes
+    public MainBoard getMainBoard() {
+        return mainBoard;
+    }
+
 }

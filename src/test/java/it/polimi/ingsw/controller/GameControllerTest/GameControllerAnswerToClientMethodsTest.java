@@ -29,6 +29,7 @@ import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.network.messages.fromClient.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -55,8 +56,10 @@ public class GameControllerAnswerToClientMethodsTest {
     BufferedReader fileReader4;
     Gson gson;
 
+
     @BeforeEach
     public void setup() throws FileNotFoundException, IllegalActionException {
+
         gameController = new GameController();
         inputStreamReader = new InputStreamReader(System.in);
         c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler1File.json"));
