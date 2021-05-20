@@ -1,13 +1,13 @@
 package it.polimi.ingsw.model.MainBoardTest;
 
+import com.sun.tools.javac.Main;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.model.FaithTrack.FaithTrack;
-import it.polimi.ingsw.model.FaithTrack.PopeTile;
-import it.polimi.ingsw.model.FaithTrack.ReportNum;
+import it.polimi.ingsw.model.FaithTrack.*;
 import it.polimi.ingsw.model.Interfaces.Deck;
+import it.polimi.ingsw.model.Interfaces.Observer;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.Market.Market;
@@ -51,7 +51,7 @@ public class GeneralMainBoardMethodsClass {
         FaithTrack inMainBoard = mainBoard.getFaithTrack();
         FaithTrack usualFaithTrack = FaithTrack.instance(new File("FaithTrackConfig.xml"));
 
-        assertEquals(inMainBoard, usualFaithTrack);
+        assertTrue(inMainBoard.lighterEquals(usualFaithTrack));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class GeneralMainBoardMethodsClass {
     public void ctrlPlayerBoardsFaithTrack() throws ParserConfigurationException, IOException, SAXException {
         FaithTrack usual = FaithTrack.instance(new File("FaithTrackConfig.xml"));
         for(int i = 0; i < 4; i++)
-            assertEquals(mainBoard.getPlayerBoard(i).getFaithTrack(), usual);
+            assertTrue(mainBoard.getPlayerBoard(i).getFaithTrack().lighterEquals(usual));
     }
 
     @Test
@@ -313,7 +313,7 @@ public class GeneralMainBoardMethodsClass {
         MainBoard clone = new MainBoard(original);
 
         assertNotSame(clone, original);
-        assertEquals(clone.getFaithTrack(), original.getFaithTrack());
+        assertTrue(clone.getFaithTrack().lighterEquals(original.getFaithTrack()));
         assertEquals(clone.getPlayerBoard(0).getPopeTile().size(), original.getPlayerBoard(0).getPopeTile().size());
         assertEquals(clone.getPlayerBoard(0).getNotPlayedLeaderCards().size(), original.getPlayerBoard(0).getNotPlayedLeaderCards().size());
         assertEquals(clone.getDevGrid(), original.getDevGrid());
@@ -336,12 +336,59 @@ public class GeneralMainBoardMethodsClass {
 
         MainBoard clone = new MainBoard(mainBoard);
         assertNotSame(mainBoard.getFaithTrackReference(), clone.getFaithTrackReference());
-        assertEquals(mainBoard.getFaithTrack(), clone.getFaithTrack());
+        assertTrue(mainBoard.getFaithTrack().lighterEquals(clone.getFaithTrack()));
 
         assertSame(clone.getPlayerBoard(0).getFaithTrack(), clone.getPlayerBoard(1).getFaithTrack());
         assertSame(clone.getPlayerBoard(0).getFaithTrack(), clone.getFaithTrackReference());
 
         assertNotSame(clone.getPlayerBoard(0).getFaithTrack(), mainBoard.getPlayerBoard(0).getFaithTrack());
+    }
+
+    @Test
+    public void ctrlCellObserverCreationInMainBoardConstructor(){
+        assertEquals(((PopeCell)mainBoard.getFaithTrack().getCell(8)).getObserversList().size(), 1);
+        assertEquals(((PopeCell)mainBoard.getFaithTrack().getCell(16)).getObserversList().size(), 1);
+        assertEquals(((PopeCell)mainBoard.getFaithTrack().getCell(24)).getObserversList().size(), 1);
+
+        Observer p1 = ((PopeCell)mainBoard.getFaithTrack().getCell(8)).getObserversList().get(0);
+        Observer p2 = ((PopeCell)mainBoard.getFaithTrack().getCell(16)).getObserversList().get(0);
+        Observer p3 = ((PopeCell)mainBoard.getFaithTrack().getCell(24)).getObserversList().get(0);
+
+        assertSame(((PopeCellObserver) p1).getMainBoard(), mainBoard);
+
+        assertSame(p1, p2);
+        assertSame(p2, p3);
+    }
+
+    @Test
+    public void ctrlGetClone(){
+        MainBoard copy = mainBoard.getClone();
+
+        assertNotSame(copy, mainBoard);
+    }
+
+    @Test
+    public void ctrlCellObserverCloningInMainBoardCopyConstructor(){
+        MainBoard copy = mainBoard.getClone();
+
+        Observer p0 = ((PopeCell)mainBoard.getFaithTrack().getCell(8)).getObserversList().get(0);
+
+        assertEquals(((PopeCell)copy.getFaithTrack().getCell(8)).getObserversList().size(), 1);
+        assertEquals(((PopeCell)copy.getFaithTrack().getCell(16)).getObserversList().size(), 1);
+        assertEquals(((PopeCell)copy.getFaithTrack().getCell(24)).getObserversList().size(), 1);
+
+        Observer p1 = ((PopeCell)copy.getFaithTrack().getCell(8)).getObserversList().get(0);
+        Observer p2 = ((PopeCell)copy.getFaithTrack().getCell(16)).getObserversList().get(0);
+        Observer p3 = ((PopeCell)copy.getFaithTrack().getCell(24)).getObserversList().get(0);
+
+        assertSame(p1, p2);
+        assertSame(p2, p3);
+
+        assertNotSame(p0, p1);
+
+        assertSame(((PopeCellObserver) p0).getMainBoard(), mainBoard);
+        assertSame(((PopeCellObserver) p1).getMainBoard(), copy);
+        assertNotSame(((PopeCellObserver) p1).getMainBoard(), ((PopeCellObserver) p0).getMainBoard());
     }
 
 }

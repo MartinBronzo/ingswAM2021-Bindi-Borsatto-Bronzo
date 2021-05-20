@@ -310,7 +310,7 @@ public class FaithTrack {
     //Once upon a time this method was actually useful
     @Deprecated
     public static void deleteState() {
-        ;
+        
     }
 
     /**
@@ -350,6 +350,17 @@ public class FaithTrack {
     }
 
     /**
+     * Detaches the specified Observer to the PopeTiles in the FaithTrack
+     * @param observer the Observer to be detached from all the PopeCells
+     */
+    public void detachObserverToPopeTiles(Observer observer){
+        for (Cell c : this.track)
+            if (c instanceof PopeCell)
+                if(((PopeCell) c).containsObserver(observer))
+                    ((PopeCell) c).detach(observer);
+    }
+
+    /**
      * Constructs a copy of the specified FaithTrack
      * @param original the FaithTrack to be copied
      */
@@ -375,7 +386,7 @@ public class FaithTrack {
 
         for(int i = 0; i < this.track.size(); i++)
             if(!this.track.get(i).equals(tmp.track.get(i))) {
-                System.out.println("hel + i: " + i);
+                //System.out.println("hel + i: " + i);
                 return false;
             }
         //If the thread arrives here, then the two track must be equals
@@ -385,5 +396,36 @@ public class FaithTrack {
             return true; //Since their ReportNumOrder is not set then they are automatically equals
         return this.reportNumOrder.equals(tmp.reportNumOrder);
     }
+
+    /**
+     * Checks whether the specified FaithTrack and this FaithTrack are equal to one another without caring whether they contain the same Observers for
+     * the PopeTiles.
+     * @param obj the FaithTrack whose likeness to this FaithTrack is being computed
+     * @return true if they are equal to each other (without caring for the Observers), false otherwise
+     */
+    public boolean lighterEquals(Object obj){
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof FaithTrack))
+            return false;
+        FaithTrack tmp = (FaithTrack) obj;
+        if(this.track.size() != tmp.track.size())
+            return false;
+
+        for(int i = 0; i < this.track.size(); i++)
+            if(!this.track.get(i).lighterEquals(tmp.track.get(i))) {
+                //System.out.println("hel + i: " + i);
+                return false;
+            }
+        //If the thread arrives here, then the two track must be equals
+        if(this.isReportNumOrderSet != tmp.isReportNumOrderSet)
+            return false;
+        if(!this.isReportNumOrderSet)
+            return true; //Since their ReportNumOrder is not set then they are automatically equals
+        return this.reportNumOrder.equals(tmp.reportNumOrder);
+    }
+
 
 }

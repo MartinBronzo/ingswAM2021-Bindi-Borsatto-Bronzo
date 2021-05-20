@@ -8,11 +8,9 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.model.FaithTrack.FaithTrack;
-import it.polimi.ingsw.model.FaithTrack.PopeCell;
-import it.polimi.ingsw.model.FaithTrack.PopeTile;
-import it.polimi.ingsw.model.FaithTrack.ReportNum;
+import it.polimi.ingsw.model.FaithTrack.*;
 import it.polimi.ingsw.model.Interfaces.Deck;
+import it.polimi.ingsw.model.Interfaces.Observer;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
@@ -42,6 +40,8 @@ public class MainBoard {
     protected int[] extraResourcesAtBeginning;
 
     protected int stepForEachDiscardedRes;
+
+    protected Observer cellObserver;
 
 
     /*
@@ -419,6 +419,9 @@ public class MainBoard {
         this.extraResourcesAtBeginning = new int[]{0, 1, 1, 2};
         this.stepForEachDiscardedRes = 1;
         this.numberOfLeaderCardsToDiscardAtBeginning = 2;
+
+        this.cellObserver = new PopeCellObserver(this);
+
         initMainBoard();
     }
 
@@ -441,6 +444,9 @@ public class MainBoard {
                 tmp.add(lPT.remove(0));
             pB.setPlayerFaithLevelPopeTiles(tmp);
         }
+
+        //Lets the Observer observes the PopeCells
+        this.faithTrack.attachObserverToPopeTiles(this.cellObserver);
     }
 
     /**
@@ -540,6 +546,19 @@ public class MainBoard {
         this.stepForEachDiscardedRes = original.stepForEachDiscardedRes;
 
         this.numberOfLeaderCardsToDiscardAtBeginning = original.numberOfLeaderCardsToDiscardAtBeginning;
+
+        //We need a new PopeCellObserver because this kind of observer references to a MainBoard: if didn't make a copy of it,
+        //then we would have one single Observer for two MainBoards
+        this.cellObserver = new PopeCellObserver(this);
+        //We delete the observers which are already present in the FaithTrack because the FaithTrack copy constructor method
+        // simply creates a new list of the observers of the PopeTiles but doesn't create a new Observer object
+        this.faithTrack.detachObserverToPopeTiles(original.cellObserver);
+        this.faithTrack.attachObserverToPopeTiles(this.cellObserver);
+
+    }
+
+    public MainBoard getClone(){
+        return new MainBoard(this);
     }
 
     /***************************** OLD STUFF TO BE CHECKED ****************************************/
