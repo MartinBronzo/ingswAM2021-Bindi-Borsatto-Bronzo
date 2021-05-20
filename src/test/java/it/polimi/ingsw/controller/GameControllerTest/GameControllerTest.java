@@ -465,5 +465,140 @@ public class GameControllerTest {
         assertEquals(4, gameController.getPlayerPositionInTurn(clientHandler2));
     }
 
+    @Test
+    public void willPlay() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(2);
+        gameController.setActivePlayer(clientHandler3);
+        clientHandler2.setPlayerState(PlayerState.PLAYING);
+        gameController.setLastTurn();
+
+        assertTrue(gameController.willPlayInThisTurn(clientHandler1));
+        assertTrue(gameController.willPlayInThisTurn(clientHandler2));
+        assertTrue(gameController.willPlayInThisTurn(clientHandler3));
+        assertTrue(gameController.willPlayInThisTurn(clientHandler4));
+    }
+
+    @Test
+    public void willPlay2() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(2);
+        gameController.setActivePlayer(clientHandler2);
+        clientHandler2.setPlayerState(PlayerState.PLAYING);
+        gameController.setLastTurn();
+
+        assertFalse(gameController.willPlayInThisTurn(clientHandler1));
+        assertTrue(gameController.willPlayInThisTurn(clientHandler2));
+        assertFalse(gameController.willPlayInThisTurn(clientHandler3));
+        assertFalse(gameController.willPlayInThisTurn(clientHandler4));
+    }
+
+
+    @Test
+    public void ctrlLastTurn() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(1);
+        gameController.setActivePlayer(clientHandler3);
+        clientHandler3.setPlayerState(PlayerState.PLAYING);
+        gameController.setLastTurn();
+
+        assertEquals(PlayerState.WAITING4LASTTURN, clientHandler1.getPlayerState());
+        assertEquals(PlayerState.WAITING4GAMEEND, clientHandler2.getPlayerState());
+        assertEquals(PlayerState.PLAYING, clientHandler3.getPlayerState());
+        assertEquals(PlayerState.WAITING4LASTTURN, clientHandler4.getPlayerState());
+    }
+
+    @Test
+    public void ctrlLastTurn2() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(0);
+        gameController.setActivePlayer(clientHandler1);
+        clientHandler1.setPlayerState(PlayerState.PLAYING);
+        gameController.setLastTurn();
+
+        assertEquals(PlayerState.PLAYING, clientHandler1.getPlayerState());
+        assertEquals(PlayerState.WAITING4LASTTURN, clientHandler2.getPlayerState());
+        assertEquals(PlayerState.WAITING4LASTTURN, clientHandler3.getPlayerState());
+        assertEquals(PlayerState.WAITING4LASTTURN, clientHandler4.getPlayerState());
+    }
+
+    @Test
+    public void ctrlLastTurn3() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(2);
+        gameController.setActivePlayer(clientHandler2);
+        clientHandler2.setPlayerState(PlayerState.PLAYING);
+        gameController.setLastTurn();
+
+        assertEquals(PlayerState.WAITING4GAMEEND, clientHandler1.getPlayerState());
+        assertEquals(PlayerState.PLAYING, clientHandler2.getPlayerState());
+        assertEquals(PlayerState.WAITING4GAMEEND, clientHandler3.getPlayerState());
+        assertEquals(PlayerState.WAITING4GAMEEND, clientHandler4.getPlayerState());
+    }
+
+    @Test
+    public void ctrlLastTurn4() throws IllegalActionException {
+        gameController.startMainBoard(4);
+        clientHandler1.setNickname("Client 1");
+        clientHandler2.setNickname("Client 2");
+        clientHandler3.setNickname("Client 3");
+        clientHandler4.setNickname("Client 4");
+        gameController.setPlayerOld(clientHandler1);
+        gameController.setPlayerOld(clientHandler2);
+        gameController.setPlayerOld(clientHandler3);
+        gameController.setPlayerOld(clientHandler4);
+        gameController.setFirstPlayer(2);
+        gameController.setActivePlayer(clientHandler2);
+        clientHandler1.setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
+        clientHandler2.setPlayerState(PlayerState.PLAYING);
+        clientHandler3.setPlayerState(PlayerState.DISCONNECTED);
+        gameController.setLastTurn();
+
+        assertEquals(PlayerState.WAITING4BEGINNINGDECISIONS, clientHandler1.getPlayerState());
+        assertEquals(PlayerState.PLAYING, clientHandler2.getPlayerState());
+        assertEquals(PlayerState.DISCONNECTED, clientHandler3.getPlayerState());
+        assertEquals(PlayerState.WAITING4GAMEEND, clientHandler4.getPlayerState());
+    }
+
 
 }

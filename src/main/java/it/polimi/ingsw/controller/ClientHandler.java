@@ -115,7 +115,7 @@ public class ClientHandler implements Runnable {
                     pingAnswered = false;
                 } else {
                     if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART) {
-                        //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato)
+                        //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato) (non dovrebbe servire)
                         game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
                     }
 
@@ -138,7 +138,6 @@ public class ClientHandler implements Runnable {
                         ioException.printStackTrace();
                         keepRunning = false;
                         System.out.println("Error while trying to close the socket");
-                        //TODO: non fare niente
                     }
 
                 }
