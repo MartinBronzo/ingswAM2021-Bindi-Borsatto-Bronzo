@@ -1,9 +1,16 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.view;
@@ -39,8 +46,8 @@ public class CliView implements view {
             case WAITING4LASTTURN:
                 System.out.println("abcd");
                 break;
-            case WAITING4OTHERBEGINNINGDECISIONS:
-                break;
+            /*case WAITING4OTHERBEGINNINGDECISIONS:
+                break;*/
             case PLAYING:
                 break;
             case WAITING4GAMESTART:
@@ -57,7 +64,7 @@ public class CliView implements view {
         }
 
     }
-//SPAZI TRA I BORDI DELLA PERGAMENA: 28
+    //SPAZI TRA I BORDI DELLA PERGAMENA: 28
     public static void printError(String error) {
         System.out.print(AnsiCommands.clear());
         try {
@@ -408,6 +415,123 @@ public class CliView implements view {
             System.out.print(" ".repeat(8)+"\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06"+"\n");
         }
         System.out.print(AnsiCommands.resetStyle()+AnsiCommands.clearLine());
+    }
+
+    public static void printUnusedLeaderCards(List<LeaderCard> list){
+        System.out.print(AnsiCommands.RED.getTextColor());
+        System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+        System.out.print("Thy Not Active Card of the Leader are hither presented:\n\n");
+        printLeaderCards(list);
+    }
+
+    public static void printUsedLeaderCards(List<LeaderCard> list){
+        System.out.print(AnsiCommands.GREEN.getTextColor());
+        System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+        System.out.print("Thy Active Card of the Leader are hither presented:\n\n");
+        printLeaderCards(list);
+    }
+
+    public static void printLeaderCards(List<LeaderCard> list){
+        for(LeaderCard lD: list){
+            printLeaderCard(lD);
+            System.out.print("\n");
+        }
+
+        System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+    }
+
+    public static void printLeaderCard(LeaderCard card){
+        System.out.print("CARD OF THE LEADER\n");
+        System.out.print("Points of Victory: " + card.getVictoryPoints() + "\n");
+        for(Requirement r: card.getRequirementsListSafe())
+            printRequirements(r);
+        printEffects(card.getEffect());
+    }
+
+    private static void printRequirements(Requirement req){
+        if(req instanceof CardRequirementColor)
+            printCardRequirementColor((CardRequirementColor) req);
+        else if(req instanceof CardRequirementColorAndLevel)
+            printCardRequirementColorAndLevel((CardRequirementColorAndLevel) req);
+        else if(req instanceof CardRequirementResource)
+            printCardRequirementResource((CardRequirementResource) req);
+        System.out.print("\n");
+    }
+
+    private static void printCardRequirementColor(CardRequirementColor req){
+        System.out.print("Requirement of Card and Color: ");
+        if(req.getQuantity() == 1)
+            System.out.print("a " + req.getCardColour() + " card");
+        else
+            System.out.print(req.getCardColour() + " " + req.getCardColour() + " cards");
+    }
+
+    private static void printCardRequirementColorAndLevel(CardRequirementColorAndLevel req){
+        System.out.print("Requirement of Card, Color and Level: ");
+        if(req.getQuantity() == 1)
+            System.out.print("a " + req.getCardColour() + " card of at lest level " + req.getLevel());
+        else
+            System.out.print(req.getLevel() + " " + req.getCardColour() + " cards of at lest level " + req.getLevel());
+    }
+
+    private static void printCardRequirementResource(CardRequirementResource req){
+        System.out.print("Requirement of Resources: ");
+        if(req.getQuantity() == 1)
+            System.out.print("a " + req.getResourceType());
+        else
+            System.out.print(req.getQuantity() + " " + req.getResourceType() + "s");
+    }
+
+    private static void printEffects(Effect effect){
+        if(effect instanceof DiscountLeaderEffect)
+            printDiscountLeaderEffect((DiscountLeaderEffect) effect);
+        else if(effect instanceof ExtraProductionLeaderEffect)
+            printExtraProductionLeaderEffect((ExtraProductionLeaderEffect) effect);
+        else if(effect instanceof ExtraSlotLeaderEffect)
+            printExtraSlotLeaderEffect((ExtraSlotLeaderEffect) effect);
+        else if(effect instanceof WhiteMarbleLeaderEffect)
+            printWhiteMarbleEffect((WhiteMarbleLeaderEffect) effect);
+        System.out.print("\n");
+    }
+
+    private static void printDiscountLeaderEffect(DiscountLeaderEffect e){
+        System.out.print("Effect of Card Discount: ");
+        if(e.getDiscountAmount() == 1)
+            System.out.print(" thou get a " + e.getDiscountType() + " off" );
+        else
+            System.out.print(" thou get " + e.getDiscountAmount() + e.getDiscountType() + "s off" );
+    }
+
+    private static void printExtraProductionLeaderEffect(ExtraProductionLeaderEffect e){
+        System.out.print("Effect of Producing More: ");
+        String line;
+        if(e.getRequiredInputNumber() == 1)
+            line = "if thou grant a " + e.getRequiredInputType();
+        else
+            line = "if thou grant " + e.getRequiredInputNumber() + " " + e.getRequiredInputType() + "s";
+        if(e.getExtraOutputQuantity() == 1)
+            line = line + ", thou will receive a resource of your desire ";
+        else
+            line = line + ", thou will receive " + e.getExtraOutputQuantity() + " resources of your desire ";
+        line = line + "and one extra point of Faith";
+        System.out.print(line);
+    }
+
+    private static void printExtraSlotLeaderEffect(ExtraSlotLeaderEffect e){
+        System.out.print("Effect of More Precious Depot Slots: ");
+        if(e.extraSlotGetResourceNumber() == 1)
+            System.out.print("thou get a extra slot for safely storing " + e.extraSlotGetType() + "s");
+        else
+            System.out.print("thou get " + e.extraSlotGetResourceNumber() + " extra slots for safely storing " + e.extraSlotGetType() + "s" );
+    }
+
+    private static void printWhiteMarbleEffect(WhiteMarbleLeaderEffect e){
+        System.out.print("Effect of Coloring A White Marble: ");
+        if(e.getExtraResourceAmount() == 1)
+            System.out.print("thou get a " + e.getExtraResourceType() + " when thou encounter an annoying WhiteMarble in the Market" );
+        else
+            System.out.print("thou get " + e.getExtraResourceAmount() + " " + e.getExtraResourceType() + "s when thou encounter an annoying WhiteMarble in the Market" );
     }
 
 

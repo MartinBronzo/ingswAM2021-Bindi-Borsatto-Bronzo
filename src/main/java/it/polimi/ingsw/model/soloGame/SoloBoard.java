@@ -7,12 +7,19 @@ import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.FaithTrack.FaithLevelBasic;
+import it.polimi.ingsw.model.FaithTrack.FaithTrack;
+import it.polimi.ingsw.model.FaithTrack.PopeCellObserver;
+import it.polimi.ingsw.model.FaithTrack.PopeTile;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.MainBoard;
+import it.polimi.ingsw.model.Market.Market;
+import it.polimi.ingsw.model.PlayerBoard;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * This class represents the SoloBoard, which is the container of all the elements of the game
@@ -21,13 +28,13 @@ import java.io.IOException;
 public class SoloBoard extends MainBoard {
     private final FaithLevelBasic lorenzosTrack;
     private final SoloActionDeck tokenDeck;
-    DiscardTokenObserver discardTokenObserver;
-    FaithPointTokenObserver faithPointTokenObserver;
+    private DiscardTokenObserver discardTokenObserver;
+    private FaithPointTokenObserver faithPointTokenObserver;
 
-    /*@Override
+    @Override
     public MainBoard getClone() {
         return new SoloBoard(this);
-    }*/
+    }
 
     @Deprecated
     public SoloBoard(DevGrid devGrid, FaithLevelBasic lorenzosTrack, SoloActionDeck tokenDeck) {
@@ -42,6 +49,16 @@ public class SoloBoard extends MainBoard {
         faithPointTokenObserver = new FaithPointTokenObserver(this);
         this.lorenzosTrack = new FaithLevelBasic(this.faithTrack);
         this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"), discardTokenObserver, faithPointTokenObserver);
+    }
+
+    public SoloBoard(SoloBoard original){
+        super(original);
+
+        //copy of soloBoard objects
+        this.lorenzosTrack = new FaithLevelBasic(original.lorenzosTrack);
+        this.tokenDeck = new SoloActionDeck(original.tokenDeck);
+        this.discardTokenObserver = new DiscardTokenObserver(this);
+        this.faithPointTokenObserver = new FaithPointTokenObserver(this);
     }
 
     /**

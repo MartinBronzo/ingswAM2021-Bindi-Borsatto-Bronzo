@@ -425,7 +425,7 @@ public class CliClient extends Client implements Runnable {
                             CliView.printInfo("Master " + nickname + ", I thank thee for showing thy great example of service.");
                         }
                         break;
-                    case FINALSCORES:
+                    /*case FINALSCORES:
                         synchronized (this){
                             FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
                             //Orders the list of players by their scores
@@ -434,6 +434,19 @@ public class CliClient extends Client implements Runnable {
                             CliView.printFinalScores(results);
                         }
                         break;
+                    case SETBEGINNINGDECISIONS:
+                        synchronized (this){
+                            nLeadersToDiscard = 0;
+                            resourcesToTake = 0;
+                            CliView.printInfo("Master " + nickname + ", I thank thee for showing thy great example of service.");
+                        }
+                        break;
+                    case FINALSCORES:
+                        synchronized (this){
+                            FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
+                            CliView.printFinalScores(message.getResults());
+                        }
+                        break;*/
                 }
             } catch (IOException | NullPointerException e) {
                 logoutMessage = "the server is offline. Please try restart the game.";

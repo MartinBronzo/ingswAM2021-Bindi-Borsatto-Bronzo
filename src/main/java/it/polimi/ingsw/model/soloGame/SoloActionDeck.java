@@ -32,6 +32,10 @@ public class SoloActionDeck implements Deck {
         this.soloDeck = new LinkedList<>(soloActionDeck.soloDeck);
     }
 
+    public LinkedList<SoloActionToken> SoloActionDeck(SoloActionDeck soloActionDeck){
+        return new LinkedList<>(soloDeck);
+    }
+
     /**
      * Creates the deck from an xml file and returns it
      *
