@@ -392,6 +392,20 @@ public class CliClient extends Client implements Runnable {
                         synchronized (this){
                             LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
                             nickname = setNickMessage.getConfirmedNickname();
+                            CliView.printInfo("From now on thou shall known as master " + nickname + ", thou shall serve under thy liege demands and any committed crime shall causes our Holy Lord disappointed.");
+                        }
+                        break;
+                    case SETBEGINNINGDECISIONS:
+                        synchronized (this){
+                            nLeadersToDiscard = 0;
+                            resourcesToTake = 0;
+                            CliView.printInfo("Master " + nickname + ", I thank thee for showing thy great example of service.");
+                        }
+                        break;
+                    case FINALSCORES:
+                        synchronized (this){
+                            FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
+                            CliView.printFinalScores(message.getResults());
                         }
                         break;
                 }
