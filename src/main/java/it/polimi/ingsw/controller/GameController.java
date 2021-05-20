@@ -46,6 +46,11 @@ public class GameController {
      * List of all the disconnected players who have not specified their beginning decisions
      */
     private List<ClientHandler> disconnectedBeforeStarting;
+    /**
+     * List of all the partial copy of the ClientHandlers in the game
+     */
+    private List<ClientHandler> clientHandlersCopy;
+    private GameState gameStateCopy;
 
 
     /**
@@ -471,6 +476,14 @@ public class GameController {
 
     public MainBoard getMainBoard() {
         return this.mainBoard;
+    }
+
+    public List<ClientHandler> getClientHandlersCopy(){
+        return this.clientHandlersCopy;
+    }
+
+    public GameState getGameStateCopy(){
+        return this.gameStateCopy;
     }
 
     /**
@@ -1368,19 +1381,39 @@ public class GameController {
      * Saves the inner state of the Model by saving a copy of the MainBoard (and, therefore, a copy of all the PlayerBoards).
      */
     private void saveState() {
+        //Saves a copy of the MainBoard
         this.modelCopy = new MainBoard(mainBoard);
+
+        //Saves a partial copy of the players in the game keeping the same order as the one stored in this GameController
+        this.clientHandlersCopy = new ArrayList<>();
+        for(Pair<ClientHandler, PlayerBoard> e: players)
+            this.clientHandlersCopy.add(ClientHandler.getPartialCopy(e.getKey()));
+
+        //Saves the state of the GameController
+        this.gameStateCopy = this.state;
     }
 
     /**
      * Rollbacks the current changes by restoring the previous inner state.
      */
     private void rollbackState() {
+        //Reinstates the MainBoard
         this.mainBoard = modelCopy;
         int i = 0;
         for (Pair<ClientHandler, PlayerBoard> e : players) {
             e.setValue(mainBoard.getPlayerBoard(i));
             i++;
         }
+
+        //Changes back the values of the players
+        i = 0;
+        for(Pair<ClientHandler, PlayerBoard> e: players) {
+            e.getKey().refreshState(this.clientHandlersCopy.get(i));
+            i++;
+        }
+
+        //Changes back the GameState
+        this.state = this.gameStateCopy;
     }
 
         /*

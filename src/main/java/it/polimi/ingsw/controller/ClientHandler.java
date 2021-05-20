@@ -35,6 +35,51 @@ public class ClientHandler implements Runnable {
     private final Gson gson;
     private boolean keepRunning;
 
+
+    private ClientHandler(ClientHandler original){
+        this.nickname = original.nickname;
+        this.socket = null;
+        this.in = null;
+        this.out = null;
+        this.game = null;
+        this.playerState = original.playerState;
+        this.mainActionDone = original.mainActionDone;
+        this.numLeaderActionDone = original.numLeaderActionDone;
+        this.pingAnswered = true;
+        this.gson = null;
+        this.keepRunning = true;
+    }
+
+    /**
+     * Creates a partial copy of the specified ClientHandler. It only copies the information related to the state of the Player.
+     * @param original the ClientHandler to be partially cloned
+     */
+    public static ClientHandler getPartialCopy(ClientHandler original){
+        return new ClientHandler(original);
+    }
+
+
+    /**
+     * Copies from the specified ClientHandler partial copy its information and saves them in this ClientHandler. It pays attention to
+     * players' disconnection: if in the copy the player was registered as disconnected but now is connected then the state doesn't change;
+     * if in the copy the player was registered as not disconnected but now is disconnected then the state doesn't change
+     * @param partialCopy the partial copy where to get information
+     */
+    public void refreshState(ClientHandler partialCopy){
+        //If in the copy the player was registered as disconnected but now is connected then the state doesn't change
+        if(this.playerState == PlayerState.DISCONNECTED && partialCopy.playerState != PlayerState.DISCONNECTED)
+            ;
+        //If in the copy the player was registered as not disconnected but now is disconnected then the state doesn't change
+        else if(this.playerState != PlayerState.DISCONNECTED && partialCopy.playerState == PlayerState.DISCONNECTED)
+            ;
+        //In the other cases, we copy the original value
+        else
+            this.playerState = partialCopy.playerState;
+
+        this.mainActionDone = partialCopy.mainActionDone;
+        this.numLeaderActionDone = partialCopy.numLeaderActionDone;
+    }
+
     /**
      * used only for test purpose
      */

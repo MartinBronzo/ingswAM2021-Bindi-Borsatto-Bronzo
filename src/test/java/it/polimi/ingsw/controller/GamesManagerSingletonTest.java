@@ -200,7 +200,7 @@ class GamesManagerSingletonTest {
         assertThrows(NotAvailableNicknameException.class, () -> gamesManagerSingleton.joinOrCreateNewGame(clientSameNick));
     }
 
-    @Test
+    /*@Test
     void timerTest() throws  InterruptedException {
         assertNull(gamesManagerSingleton.getStartingGame());
         Thread thread1 = new Thread(() -> {
@@ -218,6 +218,6 @@ class GamesManagerSingletonTest {
         assertNull(gamesManagerSingleton.getStartingGame());
         assertEquals(0, gamesManagerSingleton.getGames().size());
 
-    }
+    }*/
 
 }
