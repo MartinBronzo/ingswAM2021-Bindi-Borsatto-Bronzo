@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.FaithTrack.PopeTile;
+import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -239,6 +242,12 @@ public class CliView implements view {
         Collections.sort(results, Comparator.comparing(Map.Entry::getValue));
         for(Map.Entry<String, Integer> e: results)
             System.out.println(e.getKey() + " " + e.getValue());
+        PopeTile popeTile = new PopeTile(1,ReportNum.REPORT1);
+        List<PopeTile> popeTiles =new ArrayList<>();
+        popeTiles.add(popeTile);
+        popeTiles.add(popeTile);
+        popeTiles.add(popeTile);
+        printfaithTrack(3,popeTiles);
     }
 
     private static void coins(int quantity){
@@ -356,6 +365,49 @@ public class CliView implements view {
                 faithPoints(quantity);
                 break;
         }
+    }
+
+    private static void printDivider(AnsiCommands color){
+        System.out.print(color.getTextColor());
+        System.out.println("  .-----------------------------------------------------------------.\n" +
+                                   "|  /   \\                                                       /   \\  |\n" +
+                                   "| |\\_.  |                                                     |    /| |\n" +
+                                   "|\\|  | /|                                                     |\\  | |/|\n" +
+                                   "| `---' |                                                     | `---' |\n" +
+                                   "|       |-----------------------------------------------------|       |\n" +
+                                   "\\       |                                                     |       /\n" +
+                                   " `-----'                                                       `-----'");
+        System.out.print(AnsiCommands.resetStyle());
+    }
+
+    private static void printfaithTrack(int position, List<PopeTile> popeTiles){
+        System.out.println("⚀⚀⚀⚀⚀⚀♕♕⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀♕♕⚀⚀☩☩"+AnsiCommands.resetStyle()+"♕♕⚀⚀⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"♕♕⚀⚀⚀⚀♕♕☩☩"+AnsiCommands.resetStyle()+"⚀⚀♕♕"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀⚀⚀♕♕⚀⚀⚀⚀☩☩"+AnsiCommands.resetStyle());
+        System.out.print(AnsiCommands.YELLOW.getBackgroundColor()+AnsiCommands.BLACK.getTextColor());
+        System.out.println(" ".repeat(position*2)+"⸡⸠"+" ".repeat((24-position)*2)+AnsiCommands.resetStyle());
+        System.out.println("⚀⚀⚀⚀⚀⚀♕♕⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀♕♕⚀⚀☩☩"+AnsiCommands.resetStyle()+"♕♕⚀⚀⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"♕♕⚀⚀⚀⚀♕♕☩☩"+AnsiCommands.resetStyle()+"⚀⚀♕♕"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀⚀⚀♕♕⚀⚀⚀⚀☩☩"+AnsiCommands.resetStyle());
+        System.out.print(AnsiCommands.RED.getTextColor());
+        if (popeTiles.get(0).isDiscarded()){
+            System.out.print(" ".repeat(18));
+        }else if (popeTiles.get(0).isChanged()){
+            System.out.print(" ".repeat(12)+"\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B"+" ".repeat(2));
+        }else{
+            System.out.print(" ".repeat(12)+"\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06"+" ".repeat(2));
+        }
+        if (popeTiles.get(1).isDiscarded()){
+            System.out.print(" ".repeat(16));
+        }else if (popeTiles.get(1).isChanged()){
+            System.out.print(" ".repeat(9)+"\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B"+" ".repeat(3));
+        }else{
+            System.out.print(" ".repeat(9)+"\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06"+" ".repeat(3));
+        }
+        if (popeTiles.get(2).isDiscarded()){
+            System.out.print("\n");
+        }else if (popeTiles.get(2).isChanged()){
+            System.out.print(" ".repeat(8)+"\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B"+"\n");
+        }else{
+            System.out.print(" ".repeat(8)+"\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06"+"\n");
+        }
+        System.out.print(AnsiCommands.resetStyle()+AnsiCommands.clearLine());
     }
 
 
