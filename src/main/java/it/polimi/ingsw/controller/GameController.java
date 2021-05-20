@@ -244,7 +244,6 @@ public class GameController {
         this.maxPlayersNum = 4;
         this.howManyPlayersReady = 0;
         this.disconnectedBeforeStarting = new ArrayList<>();
-        this.turnTimer = new Timer();
         this.timerElapsed = false;
         this.timerStarted = false;
     }
@@ -342,6 +341,7 @@ public class GameController {
     private void startTurnTimer(){
         timerElapsed = false;
         timerStarted = true;
+        turnTimer = new Timer();
         turnTimer.schedule(new TimerTask() {
             @Override
             public void run() {

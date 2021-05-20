@@ -391,7 +391,7 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "endTurn":
-                            if (playerState != PlayerState.PLAYING) {
+                            if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
                             }

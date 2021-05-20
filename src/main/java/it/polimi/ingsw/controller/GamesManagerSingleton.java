@@ -4,6 +4,10 @@ import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
+import it.polimi.ingsw.network.messages.sendToClient.ErrorMessage;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
+import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
+
 import java.rmi.UnexpectedException;
 import java.util.*;
 
@@ -82,7 +86,7 @@ public final class GamesManagerSingleton {
             public void run() {
                 timerCanCancel=true;
                 if (!configurationTimeElapsed())
-                    System.out.println("Games Manager Timer has run but but not cancelled the game");
+                    System.out.println("Games Manager Timer has run but but not cancelled the game. The connection will be closed soon");
             }
         }, 30000);
     }
@@ -96,7 +100,7 @@ public final class GamesManagerSingleton {
     private synchronized boolean configurationTimeElapsed(){
         if (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING) && timerCanCancel){
             startingGame=null;
-            //TODO: clientConfigurator.send("configurationTimeElapsed\n");
+            clientConfigurator.send(new ResponseMessage(ResponseType.KICKEDOUT, "Configuration Time Elapsed\n"));
             clientConfigurator = null;
             stopTimer();
             notify();

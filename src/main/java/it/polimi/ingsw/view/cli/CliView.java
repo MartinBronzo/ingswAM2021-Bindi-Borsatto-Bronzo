@@ -61,7 +61,7 @@ public class CliView implements view {
         }
 
     }
-//SPAZI TRA I BORDI DELLA PERGAMENA: 28
+    //SPAZI TRA I BORDI DELLA PERGAMENA: 28
     public static void printError(String error) {
         System.out.print(AnsiCommands.clear());
         try {
