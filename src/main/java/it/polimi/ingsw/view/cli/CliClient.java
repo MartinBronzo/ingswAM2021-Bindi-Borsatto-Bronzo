@@ -29,11 +29,13 @@ public class CliClient extends Client implements Runnable {
     private static final Gson gson = new Gson();
     private static Thread thread;
     private Map<ResourceType, Integer> resourcesMap;
+    private String mapDescription;
     private int nLeadersToDiscard;
     private int resourcesToTake;
     private String nickname;
     private final AtomicBoolean forceLogout;
     private String logoutMessage = "Thanks for Playing, See you next time :D";
+
 
 
     public CliClient(int portNumber, String hostName) {
@@ -369,7 +371,24 @@ public class CliClient extends Client implements Runnable {
                         synchronized (this){
                             HashMapResFromDevGridMessage message = gson.fromJson(responseContent, HashMapResFromDevGridMessage.class);
                             this.resourcesMap = message.getResources();
-                            CliView.printResourcesMap(resourcesMap);
+                            this.mapDescription = "Master "+ nickname+ ", this improvement shall cost thou:";
+                            CliView.printResourcesMap(resourcesMap, mapDescription);
+                        }
+                        break;
+                    case HASHMAPRESOURCESFROMMARKET:
+                        synchronized (this){
+                            HashMapResFromMarketMessage message = gson.fromJson(responseContent, HashMapResFromMarketMessage.class);
+                            this.resourcesMap = message.getResources();
+                            this.mapDescription = "Master "+ nickname+ ", this morrow, local shopkeepers tenders thou:";
+                            CliView.printResourcesMap(resourcesMap, mapDescription);
+                        }
+                        break;
+                    case HASHMAPRESOURCESFROMPRODCOST:
+                        synchronized (this){
+                            HashMapResFromProdCostMessage message = gson.fromJson(responseContent, HashMapResFromProdCostMessage.class);
+                            this.resourcesMap = message.getResources();
+                            this.mapDescription = "Master "+ nickname+ ", the craftsman needs these resources to produce what you ask for:";
+                            CliView.printResourcesMap(resourcesMap, mapDescription);
                         }
                         break;
                     case INFOSTRING:
@@ -389,6 +408,8 @@ public class CliClient extends Client implements Runnable {
                         logoutMessage = "You Have been kicked out, please restart the game to connect to a new Game";
                         forceLogout.set(true);
                         thread.interrupt();
+                        break;
+                    case TURNINFO:
                         break;
                     case SETNICK:
                         synchronized (this){
