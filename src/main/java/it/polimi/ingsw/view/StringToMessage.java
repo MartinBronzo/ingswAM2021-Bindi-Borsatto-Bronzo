@@ -56,7 +56,7 @@ public class StringToMessage {
             }
             String[] leaderIds = infos[1].split(",");
             leaderList = Arrays.stream(leaderIds).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
-            depotParamsList = Arrays.stream(infos[2].split(",")).map(StringToMessage::toDepotParams).collect(Collectors.toList());
+            depotParamsList = Arrays.stream(infos[2].split(",")).map(String::strip).filter(id -> id.length() != 0).map(StringToMessage::toDepotParams).collect(Collectors.toList());
             leaderMap = toResourceHashMap(infos[3]);
             strongboxMap = toResourceHashMap(infos[4]);
             devslot = Integer.parseInt(infos[5].strip());
@@ -87,7 +87,7 @@ public class StringToMessage {
             }
             String[] leaderIds = infos[1].split(",");
             leaderList = Arrays.stream(leaderIds).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
-            depotParamsList = Arrays.stream(infos[2].split(",")).map(StringToMessage::toDepotParams).collect(Collectors.toList());
+            depotParamsList = Arrays.stream(infos[2].split(",")).map(String::strip).filter(id -> id.length() != 0).map(StringToMessage::toDepotParams).collect(Collectors.toList());
             leaderMap = toResourceHashMap(infos[3]);
             discardMap = toResourceHashMap(infos[4]);
         } catch (Exception e){
@@ -109,7 +109,7 @@ public class StringToMessage {
             devCardList = Arrays.stream(devCardsIds).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
             leaderHashMap = toLeadersHashMap(infos[1]);
             baseProductionParams = toBaseProductionParams(infos[2]);
-            depotParamsList = Arrays.stream(infos[3].split(",")).map(StringToMessage::toDepotParams).collect(Collectors.toList());
+            depotParamsList = Arrays.stream(infos[3].split(",")).map(String::strip).filter(id -> id.length() != 0).map(StringToMessage::toDepotParams).collect(Collectors.toList());
             leaderSlotMap = toResourceHashMap(infos[4]);
             strongboxMap = toResourceHashMap(infos[5]);
         } catch (Exception e){
@@ -193,8 +193,8 @@ public class StringToMessage {
         try {
             String[] infos = Arrays.stream(string.split(",")).map(String::strip).toArray(String[]::new);
             activated = Boolean.parseBoolean(infos[0]);
-            resourceInput = Arrays.stream(infos[1].split("\\s+")).filter(subString -> subString.length() != 0).map(ResourceType::valueOf).collect(Collectors.toList());
-            resourceOutput = Arrays.stream(infos[2].split("\\s+")).filter(subString -> subString.length() != 0).map(ResourceType::valueOf).collect(Collectors.toList());
+            resourceInput = Arrays.stream(infos[1].split("\\s+")).map(String::strip).filter(subString -> subString.length() != 0).map(ResourceType::valueOf).collect(Collectors.toList());
+            resourceOutput = Arrays.stream(infos[2].split("\\s+")).map(String::strip).filter(subString -> subString.length() != 0).map(ResourceType::valueOf).collect(Collectors.toList());
         } catch (Exception e){
             throw new IllegalArgumentException("String is not well formatted");
         }
@@ -207,7 +207,7 @@ public class StringToMessage {
         try {
             String[] infos = Arrays.stream(string.split(";")).map(String::strip).toArray(String[]::new);
             leaderCardIds = Arrays.stream(infos[0].split(",")).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
-            depotParamsList = Arrays.stream(infos[1].split(",")).map(StringToMessage::toDepotParams).collect(Collectors.toList());
+            depotParamsList = Arrays.stream(infos[1].split(",")).map(String::strip).filter(id -> id.length() != 0).map(StringToMessage::toDepotParams).collect(Collectors.toList());
             } catch (Exception e){
             throw new IllegalArgumentException("String is not well formatted");
         }
