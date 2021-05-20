@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.view;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class CliView implements view {
         }
 
     }
-//28
+//SPAZI TRA I BORDI DELLA PERGAMENA: 28
     public static void printError(String error) {
         System.out.print(AnsiCommands.clear());
         try {
@@ -127,9 +128,84 @@ public class CliView implements view {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-    public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap) {
+    public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap, String heading) {
+        String[] lines = CliView.splitInLinesBySize(heading, 27);
 
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.GREEN.getTextColor());
+        System.out.print("   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |                            |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+        for (String line: lines) {
+            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        }
+
+      for(Map.Entry<ResourceType, Integer> e: resourcesMap.entrySet())
+          printResources(e.getKey(), e.getValue());
+
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
+
+    public static void printFinalScores(List<Map.Entry<String, Integer>> results) {
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.RED.getTextColor());
+        System.out.print("   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |                            |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+
+        String[] lines = CliView.splitInLinesBySize("The game hath sadly come to an end, we shall see the final scores:", 27);
+        for (String line: lines) {
+            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        }
+        System.out.print("    |                            |.\n");
+
+        for(Map.Entry<String, Integer> e: results)
+            printPlayersAndScore(e.getKey(), e.getValue());
+
+        System.out.print("    |                            |.\n");
+        lines = CliView.splitInLinesBySize("We shall crown our King,", 27);
+        for (String line: lines) {
+            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        }
+        lines = CliView.splitInLinesBySize(results.get(0).getKey(), 27);
+        for (String line: lines) {
+            System.out.print("    | ");
+            System.out.print(AnsiCommands.YELLOW.getTextColor());
+            System.out.print(line+ " ".repeat(27-line.length()));
+            System.out.print(AnsiCommands.RED.getTextColor());
+            System.out.print("|.\n");
+        }
+        System.out.print("    |                            |.\n");
+
+        System.out.print(AnsiCommands.RED.getTextColor());
+        lines = CliView.splitInLinesBySize("May long live the King!", 27);
+        for (String line: lines) {
+            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        }
+
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
+
+
+    /*
+    ###########################
+    HELPING METHODS
+    ###########################
+     */
 
     private static String[] splitInLinesBySize(String string, int limit) throws IllegalArgumentException{
         List<String> words = Arrays.stream(string.split(" ")).map(String::strip).collect(Collectors.toList());
@@ -148,10 +224,139 @@ public class CliView implements view {
         return lines.toArray(new String[0]);
     }
 
-    public static void printFinalScores(Map<String, Integer> results) {
+
+    public static void main(String[] args){
+        //System.out.println("Points of Faith: ".length());
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("A", 1);
+        map.put("B", 30);
+        map.put("C", 4);
+        for(Map.Entry<String, Integer> e: map.entrySet())
+            System.out.println(e.getKey() + " "+ e.getValue());
+
+
+        List<Map.Entry<String, Integer>> results = new LinkedList<>(map.entrySet());
+        Collections.sort(results, Comparator.comparing(Map.Entry::getValue));
+        for(Map.Entry<String, Integer> e: results)
+            System.out.println(e.getKey() + " " + e.getValue());
     }
 
-    public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap, String heading) {
-
+    private static void coins(int quantity){
+        System.out.print("    | ");
+        System.out.print(AnsiCommands.YELLOW.getTextColor());
+        System.out.print("©©©©©: ");
+        if(quantity < 10) {
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                   |.\n");
+        }
+        else{
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                  |.\n" );
+            System.out.print("");
+        }
     }
+
+    private static void stones(int quantity){
+        System.out.print("    | ");
+        System.out.print(AnsiCommands.WHITE.getTextColor());
+        System.out.print("Stones: ");
+        if(quantity < 10) {
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                  |.\n");
+        }
+        else{
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                 |.\n" );
+            System.out.print("");
+        }
+    }
+
+    private static void servants(int quantity){
+        System.out.print("    | ");
+        System.out.print(AnsiCommands.PURPLE.getTextColor());
+        System.out.print("Servants: ");
+        if(quantity < 10) {
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                |.\n");
+        }
+        else{
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("               |.\n" );
+            System.out.print("");
+        }
+    }
+
+    private static void shields(int quantity){
+        System.out.print("    | ");
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+        System.out.print("Shields: ");
+        if(quantity < 10) {
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                 |.\n");
+        }
+        else{
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("                |.\n" );
+            System.out.print("");
+        }
+    }
+
+    private static void faithPoints(int quantity){
+        System.out.print("    | ");
+        System.out.print(AnsiCommands.RED.getTextColor());
+        System.out.print("Points of Faith: ");
+        if(quantity < 10) {
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("         |.\n");
+        }
+        else{
+            System.out.print(quantity);
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print("        |.\n" );
+            System.out.print("");
+        }
+    }
+
+    private static void printPlayersAndScore(String name, Integer score){
+        String fullLine = name + ": " + score;
+        String[] lines = CliView.splitInLinesBySize(fullLine, 27);
+        for(String line: lines){
+            System.out.print("    | ");
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(line+ " ".repeat(27-line.length()));
+            System.out.print(AnsiCommands.RED.getTextColor());
+            System.out.print("|.\n");
+        }
+    }
+
+    private static void printResources(ResourceType type, Integer quantity){
+        switch (type){
+            case COIN:
+                coins(quantity);
+                break;
+            case STONE:
+                stones(quantity);
+                break;
+            case SERVANT:
+                servants(quantity);
+                break;
+            case SHIELD:
+                shields(quantity);
+                break;
+            case FAITHPOINT:
+                faithPoints(quantity);
+                break;
+        }
+    }
+
+
 }
