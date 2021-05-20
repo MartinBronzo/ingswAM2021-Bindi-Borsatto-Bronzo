@@ -126,4 +126,26 @@ public class PopeCell extends ReportCell implements Subject {
         return this.getVictoryPoints() == tmp.getVictoryPoints() && this.getReportNum().equals(tmp.getReportNum())
                 && this.activated == tmp.activated && this.observersList.containsAll(tmp.observersList) && tmp.observersList.containsAll(this.observersList);
     }
+
+    @Override
+    public boolean lighterEquals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof PopeCell))
+            return false;
+        PopeCell tmp = (PopeCell) obj;
+        return this.getVictoryPoints() == tmp.getVictoryPoints() && this.getReportNum().equals(tmp.getReportNum())
+                && this.activated == tmp.activated;
+    }
+
+    /**
+     * Returns whether the specified Observer is attached to this PopeCell
+     * @param observer an Observer who may be attached to this PopeCell
+     * @return true if the specified Observer is attached to this PopeCell, false otherwise
+     */
+    public boolean containsObserver(Observer observer){
+        return this.observersList.contains(observer);
+    }
 }

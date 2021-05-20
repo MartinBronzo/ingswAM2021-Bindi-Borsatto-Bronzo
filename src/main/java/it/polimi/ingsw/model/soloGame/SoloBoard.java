@@ -24,6 +24,11 @@ public class SoloBoard extends MainBoard {
     DiscardTokenObserver discardTokenObserver;
     FaithPointTokenObserver faithPointTokenObserver;
 
+    /*@Override
+    public MainBoard getClone() {
+        return new SoloBoard(this);
+    }*/
+
     @Deprecated
     public SoloBoard(DevGrid devGrid, FaithLevelBasic lorenzosTrack, SoloActionDeck tokenDeck) {
         super(devGrid);

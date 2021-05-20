@@ -342,7 +342,7 @@ public class FaithTrackTest {
 
     @Test
     //Tests that the observer are attached with the specific method
-    public void ctrlObserverAttachment() throws IOException, SAXException, ParserConfigurationException, NegativeQuantityException {
+    public void ctrlObserverAttachment() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
         FaithTrack fT = FaithTrack.instance(new File("FaithTrackConfig.xml"));
 
@@ -430,6 +430,39 @@ public class FaithTrackTest {
         assertEquals(cell.getClass(), Cell.class);
         assertEquals(cell.getVictoryPoints(), 0);
         assertEquals(cell.getReportNum(), ReportNum.REPORT1);
+    }
+
+    @Test
+    public void ctrlAttachingObservers() throws ParserConfigurationException, IOException, SAXException {
+        FaithTrack f = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        PopeCellObserver p = new PopeCellObserver(new MainBoard(1));
+        f.attachObserverToPopeTiles(p);
+
+        assertEquals(((PopeCell)f.getCell(8)).getObserversList().size(), 1);
+        assertEquals(((PopeCell)f.getCell(16)).getObserversList().size(), 1);
+        assertEquals(((PopeCell)f.getCell(24)).getObserversList().size(), 1);
+
+        assertSame(((PopeCell)f.getCell(8)).getObserversList().get(0), p);
+        assertSame(((PopeCell)f.getCell(16)).getObserversList().get(0), p);
+        assertSame(((PopeCell)f.getCell(24)).getObserversList().get(0), p);
+    }
+
+    @Test
+    public void ctrlDetachingObservers() throws ParserConfigurationException, IOException, SAXException {
+        FaithTrack f = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        PopeCellObserver p = new PopeCellObserver(new MainBoard(1));
+        f.attachObserverToPopeTiles(p);
+
+        f.detachObserverToPopeTiles(p);
+
+        assertEquals(((PopeCell)f.getCell(8)).getObserversList().size(), 0);
+        assertEquals(((PopeCell)f.getCell(16)).getObserversList().size(), 0);
+        assertEquals(((PopeCell)f.getCell(24)).getObserversList().size(), 0);
+
+        assertFalse(((PopeCell)f.getCell(8)).containsObserver(p));
+        assertFalse(((PopeCell)f.getCell(16)).containsObserver(p));
+        assertFalse(((PopeCell)f.getCell(24)).containsObserver(p));
+
     }
 
 }

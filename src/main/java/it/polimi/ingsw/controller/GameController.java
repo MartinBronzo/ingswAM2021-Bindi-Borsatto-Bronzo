@@ -1382,7 +1382,9 @@ public class GameController {
      */
     private void saveState() {
         //Saves a copy of the MainBoard
-        this.modelCopy = new MainBoard(mainBoard);
+        //this.modelCopy = new MainBoard(mainBoard);
+        this.modelCopy = mainBoard.getClone();
+
 
         //Saves a partial copy of the players in the game keeping the same order as the one stored in this GameController
         this.clientHandlersCopy = new ArrayList<>();

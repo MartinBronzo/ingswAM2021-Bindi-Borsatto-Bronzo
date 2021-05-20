@@ -60,4 +60,9 @@ public class ReportCell extends Cell {
         ReportCell tmp = (ReportCell) obj;
         return this.getVictoryPoints() == tmp.getVictoryPoints() && this.getReportNum().equals(tmp.getReportNum());
     }
+
+    @Override
+    public boolean lighterEquals(Object obj) {
+        return this.equals(obj);
+    }
 }
