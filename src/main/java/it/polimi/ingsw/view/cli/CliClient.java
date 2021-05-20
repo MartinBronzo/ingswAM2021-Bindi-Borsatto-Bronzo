@@ -415,7 +415,7 @@ public class CliClient extends Client implements Runnable {
                         synchronized (this){
                             LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
                             nickname = setNickMessage.getConfirmedNickname();
-                            CliView.printInfo("From now on thou shall known as master " + nickname + ", thou shall serve under thy liege demands and any committed crime shall causes our Holy Lord disappointed.");
+                            CliView.printInfo("From now on thou shall known as master " + nickname + ", thou shall serve under thy liege demands and any committed crime shall cause our Holy Lord disappointment.");
                         }
                         break;
                     case SETBEGINNINGDECISIONS:

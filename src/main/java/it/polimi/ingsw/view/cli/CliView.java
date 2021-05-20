@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.readOnlyModel.Game;
+import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.view;
 
 import java.util.*;
@@ -26,7 +27,30 @@ public class CliView implements view {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-    public static void printGameState(Game gamemodel, String nickname) throws NullPointerException {
+    public static void printGameState(Game gamemodel, String nickname) throws NullPointerException, NoSuchElementException {
+        if (gamemodel == null) throw new NullPointerException("gamemodel is null");
+        Player player = gamemodel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
+        switch (player.getPlayerState()) {
+            case WAITING4TURN:
+            case WAITING4LASTTURN:
+                System.out.println("abcd");
+                break;
+            case WAITING4OTHERBEGINNINGDECISIONS:
+                break;
+            case PLAYING:
+                break;
+            case WAITING4GAMESTART:
+                break;
+            case PLAYINGLASTTURN:
+                break;
+            case WAITING4GAMEEND:
+                break;
+
+            case WAITING4BEGINNINGDECISIONS:
+                break;
+            case PLAYINGBEGINNINGDECISIONS:
+                break;
+        }
 
     }
 //28
