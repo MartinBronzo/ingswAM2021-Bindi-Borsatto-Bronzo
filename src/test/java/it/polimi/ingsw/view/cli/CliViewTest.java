@@ -1,11 +1,36 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraProductionLeaderEffect;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
 class CliViewTest {
+    static LeaderCard card1;
+    static LeaderCard card2;
+    static List<LeaderCard> list;
+
+    @BeforeAll
+    static void setup() throws NegativeQuantityException {
+        List<Requirement> requirements = new ArrayList<>();
+        requirements.add(new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2 ));
+        card1 = new LeaderCard(4, requirements, new ExtraProductionLeaderEffect(ResourceType.SHIELD, 1));
+        requirements = new ArrayList<>();
+        requirements.add(new CardRequirementResource(ResourceType.SERVANT, 5));
+        card2 = new LeaderCard(3, requirements, new ExtraSlotLeaderEffect(ResourceType.SHIELD, 2));
+        list = new ArrayList<>();
+        list.add(card1);
+        list.add(card2);
+    }
 
     @Test
     void printWelcome() {
@@ -59,5 +84,20 @@ class CliViewTest {
         List<Map.Entry<String, Integer>> results = new LinkedList<>(map.entrySet());
         Collections.sort(results, (x, y) -> y.getValue().compareTo(x.getValue()));
         CliView.printFinalScores(results);
+    }
+
+    @Test
+    void printLeaderCard() throws NegativeQuantityException {
+        CliView.printLeaderCard(card1);
+    }
+
+    @Test
+    void printUnusedLeaderCards(){
+        CliView.printUnusedLeaderCards(list);
+    }
+
+    @Test
+    void printUsedLeaderCards(){
+        CliView.printUsedLeaderCards(list);
     }
 }
