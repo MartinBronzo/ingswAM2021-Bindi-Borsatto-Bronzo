@@ -40,7 +40,7 @@ public class GameController {
     private int firstPlayer;
     private Integer howManyPlayersReady;
     private Timer turnTimer;
-    private boolean timerElapsed;
+    private boolean timerElapsed, timerStarted; //timerStarted used for testing purpose
     /**
      * List of all the disconnected players who have not specified their beginning decisions
      */
@@ -242,7 +242,8 @@ public class GameController {
         this.howManyPlayersReady = 0;
         this.disconnectedBeforeStarting = new ArrayList<>();
         this.turnTimer = new Timer();
-        timerElapsed = false;
+        this.timerElapsed = false;
+        this.timerStarted = false;
     }
 
     /**
@@ -334,10 +335,12 @@ public class GameController {
 
     private void startTurnTimer(){
         timerElapsed = false;
+        timerStarted = true;
         turnTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 timerElapsed = true;
+                timerStarted = false;
                 activePlayer.send(new ErrorMessage("Turn timer elapsed; Your turn is ended")); //TODO: AVVISARE MARTIN DI QUESTO MESSAGGIO
                 specifyNextPlayer(activePlayer);
             }
@@ -382,8 +385,9 @@ public class GameController {
      */
     public void specifyNextPlayer(ClientHandler currentPlayer) throws IllegalStateException {
         //checks if the timer has already elapsed
-        if(!timerElapsed){
+        if(!timerElapsed && timerStarted){
             turnTimer.cancel();
+            timerStarted = false;
         }
 
 
@@ -852,7 +856,7 @@ public class GameController {
             try {
                 mainBoard.discardResources(buyFromMarket.getDiscardRes(), playerBoard);
             } catch (LastVaticanReportException e) {
-                this.setLastTurn(clientHandler);
+                this.setLastTurn();
             }
 
             //Checks if there are still some resources coming from the market which have not been dealt with: if this happens, the player hasn't where to put all the
