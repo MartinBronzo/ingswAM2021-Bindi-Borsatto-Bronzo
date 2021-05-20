@@ -126,4 +126,8 @@ public class CliView implements view {
 
     public static void printFinalScores(Map<String, Integer> results) {
     }
+
+    public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap, String heading) {
+
+    }
 }

@@ -4,7 +4,6 @@ package it.polimi.ingsw.controller.GameControllerTest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.network.messages.sendToClient.*;
@@ -29,11 +28,11 @@ import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.network.messages.fromClient.*;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.*;
 
@@ -128,8 +127,8 @@ public class GameControllerAnswerToClientMethodsTest {
         //we called the getResFromMkt
         String result = fileReader1.readLine();
         ResponseMessage responseMessage = gson.fromJson(result, ResponseMessage.class);
-        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCES);
-        HashMapResources resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResources.class);
+        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCESFROMMARKET);
+        HashMapResFromMarketMessage resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResFromMarketMessage.class);
         HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
 
         //Bypasses the GameController by directly computing the resources we would get from the market using the reference of the MainBoard of the game
@@ -244,8 +243,8 @@ public class GameControllerAnswerToClientMethodsTest {
 
         String result = fileReader1.readLine();
         ResponseMessage responseMessage = gson.fromJson(result, ResponseMessage.class);
-        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCES);
-        HashMapResources resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResources.class);
+        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCESFROMDEVGRID);
+        HashMapResFromDevGridMessage resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResFromDevGridMessage.class);
         HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
 
         List<Effect> effects = p1.getEffectsFromCards(leaderCards);
@@ -288,8 +287,8 @@ public class GameControllerAnswerToClientMethodsTest {
 
         String result = fileReader1.readLine();
         ResponseMessage responseMessage = gson.fromJson(result, ResponseMessage.class);
-        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCES);
-        HashMapResources resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResources.class);
+        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCESFROMDEVGRID);
+        HashMapResFromDevGridMessage resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResFromDevGridMessage.class);
         HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
 
         List<Effect> effects = p1.getEffectsFromCards(leaderCards);
@@ -355,8 +354,8 @@ public class GameControllerAnswerToClientMethodsTest {
 
         String result = fileReader1.readLine();
         ResponseMessage responseMessage = gson.fromJson(result, ResponseMessage.class);
-        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCES);
-        HashMapResources resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResources.class);
+        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCESFROMPRODCOST);
+        HashMapResFromProdCostMessage resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResFromProdCostMessage.class);
         HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
 
         HashMap<ResourceType, Integer> supposedResult = p1.getProductionCost(devCardList, new ArrayList<>(), false);
@@ -428,8 +427,8 @@ public class GameControllerAnswerToClientMethodsTest {
 
         String result = fileReader1.readLine();
         ResponseMessage responseMessage = gson.fromJson(result, ResponseMessage.class);
-        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCES);
-        HashMapResources resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResources.class);
+        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCESFROMPRODCOST);
+        HashMapResFromProdCostMessage resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResFromProdCostMessage.class);
         HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
 
         HashMap<ResourceType, Integer> supposedResult = p1.getProductionCost(devCardList, new ArrayList<>(), true);
@@ -504,8 +503,8 @@ public class GameControllerAnswerToClientMethodsTest {
 
         String result = fileReader1.readLine();
         ResponseMessage responseMessage = gson.fromJson(result, ResponseMessage.class);
-        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCES);
-        HashMapResources resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResources.class);
+        assertEquals(responseMessage.getResponseType(), ResponseType.HASHMAPRESOURCESFROMPRODCOST);
+        HashMapResFromProdCostMessage resultObject = gson.fromJson(responseMessage.getResponseContent(), HashMapResFromProdCostMessage.class);
         HashMap<ResourceType, Integer> resultMap = resultObject.getResources();
 
         List<LeaderCard> extraProdLeaderList = new ArrayList<>();
