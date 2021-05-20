@@ -843,7 +843,7 @@ public class GameController {
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity which in this case
             //means that the need to equal to the remaining resources because all resources coming from the market must be dealt with)!
             for (Map.Entry<ResourceType, Integer> e : buyFromMarket.getDiscardRes().entrySet())
-                if (res.get(e.getKey()) == null || res.get(e.getKey()) != e.getValue())
+                if (res.get(e.getKey()) == null || !res.get(e.getKey()).equals(e.getValue()))
                     throw new IllegalArgumentException("The given input parameters for the discarded resources don't match the result!");
                 else
                     res.put(e.getKey(), res.get(e.getKey()) - e.getValue()); //Updates the res map
