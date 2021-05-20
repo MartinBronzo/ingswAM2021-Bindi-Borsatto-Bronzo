@@ -6,7 +6,6 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -21,7 +20,7 @@ import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.ExtraResAndLeadToDiscardBeginningMessage;
-import it.polimi.ingsw.network.messages.sendToClient.HashMapResources;
+import it.polimi.ingsw.network.messages.sendToClient.HashMapResFromDevGridMessage;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -738,7 +737,7 @@ public class GameController {
             result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow() - 1, effects);
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
-        clientHandler.send(new HashMapResources(result));
+        clientHandler.send(new HashMapResFromMarketMessage(result));
         return true;
     }
 
@@ -877,7 +876,7 @@ public class GameController {
 
         //send message only to the client that sent the message
         //TODO: nel messaggio io metterei anche il risultato dell'azione(status) per dire se è andata bene o no
-        clientHandler.send(new HashMapResources(cost));
+        clientHandler.send(new HashMapResFromDevGridMessage(cost));
         return true;
     }
 
@@ -998,7 +997,7 @@ public class GameController {
         prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
 
         //send message only to the client that sent the message
-        clientHandler.send(new HashMapResources(prodCost));
+        clientHandler.send(new HashMapResFromProdCostMessage(prodCost));
         return true;
     }
 

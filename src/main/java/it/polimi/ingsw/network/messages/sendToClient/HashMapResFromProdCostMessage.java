@@ -4,10 +4,10 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.HashMap;
 
-public class HashMapResources implements ResponseInterface{
+public class HashMapResFromProdCostMessage implements ResponseInterface{
     private HashMap<ResourceType, Integer> resources;
 
-    public HashMapResources(HashMap<ResourceType, Integer> resources) {
+    public HashMapResFromProdCostMessage(HashMap<ResourceType, Integer> resources) {
         this.resources = resources;
     }
 
@@ -17,6 +17,6 @@ public class HashMapResources implements ResponseInterface{
 
     @Override
     public ResponseType getResponseType() {
-        return ResponseType.HASHMAPRESOURCES;
+        return ResponseType.HASHMAPRESOURCESFROMPRODCOST;
     }
 }
