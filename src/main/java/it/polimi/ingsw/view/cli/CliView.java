@@ -175,4 +175,8 @@ public class CliView implements view {
             System.out.print("");
         }
     }
+
+    public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap, String heading) {
+
+    }
 }
