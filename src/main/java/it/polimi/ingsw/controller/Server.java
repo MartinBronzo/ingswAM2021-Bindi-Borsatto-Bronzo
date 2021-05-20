@@ -28,7 +28,7 @@ public class Server
         System.out.println("Server ready");
         while (true)
         {
-            Socket socket = null;
+            Socket socket;
             try {
                 socket = serverSocket.accept();
                 System.out.println("A new client is connected : " + socket);

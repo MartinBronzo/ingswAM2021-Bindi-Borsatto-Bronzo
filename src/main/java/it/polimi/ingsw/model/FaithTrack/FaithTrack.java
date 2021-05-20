@@ -37,6 +37,7 @@ public class FaithTrack {
      *
      * @param reportNumOrder the order of the ReportNum of the Faith track
      */
+    @Deprecated
     private FaithTrack(ReportNumOrder reportNumOrder) {
         this.track = new ArrayList<>();
         this.reportNumOrder = reportNumOrder;
@@ -85,6 +86,7 @@ public class FaithTrack {
      * @return true if the initiation went fine
      */
     // I fill the list one cell at the time
+    @Deprecated
     private boolean initTrack() {
         //If we have already designed the Track, we can't change it here
         //if(!track.isEmpty()) return false;
@@ -310,7 +312,7 @@ public class FaithTrack {
     //Once upon a time this method was actually useful
     @Deprecated
     public static void deleteState() {
-        
+
     }
 
     /**

@@ -32,8 +32,8 @@ public class CliClient extends Client implements Runnable {
     private int nLeadersToDiscard;
     private int resourcesToTake;
     private String nickname;
-    private AtomicBoolean forceLogout;
-    String logoutMessage = "Thanks for Playing, See you next time :D";
+    private final AtomicBoolean forceLogout;
+    private String logoutMessage = "Thanks for Playing, See you next time :D";
 
 
     public CliClient(int portNumber, String hostName) {
