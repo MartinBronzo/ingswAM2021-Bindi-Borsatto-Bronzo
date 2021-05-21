@@ -424,6 +424,7 @@ public class GameController {
             //send le informazioni particolari
         */
         activePlayer = players.get(index).getKey();
+        activePlayer.send(new GeneralInfoStringMessage("Now it's Your turn, Master " + activePlayer.getNickname()));
         this.updatesTurnAndSendInfo(index);
 
         //starts timer for new player

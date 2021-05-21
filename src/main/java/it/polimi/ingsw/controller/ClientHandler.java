@@ -339,6 +339,7 @@ public class ClientHandler implements Runnable {
                             }
                             DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning = gson.fromJson(command.getParameters(), DiscardLeaderAndExtraResBeginningMessage.class);
                             game.discardLeaderAndExtraResBeginning(discardLeaderCardBeginning, this);
+
                             //break;
                         case "endTurn":
                             if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
