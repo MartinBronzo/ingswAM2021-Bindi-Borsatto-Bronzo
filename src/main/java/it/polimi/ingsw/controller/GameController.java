@@ -437,6 +437,16 @@ public class GameController {
      */
 
     /**
+     * Checks if the specified player has discarded all the LeaderCards they are supposed to
+     * @param player a player in the game
+     * @return true if the player has discarded all the leader cards they are supposed to, false otherwise
+     * @throws IllegalArgumentException if the specified player isn't in this game
+     */
+    public boolean checkIfPlayerDiscardedLeaderCards(ClientHandler player) throws IllegalArgumentException {
+        return this.mainBoard.checkIfPlayerDiscardedCards(this.getPlayerBoardOfPlayer(player));
+    }
+
+    /**
      * Returns the index the specified player (represented by their ClientHandler) has in the list of players of this game
      *
      * @param player the player whose index must be find

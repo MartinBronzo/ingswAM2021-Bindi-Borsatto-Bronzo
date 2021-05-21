@@ -44,10 +44,10 @@ public class CliView implements view {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-    public static void printGameState(Game gamemodel, String nickname) throws NullPointerException, NoSuchElementException {
-        if (gamemodel == null || nickname==null || nickname.equals("")) return;
+    public static void printGameState(Game gameModel, String nickname) throws NullPointerException, NoSuchElementException {
+        if (gameModel == null || nickname==null || nickname.equals("")) return;
 
-        Player player = gamemodel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
+        Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
         switch (player.getPlayerState()) {
             case WAITING4TURN:
             case WAITING4LASTTURN:
@@ -56,14 +56,15 @@ public class CliView implements view {
             /*case WAITING4OTHERBEGINNINGDECISIONS:
                 break;*/
             case PLAYING:
+                printMarket(gameModel.getMainBoard());
                 break;
             case WAITING4GAMESTART:
                 break;
             case PLAYINGLASTTURN:
+                printMarket(gameModel.getMainBoard());
                 break;
             case WAITING4GAMEEND:
                 break;
-
             case WAITING4BEGINNINGDECISIONS:
                 break;
             case PLAYINGBEGINNINGDECISIONS:

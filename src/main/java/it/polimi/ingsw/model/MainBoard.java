@@ -573,5 +573,14 @@ public class MainBoard {
         this.playerBoardsList.add(playerBoard);
     }
 
+    /**
+     * Checks whether the specified player, identified with their PlayerBoard, has discarded all the LeaderCard is supposed to
+     * @param playerBoard the player's PlayerBoard where the number of discarded card is checked
+     * @return true if the player has discarded the right amount of LeaderCards, false otherwise
+     */
+    public boolean checkIfPlayerDiscardedCards(PlayerBoard playerBoard){
+        return playerBoard.checkDiscardedLeaderCard(this.numberOfLeaderCardsToGive, this.numberOfLeaderCardsToDiscardAtBeginning);
+    }
+
 
 }

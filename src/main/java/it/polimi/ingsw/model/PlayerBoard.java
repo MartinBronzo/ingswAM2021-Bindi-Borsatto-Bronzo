@@ -864,4 +864,16 @@ public class PlayerBoard {
         this.baseProduction = new BaseProduction(original.baseProduction);
     }
 
+    /**
+     * Checks whether this player has discarded all the cards they are supposed to
+     * @param numCardsAtBeginning how many cards the player gets at the beginning of the game
+     * @param numCardsToDiscard how many cards the player is supposed to discard
+     * @return true if the player has discarded the card they are supposed to, false otherwise
+     */
+    public boolean checkDiscardedLeaderCard(int numCardsAtBeginning, int numCardsToDiscard){
+        if(this.leaderCards.getNotActiveCardsSize() + this.leaderCards.getActiveCardsSize() == numCardsAtBeginning - numCardsToDiscard)
+            return true;
+        return false;
+    }
+
 }
