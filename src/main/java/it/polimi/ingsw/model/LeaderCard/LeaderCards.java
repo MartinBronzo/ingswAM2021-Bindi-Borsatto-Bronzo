@@ -292,4 +292,12 @@ public class LeaderCards {
     public boolean isAreNotPlayedCardsSet() {
         return areNotPlayedCardsSet;
     }
+
+    public int getNotActiveCardsSize(){
+        return this.notPlayedCards.size();
+    }
+
+    public int getActiveCardsSize(){
+        return this.activeCards.size();
+    }
 }
