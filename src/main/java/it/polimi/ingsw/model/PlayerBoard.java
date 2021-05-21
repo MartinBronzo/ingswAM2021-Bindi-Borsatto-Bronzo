@@ -876,4 +876,8 @@ public class PlayerBoard {
         return false;
     }
 
+    public boolean ctrlIfWhiteMarbleLeaderCardPresent(){
+        return this.leaderCards.checkIfWhiteMarbleActive();
+    }
+
 }

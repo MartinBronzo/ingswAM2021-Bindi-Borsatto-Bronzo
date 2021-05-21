@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.UnmetRequirementException;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.WhiteMarbleLeaderEffect;
 import it.polimi.ingsw.model.PlayerResourcesAndCards;
 import it.polimi.ingsw.model.ResourceType;
 
@@ -299,5 +300,12 @@ public class LeaderCards {
 
     public int getActiveCardsSize(){
         return this.activeCards.size();
+    }
+
+    public boolean checkIfWhiteMarbleActive(){
+        for(LeaderCard lD: this.activeCards)
+            if(lD.getEffect() instanceof WhiteMarbleLeaderEffect)
+                return true;
+        return false;
     }
 }

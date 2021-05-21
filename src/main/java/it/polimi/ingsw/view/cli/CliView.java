@@ -275,7 +275,8 @@ public class CliView implements view {
     private static void coins(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.YELLOW.getTextColor());
-        System.out.print("©©©©©: ");
+        //System.out.print("©©©©©: ");
+        System.out.print("\uD83D\uDCB0");
         if(quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
@@ -292,7 +293,8 @@ public class CliView implements view {
     private static void stones(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.WHITE.getTextColor());
-        System.out.print("Stones: ");
+        //System.out.print("Stones: ");
+        System.out.print("\uD83D\uDDFF");
         if(quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
@@ -309,7 +311,8 @@ public class CliView implements view {
     private static void servants(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.PURPLE.getTextColor());
-        System.out.print("Servants: ");
+        //System.out.print("Servants: ");
+        System.out.print("\uD83D\uDC68");
         if(quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
@@ -326,7 +329,8 @@ public class CliView implements view {
     private static void shields(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.BLUE.getTextColor());
-        System.out.print("Shields: ");
+        //System.out.print("Shields: ");
+        System.out.print("\uD83D\uDEE1️");
         if(quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
@@ -343,7 +347,8 @@ public class CliView implements view {
     private static void faithPoints(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.RED.getTextColor());
-        System.out.print("Points of Faith: ");
+        //System.out.print("Points of Faith: ");
+        System.out.print("✝️");
         if(quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
@@ -615,27 +620,32 @@ public class CliView implements view {
         switch (res){
             case COIN:
                 System.out.print(AnsiCommands.YELLOW.getTextColor());
-                System.out.print("©©©©©");
+                //System.out.print("©©©©©");
+                System.out.print("\uD83D\uDCB0");
                 System.out.print(boundaryColor);
                 break;
             case STONE:
                 System.out.print(AnsiCommands.WHITE.getTextColor());
-                System.out.print("Stone");
+                //System.out.print("Stone");
+                System.out.print("\uD83D\uDDFF");
                 System.out.print(boundaryColor);
                 break;
             case SERVANT:
                 System.out.print(AnsiCommands.PURPLE.getTextColor());
-                System.out.print("Servant");
+                //System.out.print("Servant");
+                System.out.print("\uD83D\uDC68");
                 System.out.print(boundaryColor);
                 break;
             case SHIELD:
                 System.out.print(AnsiCommands.BLUE.getTextColor());
-                System.out.print("Shield");
+                //System.out.print("Shield");
+                System.out.print("\uD83D\uDEE1️");
                 System.out.print(boundaryColor);
                 break;
             case FAITHPOINT:
                 System.out.print(AnsiCommands.RED.getTextColor());
-                System.out.print("Point of Faith");
+                //System.out.print("Point of Faith");
+                System.out.print("✝");
                 System.out.print(boundaryColor);
                 break;
         }

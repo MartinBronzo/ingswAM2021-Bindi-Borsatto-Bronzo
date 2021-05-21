@@ -45,6 +45,7 @@ class ServerTest {
         PipedReader reader = new PipedReader(writer);
         PrintWriter printWriter = new PrintWriter(writer);
         BufferedReader bufferedReader = new BufferedReader(reader);
+
         Client client = new CliClient(portNumber, hostName, bufferedReader);
         Thread thread =  new Thread(() -> {
             try {
