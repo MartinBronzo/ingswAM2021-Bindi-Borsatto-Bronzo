@@ -219,11 +219,11 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void getDevCardCost() throws IOException {
-        System.out.println("getDevCardCost example: row 3; 1, 2, 4;\n");
+        System.out.println("getDevCardCost example: row 3; column 3; 1, 2, 4;\n");
         String usrCommand = stdIn.readLine();
         try {
-            Command getResourcesFromMarket = new Command("getCardCost", StringToMessage.toMatrixMessage(usrCommand));
-            sendMessage(getResourcesFromMarket);
+            Command getDevCardCost = new Command("getCardCost", StringToMessage.toMatrixMessage(usrCommand));
+            sendMessage(getDevCardCost);
         } catch (IllegalArgumentException e){
             System.err.println(e.getMessage());
         }
