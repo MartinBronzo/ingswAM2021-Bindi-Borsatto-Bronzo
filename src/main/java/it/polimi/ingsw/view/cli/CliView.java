@@ -241,6 +241,12 @@ public class CliView implements view {
 
     public static void main(String[] args){
         //System.out.println("Points of Faith: ".length());
+        System.out.print(" |  |\n");
+        System.out.print(" |  |\n");
+        System.out.print("_|  |_\n");
+        System.out.print("\\    /\n");
+        System.out.print(" \\  /\n");
+        System.out.print("  \\/\n");
         HashMap<String, Integer> map = new HashMap<>();
         map.put("A", 1);
         map.put("B", 30);
@@ -600,6 +606,7 @@ public class CliView implements view {
     }
 
     private static void printResName(ResourceType res, String boundaryColor){
+
         switch (res){
             case COIN:
                 System.out.print(AnsiCommands.YELLOW.getTextColor());
@@ -627,6 +634,51 @@ public class CliView implements view {
                 System.out.print(boundaryColor);
                 break;
         }
+    }
+
+    public static void printBaseProduction(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output){
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.print("Thy Base Production is hither presented:\n");
+
+        System.out.print("\nFrom: ");
+        int j = 0;
+        for(Map.Entry<ResourceType, Integer> e: input.entrySet()){
+            if(j != 0)
+                System.out.print(" + ");
+            else
+                j++;
+            for(int i = 0; i < e.getValue() - 1; i++){
+                printResName(e.getKey(), AnsiCommands.BLACK.getTextColor());
+                System.out.print(" + ");
+            }
+            printResName(e.getKey(), AnsiCommands.BLACK.getTextColor());
+        }
+        System.out.print("\n");
+
+        System.out.print("      | |\n");
+        System.out.print("     _| |_\n");
+        System.out.print("     \\   /\n");
+        System.out.print("      \\ /\n");
+        System.out.print("       '");
+
+
+        System.out.print("\nThou get: ");
+        j = 0;
+        for(Map.Entry<ResourceType, Integer> e: output.entrySet()){
+            if(j != 0)
+                System.out.print(" + ");
+            else
+                j++;
+            for(int i = 0; i < e.getValue() - 1; i++){
+                printResName(e.getKey(), AnsiCommands.BLACK.getTextColor());
+                System.out.print(" + ");
+            }
+            printResName(e.getKey(), AnsiCommands.BLACK.getTextColor());
+        }
+        System.out.print("\n");
+        System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
     }
 
 }
