@@ -784,13 +784,33 @@ public class GameController {
         //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
         /*if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow() - 1, resFromMkt.getCol() - 1) > effects.size())
             throw new IllegalArgumentException("There are not enough LeaderCards specified!");*/
-        if (resFromMkt.getRow() != 0) {
-            if (mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1) > effects.size())
-                throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+        if(!effects.isEmpty()) {
+            if (resFromMkt.getRow() != 0) {
+                if (mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1) > effects.size())
+                    throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+            } else {
+                if (mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1) > effects.size())
+                    throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+            }
         } else {
-            if (mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1) > effects.size())
-                throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+            if (playerBoard.ctrlIfWhiteMarbleLeaderCardPresent())
+                throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
+            else {
+                if(resFromMkt.getCol() != 0) {
+                    for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1); j++)
+                        effects.add(new Effect());
+                }else {
+                    for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1); j++)
+                        effects.add(new Effect());
+                }
+            }
+
         }
+        //Hai carta white marble attiva e non me la passi: wrong
+        //Se la lista è vuota allora la riempio a patto che non hai carte white marble attive
+
+
+
 
         if (resFromMkt.getCol() != 0)
             result = mainBoard.getResourcesFromColumnInMarket(resFromMkt.getCol() - 1, effects);
@@ -816,15 +836,27 @@ public class GameController {
 
             List<Effect> effects = playerBoard.getEffectsFromCards(buyFromMarket.getLeaderList());
 
-            //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
-            /*if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow() - 1, resFromMkt.getCol() - 1) > effects.size())
-            throw new IllegalArgumentException("There are not enough LeaderCards specified!");*/
-            if (buyFromMarket.getRow() != 0) {
-                if (mainBoard.getNumberOfWhiteMarbleInMarketRow(buyFromMarket.getRow() - 1) > effects.size())
-                    throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+            if(!effects.isEmpty()) {
+                if (buyFromMarket.getRow() != 0) {
+                    if (mainBoard.getNumberOfWhiteMarbleInMarketRow(buyFromMarket.getRow() - 1) > effects.size())
+                        throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+                } else {
+                    if (mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1) > effects.size())
+                        throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+                }
             } else {
-                if (mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1) > effects.size())
-                    throw new IllegalArgumentException("There are not enough LeaderCards specified!");
+                if (playerBoard.ctrlIfWhiteMarbleLeaderCardPresent())
+                    throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
+                else {
+                    if(buyFromMarket.getCol() != 0) {
+                        for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1); j++)
+                            effects.add(new Effect());
+                    }else {
+                        for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInMarketRow(buyFromMarket.getRow() - 1); j++)
+                            effects.add(new Effect());
+                    }
+                }
+
             }
 
             HashMap<ResourceType, Integer> res;
