@@ -20,7 +20,7 @@ public enum MarbleType {
         }
         @Override
         public String toString() {
-            return AnsiCommands.GREEN.getTextColor() +"Ⓖ"+AnsiCommands.resetStyle();
+            return AnsiCommands.WHITE.getTextColor() +"Ⓖ"+AnsiCommands.resetStyle();
         }
     },
     PURPLEMARBLE {
@@ -54,7 +54,7 @@ public enum MarbleType {
         }
         @Override
         public String toString() {
-            return AnsiCommands.WHITE.getTextColor() +"ⓦ"+AnsiCommands.resetStyle();
+            return AnsiCommands.resetStyle() +"ⓦ"+AnsiCommands.resetStyle();
         }
     },
     YELLOWMARBLE {
