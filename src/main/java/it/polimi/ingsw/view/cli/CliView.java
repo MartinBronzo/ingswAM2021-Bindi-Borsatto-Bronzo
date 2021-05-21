@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
@@ -110,6 +112,24 @@ public class CliView implements view {
     END MESSAGES
     #############################################################################################
      */
+    
+    public static void printPlayerBoard(Player player, int lorenzoPosition){
+        printPlayerInfo(player.getNickName(), player.getPlayerState(), player.getVictoryPoints());
+        printFaithTrack(player.getFaithPosition(), player.getPopeTiles(), lorenzoPosition);
+        printDepot(player.getDepotShelves());
+        printStrongBox(player.getStrongBox());
+        printLeaderDepots(player.getLeaderSlots());
+        printBaseProduction(player.getBaseProductionInput(), player.getBaseProductionOutput());
+        printDevSlots(player.getDevSlots());
+        printUsedLeaderCards(player.getUsedLeaders());
+        printUnusedLeaderCards(player.getUnUsedLeaders());
+    }
+
+    private static void printPlayerInfo(String nickName, PlayerState playerState, Integer victoryPoints) {
+    }
+
+    private static void printDevSlots(DevSlots devSlots) {
+    }
 
     public static void printFinalScores(List<Map.Entry<String, Integer>> results) {
         System.out.print(AnsiCommands.clear());
@@ -275,7 +295,11 @@ public class CliView implements view {
         }
     }
 
-    private static void printFaithTrack(int position, List<PopeTile> popeTiles){
+    public static void printFaithTrack(int position, List<PopeTile> popeTiles, int lorenzoPositione){
+        if (lorenzoPositione>0){
+            System.out.print(AnsiCommands.PURPLE.getBackgroundColor()+AnsiCommands.BLACK.getTextColor());
+            System.out.println(" ".repeat(lorenzoPositione*2)+"ℒ"+" ".repeat((24-lorenzoPositione)*2)+AnsiCommands.resetStyle());
+        }
         System.out.println("⚀⚀⚀⚀⚀⚀♕♕⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀♕♕⚀⚀☩☩"+AnsiCommands.resetStyle()+"♕♕⚀⚀⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"♕♕⚀⚀⚀⚀♕♕☩☩"+AnsiCommands.resetStyle()+"⚀⚀♕♕"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀⚀⚀♕♕⚀⚀⚀⚀☩☩"+AnsiCommands.resetStyle());
         System.out.print(AnsiCommands.YELLOW.getBackgroundColor()+AnsiCommands.BLACK.getTextColor());
         System.out.println(" ".repeat(position*2)+"⸡⸠"+" ".repeat((24-position)*2)+AnsiCommands.resetStyle());
