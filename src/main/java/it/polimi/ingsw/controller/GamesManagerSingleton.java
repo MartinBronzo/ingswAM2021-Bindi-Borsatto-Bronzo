@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.network.messages.sendToClient.ErrorMessage;
+import it.polimi.ingsw.network.messages.sendToClient.GeneralInfoStringMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 
@@ -55,8 +56,11 @@ public final class GamesManagerSingleton {
             gameWithThatNickname.substitutesClient(client);
             return gameWithThatNickname;
         } catch (NoSuchElementException e){
-            while (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING))
+            while (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING)){
+                client.send(new GeneralInfoStringMessage("Another player is creating a game, please wait"));
                 wait();
+            }
+
             if (startingGame == null){
                 startingGame = new GameController();
                 this.clientConfigurator = client;
@@ -125,8 +129,8 @@ public final class GamesManagerSingleton {
 
         stopTimer();
         this.startingGame.startMainBoard(numberOfPlayers);
-        this.startingGame.setPlayer(client);
         this.startingGame.setState(GameState.WAITING4PLAYERS);
+        this.startingGame.setPlayer(client);
         notifyAll();
         if(startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
             GameController returnedGame = startingGame;

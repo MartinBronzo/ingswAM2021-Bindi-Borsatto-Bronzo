@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.enums.GameState;
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.view.Client;
@@ -24,7 +26,8 @@ class ServerTest {
 
     @BeforeEach
     void setUp() throws FileNotFoundException, InterruptedException {
-        Server server = new Server(portNumber);
+        server = new Server(portNumber);
+        GamesManagerSingleton.getInstance().resetSingleton();
         serverThread = new Thread(() -> {
             server.startServer();
         });
@@ -32,36 +35,70 @@ class ServerTest {
         sleep(2000);
     }
 
-
     @AfterEach
-    void tearDown() {
+    void tearDown() throws InterruptedException {
         serverThread.interrupt();
+        Thread.sleep(1000);
     }
 
     @Test
     void SetNicknameTest() throws InterruptedException, IllegalArgumentException, IOException {
-
         PipedWriter writer = new PipedWriter();
         PipedReader reader = new PipedReader(writer);
         PrintWriter printWriter = new PrintWriter(writer);
         BufferedReader bufferedReader = new BufferedReader(reader);
 
-        Client client = new CliClient(portNumber, hostName, bufferedReader);
+        CliClient client = new CliClient(portNumber, hostName, bufferedReader);
         Thread thread =  new Thread(() -> {
-            try {
-                client.startConnection();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            client.startConnection();
             client.doConnection();
         });
         thread.start();
         sleep(1000);
         printWriter.println("setnickname");
-        printWriter.println("AndrePuzza");
+        printWriter.println("Client2");
+        //sleep(1000);
         sleep(1000);
+        GameController gameController = GamesManagerSingleton.getInstance().getStartingGame();
+        assertEquals(gameController.getState(), GameState.CONFIGURING);
+        //assertEquals("Client1", client.getNickname());
+        //assertEquals(gameController.getPlayers().get(0).getKey().getPlayerState(), PlayerState.WAITING4SETNUMPLAYER);
         printWriter.println("quit");
+        serverThread.interrupt();
+        thread.interrupt();
         sleep(1000);
+    }
 
+    @Test
+    void SetNumPlayers() throws InterruptedException, IllegalArgumentException, IOException {
+        PipedWriter writer = new PipedWriter();
+        PipedReader reader = new PipedReader(writer);
+        PrintWriter printWriter = new PrintWriter(writer);
+        BufferedReader bufferedReader = new BufferedReader(reader);
+
+        CliClient client = new CliClient(portNumber, hostName, bufferedReader);
+        Thread thread =  new Thread(() -> {
+            client.startConnection();
+            client.doConnection();
+        });
+        thread.start();
+        sleep(1000);
+        printWriter.println("setnickname");
+        printWriter.println("Client1");
+        sleep(1000);
+        //assertEquals(client.getNickname(), "Client1");
+        printWriter.println("setnumofplayers");
+        printWriter.println("2");
+
+        GameController gameController = GamesManagerSingleton.getInstance().getStartingGame();
+        assertEquals(GameState.WAITING4PLAYERS, gameController.getState());
+        assertEquals(gameController.getPlayers().get(0).getKey().getPlayerState(), PlayerState.WAITING4GAMESTART);
+
+        //GameController gameController = GamesManagerSingleton.getInstance().getGames().iterator().next();
+        //assertEquals(gameController.getState(), GameState.CONFIGURING);
+        printWriter.println("quit");
+        serverThread.interrupt();
+        thread.interrupt();
+        sleep(1000);
     }
 }

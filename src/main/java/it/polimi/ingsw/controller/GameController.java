@@ -33,6 +33,7 @@ public class GameController {
     private MainBoard mainBoard;
     private List<Pair<ClientHandler, PlayerBoard>> players;
     private int numberOfPlayers;
+    private int numOfTurn;
     private int maxPlayersNum;
     private GameState state;
     private MainBoard modelCopy;
@@ -246,6 +247,7 @@ public class GameController {
         this.disconnectedBeforeStarting = new ArrayList<>();
         this.timerElapsed = false;
         this.timerStarted = false;
+        numOfTurn = 0;
     }
 
     /**
@@ -334,11 +336,19 @@ public class GameController {
         //this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
         this.updatesTurnAndSendInfo(this.firstPlayer);
 
-        if(numberOfPlayers != 1) //starts timer only if we are in multiplayer
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED)
+                if (e.getKey().getPlayerState() == PlayerState.PLAYINGBEGINNINGDECISIONS)
+                    e.getKey().send(new GeneralInfoStringMessage("You're the first player"));
+                else
+                    e.getKey().send(new GeneralInfoStringMessage("Wait your turn"));
+
+
+        if (numberOfPlayers != 1) //starts timer only if we are in multiplayer
             startTurnTimer();
     }
 
-    private void startTurnTimer(){
+    private void startTurnTimer() {
         timerElapsed = false;
         timerStarted = true;
         turnTimer = new Timer();
@@ -347,10 +357,10 @@ public class GameController {
             public void run() {
                 timerElapsed = true;
                 timerStarted = false;
-                activePlayer.send(new ErrorMessage("Turn timer elapsed; Your turn is ended")); //TODO: AVVISARE MARTIN DI QUESTO MESSAGGIO
+                activePlayer.send(new ErrorMessage("Turn timer elapsed; Your turn is ended"));
                 specifyNextPlayer(activePlayer);
             }
-        },200000); //TODO: DECIDERE QUANTO FAR DURARE IL TURNO
+        }, 120000); //TODO: DECIDERE QUANTO FAR DURARE IL TURNO
     }
 
     private void checkIfGameMustBegin() {
@@ -390,8 +400,10 @@ public class GameController {
      * @param currentPlayer the player who is ending their turn
      */
     public void specifyNextPlayer(ClientHandler currentPlayer) throws IllegalStateException {
+        numOfTurn++;
+
         //checks if the timer has already elapsed
-        if(!timerElapsed && timerStarted){
+        if (!timerElapsed && timerStarted) {
             turnTimer.cancel();
             timerStarted = false;
         }
@@ -439,6 +451,7 @@ public class GameController {
 
     /**
      * Checks if the specified player has discarded all the LeaderCards they are supposed to
+     *
      * @param player a player in the game
      * @return true if the player has discarded all the leader cards they are supposed to, false otherwise
      * @throws IllegalArgumentException if the specified player isn't in this game
@@ -535,11 +548,11 @@ public class GameController {
         return this.mainBoard;
     }
 
-    public List<ClientHandler> getClientHandlersCopy(){
+    public List<ClientHandler> getClientHandlersCopy() {
         return this.clientHandlersCopy;
     }
 
-    public GameState getGameStateCopy(){
+    public GameState getGameStateCopy() {
         return this.gameStateCopy;
     }
 
@@ -785,7 +798,7 @@ public class GameController {
         //We check that the amount of indicated effects are at least as many as the number of WhiteMarble in the desired row or column
         /*if (mainBoard.getNumberOfWhiteMarbleInMarketRowOrColumn(resFromMkt.getRow() - 1, resFromMkt.getCol() - 1) > effects.size())
             throw new IllegalArgumentException("There are not enough LeaderCards specified!");*/
-        if(!effects.isEmpty()) {
+        if (!effects.isEmpty()) {
             if (resFromMkt.getRow() != 0) {
                 if (mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1) > effects.size())
                     throw new IllegalArgumentException("There are not enough LeaderCards specified!");
@@ -797,10 +810,10 @@ public class GameController {
             if (playerBoard.ctrlIfWhiteMarbleLeaderCardPresent())
                 throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
             else {
-                if(resFromMkt.getCol() != 0) {
+                if (resFromMkt.getCol() != 0) {
                     for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1); j++)
                         effects.add(new Effect());
-                }else {
+                } else {
                     for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInMarketRow(resFromMkt.getRow() - 1); j++)
                         effects.add(new Effect());
                 }
@@ -809,8 +822,6 @@ public class GameController {
         }
         //Hai carta white marble attiva e non me la passi: wrong
         //Se la lista è vuota allora la riempio a patto che non hai carte white marble attive
-
-
 
 
         if (resFromMkt.getCol() != 0)
@@ -837,7 +848,7 @@ public class GameController {
 
             List<Effect> effects = playerBoard.getEffectsFromCards(buyFromMarket.getLeaderList());
 
-            if(!effects.isEmpty()) {
+            if (!effects.isEmpty()) {
                 if (buyFromMarket.getRow() != 0) {
                     if (mainBoard.getNumberOfWhiteMarbleInMarketRow(buyFromMarket.getRow() - 1) > effects.size())
                         throw new IllegalArgumentException("There are not enough LeaderCards specified!");
@@ -849,10 +860,10 @@ public class GameController {
                 if (playerBoard.ctrlIfWhiteMarbleLeaderCardPresent())
                     throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
                 else {
-                    if(buyFromMarket.getCol() != 0) {
+                    if (buyFromMarket.getCol() != 0) {
                         for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1); j++)
                             effects.add(new Effect());
-                    }else {
+                    } else {
                         for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInMarketRow(buyFromMarket.getRow() - 1); j++)
                             effects.add(new Effect());
                     }
@@ -1336,14 +1347,16 @@ public class GameController {
                 } else {
                     this.players.get(i).getKey().setPlayerState(PlayerState.PLAYING);
                 }*/
-                if (state != GameState.LASTTURN && (players.get(i).getKey().getPlayerState() == PlayerState.PLAYING || players.get(i).getKey().getPlayerState() == PlayerState.PLAYINGBEGINNINGDECISIONS))
+                if (!players.get(i).getKey().isBeginningActionDone())
+                    players.get(i).getKey().setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
+                else if (state != GameState.LASTTURN && (players.get(i).getKey().getPlayerState() == PlayerState.PLAYING || players.get(i).getKey().getPlayerState() == PlayerState.PLAYINGBEGINNINGDECISIONS))
                     players.get(i).getKey().setPlayerState(PlayerState.WAITING4TURN);
                 else if (state == GameState.LASTTURN && (players.get(i).getKey().getPlayerState() == PlayerState.PLAYINGLASTTURN || players.get(i).getKey().getPlayerState() == PlayerState.PLAYING || players.get(i).getKey().getPlayerState() == PlayerState.PLAYINGBEGINNINGDECISIONS))
                     players.get(i).getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
-                if(i == playerToBecomeActive)
-                    if(players.get(i).getKey().getPlayerState() == PlayerState.WAITING4GAMEEND)
+                if (i == playerToBecomeActive)
+                    if (players.get(i).getKey().getPlayerState() == PlayerState.WAITING4GAMEEND)
                         this.endGame();
-                    else if(players.get(i).getKey().getPlayerState() == PlayerState.WAITING4BEGINNINGDECISIONS)
+                    else if (players.get(i).getKey().getPlayerState() == PlayerState.WAITING4BEGINNINGDECISIONS)
                         players.get(i).getKey().setPlayerState(PlayerState.PLAYINGBEGINNINGDECISIONS);
                     else if (state == GameState.LASTTURN)
                         players.get(i).getKey().setPlayerState(PlayerState.PLAYINGLASTTURN);
@@ -1356,34 +1369,37 @@ public class GameController {
             game.addPlayer(player);
         }
 
-        //If the next player is supposed to be in PLAYING state when the game is still in STARTED state then all the active players have given their beginning
-        //decisions and therefore the game can normally function
-        if(this.state == GameState.STARTED && players.get(playerToBecomeActive).getKey().getPlayerState() == PlayerState.PLAYING)
+        if(numOfTurn == numberOfPlayers)
             this.state = GameState.INSESSION;
 
-        if(!hasGameEnded())
+        /*//If the next player is supposed to be in PLAYING state when the game is still in STARTED state then all the active players have given their beginning
+        //decisions and therefore the game can normally function
+        if (this.state == GameState.STARTED && players.get(playerToBecomeActive).getKey().getPlayerState() == PlayerState.PLAYING)
+            this.state = GameState.INSESSION;*/
+
+        if (!hasGameEnded())
             this.sendBroadcastUpdate(new ModelUpdate(game));
         else
-           this.endGame();
+            this.endGame();
     }
 
-    private void endGame(){
+    private void endGame() {
         this.distributeFinalPoints();
         GamesManagerSingleton.getInstance().deleteGame(this);
         //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
-    private void distributeFinalPoints(){
+    private void distributeFinalPoints() {
         FinalScoresMessage message = new FinalScoresMessage();
-        for(Pair<ClientHandler, PlayerBoard> e: players)
+        for (Pair<ClientHandler, PlayerBoard> e : players)
             message.addScore(e.getKey().getNickname(), e.getValue().calculateVictoryPoints());
         this.sendBroadcastUpdate(message);
     }
 
-    private boolean hasGameEnded(){
-        for(Pair<ClientHandler, PlayerBoard> e: players)
-            if(!(e.getKey().getPlayerState() == PlayerState.DISCONNECTED || e.getKey().getPlayerState() == PlayerState.WAITING4GAMEEND))
-               return false;
+    private boolean hasGameEnded() {
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if (!(e.getKey().getPlayerState() == PlayerState.DISCONNECTED || e.getKey().getPlayerState() == PlayerState.WAITING4GAMEEND))
+                return false;
         return true;
     }
 
@@ -1502,7 +1518,7 @@ public class GameController {
 
         //Saves a partial copy of the players in the game keeping the same order as the one stored in this GameController
         this.clientHandlersCopy = new ArrayList<>();
-        for(Pair<ClientHandler, PlayerBoard> e: players)
+        for (Pair<ClientHandler, PlayerBoard> e : players)
             this.clientHandlersCopy.add(ClientHandler.getPartialCopy(e.getKey()));
 
         //Saves the state of the GameController
@@ -1523,7 +1539,7 @@ public class GameController {
 
         //Changes back the values of the players
         i = 0;
-        for(Pair<ClientHandler, PlayerBoard> e: players) {
+        for (Pair<ClientHandler, PlayerBoard> e : players) {
             e.getKey().refreshState(this.clientHandlersCopy.get(i));
             i++;
         }
@@ -1570,6 +1586,11 @@ public class GameController {
     //used only for testing
     public void addDisconnectedBeforeStart(ClientHandler clientHandler) {
         disconnectedBeforeStarting.add(clientHandler);
+    }
+
+    //used only for testing
+    public List<Pair<ClientHandler, PlayerBoard>> getPlayers() {
+        return players;
     }
 
     private boolean findClientHandler(ClientHandler clientHandler) {

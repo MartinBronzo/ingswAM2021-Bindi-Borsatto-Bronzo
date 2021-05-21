@@ -477,7 +477,14 @@ public class CliClient extends Client implements Runnable {
         client.startConnection();
         client.doConnection();
     }
+
+    //used only for testing
+    public String getNickname(){return nickname;}
+    //used only for testing
+    public Game getGameModel(){return gamemodel;}
 }
+
+
 
 
 

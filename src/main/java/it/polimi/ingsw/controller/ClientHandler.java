@@ -34,6 +34,7 @@ public class ClientHandler implements Runnable {
     private boolean pingAnswered;
     private final Gson gson;
     private boolean keepRunning;
+    private boolean beginningActionDone;
 
 
     private ClientHandler(ClientHandler original){
@@ -48,6 +49,7 @@ public class ClientHandler implements Runnable {
         this.pingAnswered = true;
         this.gson = null;
         this.keepRunning = true;
+        this.beginningActionDone = original.beginningActionDone;
     }
 
     /**
@@ -93,6 +95,7 @@ public class ClientHandler implements Runnable {
         numLeaderActionDone = 0;
         pingAnswered = true;
         keepRunning = true;
+        beginningActionDone = false;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -120,6 +123,7 @@ public class ClientHandler implements Runnable {
         this.playerState = PlayerState.WAITING4NAME;
         pingAnswered = true;
         keepRunning = true;
+        beginningActionDone = false;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -337,15 +341,22 @@ public class ClientHandler implements Runnable {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
+                            beginningActionDone = true;
                             DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning = gson.fromJson(command.getParameters(), DiscardLeaderAndExtraResBeginningMessage.class);
                             game.discardLeaderAndExtraResBeginning(discardLeaderCardBeginning, this);
 
-                            //break;
+                            if(game.getState() != GameState.STARTED)
+                                break;
                         case "endTurn":
                             if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
                             }
+                            if(playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone){
+                                this.send(new ErrorMessage("You must satisfy your liege's demand first"));
+                                break;
+                            }
+
                             if (game.getNumberOfPlayers() == 1) {
                                 send(new GeneralInfoStringMessage("Lorenzos' Turn"));
                                 //this.playerState = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
@@ -556,6 +567,8 @@ public class ClientHandler implements Runnable {
     public PlayerState getPlayerState() {
         return playerState;
     }
+
+    public boolean isBeginningActionDone(){return beginningActionDone;}
 
     //This method was used for purposes reasons
     public String getInput() throws IOException {
