@@ -334,8 +334,10 @@ public class CliClient extends Client implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 response = in.readLine();
-                System.out.println("Received:\t"+response);
                 responseMessage = gson.fromJson(response, ResponseMessage.class);
+                //TODO: DA TOGLIERE QUESTO IF
+                if(responseMessage.getResponseType() != ResponseType.PING)
+                    System.out.println("Received:\t"+response);
                 responseContent = responseMessage.getResponseContent();
                 switch (responseMessage.getResponseType()) {
                     case PING:

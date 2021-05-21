@@ -331,7 +331,7 @@ public class GameController {
         this.sendBroadcastUpdate(new GeneralInfoStringMessage("GAME STARTED!"));
         this.showLeaderCardAtBeginning();
         this.sendNumExtraResBeginning();
-        this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
+        //this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
         this.updatesTurnAndSendInfo(this.firstPlayer);
 
         if(numberOfPlayers != 1) //starts timer only if we are in multiplayer
@@ -1326,7 +1326,6 @@ public class GameController {
 
         //If the next player is supposed to be in PLAYING state when the game is still in STARTED state then all the active players have given their beginning
         //decisions and therefore the game can normally function
-        //TODO: Satto dici che è giusto?
         if(this.state == GameState.STARTED && players.get(playerToBecomeActive).getKey().getPlayerState() == PlayerState.PLAYING)
             this.state = GameState.INSESSION;
 

@@ -352,8 +352,9 @@ public class ClientHandler implements Runnable {
                                 game.drawSoloToken(this);
                                 send(new GeneralInfoStringMessage("Now it's Your turn, Master " + nickname));
                             } else {
-                                game.specifyNextPlayer(this);
                                 send(new GeneralInfoStringMessage("You ended the turn"));
+                                game.specifyNextPlayer(this);
+
                             }
                             mainActionDone = false;
                             break;
