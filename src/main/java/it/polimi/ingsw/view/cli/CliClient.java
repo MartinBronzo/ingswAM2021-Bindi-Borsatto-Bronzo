@@ -25,7 +25,7 @@ public class CliClient extends Client implements Runnable {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
-    private static final BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+    private static BufferedReader stdIn;
     private static final Gson gson = new Gson();
     private static Thread thread;
     private Map<ResourceType, Integer> resourcesMap;
@@ -44,7 +44,18 @@ public class CliClient extends Client implements Runnable {
         this.hostName = hostName;
         this.forceLogout = new AtomicBoolean();
         this.forceLogout.set(false);
+        this.stdIn = new BufferedReader(new InputStreamReader(System.in));
     }
+
+    public CliClient(int portNumber, String hostName, BufferedReader bufferedReader) {
+        this.gamemodel = null;
+        this.portNumber = portNumber;
+        this.hostName = hostName;
+        this.forceLogout = new AtomicBoolean();
+        this.forceLogout.set(false);
+        this.stdIn = bufferedReader;
+    }
+
 
     @Override
     public void startConnection(){
