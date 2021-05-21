@@ -198,7 +198,7 @@ public class CliClient extends Client implements Runnable {
         System.out.println("getResourcesFromMarket example: row 3; 1, 2, 4;\n");
         String usrCommand = stdIn.readLine();
         try {
-            Command getResourcesFromMarket = new Command("getResourcesFromMarket", StringToMessage.toMatrixMessage(usrCommand));
+            Command getResourcesFromMarket = new Command("getResourcesFromMarket", StringToMessage.toMatrixMessageLine(usrCommand));
             sendMessage(getResourcesFromMarket);
         } catch (IllegalArgumentException e){
             System.err.println(e.getMessage());
@@ -219,10 +219,10 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void getDevCardCost() throws IOException {
-        System.out.println("getDevCardCost example: row 3; column 3; 1, 2, 4;\n");
+        System.out.println("getDevCardCost example: 3; 2; 1, 2, 4;\n");
         String usrCommand = stdIn.readLine();
         try {
-            Command getDevCardCost = new Command("getCardCost", StringToMessage.toMatrixMessage(usrCommand));
+            Command getDevCardCost = new Command("getCardCost", StringToMessage.toMatrixMessageCell(usrCommand));
             sendMessage(getDevCardCost);
         } catch (IllegalArgumentException e){
             System.err.println(e.getMessage());
@@ -231,7 +231,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void buyDevCard() throws IOException {
-        System.out.println("buyDevCard example: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
+        System.out.println("buyDevCard example: 3; 2; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command buyDevCard = new Command("buyDevCard", StringToMessage.toBuyDevCardMessage(usrCommand));

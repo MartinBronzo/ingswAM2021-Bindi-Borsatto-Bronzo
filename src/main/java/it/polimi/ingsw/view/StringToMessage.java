@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class StringToMessage {
 
-    public static GetFromMatrixMessage toMatrixMessage(String string) throws IllegalArgumentException{
+    public static GetFromMatrixMessage toMatrixMessageLine(String string) throws IllegalArgumentException{
         int colNumber;
         int rowNumber;
         List<Integer> leaderList;
@@ -34,6 +34,22 @@ public class StringToMessage {
         return new GetFromMatrixMessage(rowNumber, colNumber, leaderList);
     }
 
+    public static GetFromMatrixMessage toMatrixMessageCell(String string) throws IllegalArgumentException{
+        int colNumber;
+        int rowNumber;
+        List<Integer> leaderList;
+        try {
+            String[] infos = Arrays.stream(string.split(";")).map(String::strip).filter(id -> id.length() != 0).toArray(String[]::new);
+            rowNumber = Integer.parseInt(infos[0]);
+            colNumber = Integer.parseInt(infos[1]);
+            String[] leaderIds = infos[2].split(",");
+            leaderList = Arrays.stream(leaderIds).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
+        } catch (Exception e){
+            throw new IllegalArgumentException("String is not well formatted");
+        }
+        return new GetFromMatrixMessage(rowNumber, colNumber, leaderList);
+    }
+
     public static BuyDevCardMessage toBuyDevCardMessage(String string) throws IllegalArgumentException{
         int colNumber;
         int rowNumber;
@@ -43,23 +59,15 @@ public class StringToMessage {
         HashMap<ResourceType,Integer> strongboxMap;
         int devslot;
         try {
-            String[] infos = string.split(";");
-            String[] rcInfos = infos[0].split("\\s+");
-            if (rcInfos[0].equals("row")) {
-                rowNumber = Integer.parseInt(rcInfos[1]);
-                colNumber = 0;
-            } else if (rcInfos[0].equals("column")) {
-                rowNumber = 0;
-                colNumber = Integer.parseInt(rcInfos[1]);
-            } else {
-                throw new IllegalArgumentException("String is not well formatted");
-            }
-            String[] leaderIds = infos[1].split(",");
+            String[] infos = Arrays.stream(string.split(";")).map(String::strip).filter(id -> id.length() != 0).toArray(String[]::new);
+            rowNumber = Integer.parseInt(infos[0]);
+            colNumber = Integer.parseInt(infos[1]);
+            String[] leaderIds = infos[2].split(",");
             leaderList = Arrays.stream(leaderIds).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
-            depotParamsList = Arrays.stream(infos[2].split(",")).map(String::strip).filter(id -> id.length() != 0).map(StringToMessage::toDepotParams).collect(Collectors.toList());
-            leaderMap = toResourceHashMap(infos[3]);
-            strongboxMap = toResourceHashMap(infos[4]);
-            devslot = Integer.parseInt(infos[5].strip());
+            depotParamsList = Arrays.stream(infos[3].split(",")).map(String::strip).filter(id -> id.length() != 0).map(StringToMessage::toDepotParams).collect(Collectors.toList());
+            leaderMap = toResourceHashMap(infos[4]);
+            strongboxMap = toResourceHashMap(infos[5]);
+            devslot = Integer.parseInt(infos[6].strip());
         } catch (Exception e){
             throw new IllegalArgumentException("String is not well formatted");
         }

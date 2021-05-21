@@ -12,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class stringToMessageTest {
 
     @Test
-    void toMatrixMessageTest() {
+    void toMatrixMessageLineTest() {
         String string = "row 3; 1, 2, 4;";
-        GetFromMatrixMessage message = StringToMessage.toMatrixMessage(string);
+        GetFromMatrixMessage message = StringToMessage.toMatrixMessageLine(string);
         assertEquals(0, message.getCol());
         assertEquals(3, message.getRow());
         List<Integer> integers = message.getLeaderList();
@@ -24,11 +24,23 @@ class stringToMessageTest {
     }
 
     @Test
+    void toMatrixMessageCellTest() {
+        String string = "2; 3; 1, 2, 4;";
+        GetFromMatrixMessage message = StringToMessage.toMatrixMessageCell(string);
+        assertEquals(3, message.getCol());
+        assertEquals(2, message.getRow());
+        List<Integer> integers = message.getLeaderList();
+        assertEquals(1, integers.get(0));
+        assertEquals(2, integers.get(1));
+        assertEquals(4, integers.get(2));
+    }
+
+    @Test
     void toBuyDevCardMessage() {
-        String string = "row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;";
+        String string = "2; 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;";
         BuyDevCardMessage message = StringToMessage.toBuyDevCardMessage(string);
-        assertEquals(0, message.getCol());
-        assertEquals(3, message.getRow());
+        assertEquals(3, message.getCol());
+        assertEquals(2, message.getRow());
         List<Integer> integers = message.getLeaders();
         assertEquals(1, integers.get(0));
         assertEquals(2, integers.get(1));

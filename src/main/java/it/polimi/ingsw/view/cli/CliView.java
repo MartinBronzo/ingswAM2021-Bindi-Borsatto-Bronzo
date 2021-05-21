@@ -41,7 +41,8 @@ public class CliView implements view {
     }
 
     public static void printGameState(Game gamemodel, String nickname) throws NullPointerException, NoSuchElementException {
-        if (gamemodel == null) throw new NullPointerException("gamemodel is null");
+        if (gamemodel == null || nickname==null || nickname.equals("")) return;
+
         Player player = gamemodel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
         switch (player.getPlayerState()) {
             case WAITING4TURN:
