@@ -26,6 +26,11 @@ class CliViewTest {
     static List<DepotShelf> shelves;
     static HashMap<ResourceType, Integer> input;
     static HashMap<ResourceType, Integer> output;
+    static DevCard devCard;
+    static DevCard devCard2;
+    static HashMap<ResourceType, Integer> devCardInput;
+    static HashMap<ResourceType, Integer> devCardOutput;
+    static HashMap<ResourceType, Integer> cost;
 
     @BeforeAll
     static void setup() throws NegativeQuantityException {
@@ -54,6 +59,16 @@ class CliViewTest {
         output = new HashMap<>();
         output.put(ResourceType.SERVANT, 2);
         output.put(ResourceType.FAITHPOINT, 1);
+        devCardInput = new HashMap<>();
+        devCardInput.put(ResourceType.STONE, 2);
+        devCardOutput = new HashMap<>();
+        devCardOutput.put(ResourceType.COIN, 1);
+        devCardOutput.put(ResourceType.SERVANT, 1);
+        devCardOutput.put(ResourceType.STONE, 1);
+        cost = new HashMap<>();
+        cost.put(ResourceType.STONE, 3);
+        devCard = new DevCard(1, DevCardColour.YELLOW, 3,  devCardInput, devCardOutput, cost, "some/random/url");
+        devCard2 = new DevCard(2, DevCardColour.PURPLE, 2,  devCardInput, devCardOutput, cost, "some/random/url");
     }
 
     @Test
@@ -66,8 +81,10 @@ class CliViewTest {
         Board board = new Board();
         board.setMarketMatrix(matrix);
         board.setMarbleOnSlide(MarbleType.values()[random.nextInt(6)]);
-        DevCard[][] devgrid = new DevCard[3][4];
-        board.setDevMatrix(devgrid);
+        DevCard[][] devGrid = new DevCard[3][4];
+        devGrid[1][1] = devCard;
+        devGrid[1][0] = devCard2;
+        board.setDevMatrix(devGrid);
         CliView.printMarket(board);
         CliView.printDevGrid(board);
     }
@@ -88,7 +105,7 @@ class CliViewTest {
     }
 
     @Test
-    void printinfo() {
+    void printInfo() {
         CliView.printInfo("bdsvjhke sbvhj lsdmzb dbjhj jedvk kgvwk kvgqdg jkcqwv kwcv");
         System.out.println("\n");
     }
@@ -149,7 +166,7 @@ class CliViewTest {
     void printDepotFull(){
         CliView.printDepot(shelves);
     }
-    
+
     @Test
     void printDepotFirstEmpty(){
         List<DepotShelf> e = new ArrayList<>();
@@ -189,5 +206,15 @@ class CliViewTest {
     @Test
     void printBaseProduction(){
         CliView.printBaseProduction(input, output);
+    }
+
+    @Test
+    void printResourcesOnALine(){
+        CliView.printGeneralResourcesMapOnALine(resources, AnsiCommands.BLACK.getTextColor());
+    }
+
+    @Test
+    void printDevCard(){
+        CliView.printCardInfoIfValid(devCard, AnsiCommands.resetStyle());
     }
 }

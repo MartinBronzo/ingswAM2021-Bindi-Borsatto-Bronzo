@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementRe
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
-import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.readOnlyModel.Board;
@@ -115,7 +114,7 @@ public class CliView implements view {
     public static void printFinalScores(List<Map.Entry<String, Integer>> results) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.RED.getTextColor());
-        System.out.print("   ______________________________\n" +
+        System.out.print("\n   ______________________________\n" +
                 " / \\                             \\.\n");
         System.out.print("|   |                            |.\n");
         System.out.print(" \\_ |                            |.\n" +
@@ -238,7 +237,7 @@ public class CliView implements view {
 
       /*for(Map.Entry<ResourceType, Integer> e: resourcesMap.entrySet())
           printResources(e.getKey(), e.getValue(), AnsiCommands.GREEN.getTextColor());*/
-      printGeneralResourcesMaps(resourcesMap, AnsiCommands.GREEN.getTextColor() );
+      printGeneralResourcesMapsOnSmallScroll(resourcesMap, AnsiCommands.GREEN.getTextColor() );
 
         System.out.print(
                 "    |   _________________________|___\n" +
@@ -260,9 +259,20 @@ public class CliView implements view {
         }
     }
 
-    private static void printGeneralResourcesMaps(Map<ResourceType, Integer> map, String boundaryColor){
+    private static void printGeneralResourcesMapsOnSmallScroll(Map<ResourceType, Integer> map, String boundaryColor){
         for(Map.Entry<ResourceType, Integer> e: map.entrySet())
             printResourcesOnScroll(e.getKey(), e.getValue(), boundaryColor);
+    }
+
+    public static void printGeneralResourcesMapOnALine(Map<ResourceType, Integer> map, String boundaryColor){
+        int j = 0;
+        for(Map.Entry<ResourceType, Integer> e: map.entrySet()){
+            if(j != 0)
+                System.out.print(" + ");
+            else
+                j++;
+            printResAndNumberWithSameColor(e.getKey(), e.getValue(), boundaryColor);
+        }
     }
 
     private static void printFaithTrack(int position, List<PopeTile> popeTiles){
@@ -302,7 +312,7 @@ public class CliView implements view {
         for (String line: lines) {
             System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
         }
-        printGeneralResourcesMaps(map, AnsiCommands.BLACK.getTextColor());
+        printGeneralResourcesMapsOnSmallScroll(map, AnsiCommands.BLACK.getTextColor());
         System.out.print("     ____________________________.\n");
     }
 
@@ -313,7 +323,7 @@ public class CliView implements view {
         for (String line: lines) {
             System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
         }
-        printGeneralResourcesMaps(map, AnsiCommands.WHITE.getTextColor());
+        printGeneralResourcesMapsOnSmallScroll(map, AnsiCommands.WHITE.getTextColor());
         System.out.print("     ____________________________.\n");
     }
 
@@ -445,7 +455,10 @@ public class CliView implements view {
         for (int i = 0; i < devGrid.length; i++) {
             for (int j = 0; j < devGrid[i].length; j++) {
                 c = (1+i+4*j);
-                System.out.println(c+":\t"+ printCardInfo(devGrid[i][j]));
+                //System.out.println(c+":\t");
+                System.out.print(c + " : ");
+                printCardInfo(devGrid[i][j], AnsiCommands.resetStyle());
+                System.out.print("\n");
             }
         }
 
@@ -597,7 +610,7 @@ public class CliView implements view {
         if(e.getExtraResourceAmount() == 1) {
             System.out.print("thou get a ");
             printResName(e.getExtraResourceType(), backgroundColor);
-            System.out.println(" when thou encounter an annoying WhiteMarble in the Market");
+            System.out.print(" when thou encounter an annoying WhiteMarble in the Market");
 
         }else {
             System.out.print("thou get " + e.getExtraResourceAmount() + " ");
@@ -612,9 +625,60 @@ public class CliView implements view {
     #############################################################################################
      */
 
-    public static String printCardInfo(DevCard devCard){
-        if (devCard==null) return "Empty Slot";
+    /*public static String printCardInfo(DevCard devCard) {
+        if (devCard == null)
+            return "Empty slot";
         return devCard.toString();
+    }*/
+
+    public static void printCardInfo(DevCard devCard, String backgroundColor){
+        if (devCard==null)
+            System.out.print("Empty Slot");
+        else
+            printCardInfoIfValid(devCard, backgroundColor);
+    }
+
+    //Prints a DevCard if it is a valid card (it has all the attributes it is supposed to have)
+    public static void printCardInfoIfValid(DevCard devCard, String backgroundColor){
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        printCardColorAndLevel(devCard.getLevel(), devCard.getColour(), AnsiCommands.BLACK.getTextColor());
+        System.out.print(" VP: " + devCard.getVictoryPoints() + " | ");
+        System.out.print("Prod: ");
+        printGeneralResourcesMapOnALine(devCard.getProductionInput(), AnsiCommands.BLACK.getTextColor());
+        System.out.print(" ------> ");
+        printGeneralResourcesMapOnALine(devCard.getProductionOutput(), AnsiCommands.BLACK.getTextColor());
+        System.out.print(" | ");
+        System.out.print("Cost: ");
+        printGeneralResourcesMapOnALine(devCard.getCost(), AnsiCommands.BLACK.getTextColor());
+        System.out.print(backgroundColor);
+    }
+
+    private static void printCardColorAndLevel(Integer level, DevCardColour color, String backgroundColor){
+        switch (color){
+            case PURPLE:
+                System.out.print(AnsiCommands.PURPLE.getTextColor());
+                System.out.print("C: ");
+                printColor(color, AnsiCommands.PURPLE.getTextColor());
+                break;
+            case GREEN:
+                System.out.print(AnsiCommands.GREEN.getTextColor());
+                System.out.print("C: ");
+                printColor(color, AnsiCommands.GREEN.getTextColor());
+                break;
+            case BLUE:
+                System.out.print(AnsiCommands.BLUE.getTextColor());
+                System.out.print("C: ");
+                printColor(color, AnsiCommands.BLUE.getTextColor());
+                break;
+            case YELLOW:
+                System.out.print(AnsiCommands.YELLOW.getTextColor());
+                System.out.print("C: ");
+                printColor(color, AnsiCommands.YELLOW.getTextColor());
+                break;
+        }
+        System.out.print(", L: " + level);
+        System.out.print(backgroundColor);
+        System.out.print(" | ");
     }
 
     /*
@@ -660,7 +724,7 @@ public class CliView implements view {
         }
     }
 
-    //Prints the resources and their corresponding quantity given in a map. It prints the whole line of a small scroll
+    //Prints the resources and their corresponding quantity given. It prints the whole line of a small scroll
     private static void printResourcesOnScroll(ResourceType type, Integer quantity, String boundaryColor){
         switch (type){
             case COIN:
@@ -680,6 +744,30 @@ public class CliView implements view {
                 break;
         }
     }
+
+    //Prints the resources and their corresponding quantity given
+    private static void printResAndNumberWithSameColor(ResourceType res, Integer quantity, String backgroundColor){
+        switch (res){
+            case COIN:
+                printResName(res, AnsiCommands.YELLOW.getTextColor());
+                break;
+            case STONE:
+                printResName(res, AnsiCommands.WHITE.getTextColor());
+                break;
+            case SHIELD:
+                printResName(res, AnsiCommands.BLUE.getTextColor());
+                break;
+            case SERVANT:
+                printResName(res, AnsiCommands.PURPLE.getTextColor());
+                break;
+            case FAITHPOINT:
+                printResName(res, AnsiCommands.RED.getTextColor());
+                break;
+        }
+        System.out.print(" : " + quantity);
+        System.out.print(backgroundColor);
+    }
+
 
     //The following methods print the resources and their quantity in a line for a small scroll
 

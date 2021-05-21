@@ -5,12 +5,11 @@ import it.polimi.ingsw.model.DevCards.DevCard;
 import java.util.List;
 
 public class Devslot {
+    private List<DevCard> devCards;
+
     public List<DevCard> getDevCards() {
         return devCards;
     }
-
-    private List<DevCard> devCards;
-
     @Override
     public String toString() {
         return "Devslot{" +
