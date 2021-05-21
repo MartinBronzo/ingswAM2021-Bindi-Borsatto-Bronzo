@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.Depot;
+import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
@@ -11,7 +12,9 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
+import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -680,5 +683,32 @@ public class CliView implements view {
         System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 
     }
+
+    public static void printMarket(Board board){
+        MarbleType[][] matrix = board.getMarketMatrix();
+        System.out.println("___________ "+ board.getMarbleOnSlide().toString());
+        for (int i = 0; i < matrix.length; i++) {
+            System.out.print("|");
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j].toString()+"|");
+            }
+            System.out.println("\n___________");
+        }
+    }
+
+    /*
+    public static void printDevGrid(Board board){
+        DevGrid devGrid = board.getDevGrid();
+        devGrid.getDrawableCards();
+        System.out.println("___________ "+ board.getMarbleOnSlide().toString());
+        for (int i = 0; i < matrix.length; i++) {
+            System.out.print("|");
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j].toString()+"|");
+            }
+            System.out.println("\n___________");
+        }
+    }
+     */
 
 }

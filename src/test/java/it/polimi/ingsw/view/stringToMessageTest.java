@@ -36,6 +36,15 @@ class stringToMessageTest {
     }
 
     @Test
+    void toMatrixMessageCellTest2() {
+        String string = "2; 3; ;";
+        GetFromMatrixMessage message = StringToMessage.toMatrixMessageCell(string);
+        assertEquals(3, message.getCol());
+        assertEquals(2, message.getRow());
+        assertTrue(message.getLeaderList().isEmpty());
+    }
+
+    @Test
     void toBuyDevCardMessage() {
         String string = "2; 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;";
         BuyDevCardMessage message = StringToMessage.toBuyDevCardMessage(string);

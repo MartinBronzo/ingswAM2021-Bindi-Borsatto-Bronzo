@@ -39,7 +39,7 @@ public class StringToMessage {
         int rowNumber;
         List<Integer> leaderList;
         try {
-            String[] infos = Arrays.stream(string.split(";")).map(String::strip).filter(id -> id.length() != 0).toArray(String[]::new);
+            String[] infos = Arrays.stream(string.split(";")).map(String::strip).toArray(String[]::new);
             rowNumber = Integer.parseInt(infos[0]);
             colNumber = Integer.parseInt(infos[1]);
             String[] leaderIds = infos[2].split(",");
@@ -59,7 +59,7 @@ public class StringToMessage {
         HashMap<ResourceType,Integer> strongboxMap;
         int devslot;
         try {
-            String[] infos = Arrays.stream(string.split(";")).map(String::strip).filter(id -> id.length() != 0).toArray(String[]::new);
+            String[] infos = Arrays.stream(string.split(";")).map(String::strip).toArray(String[]::new);
             rowNumber = Integer.parseInt(infos[0]);
             colNumber = Integer.parseInt(infos[1]);
             String[] leaderIds = infos[2].split(",");

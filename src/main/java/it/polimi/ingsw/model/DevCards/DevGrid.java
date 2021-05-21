@@ -287,6 +287,18 @@ public class DevGrid {
     }
 
     /**
+     * @return the matrix containing the uncovered cards
+     */
+    public DevCard[][] getDevMatrix() {
+        DevCard[][] devMatrix = new DevCard[3][4];
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                devMatrix[i][j] = this.devDecksGrid[i][j].getFirst();
+
+        return devMatrix;
+    }
+
+    /**
      * Returns the size of the devDeck containing devCards of the specified color and max level
      *
      * @param colour the color of the devDeck

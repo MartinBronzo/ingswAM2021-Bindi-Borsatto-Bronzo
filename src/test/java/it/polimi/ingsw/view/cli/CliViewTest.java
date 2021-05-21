@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraProductionLeaderEffect;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.marble.MarbleType;
+import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -51,6 +53,19 @@ class CliViewTest {
         output = new HashMap<>();
         output.put(ResourceType.SERVANT, 2);
         output.put(ResourceType.FAITHPOINT, 1);
+    }
+
+    @Test
+    void printMarketTest() {
+        MarbleType[][] matrix = new MarbleType[3][4];
+        Random random = new Random();
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                matrix[i][j] = MarbleType.values()[random.nextInt(6)];
+        Board board = new Board();
+        board.setMarketMatrix(matrix);
+        board.setMarbleOnSlide(MarbleType.values()[random.nextInt(6)]);
+        CliView.printMarket(board);
     }
 
     @Test

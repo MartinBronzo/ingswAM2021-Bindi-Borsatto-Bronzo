@@ -1,10 +1,16 @@
 package it.polimi.ingsw.model.marble;
 
+import it.polimi.ingsw.view.cli.AnsiCommands;
+
 public enum MarbleType {
     BLUEMARBLE {
         @Override
         public Marble getMarble() {
             return blueMarble;
+        }
+        @Override
+        public String toString() {
+            return AnsiCommands.BLUE.getTextColor() +"Ⓑ"+AnsiCommands.resetStyle();
         }
     },
     GREYMARBLE {
@@ -12,17 +18,29 @@ public enum MarbleType {
         public Marble getMarble() {
             return greyMarble;
         }
+        @Override
+        public String toString() {
+            return AnsiCommands.WHITE.getTextColor() +"Ⓖ"+AnsiCommands.resetStyle();
+        }
     },
     PURPLEMARBLE {
         @Override
         public Marble getMarble() {
             return purpleMarble;
         }
+        @Override
+        public String toString() {
+            return AnsiCommands.PURPLE.getTextColor() +"Ⓟ"+AnsiCommands.resetStyle();
+        }
     },
     REDMARBLE {
         @Override
         public Marble getMarble() {
             return redMarble;
+        }
+        @Override
+        public String toString() {
+            return AnsiCommands.RED.getTextColor() +"Ⓡ"+AnsiCommands.resetStyle();
         }
     },
     WHITEMARBLE {
@@ -34,11 +52,19 @@ public enum MarbleType {
         public Boolean isWhiteMarble() {
             return false;
         }
+        @Override
+        public String toString() {
+            return AnsiCommands.resetStyle() +"ⓦ"+AnsiCommands.resetStyle();
+        }
     },
     YELLOWMARBLE {
         @Override
         public Marble getMarble() {
             return yellowMarble;
+        }
+        @Override
+        public String toString() {
+            return AnsiCommands.YELLOW.getTextColor() +"Ⓨ"+AnsiCommands.resetStyle();
         }
     };
 
@@ -55,5 +81,4 @@ public enum MarbleType {
     public Boolean isWhiteMarble() {
         return false;
     }
-
 }
