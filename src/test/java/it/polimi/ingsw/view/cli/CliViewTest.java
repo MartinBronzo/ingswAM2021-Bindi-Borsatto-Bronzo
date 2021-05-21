@@ -23,6 +23,8 @@ class CliViewTest {
     static List<LeaderCard> list;
     static HashMap<ResourceType, Integer> resources;
     static List<DepotShelf> shelves;
+    static HashMap<ResourceType, Integer> input;
+    static HashMap<ResourceType, Integer> output;
 
     @BeforeAll
     static void setup() throws NegativeQuantityException {
@@ -45,6 +47,12 @@ class CliViewTest {
         shelves.add(new DepotShelf(ResourceType.SERVANT, 1));
         shelves.add(new DepotShelf(ResourceType.COIN, 2));
         shelves.add(new DepotShelf(ResourceType.SHIELD, 3));
+        input = new HashMap<>();
+        input.put(ResourceType.SHIELD, 2);
+        input.put(ResourceType.COIN, 1);
+        output = new HashMap<>();
+        output.put(ResourceType.SERVANT, 2);
+        output.put(ResourceType.FAITHPOINT, 1);
     }
 
     @Test
@@ -171,5 +179,10 @@ class CliViewTest {
         e.add(new DepotShelf(null, 0));
         e.add(new DepotShelf(null, 0));
         CliView.printDepot(e);
+    }
+
+    @Test
+    void printBaseProduction(){
+        CliView.printBaseProduction(input, output);
     }
 }
