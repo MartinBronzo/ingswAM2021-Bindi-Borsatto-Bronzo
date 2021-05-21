@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
@@ -65,7 +66,10 @@ class CliViewTest {
         Board board = new Board();
         board.setMarketMatrix(matrix);
         board.setMarbleOnSlide(MarbleType.values()[random.nextInt(6)]);
+        DevCard[][] devgrid = new DevCard[3][4];
+        board.setDevMatrix(devgrid);
         CliView.printMarket(board);
+        CliView.printDevGrid(board);
     }
 
     @Test

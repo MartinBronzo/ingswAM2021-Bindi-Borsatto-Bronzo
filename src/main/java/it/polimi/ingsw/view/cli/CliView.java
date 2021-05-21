@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.Depot;
+import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
@@ -696,19 +697,42 @@ public class CliView implements view {
         }
     }
 
-    /*
     public static void printDevGrid(Board board){
-        DevGrid devGrid = board.getDevGrid();
-        devGrid.getDrawableCards();
-        System.out.println("___________ "+ board.getMarbleOnSlide().toString());
-        for (int i = 0; i < matrix.length; i++) {
+        DevCard[][] devGrid = board.getDevMatrix();
+        System.out.print(AnsiCommands.RED.getBackgroundColor());
+        System.out.print("_____________");
+        System.out.println(AnsiCommands.resetStyle());
+        int c;
+        for (int i = 0; i < devGrid.length; i++) {
+            System.out.print(AnsiCommands.RED.getBackgroundColor());
             System.out.print("|");
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j].toString()+"|");
+            System.out.print(AnsiCommands.resetStyle());
+            for (int j = 0; j < devGrid[i].length; j++) {
+                c = (1+j+4*i);
+                System.out.print(c);
+                if (c<10){
+                    System.out.print(" "+AnsiCommands.RED.getBackgroundColor()+"|"+AnsiCommands.resetStyle());
+                } else {
+                    System.out.print(AnsiCommands.RED.getBackgroundColor()+"|"+AnsiCommands.resetStyle());
+                }
             }
-            System.out.println("\n___________");
+            System.out.print("\n"+AnsiCommands.RED.getBackgroundColor());
+            System.out.print("_____________");
+            System.out.println(AnsiCommands.resetStyle());
         }
+
+        for (int i = 0; i < devGrid.length; i++) {
+            for (int j = 0; j < devGrid[i].length; j++) {
+                c = (1+i+4*j);
+                System.out.println(c+":\t"+ printCardInfo(devGrid[i][j]));
+            }
+        }
+
     }
-     */
+
+    public static String printCardInfo(DevCard devCard){
+        if (devCard==null) return "Empty Slot";
+        return devCard.toString();
+    }
 
 }
