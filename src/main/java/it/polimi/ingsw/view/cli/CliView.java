@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.model.Depot;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
@@ -13,6 +14,7 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.view.view;
 
 import javax.swing.*;
@@ -152,8 +154,9 @@ public class CliView implements view {
             System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
         }
 
-      for(Map.Entry<ResourceType, Integer> e: resourcesMap.entrySet())
-          printResources(e.getKey(), e.getValue());
+      /*for(Map.Entry<ResourceType, Integer> e: resourcesMap.entrySet())
+          printResources(e.getKey(), e.getValue(), AnsiCommands.GREEN.getTextColor());*/
+      printGeneralResourcesMaps(resourcesMap, AnsiCommands.GREEN.getTextColor() );
 
         System.out.print(
                 "    |   _________________________|___\n" +
@@ -181,7 +184,7 @@ public class CliView implements view {
         for(Map.Entry<String, Integer> e: results)
             printPlayersAndScore(e.getKey(), e.getValue());
 
-        System.out.print("    |                            |.\n");
+
         lines = CliView.splitInLinesBySize("We shall crown our King,", 27);
         for (String line: lines) {
             System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
@@ -246,7 +249,7 @@ public class CliView implements view {
 
 
         List<Map.Entry<String, Integer>> results = new LinkedList<>(map.entrySet());
-        Collections.sort(results, Comparator.comparing(Map.Entry::getValue));
+        results.sort(Map.Entry.comparingByValue());
         for(Map.Entry<String, Integer> e: results)
             System.out.println(e.getKey() + " " + e.getValue());
         PopeTile popeTile = new PopeTile(1,ReportNum.REPORT1);
@@ -257,86 +260,86 @@ public class CliView implements view {
         printfaithTrack(3,popeTiles);
     }
 
-    private static void coins(int quantity){
+    private static void coins(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.YELLOW.getTextColor());
         System.out.print("©©©©©: ");
         if(quantity < 10) {
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("                   |.\n");
         }
         else{
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("                  |.\n" );
             System.out.print("");
         }
     }
 
-    private static void stones(int quantity){
+    private static void stones(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.WHITE.getTextColor());
         System.out.print("Stones: ");
         if(quantity < 10) {
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("                  |.\n");
         }
         else{
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("                 |.\n" );
             System.out.print("");
         }
     }
 
-    private static void servants(int quantity){
+    private static void servants(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.PURPLE.getTextColor());
         System.out.print("Servants: ");
         if(quantity < 10) {
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("                |.\n");
         }
         else{
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("               |.\n" );
             System.out.print("");
         }
     }
 
-    private static void shields(int quantity){
+    private static void shields(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.BLUE.getTextColor());
         System.out.print("Shields: ");
         if(quantity < 10) {
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("                 |.\n");
         }
         else{
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("                |.\n" );
             System.out.print("");
         }
     }
 
-    private static void faithPoints(int quantity){
+    private static void faithPoints(int quantity, String color){
         System.out.print("    | ");
         System.out.print(AnsiCommands.RED.getTextColor());
         System.out.print("Points of Faith: ");
         if(quantity < 10) {
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("         |.\n");
         }
         else{
             System.out.print(quantity);
-            System.out.print(AnsiCommands.GREEN.getTextColor());
+            System.out.print(color);
             System.out.print("        |.\n" );
             System.out.print("");
         }
@@ -354,22 +357,22 @@ public class CliView implements view {
         }
     }
 
-    private static void printResources(ResourceType type, Integer quantity){
+    private static void printResources(ResourceType type, Integer quantity, String boundaryColor){
         switch (type){
             case COIN:
-                coins(quantity);
+                coins(quantity, boundaryColor);
                 break;
             case STONE:
-                stones(quantity);
+                stones(quantity, boundaryColor);
                 break;
             case SERVANT:
-                servants(quantity);
+                servants(quantity, boundaryColor);
                 break;
             case SHIELD:
-                shields(quantity);
+                shields(quantity, boundaryColor);
                 break;
             case FAITHPOINT:
-                faithPoints(quantity);
+                faithPoints(quantity, boundaryColor);
                 break;
         }
     }
@@ -534,5 +537,95 @@ public class CliView implements view {
             System.out.print("thou get " + e.getExtraResourceAmount() + " " + e.getExtraResourceType() + "s when thou encounter an annoying WhiteMarble in the Market" );
     }
 
+    private static void printGeneralResourcesMaps(Map<ResourceType, Integer> map, String boundaryColor){
+        for(Map.Entry<ResourceType, Integer> e: map.entrySet())
+            printResources(e.getKey(), e.getValue(), boundaryColor);
+    }
+
+    public static void printStrongBox(Map<ResourceType, Integer> map){
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        System.out.print("     ____________________________.\n");
+        String[] lines = CliView.splitInLinesBySize("Thy precious Strongbox is hither presented: ", 27);
+        for (String line: lines) {
+            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        }
+        printGeneralResourcesMaps(map, AnsiCommands.BLACK.getTextColor());
+        System.out.print("     ____________________________.\n");
+    }
+
+    public static void printLeaderDepots(Map<ResourceType, Integer> map){
+        System.out.print(AnsiCommands.WHITE.getTextColor());
+        System.out.print("     ____________________________.\n");
+        String[] lines = CliView.splitInLinesBySize("Thy Extra Slots are hither presented: ", 27);
+        for (String line: lines) {
+            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        }
+        printGeneralResourcesMaps(map, AnsiCommands.WHITE.getTextColor());
+        System.out.print("     ____________________________.\n");
+    }
+
+    public static void printDepot(List<DepotShelf> shelves){
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        System.out.print("Thy Depot is hither presented:\n");
+        DepotShelf d;
+        for( int j = 0; j < shelves.size(); j++){
+            d = shelves.get(j);
+            if(j == 0)
+                System.out.print("          ");
+            else if(j == 1)
+                System.out.print("     ");
+            if(d.getQuantity() == 0)
+                if(j == 0)
+                    System.out.print("|         |");
+                else if (j == 1)
+                    System.out.print("|         |         |");
+                else
+                    System.out.print("|         |         |         |");
+            else{
+                System.out.print("| ");
+                for(int i = 0; i < d.getQuantity(); i++) {
+                    printResName(d.getResourceType(), AnsiCommands.BLACK.getTextColor());
+                    if(d.getResourceType() == ResourceType.SERVANT)
+                        System.out.print(" | ");
+                    else if(d.getResourceType() == ResourceType.SHIELD)
+                        System.out.print("  | ");
+                    else
+                        System.out.print("   | ");
+                }
+
+            }
+            System.out.print("\n");
+        }
+    }
+
+    private static void printResName(ResourceType res, String boundaryColor){
+        switch (res){
+            case COIN:
+                System.out.print(AnsiCommands.YELLOW.getTextColor());
+                System.out.print("©©©©©");
+                System.out.print(boundaryColor);
+                break;
+            case STONE:
+                System.out.print(AnsiCommands.WHITE.getTextColor());
+                System.out.print("Stone");
+                System.out.print(boundaryColor);
+                break;
+            case SERVANT:
+                System.out.print(AnsiCommands.PURPLE.getTextColor());
+                System.out.print("Servant");
+                System.out.print(boundaryColor);
+                break;
+            case SHIELD:
+                System.out.print(AnsiCommands.BLUE.getTextColor());
+                System.out.print("Shield");
+                System.out.print(boundaryColor);
+                break;
+            case FAITHPOINT:
+                System.out.print(AnsiCommands.RED.getTextColor());
+                System.out.print("Point of Faith");
+                System.out.print(boundaryColor);
+                break;
+        }
+    }
 
 }

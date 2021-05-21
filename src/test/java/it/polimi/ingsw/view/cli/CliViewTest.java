@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraProductionLeaderEffect;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,8 @@ class CliViewTest {
     static LeaderCard card1;
     static LeaderCard card2;
     static List<LeaderCard> list;
+    static HashMap<ResourceType, Integer> resources;
+    static List<DepotShelf> shelves;
 
     @BeforeAll
     static void setup() throws NegativeQuantityException {
@@ -30,6 +33,16 @@ class CliViewTest {
         list = new ArrayList<>();
         list.add(card1);
         list.add(card2);
+        resources = new HashMap<>();
+        resources.put(ResourceType.COIN, 1);
+        resources.put(ResourceType.STONE, 2);
+        resources.put(ResourceType.SERVANT, 30);
+        resources.put(ResourceType.SHIELD, 4);
+        resources.put(ResourceType.FAITHPOINT, 50);
+        shelves = new ArrayList<>();
+        shelves.add(new DepotShelf(ResourceType.SERVANT, 1));
+        shelves.add(new DepotShelf(ResourceType.COIN, 2));
+        shelves.add(new DepotShelf(ResourceType.SHIELD, 3));
     }
 
     @Test
@@ -65,13 +78,7 @@ class CliViewTest {
 
     @Test
     void printResourcesMap() {
-        HashMap<ResourceType, Integer> map = new HashMap<>();
-        map.put(ResourceType.COIN, 1);
-        map.put(ResourceType.STONE, 2);
-        map.put(ResourceType.SERVANT, 30);
-        map.put(ResourceType.SHIELD, 4);
-        map.put(ResourceType.FAITHPOINT, 50);
-        CliView.printResourcesMap(map, "Master Kenobi, this morrow, local shopkeepers tenders thou:");
+        CliView.printResourcesMap(resources, "Master Kenobi, this morrow, local shopkeepers tenders thou:");
     }
 
     @Test
@@ -82,12 +89,12 @@ class CliViewTest {
         map.put("General Kenobi", 1100);
         map.put("Jar Jar Binks", 1099);
         List<Map.Entry<String, Integer>> results = new LinkedList<>(map.entrySet());
-        Collections.sort(results, (x, y) -> y.getValue().compareTo(x.getValue()));
+        results.sort((x, y) -> y.getValue().compareTo(x.getValue()));
         CliView.printFinalScores(results);
     }
 
     @Test
-    void printLeaderCard() throws NegativeQuantityException {
+    void printLeaderCard() {
         CliView.printLeaderCard(card1);
     }
 
@@ -99,5 +106,55 @@ class CliViewTest {
     @Test
     void printUsedLeaderCards(){
         CliView.printUsedLeaderCards(list);
+    }
+
+    @Test
+    void printStrongBox(){
+        CliView.printStrongBox(resources);
+    }
+
+    @Test
+    void printLeaderDepot(){
+        CliView.printLeaderDepots(resources);
+    }
+
+    @Test
+    void printDepotFull(){
+        CliView.printDepot(shelves);
+    }
+    @Test
+    void printDepotFirstEmpty(){
+        List<DepotShelf> e = new ArrayList<>();
+        e.add(new DepotShelf(null, 0));
+        e.add(new DepotShelf(ResourceType.COIN, 2));
+        e.add(new DepotShelf(ResourceType.SHIELD, 3));
+        CliView.printDepot(e);
+    }
+    
+    @Test
+    void printDepotSecondEmpty(){
+        List<DepotShelf> e = new ArrayList<>();
+        e.add(new DepotShelf(ResourceType.SERVANT, 1));
+        e.add(new DepotShelf(null, 0));
+        e.add(new DepotShelf(ResourceType.SHIELD, 3));
+        CliView.printDepot(e);
+    }
+
+    @Test
+    void printDepotThirdEmpty(){
+        List<DepotShelf> e = new ArrayList<>();
+        e.add(new DepotShelf(ResourceType.SERVANT, 1));
+        e.add(new DepotShelf(ResourceType.COIN, 2));
+        e.add(new DepotShelf(null, 0));
+        CliView.printDepot(e);
+    }
+
+    @Test
+    void printDepotAllEmpty(){
+        List<DepotShelf> e = new ArrayList<>();
+        e.add(new DepotShelf(null, 0));
+        e.add(new DepotShelf(null, 0));
+        e.add(new DepotShelf(null, 0));
+        CliView.printDepot(e);
     }
 }
