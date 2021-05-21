@@ -122,7 +122,7 @@ class CliViewTest {
 
     @Test
     void printLeaderCard() {
-        CliView.printLeaderCard(card1);
+        CliView.printLeaderCard(card1, AnsiCommands.WHITE.getTextColor());
     }
 
     @Test
@@ -149,6 +149,7 @@ class CliViewTest {
     void printDepotFull(){
         CliView.printDepot(shelves);
     }
+    
     @Test
     void printDepotFirstEmpty(){
         List<DepotShelf> e = new ArrayList<>();
