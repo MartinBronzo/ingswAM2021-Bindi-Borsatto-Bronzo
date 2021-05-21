@@ -159,6 +159,12 @@ public class ClientHandler implements Runnable {
                     send(new PingMessage("Ping"));
                     pingAnswered = false;
                 } else {
+                    /*if(game.getNumberOfPlayers() == 1){
+                        setPlayerState(PlayerState.DISCONNECTED);
+                        GamesManagerSingleton.getInstance().deleteGame(game);
+                    }*/
+
+
                     if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART) {
                         //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato) (non dovrebbe servire)
                         game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
@@ -333,6 +339,22 @@ public class ClientHandler implements Runnable {
                             }
                             DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning = gson.fromJson(command.getParameters(), DiscardLeaderAndExtraResBeginningMessage.class);
                             game.discardLeaderAndExtraResBeginning(discardLeaderCardBeginning, this);
+                            //break;
+                        case "endTurn":
+                            if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            if (game.getNumberOfPlayers() == 1) {
+                                send(new GeneralInfoStringMessage("Lorenzos' Turn"));
+                                //this.playerState = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
+                                game.drawSoloToken(this);
+                                send(new GeneralInfoStringMessage("Now it's Your turn, Master " + nickname));
+                            } else {
+                                game.specifyNextPlayer(this);
+                                send(new GeneralInfoStringMessage("You ended the turn"));
+                            }
+                            mainActionDone = false;
                             break;
 
                         case "moveBetweenShelves":
@@ -390,19 +412,19 @@ public class ClientHandler implements Runnable {
                             }
                             break;
 
-                        case "endTurn":
+                        /*case "endTurn":
                             if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
                             }
                             if (game.getNumberOfPlayers() == 1) {
-                                this.playerState = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
+                                //this.playerState = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
                                 game.drawSoloToken(this);
                             } else {
                                 game.specifyNextPlayer(this);
                             }
                             mainActionDone = false;
-                            break;
+                            break;*/
 
                         default:
                             this.send(new ErrorMessage("No command found"));

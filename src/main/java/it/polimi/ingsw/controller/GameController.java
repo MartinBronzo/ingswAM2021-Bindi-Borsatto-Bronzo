@@ -328,11 +328,11 @@ public class GameController {
         for (Pair<ClientHandler, PlayerBoard> e : players)
             if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED)
                 e.getKey().setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
+        this.sendBroadcastUpdate(new GeneralInfoStringMessage("GAME STARTED!"));
         this.showLeaderCardAtBeginning();
         this.sendNumExtraResBeginning();
         this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
         this.updatesTurnAndSendInfo(this.firstPlayer);
-        this.sendBroadcastUpdate(new GeneralInfoStringMessage("GAME STARTED"));
 
         if(numberOfPlayers != 1) //starts timer only if we are in multiplayer
             startTurnTimer();
