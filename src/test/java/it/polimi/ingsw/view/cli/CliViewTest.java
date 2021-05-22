@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.readOnlyModel.Board;
+import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import org.junit.jupiter.api.BeforeAll;
@@ -108,6 +109,7 @@ class CliViewTest {
     void printPlayerState() {
         CliView.printPlayerBoard(player, 6);
     }
+
     @Test
     void printMarketTest() {
         MarbleType[][] matrix = new MarbleType[3][4];
@@ -337,6 +339,80 @@ class CliViewTest {
         dev.addDevCard(2, new DevCard(2, DevCardColour.GREEN, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
         dev.addDevCard(2, new DevCard(3, DevCardColour.GREEN, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
         CliView.printDevSlots(dev);
+    }
+
+    @Test
+    void printGeneralInfo(){
+        CliView.printGeneralInfo("Master Kenobi is thou turn!");
+    }
+
+    @Test
+    void printCommonParts(){
+        MarbleType[][] matrix = new MarbleType[3][4];
+        Random random = new Random();
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                matrix[i][j] = MarbleType.values()[random.nextInt(6)];
+        Board board = new Board();
+        board.setMarketMatrix(matrix);
+        board.setMarbleOnSlide(MarbleType.values()[random.nextInt(6)]);
+        DevCard[][] devGrid = new DevCard[3][4];
+        devGrid[1][1] = devCard;
+        devGrid[1][0] = devCard2;
+        board.setDevMatrix(devGrid);
+        Game gameModel = new Game();
+        gameModel.setMainBoard(board);
+        CliView.printCommonParts(gameModel);
+    }
+
+    @Test
+    void printWaiting4TurnState(){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName("Kenobi");
+        player.setPlayerState(PlayerState.WAITING4TURN);
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Jar Jar Binks");
+        player.setPlayerState(PlayerState.PLAYING);
+        game.addPlayer(player);
+
+        CliView.printGameState(game, "Kenobi");
+    }
+
+    @Test
+    void printWaiting4LastTurnState(){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName("Kenobi");
+        player.setPlayerState(PlayerState.WAITING4LASTTURN);
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Jar Jar Binks");
+        player.setPlayerState(PlayerState.PLAYINGLASTTURN);
+        game.addPlayer(player);
+
+        CliView.printGameState(game, "Kenobi");
+    }
+
+    @Test
+    void printPlaying(){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName("Kenobi");
+        player.setPlayerState(PlayerState.WAITING4TURN);
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Jar Jar Binks");
+        player.setPlayerState(PlayerState.PLAYING);
+        game.addPlayer(player);
+
+        CliView.printGameState(game, "Kenobi");
+    }
+
+    @Test
+    void printPlayerBoardNicer(){
+        CliView.printPlayerBoardWithFrame(player, 0);
     }
 
 }
