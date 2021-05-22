@@ -57,9 +57,9 @@ class CliViewTest {
         resources = new HashMap<>();
         resources.put(ResourceType.COIN, 1);
         resources.put(ResourceType.STONE, 2);
-        resources.put(ResourceType.SERVANT, 30);
+        resources.put(ResourceType.SERVANT, 3);
         resources.put(ResourceType.SHIELD, 4);
-        resources.put(ResourceType.FAITHPOINT, 50);
+        resources.put(ResourceType.FAITHPOINT, 5);
         player.setBaseProductionInput(resources);
         player.setBaseProductionOutput(resources);
         player.setLeaderSlots(resources);
@@ -100,6 +100,7 @@ class CliViewTest {
         devSlots = new DevSlots();
         devSlots.addDevCard(0, devCard);
         devSlots.addDevCard(2, devCard2);
+        player.setDevSlots(devSlots);
     }
 
     @Test
