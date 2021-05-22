@@ -90,6 +90,26 @@ class stringToMessageTest {
     }
 
     @Test
+    void toBuyFromMarket2Message() {
+        String string = "row 3; 1, 2, 4; COIN 2 2, STONE 2 2; ; ;";
+        BuyFromMarketMessage message = StringToMessage.toBuyFromMarketMessage(string);
+        assertEquals(0, message.getCol());
+        assertEquals(3, message.getRow());
+        List<Integer> integers = message.getLeaderList();
+        assertEquals(1, integers.get(0));
+        assertEquals(2, integers.get(1));
+        assertEquals(4, integers.get(2));
+        List<DepotParams> depotParamsList = message.getDepotRes();
+        assertEquals(ResourceType.STONE, depotParamsList.get(1).getResourceType());
+        assertEquals(2, depotParamsList.get(1).getQt());
+        assertEquals(2, depotParamsList.get(1).getShelf());
+        Map leaderMap = message.getLeaderRes();
+        assertTrue(leaderMap.isEmpty());
+        Map discardMap = message.getDiscardRes();
+        assertTrue(discardMap.isEmpty());
+    }
+
+    @Test
     void toActivateProductionMessage() {
         String string = "1, 2, 4; 2 COIN, 1 SERVANT; TRUE, COIN SERVANT, STONE; COIN 2 2, STONE 2 2;  COIN 2, SERVANT 1; STONE 2, SERVANT 2;";
         ActivateProductionMessage message = StringToMessage.toActivateProductionMessage(string);
