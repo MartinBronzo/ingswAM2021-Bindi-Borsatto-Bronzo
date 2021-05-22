@@ -370,11 +370,17 @@ public class CliView implements view {
                     System.out.print("|        |        |        |");
             else{
                 System.out.print("|   ");
-                for(int i = 0; i < d.getQuantity(); i++) {
+                int i;
+                for(i = 0; i < d.getQuantity(); i++) {
                     if(i != 0)
                         System.out.print("   ");
                     printResName(d.getResourceType(), AnsiCommands.BLACK.getTextColor());
                     System.out.print("   |");
+                }
+                int tmp = d.getQuantity();
+                while(tmp != j + 1){
+                    System.out.print("        |");
+                    tmp++;
                 }
 
             }

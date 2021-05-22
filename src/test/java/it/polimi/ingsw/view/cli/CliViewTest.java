@@ -242,6 +242,42 @@ class CliViewTest {
     }
 
     @Test
+    void printDepotSecondOneEmpty(){
+        List<DepotShelf> e = new ArrayList<>();
+        e.add(new DepotShelf(null, 0));
+        e.add(new DepotShelf(ResourceType.STONE, 1));
+        e.add(new DepotShelf(null, 0));
+        CliView.printDepot(e);
+    }
+
+    @Test
+    void printDepotThirdOneEmpty(){
+        List<DepotShelf> e = new ArrayList<>();
+        e.add(new DepotShelf(null, 0));
+        e.add(new DepotShelf(ResourceType.STONE, 1));
+        e.add(new DepotShelf(ResourceType.COIN, 2));
+        CliView.printDepot(e);
+    }
+
+    @Test
+    void printDepotThirdTwoEmpty(){
+        List<DepotShelf> e = new ArrayList<>();
+        e.add(new DepotShelf(null, 0));
+        e.add(new DepotShelf(ResourceType.STONE, 1));
+        e.add(new DepotShelf(ResourceType.COIN, 1));
+        CliView.printDepot(e);
+    }
+
+    @Test
+    void printDepotSomethingInside(){
+        List<DepotShelf> e = new ArrayList<>();
+        e.add(new DepotShelf(ResourceType.SERVANT, 1));
+        e.add(new DepotShelf(ResourceType.STONE, 1));
+        e.add(new DepotShelf(ResourceType.COIN, 2));
+        CliView.printDepot(e);
+    }
+
+    @Test
     void printBaseProduction(){
         CliView.printBaseProduction(input, output);
     }
