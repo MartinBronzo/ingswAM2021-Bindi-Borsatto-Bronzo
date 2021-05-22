@@ -390,7 +390,7 @@ public class CliClient extends Client implements Runnable {
                         synchronized (this){
                             ExtraResAndLeadToDiscardBeginningMessage message = gson.fromJson(responseContent, ExtraResAndLeadToDiscardBeginningMessage.class);
                             nLeadersToDiscard = message.getNumLeader();
-                            resourcesToTake = message.getNumLeader();
+                            resourcesToTake = message.getNumRes();
                             CliView.printSetUpView(nLeadersToDiscard, resourcesToTake);
                         }
                         break;
