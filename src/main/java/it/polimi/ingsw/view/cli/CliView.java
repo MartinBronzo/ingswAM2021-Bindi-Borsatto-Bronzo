@@ -26,7 +26,15 @@ import java.util.stream.Collectors;
 
 public class CliView implements view {
 
-    public static void printGameBoard(String readLine) {
+    public static void printGameBoard(Game gameModel, String nickname) {
+        if (gameModel == null || nickname==null || nickname.equals("")) return;
+        try {
+            Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
+            printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
+        } catch (NoSuchElementException e){
+            printError("Is not a Player in the Game");
+        }
+
     }
 
      /*
@@ -35,7 +43,7 @@ public class CliView implements view {
     #############################################################################################
      */
 
-    public static void printGameState(Game gameModel, String nickname) throws NullPointerException, NoSuchElementException {
+    public static void printGameState(Game gameModel, String nickname) throws NoSuchElementException {
         if (gameModel == null || nickname==null || nickname.equals("")) return;
         
         List<String> nicknames = gameModel.getPlayers().stream().map(Player::getNickName).collect(Collectors.toList());

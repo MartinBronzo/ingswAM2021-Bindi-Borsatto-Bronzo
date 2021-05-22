@@ -139,7 +139,15 @@ public class CliClient extends Client implements Runnable {
                         break;
                     case SEEPLAYERBOARD:
                         synchronized (this){
-                            CliView.printGameBoard(stdIn.readLine());
+                            CliView.printGameBoard(gamemodel, stdIn.readLine());
+                        }
+                        break;
+                    case PRINTMYBOARD:
+                        synchronized (this){
+                            if (this.gamemodel == null)
+                                CliView.printGameState(gamemodel, nickname);
+                            else
+                                CliView.printInfo("The can't be printed yet");
                         }
                     default:
                         System.err.println("Command not Valid\n");
@@ -384,7 +392,6 @@ public class CliClient extends Client implements Runnable {
                             } catch (NullPointerException e){
                                 CliView.printError(e.getMessage());
                             }
-
                         }
                         break;
                     case ERROR:
