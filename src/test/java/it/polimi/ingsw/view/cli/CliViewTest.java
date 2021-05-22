@@ -89,6 +89,7 @@ class CliViewTest {
         player.setPlayerState(PlayerState.PLAYING);
         player.setFaithPosition(3);
         player.setNickName("gianjd");
+        player.setVictoryPoints(56);
         List<PopeTile> popeTiles =new ArrayList<>();
         PopeTile popeTile = new PopeTile(1, ReportNum.REPORT1);
         popeTiles.add(popeTile);

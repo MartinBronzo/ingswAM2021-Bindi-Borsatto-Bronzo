@@ -117,8 +117,11 @@ public class CliView implements view {
      */
     
     public static void printPlayerBoard(Player player, int lorenzoPosition){
-        printPlayerInfo(player.getNickName(), player.getPlayerState(), player.getVictoryPoints());
+        if (player==null) return;
+        printVictoryPoints(player.getNickName(), player.getPlayerState(), player.getVictoryPoints());
+        printDividerSmall(AnsiCommands.GREEN);
         printFaithTrack(player.getFaithPosition(), player.getPopeTiles(), lorenzoPosition);
+        printDividerSmall(AnsiCommands.PURPLE);
         printDepot(player.getDepotShelves());
         printStrongBox(player.getStrongBox());
         printLeaderDepots(player.getLeaderSlots());
@@ -128,10 +131,16 @@ public class CliView implements view {
         printUnusedLeaderCards(player.getUnUsedLeaders());
     }
 
-    private static void printPlayerInfo(String nickName, PlayerState playerState, Integer victoryPoints) {
+    private static void printVictoryPoints(String nickName, PlayerState playerState, Integer victoryPoints) {
+        if (nickName == null || playerState == null || victoryPoints == null) return;
+        if (playerState.equals(PlayerState.PLAYING)) System.out.print(AnsiCommands.RED.getTextColor());
+        else System.out.print(AnsiCommands.BLUE.getTextColor());
+        System.out.println(nickName + ":\t" + victoryPoints +" VP");
+        System.out.print(AnsiCommands.resetStyle());
     }
 
     public static void printDevSlots(DevSlots devSlots) {
+        if (devSlots == null) return;
         System.out.print(AnsiCommands.PURPLE.getTextColor());
         System.out.print("Thou great Slots of DevCards are hither presented:\n");
         for(int i = 0; i < 3; i++)
@@ -162,6 +171,7 @@ public class CliView implements view {
     }
 
     public static void printFinalScores(List<Map.Entry<String, Integer>> results) {
+        if (results==null) return;
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.RED.getTextColor());
         System.out.print("\n   ______________________________\n" +
@@ -272,6 +282,7 @@ public class CliView implements view {
 
 
     public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap, String heading) {
+        if (resourcesMap == null) return;
         String[] lines = CliView.splitInLinesBySize(heading, 27);
 
         System.out.print(AnsiCommands.clear());
@@ -298,6 +309,7 @@ public class CliView implements view {
     }
 
     private static void printPlayersAndScore(String name, Integer score){
+        if (score==null) return;
         String fullLine = name + ": " + score;
         String[] lines = CliView.splitInLinesBySize(fullLine, 27);
         for(String line: lines){
@@ -310,11 +322,13 @@ public class CliView implements view {
     }
 
     private static void printGeneralResourcesMapsOnSmallScroll(Map<ResourceType, Integer> map, String boundaryColor){
+        if (map == null) return;
         for(Map.Entry<ResourceType, Integer> e: map.entrySet())
             printResourcesOnScroll(e.getKey(), e.getValue(), boundaryColor);
     }
 
     public static void printGeneralResourcesMapOnALine(Map<ResourceType, Integer> map, String boundaryColor){
+        if (map == null) return;
         int j = 0;
         for(Map.Entry<ResourceType, Integer> e: map.entrySet()){
             if(j != 0)
@@ -325,10 +339,11 @@ public class CliView implements view {
         }
     }
 
-    public static void printFaithTrack(int position, List<PopeTile> popeTiles, int lorenzoPositione){
-        if (lorenzoPositione>0){
+    public static void printFaithTrack(int position, List<PopeTile> popeTiles, int lorenzoPosition){
+        if (popeTiles == null || popeTiles.size() != 3) return;
+        if (lorenzoPosition!=-1){
             System.out.print(AnsiCommands.PURPLE.getBackgroundColor()+AnsiCommands.BLACK.getTextColor());
-            System.out.println(" ".repeat(lorenzoPositione*2)+"ℒ"+" ".repeat((24-lorenzoPositione)*2)+AnsiCommands.resetStyle());
+            System.out.println(" ".repeat(lorenzoPosition*2)+"ℒ"+" ".repeat((24-lorenzoPosition)*2)+AnsiCommands.resetStyle());
         }
         System.out.println("⚀⚀⚀⚀⚀⚀♕♕⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀♕♕⚀⚀☩☩"+AnsiCommands.resetStyle()+"♕♕⚀⚀⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"♕♕⚀⚀⚀⚀♕♕☩☩"+AnsiCommands.resetStyle()+"⚀⚀♕♕"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀⚀⚀♕♕⚀⚀⚀⚀☩☩"+AnsiCommands.resetStyle());
         System.out.print(AnsiCommands.YELLOW.getBackgroundColor()+AnsiCommands.BLACK.getTextColor());
@@ -360,6 +375,7 @@ public class CliView implements view {
     }
 
     public static void printStrongBox(Map<ResourceType, Integer> map){
+        if (map == null) return;
         System.out.print(AnsiCommands.BLACK.getTextColor());
         System.out.print("     ____________________________.\n");
         String[] lines = CliView.splitInLinesBySize("Thy precious Strongbox is hither presented: ", 27);
@@ -371,6 +387,7 @@ public class CliView implements view {
     }
 
     public static void printLeaderDepots(Map<ResourceType, Integer> map){
+        if (map == null) return;
         System.out.print(AnsiCommands.WHITE.getTextColor());
         System.out.print("     ____________________________.\n");
         String[] lines = CliView.splitInLinesBySize("Thy Extra Slots are hither presented: ", 27);
@@ -382,6 +399,7 @@ public class CliView implements view {
     }
 
     public static void printDepot(List<DepotShelf> shelves){
+        if (shelves == null) return;
         System.out.print(AnsiCommands.BLACK.getTextColor());
         System.out.print("Thy Depot is hither presented:\n");
         DepotShelf d;
@@ -419,7 +437,8 @@ public class CliView implements view {
     }
 
     private static void printDivider(AnsiCommands color){
-        System.out.print(color.getTextColor());
+        if (color != null)
+            System.out.print(color.getTextColor());
         System.out.println("  .-----------------------------------------------------------------.\n" +
                 "|  /   \\                                                       /   \\  |\n" +
                 "| |\\_.  |                                                     |    /| |\n" +
@@ -431,7 +450,16 @@ public class CliView implements view {
         System.out.print(AnsiCommands.resetStyle());
     }
 
+    private static void printDividerSmall(AnsiCommands color){
+        if (color != null)
+            System.out.print(color.getTextColor());
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.print(AnsiCommands.resetStyle());
+    }
+
     public static void printBaseProduction(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output){
+        if (input == null || output == null)
+            return;
         System.out.print(AnsiCommands.BLACK.getTextColor());
         System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         System.out.print("Thy Base Production is hither presented:\n");
@@ -477,6 +505,8 @@ public class CliView implements view {
     }
 
     public static void printMarket(Board board){
+        if (board==null)
+            return;
         MarbleType[][] matrix = board.getMarketMatrix();
         System.out.println("___________ "+ board.getMarbleOnSlide().toString());
         for (int i = 0; i < matrix.length; i++) {
@@ -489,6 +519,8 @@ public class CliView implements view {
     }
 
     public static void printDevGrid(Board board){
+        if (board==null)
+            return;
         DevCard[][] devGrid = board.getDevMatrix();
         System.out.print(AnsiCommands.RED.getBackgroundColor());
         System.out.print("_____________");
@@ -545,6 +577,8 @@ public class CliView implements view {
     }
 
     public static void printLeaderCards(List<LeaderCard> list, String backgroundColor){
+        if (list==null)
+            return;
         for(LeaderCard lD: list){
             printLeaderCard(lD, backgroundColor );
             System.out.print("\n");
@@ -555,6 +589,8 @@ public class CliView implements view {
     }
 
     public static void printLeaderCard(LeaderCard card, String backgroundColor){
+        if (card==null)
+            return;
         System.out.print(backgroundColor);
         System.out.print("CARD OF THE LEADER\n");
         System.out.print("PV: " + card.getVictoryPoints() + " | ");
@@ -566,6 +602,8 @@ public class CliView implements view {
     }
 
     private static void printRequirements(Requirement req, String backgroundColor){
+        if (req==null)
+            return;
         if(req instanceof CardRequirementColor)
             printCardRequirementColor((CardRequirementColor) req, backgroundColor);
         else if(req instanceof CardRequirementColorAndLevel)
@@ -615,6 +653,8 @@ public class CliView implements view {
     }
 
     private static void printEffects(Effect effect, String backgroundColor){
+        if (effect==null)
+            return;
         if(effect instanceof DiscountLeaderEffect)
             printDiscountLeaderEffect((DiscountLeaderEffect) effect, backgroundColor);
         else if(effect instanceof ExtraProductionLeaderEffect)
