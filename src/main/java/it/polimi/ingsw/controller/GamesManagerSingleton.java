@@ -92,7 +92,7 @@ public final class GamesManagerSingleton {
                 if (!configurationTimeElapsed())
                     System.out.println("Games Manager Timer has run but but not cancelled the game. The connection will be closed soon");
             }
-        }, 30000);
+        }, 300000);
     }
 
     private void stopTimer(){

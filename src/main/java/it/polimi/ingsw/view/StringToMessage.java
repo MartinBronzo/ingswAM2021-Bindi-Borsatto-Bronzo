@@ -17,10 +17,10 @@ public class StringToMessage {
         try {
             String[] infos = string.split(";");
             String[] rcInfos = infos[0].split("\\s+");
-            if (rcInfos[0].equals("row")) {
+            if (rcInfos[0].toLowerCase().equals("row")) {
                 rowNumber = Integer.parseInt(rcInfos[1]);
                 colNumber = 0;
-            } else if (rcInfos[0].equals("column")) {
+            } else if (rcInfos[0].toLowerCase().equals("column")) {
                 rowNumber = 0;
                 colNumber = Integer.parseInt(rcInfos[1]);
             } else {
@@ -84,10 +84,10 @@ public class StringToMessage {
         try {
             String[] infos = string.split(";");
             String[] rcInfos = infos[0].split("\\s+");
-            if (rcInfos[0].equals("row")) {
+            if (rcInfos[0].toLowerCase().equals("row")) {
                 rowNumber = Integer.parseInt(rcInfos[1]);
                 colNumber = 0;
-            } else if (rcInfos[0].equals("column")) {
+            } else if (rcInfos[0].toLowerCase().equals("column")) {
                 rowNumber = 0;
                 colNumber = Integer.parseInt(rcInfos[1]);
             } else {

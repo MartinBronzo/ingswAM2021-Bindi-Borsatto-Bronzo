@@ -181,7 +181,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void manageGameStarting() throws IOException {
-        System.out.println("Resources and Leaders to discard example: 1, 3; COIN 1 2, STONE 1 3;\n");
+        System.out.println("Resources and Leaders to discard: LEADER_CARD_INDEX, LEADER_CARD_INDEX; RESOURCE_TYPE QUANTITY SHELF_NUM [, ...];\n");
+        System.out.println("Example: 1, 3; COIN 1 2, STONE 1 3;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command configureStartCommand = new Command("discardLeaderAndExtraResBeginning", StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(usrCommand));
@@ -194,7 +195,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void setNumPlayer() throws IOException {
-        System.out.println("set num Player example: 4;\n");
+        System.out.println("Set num Player: NUM__OF_PLAYERS;\n");
+        System.out.println("Example: 4;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command setNumPlayerCommand = new Command("setNumPlayer", StringToMessage.toSetNumPlayerMessage(usrCommand));
@@ -206,7 +208,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void getResourcesFromMarket() throws IOException {
-        System.out.println("getResourcesFromMarket example: row 3; 1, 2, 4;\n");
+        System.out.println("GetResourcesFromMarket: row/column NUMBER_ROW/COLUMN; [LEADER_CARD_INDEX_LIST];\n");
+        System.out.println("Example: row 3; 1, 2, 4;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command getResourcesFromMarket = new Command("getResourcesFromMarket", StringToMessage.toMatrixMessageLine(usrCommand));
@@ -216,9 +219,11 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
+    //TODO: NON FUNZIONA
     @Override
     protected synchronized void buyFromMarket() throws IOException {
-        System.out.println("buyFromMarket example: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
+        System.out.println("buyFromMarket example: row/column NUM_ROW/COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];\n");
+        System.out.println("Example: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command buyFromMarketCommand = new Command("buyFromMarket", StringToMessage.toBuyFromMarketMessage(usrCommand));
@@ -230,7 +235,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void getDevCardCost() throws IOException {
-        System.out.println("getDevCardCost example: 3; 2; 1, 2, 4;\n");
+        System.out.println("GetDevCardCost: NUM_ROW; NUM_COLUMN; [LEADER_CARD_LIST];\n");
+        System.out.println("Example: 3; 2; 1, 2, 4;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command getDevCardCost = new Command("getCardCost", StringToMessage.toMatrixMessageCell(usrCommand));
@@ -242,7 +248,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void buyDevCard() throws IOException {
-        System.out.println("buyDevCard example: 3; 2; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
+        System.out.println("BuyDevCard: NUM_ROW; NUM_COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCE QT SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QT [, ...]; STRONGBOX_RESOURCE QT [, ...]; DEV_SLOT_NUM;\n");
+        System.out.println("Example: 3; 2; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command buyDevCard = new Command("buyDevCard", StringToMessage.toBuyDevCardMessage(usrCommand));
@@ -254,7 +261,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void getProductionCost() throws IOException {
-        System.out.println("getProductionCost example: 1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;\n");
+        System.out.println("GetProductionCost: DEV_CARD_LIST; [LEADER_CARD_LIST]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT;\n");
+        System.out.println("Example: 1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command getProductionCost = new Command("getProductionCost", StringToMessage.toGetProductionCostMessage(usrCommand));
@@ -266,7 +274,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void activateProduction() throws IOException {
-        System.out.println("activateProduction example: 1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;\n");
+        System.out.println("ActivateProduction: DEV_CARD_LIST; [LEADER_CARD RESOURCE_OUTPUT, ...]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT; DEPOT_RES QT SHELF_NUM [, ...]; LEADER_DEPOT_RES QT [, ...]; STRONGBOX_RES QT;\n");
+        System.out.println("Example: 1, 2, 4; 1 SHIELD, 2 STONE; FALSE, COIN SERVANT, STONE; COIN 2 2; SERVANT 1; STONE 3;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command activateProduction = new Command("activateProductionMesssage", StringToMessage.toActivateProductionMessage(usrCommand));
@@ -278,7 +287,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void moveBetweenShelves() throws IOException {
-        System.out.println("moveBetweenShelves example: 1; 2;\n");
+        System.out.println("MoveBetweenShelves: SOURCE_SHELF; DEST_SHELF;\n");
+        System.out.println("Example: 1; 2;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command moveBetweenShelves = new Command("moveBetweenShelves", StringToMessage.toMoveBetweenShelvesMessage(usrCommand));
@@ -290,7 +300,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void moveLeaderToShelf() throws IOException {
-        System.out.println("moveLeaderToShelf example: COIN; 2; 1;\n");
+        System.out.println("MoveLeaderToShelf: LEADER_DEPOT_RES; QT; DEST_SHELF;\n");
+        System.out.println("Example: COIN; 2; 1;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command moveLeaderToShelf = new Command("moveLeaderToShelf", StringToMessage.toMoveLeaderToShelfMessage(usrCommand));
@@ -302,7 +313,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void moveShelfToLeader() throws IOException {
-        System.out.println("moveShelfToLeader example: 2; 1;\n");
+        System.out.println("MoveShelfToLeader: SOURCE_SHELF; QT;;\n");
+        System.out.println("Example: 2; 1;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command moveShelfToLeader = new Command("moveShelfToLeader", StringToMessage.toMoveShelfToLeaderMessage(usrCommand));
@@ -314,7 +326,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void discardLeader() throws IOException {
-        System.out.println("discardLeader example: 2;\n");
+        System.out.println("DiscardLeader: LEADER_CARD_INDEX;\n");
+        System.out.println("Example: 2;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command discardLeader = new Command("discardLeader", StringToMessage.toLeaderMessage(usrCommand));
@@ -326,7 +339,8 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void activateLeader() throws IOException {
-        System.out.println("activateLeader example: 2;\n");
+        System.out.println("ActivateLeader: LEADER_CARD_INDEX;\n");
+        System.out.println("Example: 2;\n");
         String usrCommand = stdIn.readLine();
         try {
             Command activateLeader = new Command("ActivateLeader", StringToMessage.toLeaderMessage(usrCommand));

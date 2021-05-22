@@ -216,7 +216,7 @@ public class ClientHandler implements Runnable {
                     }
                 }*/
             }
-        }, 0, 20000);
+        }, 0, 200000);
 
         while (keepRunning) {
             try {
@@ -262,7 +262,7 @@ public class ClientHandler implements Runnable {
                                 throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
                             SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
                             this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
-                            game.setState(GameState.WAITING4PLAYERS);
+                            //game.setState(GameState.WAITING4PLAYERS);
                             //game.setPlayer(this);
                             break;
 
@@ -281,9 +281,9 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                             if (!mainActionDone) {
-                                mainActionDone = true;
                                 BuyFromMarketMessage buyFromMarket = gson.fromJson(command.getParameters(), BuyFromMarketMessage.class);
                                 game.buyFromMarket(buyFromMarket, this);
+                                mainActionDone = true;
                             } else {
                                 this.send(new ErrorMessage("You've already done your main action in this turn"));
                             }
@@ -305,9 +305,9 @@ public class ClientHandler implements Runnable {
                             }
 
                             if (!mainActionDone) {
-                                mainActionDone = true;
                                 BuyDevCardMessage buyDevCard = gson.fromJson(command.getParameters(), BuyDevCardMessage.class);
                                 game.buyDevCard(buyDevCard, this);
+                                mainActionDone = true;
                             } else {
                                 this.send(new ErrorMessage("You've already done your main action in this turn"));
                             }
@@ -328,9 +328,9 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                             if (!mainActionDone) {
-                                mainActionDone = true;
                                 ActivateProductionMessage activateProduction = gson.fromJson(command.getParameters(), ActivateProductionMessage.class);
                                 game.activateProduction(activateProduction, this);
+                                mainActionDone = true;
                             } else {
                                 this.send(new ErrorMessage("You've already done your main action in this turn"));
                             }
@@ -341,11 +341,13 @@ public class ClientHandler implements Runnable {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
-                            beginningActionDone = true;
+
                             DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning = gson.fromJson(command.getParameters(), DiscardLeaderAndExtraResBeginningMessage.class);
                             game.discardLeaderAndExtraResBeginning(discardLeaderCardBeginning, this);
+                            beginningActionDone = true;
 
-                            if(game.getState() != GameState.STARTED)
+                            if(game.getState() != GameState.STARTED || game.getNumberOfPlayers() == 1)
+                                playerState = PlayerState.PLAYING;
                                 break;
                         case "endTurn":
                             if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
