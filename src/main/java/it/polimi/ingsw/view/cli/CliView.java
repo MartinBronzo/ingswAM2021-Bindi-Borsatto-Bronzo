@@ -521,9 +521,11 @@ public class CliView implements view {
     public static void printLeaderCard(LeaderCard card, String backgroundColor){
         System.out.print(backgroundColor);
         System.out.print("CARD OF THE LEADER\n");
-        System.out.print("Points of Victory: " + card.getVictoryPoints() + "\n");
-        for(Requirement r: card.getRequirementsListSafe())
+        System.out.print("PV: " + card.getVictoryPoints() + " | ");
+        for(Requirement r: card.getRequirementsListSafe()) {
             printRequirements(r, backgroundColor);
+            System.out.print(" | ");
+        }
         printEffects(card.getEffect(), backgroundColor);
     }
 
@@ -534,11 +536,10 @@ public class CliView implements view {
             printCardRequirementColorAndLevel((CardRequirementColorAndLevel) req, backgroundColor);
         else if(req instanceof CardRequirementResource)
             printCardRequirementResource((CardRequirementResource) req, backgroundColor);
-        System.out.print("\n");
     }
 
     private static void printCardRequirementColor(CardRequirementColor req, String backgroundColor){
-        System.out.print("Requirement of Card and Color: ");
+        System.out.print("Card and Color Req: ");
         if(req.getQuantity() == 1) {
             System.out.print("a ");
             printColor(req.getCardColour(), backgroundColor);
@@ -552,7 +553,7 @@ public class CliView implements view {
     }
 
     private static void printCardRequirementColorAndLevel(CardRequirementColorAndLevel req, String backgroundColor){
-        System.out.print("Requirement of Card, Color and Level: ");
+        System.out.print("Card, Color and Level Req: ");
         if(req.getQuantity() == 1){
             System.out.print("a ");
             printColor(req.getCardColour(), backgroundColor);
@@ -566,7 +567,7 @@ public class CliView implements view {
     }
 
     private static void printCardRequirementResource(CardRequirementResource req, String backgroundColor){
-        System.out.print("Requirement of Resources: ");
+        System.out.print("Resources Req: ");
         if(req.getQuantity() == 1) {
             System.out.print("a ");
             printResName(req.getResourceType(), backgroundColor);
@@ -590,56 +591,58 @@ public class CliView implements view {
     }
 
     private static void printDiscountLeaderEffect(DiscountLeaderEffect e, String backgroundColor) {
-        System.out.print("Effect of Card Discount: ");
+        System.out.print("Card Discount Eff: ");
         if (e.getDiscountAmount() == 1){
-            System.out.print(" thou get a ");
+            System.out.print(" a ");
             printResName(e.getDiscountType(), backgroundColor);
             System.out.print(" off");
         }else {
-            System.out.print(" thou get " + e.getDiscountAmount());
+            System.out.print(" " + e.getDiscountAmount());
             printResName(e.getDiscountType(), backgroundColor);
             System.out.print(" off");
         }
     }
 
     private static void printExtraProductionLeaderEffect(ExtraProductionLeaderEffect e, String backgroundColor){
-        System.out.print("Effect of Producing More: ");
+        System.out.print("Extra Prod Eff: ");
         String line;
         if(e.getRequiredInputNumber() == 1) {
-            System.out.print("if thou grant a ");
+            System.out.print("from: ");
             printResName(e.getRequiredInputType(), backgroundColor);
         }
         else {
-            System.out.print("if thou grant " + e.getRequiredInputNumber() + " ");
+            System.out.print("from: " + e.getRequiredInputNumber() + " ");
             printResName(e.getRequiredInputType(), backgroundColor);
-        }if(e.getExtraOutputQuantity() == 1)
-            System.out.print(", thou will receive a resource of your desire ");
+        }
+        if(e.getExtraOutputQuantity() == 1)
+            System.out.print(" --> 1 Res of your choice ");
         else
-            System.out.print(", thou will receive " + e.getExtraOutputQuantity() + " resources of your desire ");
-        System.out.println("and one extra point of Faith");
+            System.out.print(" --> " + e.getExtraOutputQuantity() + " resources of your choice ");
+        System.out.print("and ");
+        printResName(e.getExtraOutputType(), backgroundColor);
     }
 
     private static void printExtraSlotLeaderEffect(ExtraSlotLeaderEffect e, String backgroundColor) {
-        System.out.print("Effect of More Precious Depot Slots: ");
+        System.out.print("Depot Slots Eff: ");
         if (e.extraSlotGetResourceNumber() == 1){
-            System.out.print("thou get a extra slot for safely storing ");
+            System.out.print("a extra Slot for ");
         }else {
-            System.out.print("thou get " + e.extraSlotGetResourceNumber() + " extra slots for safely storing ");
+            System.out.print( + e.extraSlotGetResourceNumber() + " extra Slots for ");
         }
         printResName(e.extraSlotGetType(), backgroundColor);
     }
 
     private static void printWhiteMarbleEffect(WhiteMarbleLeaderEffect e, String backgroundColor){
-        System.out.print("Effect of Coloring A White Marble: ");
+        System.out.print("White Marble Eff: ");
         if(e.getExtraResourceAmount() == 1) {
-            System.out.print("thou get a ");
+            System.out.print("get a ");
             printResName(e.getExtraResourceType(), backgroundColor);
-            System.out.print(" when thou encounter an annoying WhiteMarble in the Market");
+            System.out.print("from a WhiteMarble");
 
         }else {
-            System.out.print("thou get " + e.getExtraResourceAmount() + " ");
+            System.out.print("get " + e.getExtraResourceAmount() + " ");
             printResName(e.getExtraResourceType(), backgroundColor);
-            System.out.print(" when thou encounter an annoying WhiteMarble in the Market");
+            System.out.print(" from a WhiteMarble");
         }
     }
 

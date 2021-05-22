@@ -42,7 +42,7 @@ class CliViewTest {
         player=new Player();
         List<Requirement> requirements = new ArrayList<>();
         requirements.add(new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2 ));
-        card1 = new LeaderCard(4, requirements, new ExtraProductionLeaderEffect(ResourceType.SHIELD, 1));
+        card1 = new LeaderCard(4, requirements, new ExtraProductionLeaderEffect(ResourceType.SHIELD, 2));
         requirements = new ArrayList<>();
         requirements.add(new CardRequirementResource(ResourceType.SERVANT, 5));
         card2 = new LeaderCard(3, requirements, new ExtraSlotLeaderEffect(ResourceType.SHIELD, 2));
