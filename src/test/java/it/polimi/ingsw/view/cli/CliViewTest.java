@@ -396,7 +396,7 @@ class CliViewTest {
     }
 
     @Test
-    void printPlaying(){
+    void printWaitingForTurn(){
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");
@@ -413,6 +413,141 @@ class CliViewTest {
     @Test
     void printPlayerBoardNicer(){
         CliView.printPlayerBoardWithFrame(player, 0);
+    }
+
+    @Test
+    void printPlaying(){
+        Game game = new Game();
+        Player player1 = new Player();
+        player1.setNickName("Darth Vader");
+        player1.setPlayerState(PlayerState.WAITING4TURN);
+        game.addPlayer(player1);
+        player1 = new Player();
+        player1.setNickName("Jar Jar Binks");
+        player1.setPlayerState(PlayerState.WAITING4TURN);
+        game.addPlayer(player1);
+        player.setNickName("Kenobi");
+        player.setPlayerState(PlayerState.PLAYING);
+        game.addPlayer(player);
+        MarbleType[][] matrix = new MarbleType[3][4];
+        Random random = new Random();
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                matrix[i][j] = MarbleType.values()[random.nextInt(6)];
+        Board board = new Board();
+        board.setMarketMatrix(matrix);
+        board.setMarbleOnSlide(MarbleType.values()[random.nextInt(6)]);
+        DevCard[][] devGrid = new DevCard[3][4];
+        devGrid[1][1] = devCard;
+        devGrid[1][0] = devCard2;
+        board.setDevMatrix(devGrid);
+        game.setMainBoard(board);
+        CliView.printGameState(game, "Kenobi");
+    }
+
+    @Test
+    void printWaiting4GameStart(){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName("Kenobi");
+        player.setPlayerState(PlayerState.WAITING4GAMESTART);
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Darth Vader");
+        player.setPlayerState(PlayerState.WAITING4GAMESTART);
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Jar Jar Binks");
+        player.setPlayerState(PlayerState.WAITING4GAMESTART);
+        game.addPlayer(player);
+
+        CliView.printGameState(game, "Kenobi");
+    }
+
+    @Test
+    void printPlayingLastTurn (){
+        Game game = new Game();
+        Player player1 = new Player();
+        player1.setNickName("Darth Vader");
+        player1.setPlayerState(PlayerState.WAITING4GAMEEND);
+        game.addPlayer(player1);
+        player1 = new Player();
+        player1.setNickName("Jar Jar Binks");
+        player1.setPlayerState(PlayerState.WAITING4GAMEEND);
+        game.addPlayer(player1);
+        player.setNickName("Kenobi");
+        player.setPlayerState(PlayerState.PLAYINGLASTTURN);
+        game.addPlayer(player);
+        MarbleType[][] matrix = new MarbleType[3][4];
+        Random random = new Random();
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                matrix[i][j] = MarbleType.values()[random.nextInt(6)];
+        Board board = new Board();
+        board.setMarketMatrix(matrix);
+        board.setMarbleOnSlide(MarbleType.values()[random.nextInt(6)]);
+        DevCard[][] devGrid = new DevCard[3][4];
+        devGrid[1][1] = devCard;
+        devGrid[1][0] = devCard2;
+        board.setDevMatrix(devGrid);
+        game.setMainBoard(board);
+        CliView.printGameState(game, "Kenobi");
+    }
+
+    @Test
+    void printWaiting4GameEnd(){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName("Kenobi");
+        player.setPlayerState(PlayerState.WAITING4GAMEEND);
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Darth Vader");
+        player.setPlayerState(PlayerState.PLAYINGLASTTURN);
+        game.addPlayer(player);
+
+        CliView.printGameState(game, "Kenobi");
+    }
+
+    @Test
+    void printWaiting4BeginningDecisions(){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName("Kenobi");
+        player.setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Darth Vader");
+        player.setPlayerState(PlayerState.PLAYINGBEGINNINGDECISIONS);
+        game.addPlayer(player);
+
+        CliView.printGameState(game, "Kenobi");
+    }
+
+    @Test
+    void printOtherNicknames(){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName("Kenobi");
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Darth Vader");
+        game.addPlayer(player);
+        player = new Player();
+        player.setNickName("Jar Jar Binks");
+        game.addPlayer(player);
+
+        CliView.printOthersPlayersName(game, "Kenobi");
+    }
+
+    @Test
+    void printOtherNicknameWhenPlayingAgainstLorenzo(){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName("Kenobi");
+        game.addPlayer(player);
+
+        CliView.printOthersPlayersName(game, "Kenobi");
     }
 
 }

@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementRe
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
-import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.readOnlyModel.Board;
@@ -26,17 +25,6 @@ import java.util.stream.Collectors;
 
 public class CliView implements view {
 
-    public static void printGameBoard(Game gameModel, String nickname) {
-        if (gameModel == null || nickname==null || nickname.equals("")) return;
-        try {
-            Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
-            printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
-        } catch (NoSuchElementException e){
-            printError("Is not a Player in the Game");
-        }
-
-    }
-
      /*
     #############################################################################################
     CORE METHODS
@@ -46,7 +34,7 @@ public class CliView implements view {
     public static void printGameState(Game gameModel, String nickname) throws NoSuchElementException {
         if (gameModel == null || nickname==null || nickname.equals("")) return;
         
-        List<String> nicknames = gameModel.getPlayers().stream().map(Player::getNickName).collect(Collectors.toList());
+
         Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
         switch (player.getPlayerState()) {
             case WAITING4TURN:
@@ -63,20 +51,24 @@ public class CliView implements view {
                 printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
                 break;
             case WAITING4GAMESTART:
+                printGeneralInfo("The game is about to starteth, my Master! These are thou competitors: " + getOtherPlayersNicknames(gameModel, player.getNickName()));
                 break;
             case PLAYINGLASTTURN:
-                //TODO:stampare info your last turn
-                printMarket(gameModel.getMainBoard());
+                printGeneralInfo("Master " + player.getNickName() + " is thy LAST turn!");
+                printCommonParts(gameModel);
+                printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
                 break;
             case WAITING4GAMEEND:
+                printGeneralInfo("Our fun game is coming to an endeth, thou competitors will soon play their last turn and we shall see how good you played, my master!");
                 break;
             case WAITING4BEGINNINGDECISIONS:
-                //TODO: print info
+                printGeneralInfo("We are about to start our marvellous journey togeth'r: hold tight a little longeth'r while thy dreadful competit'rs take their first choices, thee'll lief do the same ");
                 break;
 
         }
 
     }
+
 
 
     /*
@@ -242,6 +234,47 @@ public class CliView implements view {
      */
 
     //SPAZI TRA I BORDI DELLA PERGAMENA PICCOLA: 28
+
+    public static void printGameBoard(Game gameModel, String nickname) {
+        if (gameModel == null || nickname==null || nickname.equals("")) return;
+        try {
+            Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
+            printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
+        } catch (NoSuchElementException e){
+            printError("Is not a Player in the Game");
+        }
+
+    }
+
+    public static void printOthersPlayersName(Game gameModel, String currentPlayer){
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        System.out.print("\n   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |                            |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+        String fullLine = "";
+        if(gameModel.getPlayers().size() > 1) {
+            fullLine = "Master" + currentPlayer + ", thou dreadful competitors are hither shown: ";
+            fullLine = fullLine + getOtherPlayersNicknames(gameModel, currentPlayer);
+        }else{
+            fullLine = "Master" + currentPlayer + ", thou dreadful competitor is the Almighty Lorenzo the Magnificent!";
+        }
+        String[] lines = CliView.splitInLinesBySize(fullLine, 27);
+        for (String line: lines) {
+            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        }
+
+        System.out.print("    |                            |.\n");
+
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
 
     public static void printPlayerBoardWithFrame(Player player, int lorenzoPosition){
         System.out.print(AnsiCommands.clear());
@@ -1103,8 +1136,20 @@ public class CliView implements view {
     }
 
     private static String findPlayerByState(List<Player> players, PlayerState state){
-        return players.stream().filter(x -> x.getPlayerState() == state).findAny().map(Player::getNickName).get();
-        //TODO: controllare se c'è il valore
+        return players.stream().filter(x -> x.getPlayerState() == state).findAny().map(Player::getNickName).orElseThrow(NoSuchElementException::new);
+    }
+
+    private static String getOtherPlayersNicknames(Game gameModel, String currentPlayer) {
+        List<String> nicknames = gameModel.getPlayers().stream().map(Player::getNickName).filter(x -> !x.equals(currentPlayer)).collect(Collectors.toList());
+        String output = "";
+        int j = 0;
+        for(String name: nicknames) {
+            if(j != 0)
+                output = output + ", ";
+            else j++;
+            output = output + name;
+        }
+        return output;
     }
 
 

@@ -147,7 +147,14 @@ public class CliClient extends Client implements Runnable {
                             if (this.gamemodel == null)
                                 CliView.printGameState(gamemodel, nickname);
                             else
-                                CliView.printInfo("The can't be printed yet");
+                                CliView.printInfo("It can't be printed yet");
+                        }
+                    case SEEOTHERSPLAYERSNAMES:
+                        synchronized (this){
+                            if (this.gamemodel == null)
+                                CliView.printOthersPlayersName(gamemodel, nickname);
+                            else
+                                CliView.printInfo("It can't be printed yet");
                         }
                     default:
                         System.err.println("Command not Valid\n");
