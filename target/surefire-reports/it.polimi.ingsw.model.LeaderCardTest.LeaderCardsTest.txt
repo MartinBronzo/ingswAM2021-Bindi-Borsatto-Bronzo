@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: it.polimi.ingsw.model.LeaderCardTest.LeaderCardsTest
+-------------------------------------------------------------------------------
+Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s - in it.polimi.ingsw.model.LeaderCardTest.LeaderCardsTest

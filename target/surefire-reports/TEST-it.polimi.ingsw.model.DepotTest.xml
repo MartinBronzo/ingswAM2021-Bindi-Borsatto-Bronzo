@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.model.DepotTest" time="0.183" tests="83" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="15"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\target\test-classes;C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\target\classes;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter\5.7.1\junit-jupiter-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.7.1\junit-jupiter-params-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.7.1\junit-jupiter-engine-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\platform\junit-platform-engine\1.7.1\junit-platform-engine-1.7.1.jar;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.8.6\gson-2.8.6.jar;C:\Users\User\.m2\repository\org\danilopianini\gson-extras\0.2.2\gson-extras-0.2.2.jar;C:\Users\User\.m2\repository\javax\annotation\jsr250-api\1.0\jsr250-api-1.0.jar;C:\Users\User\.m2\repository\org\jetbrains\annotations\20.1.0\annotations-20.1.0.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.7.1\junit-jupiter-api-5.7.1.jar;C:\Users\User\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\User\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\User\.m2\repository\org\junit\platform\junit-platform-commons\1.7.1\junit-platform-commons-1.7.1.jar;"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Europe/Rome"/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="java.vm.specification.version" value="15"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="IT"/>
+    <property name="sun.boot.library.path" value="C:\Users\User\.jdks\openjdk-15\bin"/>
+    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire11837883930360680872\surefirebooter2163200320953843784.jar C:\Users\User\AppData\Local\Temp\surefire11837883930360680872 2021-05-18T23-35-26_758-jvmRun1 surefire5631265682009012820tmp surefire_03260724941719981122tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\target\test-classes;C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\target\classes;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter\5.7.1\junit-jupiter-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.7.1\junit-jupiter-params-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.7.1\junit-jupiter-engine-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\platform\junit-platform-engine\1.7.1\junit-platform-engine-1.7.1.jar;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.8.6\gson-2.8.6.jar;C:\Users\User\.m2\repository\org\danilopianini\gson-extras\0.2.2\gson-extras-0.2.2.jar;C:\Users\User\.m2\repository\javax\annotation\jsr250-api\1.0\jsr250-api-1.0.jar;C:\Users\User\.m2\repository\org\jetbrains\annotations\20.1.0\annotations-20.1.0.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.7.1\junit-jupiter-api-5.7.1.jar;C:\Users\User\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\User\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\User\.m2\repository\org\junit\platform\junit-platform-commons\1.7.1\junit-platform-commons-1.7.1.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\User"/>
+    <property name="user.language" value="it"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2020-09-15"/>
+    <property name="java.home" value="C:\Users\User\.jdks\openjdk-15"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire11837883930360680872\surefirebooter2163200320953843784.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="15+36-1562"/>
+    <property name="user.name" value="User"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\User\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\User\AppData\Local\Temp\"/>
+    <property name="idea.version" value="2020.2.4"/>
+    <property name="java.version" value="15"/>
+    <property name="user.dir" value="C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="java.library.path" value="C:\Users\User\.jdks\openjdk-15\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\User\AppData\Local\Microsoft\WindowsApps;;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="15+36-1562"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="59.0"/>
+  </properties>
+  <testcase name="addZeroToLeader" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveTooManyResToLeader2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeNegativeQuantityLeader" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveToShelf1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveToShelf2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveToShelf3" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="moveToLeaderNegativeQuantity" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveToLeaderShelfOutOfBound1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveToLeaderShelfOutOfBound2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addToLeader1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addToLeader2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addToLeader3" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addToLeader4" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="noResourceToMove" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="notEnoughSpaceMove1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="notEnoughSpaceMove2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addPartialShelves" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="multipleRemoves" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addZero" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeZeroFromLeader" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addFaithPoint" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="depotCopy" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeZeroQuantity" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveFaithPointToShelf" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeTooManyResourcesLeader" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveTooManyResToLeader" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeNegativeQuantity" classname="it.polimi.ingsw.model.DepotTest" time="0.002"/>
+  <testcase name="addExtraSlot" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="ctrlInit" classname="it.polimi.ingsw.model.DepotTest" time="0.014"/>
+  <testcase name="shelfAddOutOfBound" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveTooManyResToShelf1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveTooManyResToShelf2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="negativeQuantityLeader" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveToLeader1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveToLeader2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveToLeader3" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="sourceShelfOutOfBound1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="sourceShelfOutOfBound2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="add1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="add2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="init" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addNegativeQuantity" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="move1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="move2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="move3" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="move4" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="move5" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeFaithPointLeader" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveZeroToShelf" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveResToWrongShelf1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveResToWrongShelf2" classname="it.polimi.ingsw.model.DepotTest" time="0.02"/>
+  <testcase name="addExtraSlot2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addExtraSlot3" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="addFaithPointLeader" classname="it.polimi.ingsw.model.DepotTest" time="0.003"/>
+  <testcase name="notEnoughSpaceLeader1" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="notEnoughSpaceLeader2" classname="it.polimi.ingsw.model.DepotTest" time="0.003"/>
+  <testcase name="notEnoughSpace1Add" classname="it.polimi.ingsw.model.DepotTest" time="0.008"/>
+  <testcase name="notEnoughSpace2Add" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="notEnoughSpace3Add" classname="it.polimi.ingsw.model.DepotTest" time="0.005"/>
+  <testcase name="removeRes1" classname="it.polimi.ingsw.model.DepotTest" time="0.009"/>
+  <testcase name="removeRes2" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="removeRes3" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="moveZeroToLeader" classname="it.polimi.ingsw.model.DepotTest" time="0.002"/>
+  <testcase name="destShelfOutOfBound1" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="destShelfOutOfBound2" classname="it.polimi.ingsw.model.DepotTest" time="0.002"/>
+  <testcase name="notEnoughResourcesRemove" classname="it.polimi.ingsw.model.DepotTest" time="0.002"/>
+  <testcase name="getAllResources1" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="getAllResources2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="getAllResources3" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="addAlreadyInDepot" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="getResourceNumFromShelf1" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="getResourceNumFromShelf2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="getResourceNumFromShelf3" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="shelfRemoveOutOfBound1" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="shelfRemoveOutOfBound2" classname="it.polimi.ingsw.model.DepotTest" time="0.009"/>
+  <testcase name="addWrongResource" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeNotInDepot" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeWrongResource" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="moveNegativeQuantityToShelf" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="tooManyExtra" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeFromLeader1" classname="it.polimi.ingsw.model.DepotTest" time="0.001"/>
+  <testcase name="removeFromLeader2" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+  <testcase name="removeFromLeader3" classname="it.polimi.ingsw.model.DepotTest" time="0"/>
+</testsuite>
