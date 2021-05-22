@@ -578,4 +578,9 @@ public class ClientHandler implements Runnable {
         return this.in.readLine();
     }
 
+    //used only for testing purpose
+    public void setBeginningActionDone(boolean value){
+        this.beginningActionDone = value;
+    }
+
 }

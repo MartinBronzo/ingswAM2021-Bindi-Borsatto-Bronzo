@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
@@ -32,10 +33,12 @@ class CliViewTest {
     static HashMap<ResourceType, Integer> output;
     static DevCard devCard;
     static DevCard devCard2;
+    static DevCard devCard3;
     static HashMap<ResourceType, Integer> devCardInput;
     static HashMap<ResourceType, Integer> devCardOutput;
     static HashMap<ResourceType, Integer> cost;
     static Player player;
+    static DevSlots devSlots;
 
     @BeforeAll
     static void setup() throws NegativeQuantityException {
@@ -54,9 +57,9 @@ class CliViewTest {
         resources = new HashMap<>();
         resources.put(ResourceType.COIN, 1);
         resources.put(ResourceType.STONE, 2);
-        resources.put(ResourceType.SERVANT, 30);
+        resources.put(ResourceType.SERVANT, 3);
         resources.put(ResourceType.SHIELD, 4);
-        resources.put(ResourceType.FAITHPOINT, 50);
+        resources.put(ResourceType.FAITHPOINT, 5);
         player.setBaseProductionInput(resources);
         player.setBaseProductionOutput(resources);
         player.setLeaderSlots(resources);
@@ -81,7 +84,8 @@ class CliViewTest {
         cost = new HashMap<>();
         cost.put(ResourceType.STONE, 3);
         devCard = new DevCard(1, DevCardColour.YELLOW, 3,  devCardInput, devCardOutput, cost, "some/random/url");
-        devCard2 = new DevCard(2, DevCardColour.PURPLE, 2,  devCardInput, devCardOutput, cost, "some/random/url");
+        devCard2 = new DevCard(1, DevCardColour.PURPLE, 2,  devCardInput, devCardOutput, cost, "some/random/url");
+        devCard3 = new DevCard(1, DevCardColour.GREEN, 2,  devCardInput, devCardOutput, cost, "some/random/url");
         player.setPlayerState(PlayerState.PLAYING);
         player.setFaithPosition(3);
         player.setNickName("gianjd");
@@ -93,6 +97,10 @@ class CliViewTest {
         player.setPopeTiles(popeTiles);
         for (int i = 0; i<3; i++)
             player.addDepotShelf(new DepotShelf());
+        devSlots = new DevSlots();
+        devSlots.addDevCard(0, devCard);
+        devSlots.addDevCard(2, devCard2);
+        player.setDevSlots(devSlots);
     }
 
     @Test
@@ -291,4 +299,43 @@ class CliViewTest {
     void printDevCard(){
         CliView.printCardInfoIfValid(devCard, AnsiCommands.resetStyle());
     }
+
+    @Test
+    void printDevSlots(){
+        CliView.printDevSlots(devSlots);
+    }
+
+    @Test
+    void printDevSlotsWithOneUnusedCard() throws NegativeQuantityException {
+        DevSlots dev = new DevSlots();
+        dev.addDevCard(0, devCard);
+        dev.addDevCard(0, new DevCard(2, DevCardColour.YELLOW, 2, devCardInput, devCardOutput, cost, "url"));
+        dev.addDevCard(1, devCard2);
+        CliView.printDevSlots(dev);
+    }
+
+    @Test
+    void printDevSlotsWithTwoUnusedCards() throws NegativeQuantityException {
+        DevSlots dev = new DevSlots();
+        dev.addDevCard(0, devCard);
+        dev.addDevCard(0, new DevCard(2, DevCardColour.YELLOW, 2, devCardInput, devCardOutput, cost, "url"));
+        dev.addDevCard(0, new DevCard(3, DevCardColour.YELLOW, 2, devCardInput, devCardOutput, cost, "url"));
+        dev.addDevCard(1, devCard2);
+        CliView.printDevSlots(dev);
+    }
+    @Test
+    void printDevSlotsWithThreeFullSlots() throws NegativeQuantityException {
+        DevSlots dev = new DevSlots();
+        dev.addDevCard(0, devCard);
+        dev.addDevCard(0, new DevCard(2, DevCardColour.YELLOW, 2, devCardInput, devCardOutput, cost, "url"));
+        dev.addDevCard(0, new DevCard(3, DevCardColour.YELLOW, 2, devCardInput, devCardOutput, cost, "url"));
+        dev.addDevCard(1, devCard2);
+        dev.addDevCard(1, new DevCard(2, DevCardColour.PURPLE, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
+        dev.addDevCard(1, new DevCard(3, DevCardColour.PURPLE, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
+        dev.addDevCard(2, devCard3);
+        dev.addDevCard(2, new DevCard(2, DevCardColour.GREEN, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
+        dev.addDevCard(2, new DevCard(3, DevCardColour.GREEN, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
+        CliView.printDevSlots(dev);
+    }
+
 }
