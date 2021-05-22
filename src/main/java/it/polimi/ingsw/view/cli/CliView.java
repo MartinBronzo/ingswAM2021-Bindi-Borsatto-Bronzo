@@ -32,29 +32,31 @@ public class CliView implements view {
 
     public static void printGameState(Game gameModel, String nickname) throws NullPointerException, NoSuchElementException {
         if (gameModel == null || nickname==null || nickname.equals("")) return;
-
+        
+        List<String> nicknames = gameModel.getPlayers().stream().map(player -> player.getNickName()).collect(Collectors.toList());
         Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
         switch (player.getPlayerState()) {
             case WAITING4TURN:
             case WAITING4LASTTURN:
                 System.out.println("abcd");
                 break;
-            /*case WAITING4OTHERBEGINNINGDECISIONS:
-                break;*/
             case PLAYING:
+                //TODO:stampare info your turn
                 printMarket(gameModel.getMainBoard());
+                printDevGrid(gameModel.getMainBoard());
                 break;
             case WAITING4GAMESTART:
                 break;
             case PLAYINGLASTTURN:
+                //TODO:stampare info your last turn
                 printMarket(gameModel.getMainBoard());
                 break;
             case WAITING4GAMEEND:
                 break;
             case WAITING4BEGINNINGDECISIONS:
+                //TODO: print info
                 break;
-            case PLAYINGBEGINNINGDECISIONS:
-                break;
+
         }
 
     }
@@ -948,6 +950,9 @@ public class CliView implements view {
             }
         }
         return lines.toArray(new String[0]);
+    }
+
+    public static void printGameBoard(String readLine) {
     }
 
 

@@ -137,6 +137,10 @@ public class CliClient extends Client implements Runnable {
                             sendMessage(new Command("endTurn"));
                         }
                         break;
+                    case SEEPLAYERBOARD:
+                        synchronized (this){
+                            CliView.printGameBoard(stdIn.readLine());
+                        }
                     default:
                         System.err.println("Command not Valid\n");
                 }
@@ -219,7 +223,6 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    //TODO: NON FUNZIONA
     @Override
     protected synchronized void buyFromMarket() throws IOException {
         System.out.println("buyFromMarket example: row/column NUM_ROW/COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];\n");
