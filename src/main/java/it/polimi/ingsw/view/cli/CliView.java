@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.cli;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.DevCards.DevSlot;
 import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
@@ -128,7 +129,34 @@ public class CliView implements view {
     private static void printPlayerInfo(String nickName, PlayerState playerState, Integer victoryPoints) {
     }
 
-    private static void printDevSlots(DevSlots devSlots) {
+    public static void printDevSlots(DevSlots devSlots) {
+        System.out.print(AnsiCommands.PURPLE.getTextColor());
+        System.out.print("Thou great Slots of DevCards are hither presented:\n");
+        for(int i = 0; i < 3; i++)
+            printADevSlot(i + 1, devSlots.getDevSlot(i), AnsiCommands.PURPLE.getTextColor());
+
+    }
+
+    private static void printADevSlot(int devSlotNumber, DevSlot devSlot, String backgroundColor){
+        List<DevCard> list = new LinkedList<>(devSlot.getDevCards());
+        System.out.print(devSlotNumber + " : ");
+        if(devSlot.size() != 0) {
+            printCardInfo(list.get(devSlot.size() - 1), backgroundColor);
+            System.out.print("\n");
+            if(devSlot.size() > 1) {
+                System.out.print(" ".repeat(8));
+                String line = "Not usable: ";
+                System.out.print(line);
+                printCardInfo(list.get(devSlot.size() - 2), backgroundColor);
+                System.out.print("\n");
+                for(int i = devSlot.size() - 3; i >= 0; i--){
+                    System.out.print(" ".repeat(8 + line.length()));
+                    printCardInfo(list.get(i), backgroundColor);
+                    System.out.print("\n");
+                }
+            }
+        }else
+            System.out.print("\n");
     }
 
     public static void printFinalScores(List<Map.Entry<String, Integer>> results) {
