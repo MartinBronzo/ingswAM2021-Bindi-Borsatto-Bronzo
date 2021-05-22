@@ -136,6 +136,7 @@ public final class GamesManagerSingleton {
             GameController returnedGame = startingGame;
             games.add(startingGame);
             startingGame = null;
+            clientConfigurator = null;
             return returnedGame;
         }
         return startingGame;

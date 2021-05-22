@@ -379,7 +379,12 @@ public class CliClient extends Client implements Runnable {
                                 gamemodel = update;
                             else
                                 gamemodel.merge(update);
-                            CliView.printGameState(gamemodel, nickname);
+                            try {
+                                CliView.printGameState(gamemodel, nickname);
+                            } catch (NullPointerException e){
+                                CliView.printError(e.getMessage());
+                            }
+
                         }
                         break;
                     case ERROR:
