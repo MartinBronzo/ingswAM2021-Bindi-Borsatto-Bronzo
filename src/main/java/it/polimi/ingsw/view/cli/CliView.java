@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementRe
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
+import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.readOnlyModel.Board;
@@ -24,6 +25,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CliView implements view {
+
+    public static void printGameBoard(String readLine) {
+    }
 
      /*
     #############################################################################################
@@ -38,13 +42,17 @@ public class CliView implements view {
         Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
         switch (player.getPlayerState()) {
             case WAITING4TURN:
+                printGeneralInfo("My master, thou mustn't worry. Your time will soon come! It is " + findPlayerByState(new LinkedList<>(gameModel.getPlayers()), PlayerState.PLAYING) +
+                        "'s turn!\n");
+                break;
             case WAITING4LASTTURN:
-                System.out.println("abcd");
+                printGeneralInfo("My master, thou mustn't worry. Thee will soon play your LAST turn! It is " + findPlayerByState(new LinkedList<>(gameModel.getPlayers()), PlayerState.PLAYINGLASTTURN) +
+                        "'s turn!\n");
                 break;
             case PLAYING:
-                //TODO:stampare info your turn
-                printMarket(gameModel.getMainBoard());
-                printDevGrid(gameModel.getMainBoard());
+                printGeneralInfo("Master " + player.getNickName() + " is thy turn!");
+                printCommonParts(gameModel);
+                printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
                 break;
             case WAITING4GAMESTART:
                 break;
@@ -61,6 +69,7 @@ public class CliView implements view {
         }
 
     }
+
 
     /*
     #############################################################################################
@@ -115,51 +124,6 @@ public class CliView implements view {
     END MESSAGES
     #############################################################################################
      */
-    
-    public static void printPlayerBoard(Player player, int lorenzoPosition){
-        printPlayerInfo(player.getNickName(), player.getPlayerState(), player.getVictoryPoints());
-        printFaithTrack(player.getFaithPosition(), player.getPopeTiles(), lorenzoPosition);
-        printDepot(player.getDepotShelves());
-        printStrongBox(player.getStrongBox());
-        printLeaderDepots(player.getLeaderSlots());
-        printBaseProduction(player.getBaseProductionInput(), player.getBaseProductionOutput());
-        printDevSlots(player.getDevSlots());
-        printUsedLeaderCards(player.getUsedLeaders());
-        printUnusedLeaderCards(player.getUnUsedLeaders());
-    }
-
-    private static void printPlayerInfo(String nickName, PlayerState playerState, Integer victoryPoints) {
-    }
-
-    public static void printDevSlots(DevSlots devSlots) {
-        System.out.print(AnsiCommands.PURPLE.getTextColor());
-        System.out.print("Thou great Slots of DevCards are hither presented:\n");
-        for(int i = 0; i < 3; i++)
-            printADevSlot(i + 1, devSlots.getDevSlot(i), AnsiCommands.PURPLE.getTextColor());
-
-    }
-
-    private static void printADevSlot(int devSlotNumber, DevSlot devSlot, String backgroundColor){
-        List<DevCard> list = new LinkedList<>(devSlot.getDevCards());
-        System.out.print(devSlotNumber + " : ");
-        if(devSlot.size() != 0) {
-            printCardInfo(list.get(devSlot.size() - 1), backgroundColor);
-            System.out.print("\n");
-            if(devSlot.size() > 1) {
-                System.out.print(" ".repeat(8));
-                String line = "Not usable: ";
-                System.out.print(line);
-                printCardInfo(list.get(devSlot.size() - 2), backgroundColor);
-                System.out.print("\n");
-                for(int i = devSlot.size() - 3; i >= 0; i--){
-                    System.out.print(" ".repeat(8 + line.length()));
-                    printCardInfo(list.get(i), backgroundColor);
-                    System.out.print("\n");
-                }
-            }
-        }else
-            System.out.print("\n");
-    }
 
     public static void printFinalScores(List<Map.Entry<String, Integer>> results) {
         System.out.print(AnsiCommands.clear());
@@ -215,6 +179,114 @@ public class CliView implements view {
      */
 
     //SPAZI TRA I BORDI DELLA PERGAMENA PICCOLA: 28
+
+    public static void printPlayerBoardWithFrame(Player player, int lorenzoPosition){
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print("_________________________________________________________________________________\n");
+
+        System.out.print(AnsiCommands.WHITE.getTextColor());
+        System.out.print("\nThou Board, my Master!\n");
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+
+        printPlayerBoard(player, lorenzoPosition);
+
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
+
+    public static void printCommonParts(Game gameModel){
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print("_________________________________________________________________________________\n");
+
+        System.out.print(AnsiCommands.RED.getTextColor());
+        System.out.print("\nMarket\n");
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        printMarket(gameModel.getMainBoard());
+        System.out.print(AnsiCommands.GREEN.getTextColor());
+        System.out.print("\n\nGrid of Dev Cards\n");
+        printDevGrid(gameModel.getMainBoard());
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
+
+
+    public static void printGeneralInfo(String info){
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.YELLOW.getTextColor());
+        System.out.print("\n   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |                            |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+
+        String[] lines = CliView.splitInLinesBySize(info, 27);
+        for (String line: lines) {
+            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        }
+        System.out.print("    |                            |.\n");
+
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+
+    }
+
+    public static void printPlayerBoard(Player player, int lorenzoPosition){
+        printPlayerInfo(player.getNickName(), player.getPlayerState(), player.getVictoryPoints());
+        printFaithTrack(player.getFaithPosition(), player.getPopeTiles(), lorenzoPosition);
+        printDepot(player.getDepotShelves());
+        printStrongBox(player.getStrongBox());
+        printLeaderDepots(player.getLeaderSlots());
+        printBaseProduction(player.getBaseProductionInput(), player.getBaseProductionOutput());
+        printDevSlots(player.getDevSlots());
+        printUsedLeaderCards(player.getUsedLeaders());
+        printUnusedLeaderCards(player.getUnUsedLeaders());
+    }
+
+    private static void printPlayerInfo(String nickName, PlayerState playerState, Integer victoryPoints) {
+    }
+
+    public static void printDevSlots(DevSlots devSlots) {
+        System.out.print(AnsiCommands.PURPLE.getTextColor());
+        System.out.print("Thou great Slots of DevCards are hither presented:\n");
+        for(int i = 0; i < 3; i++)
+            printADevSlot(i + 1, devSlots.getDevSlot(i), AnsiCommands.PURPLE.getTextColor());
+
+    }
+
+    private static void printADevSlot(int devSlotNumber, DevSlot devSlot, String backgroundColor){
+        List<DevCard> list = new LinkedList<>(devSlot.getDevCards());
+        System.out.print(devSlotNumber + " : ");
+        if(devSlot.size() != 0) {
+            printCardInfo(list.get(devSlot.size() - 1), backgroundColor);
+            System.out.print("\n");
+            if(devSlot.size() > 1) {
+                System.out.print(" ".repeat(8));
+                String line = "Not usable: ";
+                System.out.print(line);
+                printCardInfo(list.get(devSlot.size() - 2), backgroundColor);
+                System.out.print("\n");
+                for(int i = devSlot.size() - 3; i >= 0; i--){
+                    System.out.print(" ".repeat(8 + line.length()));
+                    printCardInfo(list.get(i), backgroundColor);
+                    System.out.print("\n");
+                }
+            }
+        }else
+            System.out.print("\n");
+    }
 
     public static void printError(String error) {
         System.out.print(AnsiCommands.clear());
@@ -326,6 +398,7 @@ public class CliView implements view {
     }
 
     public static void printFaithTrack(int position, List<PopeTile> popeTiles, int lorenzoPositione){
+        System.out.print(AnsiCommands.resetStyle());
         if (lorenzoPositione>0){
             System.out.print(AnsiCommands.PURPLE.getBackgroundColor()+AnsiCommands.BLACK.getTextColor());
             System.out.println(" ".repeat(lorenzoPositione*2)+"ℒ"+" ".repeat((24-lorenzoPositione)*2)+AnsiCommands.resetStyle());
@@ -477,6 +550,7 @@ public class CliView implements view {
     }
 
     public static void printMarket(Board board){
+        System.out.print(AnsiCommands.resetStyle());
         MarbleType[][] matrix = board.getMarketMatrix();
         System.out.println("___________ "+ board.getMarbleOnSlide().toString());
         for (int i = 0; i < matrix.length; i++) {
@@ -980,8 +1054,12 @@ public class CliView implements view {
         return lines.toArray(new String[0]);
     }
 
-    public static void printGameBoard(String readLine) {
+    private static String findPlayerByState(List<Player> players, PlayerState state){
+        return players.stream().filter(x -> x.getPlayerState() == state).findAny().map(Player::getNickName).get();
+        //TODO: controllare se c'è il valore
     }
+
+
 
 
     /*public static void main(String[] args){
