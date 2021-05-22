@@ -162,7 +162,7 @@ public class StringToMessage {
         List<String> subStrings;
         HashMap<ResourceType,Integer> hashMap = new HashMap<>();
         try {
-            String[] infos = Arrays.stream(string.split(",")).filter(subString -> subString.length() != 0).toArray(String[]::new);
+            String[] infos = Arrays.stream(string.split(",")).map(String::strip).filter(subString -> subString.length() != 0).toArray(String[]::new);
             for (String info:infos) {
                 subStrings = Arrays.stream(info.split("\\s+")).map(String::strip).filter(sub -> sub.length() != 0).collect(Collectors.toList());
                 resource = ResourceType.valueOf(subStrings.get(0));
@@ -181,7 +181,7 @@ public class StringToMessage {
         List<String> subStrings;
         HashMap<Integer,ResourceType> hashMap = new HashMap<>();
         try {
-            String[] infos = Arrays.stream(string.split(",")).filter(subString -> subString.length() != 0).toArray(String[]::new);
+            String[] infos = Arrays.stream(string.split(",")).map(String::strip).filter(subString -> subString.length() != 0).toArray(String[]::new);
             for (String info:infos) {
                 subStrings = Arrays.stream(info.split("\\s+")).map(String::strip).filter(sub -> sub.length() != 0).collect(Collectors.toList());
                 resource = ResourceType.valueOf(subStrings.get(1));
