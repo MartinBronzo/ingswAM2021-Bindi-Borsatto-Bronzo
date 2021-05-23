@@ -12,9 +12,11 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.cli.CliClient;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -118,13 +120,26 @@ public class GameController {
         //Case gameState == STARTED when disconnection happend
         //If the player was adding the resources and discarding the leaderCards at the beginning of the game, before disconnecting
 
+        ////TODO: se lui è prima dell'active player deve essere a gameend (NOT TESTED)
         if (state == GameState.LASTTURN)
-            if (this.disconnectedBeforeStarting.contains(newClientHandler))
-                //TODO: se lui è prima dell'active player deve essere a gameend
-                ;
+            if (this.disconnectedBeforeStarting.contains(newClientHandler)) {
+                for (Pair<ClientHandler, PlayerBoard> e : players)
+                    if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
+                        if (getPlayerPositionInTurn(e.getKey()) < getPlayerPositionInTurn(activePlayer))
+                            newClientHandler.setPlayerState(PlayerState.WAITING4GAMEEND);
+                        else
+                            newClientHandler.setPlayerState(PlayerState.WAITING4LASTTURN);
+                        e.setKey(newClientHandler);
+                        newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
+                        newClientHandler.send(this.getWholeMessageUpdateToClient());
+                        updatesAfterDisconnection(newClientHandler);
+                        return true;
+                    }
+            }
 
         if (state != GameState.WAITING4PLAYERS)
-            for (ClientHandler ch : disconnectedBeforeStarting) {
+            for (
+                    ClientHandler ch : disconnectedBeforeStarting) {
                 if (ch.getNickname().equals(newClientHandler.getNickname())) {
                     newClientHandler.setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
                     for (Pair<ClientHandler, PlayerBoard> e : players)
@@ -151,7 +166,7 @@ public class GameController {
                     }
                 break;
 
-            //CASE NOT TESTED
+            //TODO: CASE NOT TESTED
             case WAITING4PLAYERS:
                 for (Pair<ClientHandler, PlayerBoard> e : players)
                     if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
@@ -334,12 +349,12 @@ public class GameController {
         //this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
         this.updatesTurnAndSendInfo(this.firstPlayer);
 
-        for (Pair<ClientHandler, PlayerBoard> e : players)
+        /*for (Pair<ClientHandler, PlayerBoard> e : players)
             if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED)
                 if (e.getKey().getPlayerState() == PlayerState.PLAYINGBEGINNINGDECISIONS)
                     e.getKey().send(new GeneralInfoStringMessage("You're the first player"));
                 else
-                    e.getKey().send(new GeneralInfoStringMessage("Wait your turn"));
+                    e.getKey().send(new GeneralInfoStringMessage("Wait your turn"));*/
 
 
         if (numberOfPlayers != 1) //starts timer only if we are in multiplayer
@@ -434,7 +449,7 @@ public class GameController {
             //send le informazioni particolari
         */
         activePlayer = players.get(index).getKey();
-        activePlayer.send(new GeneralInfoStringMessage("Now it's Your turn, Master " + activePlayer.getNickname()));
+        //activePlayer.send(new GeneralInfoStringMessage("Now it's Your turn, Master " + activePlayer.getNickname()));
         this.updatesTurnAndSendInfo(index);
 
         //starts timer for new player
@@ -1029,7 +1044,8 @@ public class GameController {
 
         Game game = new Game();
         Board board = new Board();
-        board.setDevGrid(mainBoard.getDevGrid());
+        //board.setDevGrid(mainBoard.getDevGrid());
+        board.setDevMatrix(mainBoard.getDevMatrix());
         game.setMainBoard(board);
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
@@ -1265,7 +1281,8 @@ public class GameController {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
 
         try {
-            soloBoard.drawSoloToken();
+            SoloActionToken token = soloBoard.drawSoloToken();
+            clientHandler.send(new LorenzosActionMessage(token));
         } catch (LastVaticanReportException | EmptyDevColumnException e) {
             //e.printStackTrace();
             this.setLastTurn();
@@ -1275,7 +1292,8 @@ public class GameController {
         Board board = new Board();
         Player player = new Player();
 
-        board.setDevGrid(soloBoard.getDevGrid());
+        //board.setDevGrid(soloBoard.getDevGrid());
+        board.setDevMatrix(soloBoard.getDevMatrix());
         game.setMainBoard(board);
         player.setNickName(clientHandler.getNickname());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
@@ -1389,6 +1407,18 @@ public class GameController {
         else
             this.endGame();
     }
+
+    public void sendUpdateSolo(ClientHandler soloPlayer){
+        Game game = new Game();
+        Player player = new Player();
+        player.setNickName(soloPlayer.getNickname());
+        player.setPlayerState(soloPlayer.getPlayerState());
+        game.addPlayer(player);
+
+        soloPlayer.send(new ModelUpdate(game));
+
+    }
+
 
     private void endGame() {
         this.distributeFinalPoints();

@@ -12,6 +12,9 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementCo
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
+import it.polimi.ingsw.model.soloGame.DiscardToken;
+import it.polimi.ingsw.model.soloGame.FaithPointToken;
+import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 
@@ -144,8 +147,14 @@ public class ClientHandler implements Runnable {
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
         effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
 
+        RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
+                = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
+        tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
+
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
-                .registerTypeAdapterFactory(effectTypeFactory).create();
+                .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
 
     /**
@@ -200,25 +209,6 @@ public class ClientHandler implements Runnable {
                     }
 
                 }
-
-               /* try {
-                    pingClient(socket);
-                } catch (IOException e) {
-                    //e.printStackTrace();
-                    //If the player disconnects before logging in, the socket is closed and the pingTimer is canceled
-                    if (playerSate == PlayerState.WAITING4NAME) {
-                        try {
-                            socket.close();
-                            pingTimer.cancel();
-                        } catch (IOException ioException) {
-                            ioException.printStackTrace();
-                        }
-                    } else {
-                        setPlayerState(PlayerState.DISCONNECTED);
-                        if (playerSate != PlayerState.DISCONNECTED)
-                            game.updatesAfterDisconnection(ClientHandler.this);
-                    }
-                }*/
             }
         }, 0, 200000);
 
@@ -273,6 +263,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "getResourcesFromMarket":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -282,6 +275,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "buyFromMarket":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -296,6 +292,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "getCardCost":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -305,6 +304,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "buyDevCard":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -320,6 +322,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "getProductionCost":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -329,6 +334,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "activateProductionMessage":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -352,22 +360,26 @@ public class ClientHandler implements Runnable {
                             game.discardLeaderAndExtraResBeginning(discardLeaderCardBeginning, this);
                             beginningActionDone = true;
 
-                            if (game.getState() != GameState.STARTED || game.getNumberOfPlayers() == 1)
-                                playerState = PlayerState.PLAYING;
-                            break;
+                            if (game.getState() != GameState.STARTED || game.getNumberOfPlayers() == 1) {
+                                if (playerState != PlayerState.DISCONNECTED)
+                                    playerState = PlayerState.PLAYING;
+                                if(game.getNumberOfPlayers() == 1) {
+                                    game.setState(GameState.INSESSION);
+                                    game.sendUpdateSolo(this);
+                                }
+                                break;
+                            }
                         case "endTurn":
                             if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
                             }
-                            if (playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone) {
-                                this.send(new ErrorMessage("You must satisfy your liege's demand first"));
+                            if(!checkBeginningActionDone()){
                                 break;
                             }
 
                             if (game.getNumberOfPlayers() == 1) {
                                 send(new GeneralInfoStringMessage("Lorenzos' Turn"));
-                                //this.playerState = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
                                 game.drawSoloToken(this);
                                 send(new GeneralInfoStringMessage("Now it's Your turn, Master " + nickname));
                             } else {
@@ -379,6 +391,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "moveBetweenShelves":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -388,6 +403,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "moveLeaderToShelf":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -397,6 +415,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "moveShelfToLeader":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -406,6 +427,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "discardLeader":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -420,6 +444,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "ActivateLeader":
+                            if(!checkBeginningActionDone()){
+                                break;
+                            }
                             if (playerState != PlayerState.PLAYING) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
@@ -451,8 +478,6 @@ public class ClientHandler implements Runnable {
                             this.send(new ErrorMessage("No command found"));
                             break;
                     }
-
-                    //line = scanner.nextLine();
 
                     line = in.readLine();
                     while (!(line.charAt(0) == '{' && line.contains("{\"cmd\":") && line.contains("\"parameters\":") && line.charAt(line.length() - 1) == '}')) {
@@ -517,37 +542,6 @@ public class ClientHandler implements Runnable {
         //out.flush();
     }
 
-
-    /* //To be deleted....
-    private void pingClient(Socket socket) throws IOException {
-        this.send(new PingMessage("Ping"));
-        socket.setSoTimeout(2000);
-        in.readLine();
-        if (playerSate == PlayerState.DISCONNECTED) {
-            switch (game.getState()) {
-                case LASTTURN:
-                    playerSate = PlayerState.WAITING4LASTTURN; //waiting and not playing4lastturn because we assume that the turn of a disconnected player is skipped
-                    break;
-                case INSESSION:
-                    playerSate = PlayerState.WAITING4TURN;
-                    break;
-                case WAITING4PLAYERS:
-                    playerSate = PlayerState.WAITINGGAMESTART;
-                    break;
-                case CONFIGURING:
-                    playerSate = PlayerState.WAITING4NAME;
-                    break;
-                case STARTED:
-                    playerSate = PlayerState.WAITING4BEGINNINGDECISIONS;
-                    break;
-                //TODO: WAITINGGAMEEND?
-            }
-            game.updatesAfterDisconnection(this);
-            //TODO: cosa succede se il giocatore si disconnette mentre gioca? Ci sarà da fare il rollback dello state del game e da cambiare i turni!
-        }
-    }*/
-
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -578,6 +572,14 @@ public class ClientHandler implements Runnable {
 
     public boolean isBeginningActionDone() {
         return beginningActionDone;
+    }
+
+    private boolean checkBeginningActionDone(){
+        if (playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone) {
+            this.send(new ErrorMessage("You must satisfy your liege's demand first"));
+            return false;
+        }
+        return true;
     }
 
     //This method was used for purposes reasons

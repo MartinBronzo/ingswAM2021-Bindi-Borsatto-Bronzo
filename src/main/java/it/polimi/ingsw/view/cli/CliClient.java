@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementRe
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.Client;
@@ -234,7 +235,7 @@ public class CliClient extends Client implements Runnable {
     @Override
     public synchronized void manageLogin() throws IOException {
         String nickUnchecked;
-        System.out.println("What's your nickname?\n");
+        System.out.println("What's your nickname?");
         nickUnchecked = stdIn.readLine();
         Command loginCommand = new Command("login", new LoginMessage(nickUnchecked));
         sendMessage(loginCommand);
@@ -242,7 +243,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void manageGameStarting() throws IOException {
-        System.out.println("Resources and Leaders to discard: LEADER_CARD_INDEX, LEADER_CARD_INDEX; RESOURCE_TYPE QUANTITY SHELF_NUM [, ...];\n");
+        System.out.println("Resources and Leaders to discard: LEADER_CARD_INDEX, LEADER_CARD_INDEX; RESOURCE_TYPE QUANTITY SHELF_NUM [, ...];");
         System.out.println("Example: 1, 3; COIN 1 2, STONE 1 3;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -256,7 +257,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void setNumPlayer() throws IOException {
-        System.out.println("Set num Player: NUM__OF_PLAYERS;\n");
+        System.out.println("Set num Player: NUM__OF_PLAYERS;");
         System.out.println("Example: 4;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -269,7 +270,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void getResourcesFromMarket() throws IOException {
-        System.out.println("GetResourcesFromMarket: row/column NUMBER_ROW/COLUMN; [LEADER_CARD_INDEX_LIST];\n");
+        System.out.println("GetResourcesFromMarket: row/column NUMBER_ROW/COLUMN; [LEADER_CARD_INDEX_LIST];");
         System.out.println("Example: row 3; 1, 2, 4;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -282,7 +283,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void buyFromMarket() throws IOException {
-        System.out.println("buyFromMarket example: row/column NUM_ROW/COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];\n");
+        System.out.println("buyFromMarket example: row/column NUM_ROW/COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];");
         System.out.println("Example: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -295,7 +296,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void getDevCardCost() throws IOException {
-        System.out.println("GetDevCardCost: NUM_ROW; NUM_COLUMN; [LEADER_CARD_LIST];\n");
+        System.out.println("GetDevCardCost: NUM_COLUMN; NUM_ROW; [LEADER_CARD_LIST];");
         System.out.println("Example: 3; 2; 1, 2, 4;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -308,7 +309,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void buyDevCard() throws IOException {
-        System.out.println("BuyDevCard: NUM_ROW; NUM_COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCE QT SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QT [, ...]; STRONGBOX_RESOURCE QT [, ...]; DEV_SLOT_NUM;\n");
+        System.out.println("BuyDevCard: NUM_COLUMN; NUM_ROW; [LEADER_CARD_LIST]; DEPOT_RESOURCE QT SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QT [, ...]; STRONGBOX_RESOURCE QT [, ...]; DEV_SLOT_NUM;");
         System.out.println("Example: 3; 2; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -321,7 +322,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void getProductionCost() throws IOException {
-        System.out.println("GetProductionCost: DEV_CARD_LIST; [LEADER_CARD_LIST]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT;\n");
+        System.out.println("GetProductionCost: DEV_CARD_LIST; [LEADER_CARD_LIST]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT;");
         System.out.println("Example: 1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -334,7 +335,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void activateProduction() throws IOException {
-        System.out.println("ActivateProduction: DEV_CARD_LIST; [LEADER_CARD RESOURCE_OUTPUT, ...]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT; DEPOT_RES QT SHELF_NUM [, ...]; LEADER_DEPOT_RES QT [, ...]; STRONGBOX_RES QT;\n");
+        System.out.println("ActivateProduction: DEV_CARD_LIST; [LEADER_CARD RESOURCE_OUTPUT, ...]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT; DEPOT_RES QT SHELF_NUM [, ...]; LEADER_DEPOT_RES QT [, ...]; STRONGBOX_RES QT;");
         System.out.println("Example: 1, 2, 4; 1 SHIELD, 2 STONE; FALSE, COIN SERVANT, STONE; COIN 2 2; SERVANT 1; STONE 3;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -347,7 +348,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void moveBetweenShelves() throws IOException {
-        System.out.println("MoveBetweenShelves: SOURCE_SHELF; DEST_SHELF;\n");
+        System.out.println("MoveBetweenShelves: SOURCE_SHELF; DEST_SHELF;");
         System.out.println("Example: 1; 2;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -360,7 +361,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void moveLeaderToShelf() throws IOException {
-        System.out.println("MoveLeaderToShelf: LEADER_DEPOT_RES; QT; DEST_SHELF;\n");
+        System.out.println("MoveLeaderToShelf: LEADER_DEPOT_RES; QT; DEST_SHELF;");
         System.out.println("Example: COIN; 2; 1;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -373,7 +374,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void moveShelfToLeader() throws IOException {
-        System.out.println("MoveShelfToLeader: SOURCE_SHELF; QT;;\n");
+        System.out.println("MoveShelfToLeader: SOURCE_SHELF; QT;");
         System.out.println("Example: 2; 1;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -386,7 +387,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void discardLeader() throws IOException {
-        System.out.println("DiscardLeader: LEADER_CARD_INDEX;\n");
+        System.out.println("DiscardLeader: LEADER_CARD_INDEX;");
         System.out.println("Example: 2;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -399,7 +400,7 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     protected synchronized void activateLeader() throws IOException {
-        System.out.println("ActivateLeader: LEADER_CARD_INDEX;\n");
+        System.out.println("ActivateLeader: LEADER_CARD_INDEX;");
         System.out.println("Example: 2;\n");
         String usrCommand = stdIn.readLine();
         try {
@@ -518,6 +519,16 @@ public class CliClient extends Client implements Runnable {
                             CliView.printInfo("Master " + nickname + ", I thank thee for showing thy great example of service.");
                         }
                         break;
+
+                        //TODO: DA TERMINARE
+                    case LORENZOSACTION:
+                        synchronized (this){
+                            LorenzosActionMessage lorenzosActionMessage = gson.fromJson(responseContent, LorenzosActionMessage.class);
+                            SoloActionToken token = lorenzosActionMessage.getSoloActionToken();
+                            String description = "Lorenzos' decision has been taken: ";
+                            CliView.printLorenzosAction(token, description);
+                        }
+                        break;
                     /*case FINALSCORES:
                         synchronized (this){
                             FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
@@ -547,7 +558,7 @@ public class CliClient extends Client implements Runnable {
                             if(numPlayers == 1)
                                 CliView.printInfo("Thou archenemy is the Almighty Lorenzo The Magnificent! But Glory is for you to be taken!");
                             else
-                                CliView.printInfo("My Master, what a quest for Glory lies in front of you: " + numPlayers + "dreadful competitors will be ready to challenge you every step of the way!");
+                                CliView.printInfo("My Master, what a quest for Glory lies in front of you: " + (numPlayers - 1) + " dreadful competitors will be ready to challenge you every step of the way!");
                         }
                         break;
                 }

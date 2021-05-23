@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.MainBoard;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.SourceLocator;
 import java.io.File;
 import java.io.IOException;
 
@@ -82,9 +83,10 @@ public class SoloBoard extends MainBoard {
      * @throws LastVaticanReportException if a vatican report is called during the action
      * @throws EmptyDevColumnException    if an entire column of devGrid is empty
      */
-    public boolean drawSoloToken() throws LastVaticanReportException, EmptyDevColumnException {
-        tokenDeck.drawFromDeck().playEffect();
-        return true;
+    public SoloActionToken drawSoloToken() throws LastVaticanReportException, EmptyDevColumnException {
+        SoloActionToken token = tokenDeck.drawFromDeck();
+        token.playEffect();
+        return token;
     }
 
     /**

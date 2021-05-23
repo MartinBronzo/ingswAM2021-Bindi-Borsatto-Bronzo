@@ -214,7 +214,7 @@ public class StringToMessage {
         List<DepotParams> depotParamsList;
         try {
             String[] infos = Arrays.stream(string.split(";")).map(String::strip).toArray(String[]::new);
-            leaderCardIds = Arrays.stream(infos[0].split(",")).map(String::strip).filter(id -> id.length() != 0).map(Integer::parseInt).collect(Collectors.toList());
+            leaderCardIds = Arrays.stream(infos[0].split(",")).map(String::strip).filter(id -> id.length() != 0).map(id -> Integer.parseInt(id) - 1).collect(Collectors.toList());
             depotParamsList = Arrays.stream(infos[1].split(",")).map(String::strip).filter(id -> id.length() != 0).map(StringToMessage::toDepotParams).collect(Collectors.toList());
         } catch (Exception e) {
             throw new IllegalArgumentException("String is not well formatted");

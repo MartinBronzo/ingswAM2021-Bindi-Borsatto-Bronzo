@@ -14,6 +14,9 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
+import it.polimi.ingsw.model.soloGame.DiscardToken;
+import it.polimi.ingsw.model.soloGame.FaithPointToken;
+import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -38,8 +41,13 @@ public class CliView implements view {
         Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
         switch (player.getPlayerState()) {
             case WAITING4TURN:
-                printGeneralInfo("My master, thou mustn't worry. Your time will soon come! It is " + findPlayerByState(new LinkedList<>(gameModel.getPlayers()), PlayerState.PLAYING) +
-                                         "'s turn!\n");
+                try {
+                    printGeneralInfo("My master, thou mustn't worry. Your time will soon come! It is " + findPlayerByState(new LinkedList<>(gameModel.getPlayers()), PlayerState.PLAYING) +
+                            "'s turn!\n");
+                }catch (NoSuchElementException e){
+                    printGeneralInfo("My master, thou mustn't worry. Your time will soon come! It is " + findPlayerByState(new LinkedList<>(gameModel.getPlayers()), PlayerState.PLAYINGBEGINNINGDECISIONS) +
+                            "'s turn!\n");
+                }
                 break;
             case WAITING4LASTTURN:
                 printGeneralInfo("My master, thou mustn't worry. Thee will soon play your LAST turn! It is " + findPlayerByState(new LinkedList<>(gameModel.getPlayers()), PlayerState.PLAYINGLASTTURN) +
@@ -639,7 +647,8 @@ public class CliView implements view {
     }
 
     public static void printDevGrid(Board board) {
-        if (board == null || board.getDevGrid() == null) {
+        //if (board == null || board.getDevGrid() == null) {
+        if (board == null || board.getDevMatrix() == null) {
             System.out.println("missing board or devgrid in print devgrid");
             return;
         }
@@ -1078,6 +1087,31 @@ public class CliView implements view {
             System.out.print("");
         }
     }
+
+     /*
+    #############################################################################################
+    LORENZOS ACTION METHODS
+    #############################################################################################
+     */
+
+    public static void printLorenzosAction(SoloActionToken soloActionToken, String description){
+        if(soloActionToken instanceof DiscardToken){
+            printDiscardToken((DiscardToken) soloActionToken);
+        } else if(soloActionToken instanceof FaithPointToken){
+            printFaithPointToken((FaithPointToken) soloActionToken);
+        }
+        System.out.print("\n");
+
+    }
+
+    public static void printDiscardToken(DiscardToken token) {
+
+    }
+
+    public static void printFaithPointToken(FaithPointToken token) {
+
+    }
+
 
     /*
     ###########################
