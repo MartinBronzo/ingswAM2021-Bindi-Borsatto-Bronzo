@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class Board {
     private MarbleType[][] marketMatrix;
     private MarbleType marbleOnSlide;
-    private DevGrid devGrid;
+    //private DevGrid devGrid;
     private DevCard[][] devMatrix;
 
     public void setMarbleOnSlide(MarbleType marbleOnSlide) {
@@ -28,13 +28,13 @@ public class Board {
         return marbleOnSlide;
     }
 
-    public DevGrid getDevGrid() {
+    /*public DevGrid getDevGrid() {
         return devGrid;
-    }
+    }*/
 
-    public void setDevGrid(DevGrid devGrid) {
+    /*public void setDevGrid(DevGrid devGrid) {
         this.devGrid = devGrid;
-    }
+    }*/
 
 
     public DevCard[][] getDevMatrix() {
@@ -50,7 +50,7 @@ public class Board {
         return "Board{" +
                 "marketMatrix=" + Arrays.toString(marketMatrix) +
                 ", marbleOnSlide=" + marbleOnSlide +
-                ", devGrid=" + devGrid +
+                ", devGrid=" + Arrays.deepToString(devMatrix) +
                 '}';
     }
 
@@ -101,8 +101,10 @@ public class Board {
         MarbleType marbleUpdate = updateBoard.getMarbleOnSlide();
         if (marbleUpdate != null) this.marbleOnSlide = marbleUpdate;
 
-        DevGrid updateDev = updateBoard.getDevGrid();
-        if (updateDev != null) this.devGrid = updateDev;
+        //DevGrid updateDev = updateBoard.getDevGrid();
+        //if (updateDev != null) this.devGrid = updateDev;
+        DevCard[][] updateDev = updateBoard.getDevMatrix();
+        if (updateDev != null) this.devMatrix = updateDev;
 
         return false;
     }
