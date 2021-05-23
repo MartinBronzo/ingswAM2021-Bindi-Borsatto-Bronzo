@@ -14,9 +14,11 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.readOnlyModel.Player;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Timer;
@@ -37,7 +39,7 @@ public class ClientHandler implements Runnable {
     private boolean beginningActionDone;
 
 
-    private ClientHandler(ClientHandler original){
+    private ClientHandler(ClientHandler original) {
         this.nickname = original.nickname;
         this.socket = null;
         this.in = null;
@@ -54,9 +56,10 @@ public class ClientHandler implements Runnable {
 
     /**
      * Creates a partial copy of the specified ClientHandler. It only copies the information related to the state of the Player.
+     *
      * @param original the ClientHandler to be partially cloned
      */
-    public static ClientHandler getPartialCopy(ClientHandler original){
+    public static ClientHandler getPartialCopy(ClientHandler original) {
         return new ClientHandler(original);
     }
 
@@ -65,16 +68,17 @@ public class ClientHandler implements Runnable {
      * Copies from the specified ClientHandler partial copy its information and saves them in this ClientHandler. It pays attention to
      * players' disconnection: if in the copy the player was registered as disconnected but now is connected then the state doesn't change;
      * if in the copy the player was registered as not disconnected but now is disconnected then the state doesn't change
+     *
      * @param partialCopy the partial copy where to get information
      */
-    public void refreshState(ClientHandler partialCopy){
+    public void refreshState(ClientHandler partialCopy) {
         //If in the copy the player was registered as disconnected but now is connected then the state doesn't change
-        if(this.playerState == PlayerState.DISCONNECTED && partialCopy.playerState != PlayerState.DISCONNECTED)
+        if (this.playerState == PlayerState.DISCONNECTED && partialCopy.playerState != PlayerState.DISCONNECTED)
             ;
-        //If in the copy the player was registered as not disconnected but now is disconnected then the state doesn't change
-        else if(this.playerState != PlayerState.DISCONNECTED && partialCopy.playerState == PlayerState.DISCONNECTED)
+            //If in the copy the player was registered as not disconnected but now is disconnected then the state doesn't change
+        else if (this.playerState != PlayerState.DISCONNECTED && partialCopy.playerState == PlayerState.DISCONNECTED)
             ;
-        //In the other cases, we copy the original value
+            //In the other cases, we copy the original value
         else
             this.playerState = partialCopy.playerState;
 
@@ -176,13 +180,13 @@ public class ClientHandler implements Runnable {
 
                     PlayerState tmp = playerState;
 
-                    if(playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
+                    if (playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
                         setPlayerState(PlayerState.DISCONNECTED);
                         game.updatesAfterDisconnection(ClientHandler.this);
-                    }else
+                    } else
                         setPlayerState(PlayerState.DISCONNECTED);
 
-                    if(tmp == PlayerState.PLAYING)
+                    if (tmp == PlayerState.PLAYING)
                         game.specifyNextPlayer(ClientHandler.this);
 
                     try {
@@ -233,7 +237,7 @@ public class ClientHandler implements Runnable {
 
                         case "pingResponse":
                             pingAnswered = true;
-                           // send("ok");
+                            // send("ok");
                             break;
 
                         case "login":
@@ -346,15 +350,15 @@ public class ClientHandler implements Runnable {
                             game.discardLeaderAndExtraResBeginning(discardLeaderCardBeginning, this);
                             beginningActionDone = true;
 
-                            if(game.getState() != GameState.STARTED || game.getNumberOfPlayers() == 1)
+                            if (game.getState() != GameState.STARTED || game.getNumberOfPlayers() == 1)
                                 playerState = PlayerState.PLAYING;
-                                break;
+                            break;
                         case "endTurn":
                             if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
                             }
-                            if(playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone){
+                            if (playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone) {
                                 this.send(new ErrorMessage("You must satisfy your liege's demand first"));
                                 break;
                             }
@@ -570,7 +574,9 @@ public class ClientHandler implements Runnable {
         return playerState;
     }
 
-    public boolean isBeginningActionDone(){return beginningActionDone;}
+    public boolean isBeginningActionDone() {
+        return beginningActionDone;
+    }
 
     //This method was used for purposes reasons
     public String getInput() throws IOException {
@@ -579,7 +585,7 @@ public class ClientHandler implements Runnable {
     }
 
     //used only for testing purpose
-    public void setBeginningActionDone(boolean value){
+    public void setBeginningActionDone(boolean value) {
         this.beginningActionDone = value;
     }
 

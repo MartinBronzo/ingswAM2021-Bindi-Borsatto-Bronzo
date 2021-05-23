@@ -53,11 +53,12 @@ public class FaithLevel extends FaithLevelBasic {
 
     /**
      * Returns a new FaithLevel with every value but the FaithTrack copied from the specified FaithLevel and the FaithTrack is taken from the specified FaithTrack.
-     * @param original the FaithLevel whose every parameter but the FaithTrack is to be copied
+     *
+     * @param original   the FaithLevel whose every parameter but the FaithTrack is to be copied
      * @param faithTrack the FaithTrack to be copied
      * @return a new FaithLevel object
      */
-    public FaithLevel getClone(FaithLevel original, FaithTrack faithTrack){
+    public FaithLevel getClone(FaithLevel original, FaithTrack faithTrack) {
         FaithLevel clone = new FaithLevel();
 
         clone.position = original.position;

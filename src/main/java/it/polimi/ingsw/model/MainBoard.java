@@ -7,7 +7,10 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.model.FaithTrack.*;
+import it.polimi.ingsw.model.FaithTrack.FaithTrack;
+import it.polimi.ingsw.model.FaithTrack.PopeCellObserver;
+import it.polimi.ingsw.model.FaithTrack.PopeTile;
+import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.Interfaces.Deck;
 import it.polimi.ingsw.model.Interfaces.Observer;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
@@ -149,7 +152,7 @@ public class MainBoard {
      * @return the number of White Marbles in the column (this number is in the range [0, number of columns- 1])
      * @throws IllegalArgumentException if the specified column index is invalid
      */
-    public int getNumberOfWhiteMarbleInTheColumn(int columnNumber) throws IllegalArgumentException{
+    public int getNumberOfWhiteMarbleInTheColumn(int columnNumber) throws IllegalArgumentException {
         return this.market.getNumberOfWhiteMarbleInTheColumn(columnNumber);
     }
 
@@ -157,12 +160,13 @@ public class MainBoard {
      * Returns how many White Marbles are in the specified row or column. Only one of the two parameters must be a number greater than 0 (the other must be equal to zero):
      * if the rowNumber is greater than 0, then the method computes how many White Marbles are in the row indicated by that number, otherwise the method computes
      * how many White Marbles are in the column specified by the columnNumber
-     * @param rowNumber the eventual row where to count the number of White Marbles (this number is in the range [0, number of rows - 1])
+     *
+     * @param rowNumber    the eventual row where to count the number of White Marbles (this number is in the range [0, number of rows - 1])
      * @param columnNumber the eventual column where to count the number of White Marbles (this number is in the range [0, number of columns- 1])
      * @return the number of White Marble in the specified row or column
      */
-    public int getNumberOfWhiteMarbleInMarketRowOrColumn(int rowNumber, int columnNumber){
-        if(rowNumber != 0)
+    public int getNumberOfWhiteMarbleInMarketRowOrColumn(int rowNumber, int columnNumber) {
+        if (rowNumber != 0)
             return this.getNumberOfWhiteMarbleInMarketRow(rowNumber);
         //then the rowColumn must be the only number greater than zero
         return this.getNumberOfWhiteMarbleInTheColumn(columnNumber);
@@ -170,17 +174,19 @@ public class MainBoard {
 
     /**
      * Returns a copy of the MarketMatrix but made of MarbleTypes instead of Marbles
+     *
      * @return a copy of the MarketMatrix made of MarbleTypes
      */
-    public MarbleType[][] getMarketMatrixWithMarbleType(){
+    public MarbleType[][] getMarketMatrixWithMarbleType() {
         return this.market.getMarketMatrixWithMarbleType();
     }
 
     /**
      * Returns the MarbleType of the Marble on the slide
+     *
      * @return the MarbleType of the Marble on the slide
      */
-    public MarbleType getMarbleOnSlideWithMarbleType(){
+    public MarbleType getMarbleOnSlideWithMarbleType() {
         return this.market.getMarbleOnSlideWithMarbleType();
     }
 
@@ -192,14 +198,15 @@ public class MainBoard {
 
     /**
      * Returns the discounted cost of the specified DevCard by applying the specified effects
+     *
      * @param devCard the DevCard to be discounted
      * @param effects the effects to apply
      * @return the discounted cost of the card
      */
-    public HashMap<ResourceType, Integer> applyDiscountToDevCard(DevCard devCard, List<Effect> effects){
+    public HashMap<ResourceType, Integer> applyDiscountToDevCard(DevCard devCard, List<Effect> effects) {
         HashMap<ResourceType, Integer> cost = devCard.getCost();
 
-        for(Effect effect: effects)
+        for (Effect effect : effects)
             effect.discountEffect(cost);
 
         return cost;
@@ -213,7 +220,7 @@ public class MainBoard {
      * @return the first DevCard at the chosen DevDeck on the grid (the Card is not Removed From the deck) or NULL if devDeck is Empty
      * @throws IllegalArgumentException when the chosen position in the grid is not valid
      */
-    public DevCard getDevCardFromDeckInDevGrid(int row, int column) throws IllegalArgumentException{
+    public DevCard getDevCardFromDeckInDevGrid(int row, int column) throws IllegalArgumentException {
         return this.devGrid.getDevCardFromDeck(row, column);
     }
 
@@ -225,7 +232,7 @@ public class MainBoard {
      * @return the first DevCard in the chosen DevDeck on the grid (the Card is not removed from the deck) or NULL if devDeck is Empty
      * @throws IllegalArgumentException when the chosen level or color are not valid
      */
-    public DevCard getDevCardFromDeckInDevGrid(int level, DevCardColour colour) throws IllegalArgumentException{
+    public DevCard getDevCardFromDeckInDevGrid(int level, DevCardColour colour) throws IllegalArgumentException {
         return this.devGrid.getDevCardFromDeck(level, colour);
     }
 
@@ -236,14 +243,14 @@ public class MainBoard {
      * @param column the column of the DevCard
      * @return the first DevCard in the chosen DevDeck on the grid. The Card is Removed From the deck.
      * @throws IllegalArgumentException when the chosen position on the grid is not valid
-     * @throws IllegalActionException if the specified DevDeck is empty
+     * @throws IllegalActionException   if the specified DevDeck is empty
      */
     public DevCard drawDevCardFromDeckInDevGrid(int row, int column) throws IllegalArgumentException, IllegalActionException {
         DevCard result;
 
-        try{
+        try {
             result = this.devGrid.drawDevCardFromDeck(row, column);
-        }catch(EmptyDeckException e){
+        } catch (EmptyDeckException e) {
             throw new IllegalActionException(e.getMessage());
         }
 
@@ -257,14 +264,14 @@ public class MainBoard {
      * @param colour the color of the card
      * @return the first DevCard in the chosen DevDeck on the grid. The Card is Removed From the deck.
      * @throws IllegalArgumentException when the chosen position in the grid is not valid
-     * @throws IllegalActionException      if devDeck is Empty;
+     * @throws IllegalActionException   if devDeck is Empty;
      */
-    public DevCard drawDevCardFromDeckInDevGrid(int level, DevCardColour colour) throws IllegalArgumentException, IllegalActionException{
+    public DevCard drawDevCardFromDeckInDevGrid(int level, DevCardColour colour) throws IllegalArgumentException, IllegalActionException {
         DevCard result;
 
-        try{
+        try {
             result = this.devGrid.drawDevCardFromDeck(level, colour);
-        }catch(EmptyDeckException e){
+        } catch (EmptyDeckException e) {
             throw new IllegalActionException(e.getMessage());
         }
 
@@ -274,7 +281,7 @@ public class MainBoard {
     /**
      * @return a list of the uncovered DevCard in the Gris
      */
-    public Collection<DevCard> getDrawableCardsInDevGrid(){
+    public Collection<DevCard> getDrawableCardsInDevGrid() {
         return this.devGrid.getDrawableCards();
     }
 
@@ -307,14 +314,15 @@ public class MainBoard {
 
     /**
      * Returns the reference to the PlayerBoard at the specified position (it doesn't remove it from this MainBoard).
+     *
      * @param position the index of the PlayerBoard
      * @return the reference to the desired PlayerBoard
      */
-    public PlayerBoard getPlayerBoard(int position){
+    public PlayerBoard getPlayerBoard(int position) {
         return this.playerBoardsList.get(position);
     }
 
-    public int getPlayerBoardIndex(PlayerBoard playerBoard){
+    public int getPlayerBoardIndex(PlayerBoard playerBoard) {
         return this.playerBoardsList.indexOf(playerBoard);
     }
 
@@ -322,7 +330,7 @@ public class MainBoard {
         return playerBoardsList;
     }
 
-    public int getPlayerBoardsNumber(){
+    public int getPlayerBoardsNumber() {
         return this.playerBoardsList.size();
     }
 
@@ -330,7 +338,9 @@ public class MainBoard {
         return new FaithTrack(this.faithTrack);
     }
 
-    public FaithTrack getFaithTrackReference() { return  this.faithTrack;}
+    public FaithTrack getFaithTrackReference() {
+        return this.faithTrack;
+    }
 
     public Deck getLeaderCardsDeck() {
         return new LeaderCardDeck((LeaderCardDeck) this.leaderCardsDeck);
@@ -374,9 +384,10 @@ public class MainBoard {
 
     /**
      * Returns -1 because in the multiplayer mode there is no Lorenzo
+     *
      * @return -1
      */
-    public int getLorenzoFaithTrackPosition(){
+    public int getLorenzoFaithTrackPosition() {
         return -1;
     }
 
@@ -388,29 +399,30 @@ public class MainBoard {
 
     /**
      * Creates a ready-to-be-used MainBoard
+     *
      * @param numberOfPlayers the number of player in this game
-     * @throws IllegalArgumentException if the number of players is lower than 0 or greater than 4 or in the configuration files there are some errors in the elements described
+     * @throws IllegalArgumentException     if the number of players is lower than 0 or greater than 4 or in the configuration files there are some errors in the elements described
      * @throws ParserConfigurationException if there are problems in the parsing
-     * @throws IOException if an IO operations fails
-     * @throws SAXException if there is a general SAX error or warning
+     * @throws IOException                  if an IO operations fails
+     * @throws SAXException                 if there is a general SAX error or warning
      */
     public MainBoard(int numberOfPlayers) throws IllegalArgumentException, ParserConfigurationException, IOException, SAXException {
-        if(numberOfPlayers > 4 || numberOfPlayers < 0)
+        if (numberOfPlayers > 4 || numberOfPlayers < 0)
             throw new IllegalArgumentException("The number of players is illegal!");
 
         this.faithTrack = FaithTrack.instance(new File("FaithTrackConfig.xml"));
         this.popeTiles = PopeTile.popeTileConfig(new File("PopeTileConfig.xml"), this.faithTrack.getReportNumOrder());
-        try{
+        try {
             this.leaderCardsDeck = new LeaderCardDeck(LeaderCardDeck.initLeaderCards(new File("LeaderCardConfig.xml")));
             this.devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
             this.market = new Market(new File("MarketConfig.xsd.xml"));
-        }catch (NegativeQuantityException e){
+        } catch (NegativeQuantityException e) {
             throw new IllegalArgumentException("The given configuration file is wrong: " + e.getMessage());
         }
 
         this.numberOfPlayers = numberOfPlayers;
         this.playerBoardsList = new ArrayList<>();
-        for(int i = 0; i < this.numberOfPlayers; i++)
+        for (int i = 0; i < this.numberOfPlayers; i++)
             this.playerBoardsList.add(new PlayerBoard());
         //By default the number of LeaderCards to give each player at the beginning of the game is four
         this.numberOfLeaderCardsToGive = 4;
@@ -428,18 +440,18 @@ public class MainBoard {
      * Initiates the FaithLevel of each PlayerBoard by setting their FaithTrack and giving them their PopeTiles. This method supposes that there are enough
      * PopeTiles for every PlayerBoard in the configuration file.
      */
-    private void initMainBoard(){
+    private void initMainBoard() {
         //Let's set the FaithTrack for all PlayerBoards
-        for(PlayerBoard pB: this.playerBoardsList)
+        for (PlayerBoard pB : this.playerBoardsList)
             pB.setPlayerFaithLevelFaithTrack(this.faithTrack);
 
         //Let's give each of the PlayerBoards their PopeTiles
-        for(List<PopeTile> lPT: popeTiles)
+        for (List<PopeTile> lPT : popeTiles)
             Collections.shuffle(lPT);
         List<PopeTile> tmp;
-        for(PlayerBoard pB: this.playerBoardsList){
+        for (PlayerBoard pB : this.playerBoardsList) {
             tmp = new ArrayList<>();
-            for(List<PopeTile> lPT: popeTiles)
+            for (List<PopeTile> lPT : popeTiles)
                 tmp.add(lPT.remove(0));
             pB.setPlayerFaithLevelPopeTiles(tmp);
         }
@@ -466,14 +478,15 @@ public class MainBoard {
 
     /**
      * Gives each player in the game their extra Faith points starting from the specified first player
+     *
      * @param firstPlayer the first player of the game
      * @throws LastVaticanReportException if the player reaches the end of the FaithTrack
      */
     public void giveExtraFaithPointAtBeginning(int firstPlayer) throws LastVaticanReportException {
         int playerIndex = firstPlayer;
         int i = 0;
-        while(i < this.numberOfPlayers){
-            if(playerIndex == this.numberOfPlayers)
+        while (i < this.numberOfPlayers) {
+            if (playerIndex == this.numberOfPlayers)
                 playerIndex = 0;
             playerBoardsList.get(playerIndex).moveForwardOnFaithTrack(this.extraFaithPointsAtBeginning[i]);
             i++;
@@ -484,27 +497,29 @@ public class MainBoard {
     /**
      * Returns the number of extra resources the specified player gets in this game: it calculates this number basing the count on the specified first player (both indexes are the ones in the
      * list of players that the MainBoard holds).
-     * @param firstPlayer the first player of the game
+     *
+     * @param firstPlayer   the first player of the game
      * @param currentPlayer the player whose number of extra resources we want to compute
      * @return the number of extra resources the specified player gets in this game
      */
-    public int getExtraResourcesAtBeginningForPlayer(int firstPlayer, int currentPlayer){
+    public int getExtraResourcesAtBeginningForPlayer(int firstPlayer, int currentPlayer) {
         return this.extraResourcesAtBeginning[this.getPlayerOder(firstPlayer, currentPlayer)];
     }
 
     /**
      * Returns the order of the specified player in the game: it calculates this number basing the count on the specified first player (both indexes are the ones in the
      * list of players that the MainBoard holds).
-     * @param firstPlayer the first player of the game
+     *
+     * @param firstPlayer   the first player of the game
      * @param currentPlayer the player whose number of extra resources we want to compute
      * @return the player's order in the game (it is a number in the range [0, this.numberOfPlayers - 1], ends included)
      */
-    public int getPlayerOder(int firstPlayer, int currentPlayer){
+    public int getPlayerOder(int firstPlayer, int currentPlayer) {
         //Basically this method shifts the order of the player so that the first player is in position 0 because if we do so
         //we can easily get the desired number by directly accessing the extraResourcesAtBeginning array
         int currentPlayerOrder = currentPlayer - firstPlayer;
         //System.out.println("Cur: " + currentPlayerOrder);
-        if(currentPlayerOrder < 0)
+        if (currentPlayerOrder < 0)
             currentPlayerOrder = this.numberOfPlayers - Math.abs(currentPlayerOrder);
         //System.out.println("Cur: " + currentPlayerOrder);
         return currentPlayerOrder;
@@ -512,17 +527,19 @@ public class MainBoard {
 
     /**
      * Returns a random player
+     *
      * @return the randomly chosen player's position in the order of all players of the game
      */
-    public int getFirstPlayerRandomly(){
+    public int getFirstPlayerRandomly() {
         return new Random().nextInt(this.numberOfPlayers);
     }
 
     /**
      * Constructs a copy of the specified MainBoard. The new MainBoard and its PlayerBoards all reference to the same FaithTrack.
+     *
      * @param original the MainBoard to be copied
      */
-    public MainBoard(MainBoard original){
+    public MainBoard(MainBoard original) {
         this.faithTrack = new FaithTrack(original.faithTrack);
         this.popeTiles = PopeTile.copyPopeTiles(original.popeTiles);
         this.leaderCardsDeck = new LeaderCardDeck((LeaderCardDeck) original.leaderCardsDeck);
@@ -531,7 +548,7 @@ public class MainBoard {
         this.numberOfPlayers = original.numberOfPlayers;
 
         this.playerBoardsList = new ArrayList<>();
-        for(PlayerBoard pB: original.playerBoardsList)
+        for (PlayerBoard pB : original.playerBoardsList)
             this.playerBoardsList.add(new PlayerBoard(pB, this.faithTrack));
 
         this.numberOfLeaderCardsToGive = original.numberOfLeaderCardsToGive;
@@ -556,7 +573,7 @@ public class MainBoard {
 
     }
 
-    public MainBoard getClone(){
+    public MainBoard getClone() {
         return new MainBoard(this);
     }
 
@@ -575,10 +592,11 @@ public class MainBoard {
 
     /**
      * Checks whether the specified player, identified with their PlayerBoard, has discarded all the LeaderCard is supposed to
+     *
      * @param playerBoard the player's PlayerBoard where the number of discarded card is checked
      * @return true if the player has discarded the right amount of LeaderCards, false otherwise
      */
-    public boolean checkIfPlayerDiscardedCards(PlayerBoard playerBoard){
+    public boolean checkIfPlayerDiscardedCards(PlayerBoard playerBoard) {
         return playerBoard.checkDiscardedLeaderCard(this.numberOfLeaderCardsToGive, this.numberOfLeaderCardsToDiscardAtBeginning);
     }
 

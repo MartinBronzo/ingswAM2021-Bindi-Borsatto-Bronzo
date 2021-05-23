@@ -2,7 +2,6 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.controller.enums.PlayerState;
-import it.polimi.ingsw.network.messages.fromClient.Message;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +10,7 @@ public class JsonTest {
 
     @BeforeAll
     static void setUp() {
-        gson=new Gson();
+        gson = new Gson();
     }
 
     @Test
@@ -21,7 +20,7 @@ public class JsonTest {
     }
 
     @Test
-    public void ctrlCommandTesting(){
+    public void ctrlCommandTesting() {
         String x = "boo:and:foo:";
         System.out.println(x.split("o"));
     }

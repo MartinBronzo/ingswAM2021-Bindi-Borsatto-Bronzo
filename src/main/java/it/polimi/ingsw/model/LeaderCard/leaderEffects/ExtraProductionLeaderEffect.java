@@ -16,7 +16,7 @@ public class ExtraProductionLeaderEffect extends Effect {
     private final int extraOutputQuantity;
     private final int normalOutputQuantity;
 
-    public ExtraProductionLeaderEffect(){
+    public ExtraProductionLeaderEffect() {
         this.requiredInputType = null;
         this.requiredInputNumber = 0;
         this.extraOutputType = ResourceType.FAITHPOINT;

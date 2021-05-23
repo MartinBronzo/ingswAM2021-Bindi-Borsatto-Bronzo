@@ -82,7 +82,7 @@ public class ReportNumOrder {
     //NOT TO BE USED IN THE GAME
     //Once upon a time this method was actually useful
     @Deprecated
-    public static void deleteState(){
+    public static void deleteState() {
         ;
     }
 
@@ -96,11 +96,12 @@ public class ReportNumOrder {
 
     /**
      * Constructs a copy of the specified ReportNumOrder
+     *
      * @param original the ReportNumOrder to be cloned
      */
-    public ReportNumOrder(ReportNumOrder original){
+    public ReportNumOrder(ReportNumOrder original) {
         this();
-        for(ReportNum rN: original.order)
+        for (ReportNum rN : original.order)
             this.addElementInOrder(rN);
     }
 
@@ -113,10 +114,10 @@ public class ReportNumOrder {
         if (!(obj instanceof ReportNumOrder))
             return false;
         ReportNumOrder tmp = (ReportNumOrder) obj;
-        if(this.order.size() != tmp.order.size())
+        if (this.order.size() != tmp.order.size())
             return false;
-        for(int i = 0; i < this.order.size(); i++)
-            if(!this.order.get(i).equals(tmp.order.get(i)))
+        for (int i = 0; i < this.order.size(); i++)
+            if (!this.order.get(i).equals(tmp.order.get(i)))
                 return false;
         return true;
     }

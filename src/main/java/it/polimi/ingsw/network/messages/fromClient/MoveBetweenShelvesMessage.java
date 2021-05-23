@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.fromClient;
 
-public class MoveBetweenShelvesMessage extends Message{
+public class MoveBetweenShelvesMessage extends Message {
     private int sourceShelf, destShelf;
 
     public MoveBetweenShelvesMessage(int sourceShelf, int destShelf) {

@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.messages.fromClient;
 
 import it.polimi.ingsw.model.ResourceType;
 
-public class MoveLeaderToShelfMessage extends Message{
+public class MoveLeaderToShelfMessage extends Message {
     private ResourceType res;
     private int quantity;
     private int destShelf;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-public class ErrorMessage implements ResponseInterface{
+public class ErrorMessage implements ResponseInterface {
     private String errorMessage;
 
     public ErrorMessage(String errorMessage) {

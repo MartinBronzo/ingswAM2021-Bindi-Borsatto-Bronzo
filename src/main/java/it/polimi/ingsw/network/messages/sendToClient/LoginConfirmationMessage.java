@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-public class LoginConfirmationMessage implements ResponseInterface{
+public class LoginConfirmationMessage implements ResponseInterface {
     private String confirmedNickname;
 
     public LoginConfirmationMessage(String confirmedNickname) {

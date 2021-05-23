@@ -101,9 +101,10 @@ public class PlayerBoard {
 
     /**
      * returns the amount of victory points, excluding the ones coming from the amount of resources in Depot and Strongbox
+     *
      * @return the amount of victory points, excluding the ones coming from the amount of resources in Depot and Strongbox
      */
-    public int partialVictoryPoints(){
+    public int partialVictoryPoints() {
         int vp = 0;
 
         vp += devSlots.getPoints();
@@ -139,7 +140,7 @@ public class PlayerBoard {
      *
      * @param leaderCard the LeaderCard to be activated
      * @return true if the card was activated
-     * @throws IllegalActionException if the player doesn't meet all the requirements in order to activate the specified card or the ExtraSlot effect of the card cannot be applied
+     * @throws IllegalActionException   if the player doesn't meet all the requirements in order to activate the specified card or the ExtraSlot effect of the card cannot be applied
      * @throws IllegalArgumentException if the LeaderCard is a null pointer
      */
     public boolean activateLeaderCard(LeaderCard leaderCard) throws IllegalActionException, IllegalArgumentException {
@@ -153,7 +154,7 @@ public class PlayerBoard {
                 return true;
             }
             return false;
-        } catch (UnmetRequirementException | FullExtraSlotException e){
+        } catch (UnmetRequirementException | FullExtraSlotException e) {
             throw new IllegalActionException(e.getMessage());
         }
     }
@@ -217,6 +218,7 @@ public class PlayerBoard {
 
     /**
      * Returns a list of LeaderCards who are specified via their position they have in the PlayerBoard
+     *
      * @param cardIndexes the list of indexes of some LeaderCards (indexes are non-negative integers)
      * @return the list of the desired LeaderCards
      * @throws IllegalArgumentException if one of the specified indexes is out of bound
@@ -231,6 +233,7 @@ public class PlayerBoard {
 
     /**
      * Returns the not played LeaderCard whose position it holds in the PlayerBoard is specified as a parameter
+     *
      * @param cardIndex the position inside the ordered collection of not player LeaderCards of the desired LeaderCard (it is a non-negative integer)
      * @return the desired not played LeaderCard
      * @throws IllegalArgumentException if the given index is out of bound
@@ -298,7 +301,7 @@ public class PlayerBoard {
      * @throws IllegalArgumentException if index is not valid: must be between 0 and 2
      * @throws IllegalArgumentException if devCard is null
      * @throws IllegalArgumentException if this card can't be added in the desiredSlot
-     * @throws EndOfGameException if the player adds the 7th card in the slots
+     * @throws EndOfGameException       if the player adds the 7th card in the slots
      */
     public boolean addCardToDevSlot(int index, DevCard devCard) throws IllegalArgumentException, EndOfGameException {
         try {
@@ -313,7 +316,7 @@ public class PlayerBoard {
         return false;
     }
 
-    public DevCard getUsableDevCardFromDevSlotIndex(int index){
+    public DevCard getUsableDevCardFromDevSlotIndex(int index) {
         return devSlots.getDevSlot(index).getLastDevCard();
     }
 
@@ -336,10 +339,11 @@ public class PlayerBoard {
 
     /**
      * Returns the number of resources on the specified shelf
+     *
      * @param index the index of the shelf (must be between 1 and 3)
      * @return the number of resources in the specified shelf
      */
-    public int getNumberOfResInShelf(int index){
+    public int getNumberOfResInShelf(int index) {
         return this.depot.getNumberOfResOnShelf(index);
     }
 
@@ -409,7 +413,7 @@ public class PlayerBoard {
     public boolean removeResourceFromLeader(ResourceType resourceType, int quantity) throws IllegalArgumentException, IllegalActionException {
         try {
             return this.depot.removeFromLeader(resourceType, quantity);
-        }catch (NoExtraSlotException | NotEnoughResourcesException e){
+        } catch (NoExtraSlotException | NotEnoughResourcesException e) {
             throw new IllegalActionException(e.getMessage());
         }
     }
@@ -448,9 +452,10 @@ public class PlayerBoard {
 
     /**
      * Returns a copy of the Extra Slots this player has
+     *
      * @return a copy of the Extra Slots
      */
-    public HashMap<ResourceType, Integer> getLeaderDepot(){
+    public HashMap<ResourceType, Integer> getLeaderDepot() {
         return this.depot.getLeaderDepot();
     }
 
@@ -476,7 +481,7 @@ public class PlayerBoard {
     public boolean moveBetweenShelves(int sourceShelf, int destShelf) throws IllegalActionException {
         try {
             return depot.moveBetweenShelves(sourceShelf, destShelf);
-        }catch (NotEnoughSpaceException e){
+        } catch (NotEnoughSpaceException e) {
             throw new IllegalActionException(e.getMessage());
         }
     }
@@ -487,15 +492,15 @@ public class PlayerBoard {
      * @param shelfNum the number of the shelf from which remove the resources, must be between 1 and 3
      * @param quantity the number of resources to move to the extraSlot
      * @return true if the action is performed without errors
-     * @throws IllegalActionException     if there isn't enough space in the extra slot to move the resources
-     * @throws IllegalActionException        if there isn't an active extra slot for that type of resource
+     * @throws IllegalActionException if there isn't enough space in the extra slot to move the resources
+     * @throws IllegalActionException if there isn't an active extra slot for that type of resource
      * @throws IllegalActionException if there aren't enough resources to move from the shelf of the depot
-     * @throws IllegalActionException      if the extra slot is already full of resources
+     * @throws IllegalActionException if the extra slot is already full of resources
      */
     public boolean moveFromShelfToLeader(int shelfNum, int quantity) throws IllegalActionException {
         try {
             return depot.moveToLeader(shelfNum, quantity);
-        }catch (NotEnoughSpaceException | NoExtraSlotException | NotEnoughResourcesException | FullExtraSlotException e){
+        } catch (NotEnoughSpaceException | NoExtraSlotException | NotEnoughResourcesException | FullExtraSlotException e) {
             throw new IllegalActionException(e.getMessage());
         }
     }
@@ -507,17 +512,17 @@ public class PlayerBoard {
      * @param quantity the number of resources to move to the shelf
      * @param shelfNum the number of the shelf in which you want to move the resources
      * @return true if the action is performed without errors
-     * @throws IllegalActionException        if there isn't enough space in the specified shelf to contain the specified quantity
-     * @throws IllegalActionException if exists another shelf that contains the same resource
-     * @throws IllegalArgumentException           if there isn't an extra slot for the specified type of resource
-     * @throws IllegalActionException    if there aren't enough resources in the extra slot to move to the shelf
+     * @throws IllegalActionException   if there isn't enough space in the specified shelf to contain the specified quantity
+     * @throws IllegalActionException   if exists another shelf that contains the same resource
+     * @throws IllegalArgumentException if there isn't an extra slot for the specified type of resource
+     * @throws IllegalActionException   if there aren't enough resources in the extra slot to move to the shelf
      */
     public boolean moveFromLeaderToShelf(ResourceType resource, int quantity, int shelfNum) throws IllegalActionException, IllegalArgumentException {
         try {
             return depot.moveToShelf(resource, quantity, shelfNum);
-        }catch (NotEnoughSpaceException | AlreadyInAnotherShelfException | NotEnoughResourcesException e){
+        } catch (NotEnoughSpaceException | AlreadyInAnotherShelfException | NotEnoughResourcesException e) {
             throw new IllegalActionException(e.getMessage());
-        }catch(NoExtraSlotException e){
+        } catch (NoExtraSlotException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
@@ -544,7 +549,7 @@ public class PlayerBoard {
     public boolean removeResourcesFromStrongbox(HashMap<ResourceType, Integer> resMap) throws IllegalActionException {
         try {
             return strongbox.removeResource(resMap);
-        }catch(NotEnoughResourcesException e){
+        } catch (NotEnoughResourcesException e) {
             throw new IllegalActionException(e.getMessage());
         }
     }
@@ -559,7 +564,7 @@ public class PlayerBoard {
         return strongbox.getResource(resource);
     }
 
-    public HashMap<ResourceType, Integer> getStrongboxMap(){
+    public HashMap<ResourceType, Integer> getStrongboxMap() {
         return strongbox.getAllResources();
     }
 
@@ -780,11 +785,11 @@ public class PlayerBoard {
         return new BaseProduction(this.baseProduction);
     }
 
-    public HashMap<ResourceType, Integer> getBaseProductionInput(){
+    public HashMap<ResourceType, Integer> getBaseProductionInput() {
         return new HashMap<>(this.baseProduction.getInputHashMap());
     }
 
-    public HashMap<ResourceType, Integer> getBaseProductionOutput(){
+    public HashMap<ResourceType, Integer> getBaseProductionOutput() {
         return new HashMap<>(this.baseProduction.getOutputHashMap());
     }
 
@@ -838,9 +843,10 @@ public class PlayerBoard {
 
     /**
      * Creates a copy of the specified PlayerBoard
+     *
      * @param original the PlayerBoard to be cloned
      */
-    public PlayerBoard(PlayerBoard original){
+    public PlayerBoard(PlayerBoard original) {
         this.playerFaithLevel = new FaithLevel(original.playerFaithLevel);
         this.depot = new Depot(original.depot);
         this.strongbox = new Strongbox(original.strongbox);
@@ -852,10 +858,11 @@ public class PlayerBoard {
     /**
      * Constructs a new PlayerBoard: every parameter but the FaithTrack is copied from the specified PlayerBoard, the FaithTrack of this new PlayerBoard is the same as the one specified
      * (this is needed in order to make sure that the new PlayerBoard references to the specified PlayerBoard).
-     * @param original the PlayerBoard whose every parameter but the FaithTrack is to be cloned
+     *
+     * @param original   the PlayerBoard whose every parameter but the FaithTrack is to be cloned
      * @param faithTrack the FaithTrack the new PlayerBoard will reference once constructed
      */
-    public PlayerBoard(PlayerBoard original, FaithTrack faithTrack){
+    public PlayerBoard(PlayerBoard original, FaithTrack faithTrack) {
         this.playerFaithLevel = original.playerFaithLevel.getClone(original.playerFaithLevel, faithTrack);
         this.depot = new Depot(original.depot);
         this.strongbox = new Strongbox(original.strongbox);
@@ -866,17 +873,18 @@ public class PlayerBoard {
 
     /**
      * Checks whether this player has discarded all the cards they are supposed to
+     *
      * @param numCardsAtBeginning how many cards the player gets at the beginning of the game
-     * @param numCardsToDiscard how many cards the player is supposed to discard
+     * @param numCardsToDiscard   how many cards the player is supposed to discard
      * @return true if the player has discarded the card they are supposed to, false otherwise
      */
-    public boolean checkDiscardedLeaderCard(int numCardsAtBeginning, int numCardsToDiscard){
-        if(this.leaderCards.getNotActiveCardsSize() + this.leaderCards.getActiveCardsSize() == numCardsAtBeginning - numCardsToDiscard)
+    public boolean checkDiscardedLeaderCard(int numCardsAtBeginning, int numCardsToDiscard) {
+        if (this.leaderCards.getNotActiveCardsSize() + this.leaderCards.getActiveCardsSize() == numCardsAtBeginning - numCardsToDiscard)
             return true;
         return false;
     }
 
-    public boolean ctrlIfWhiteMarbleLeaderCardPresent(){
+    public boolean ctrlIfWhiteMarbleLeaderCardPresent() {
         return this.leaderCards.checkIfWhiteMarbleActive();
     }
 

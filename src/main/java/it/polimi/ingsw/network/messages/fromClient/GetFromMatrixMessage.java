@@ -3,14 +3,14 @@ package it.polimi.ingsw.network.messages.fromClient;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetFromMatrixMessage extends Message{
+public class GetFromMatrixMessage extends Message {
     private int row, col;
     private List<Integer> leaderList;
 
-    public GetFromMatrixMessage(int row, int col, List<Integer>leaderList) {
+    public GetFromMatrixMessage(int row, int col, List<Integer> leaderList) {
         this.row = row;
         this.col = col;
-        this. leaderList = leaderList;
+        this.leaderList = leaderList;
     }
 
     public int getRow() {

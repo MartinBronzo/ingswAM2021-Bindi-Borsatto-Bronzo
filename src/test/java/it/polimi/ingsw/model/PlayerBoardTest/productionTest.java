@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.PlayerBoardTest;
 
-import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.exceptions.EndOfGameException;
+import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.FaithTrack.FaithTrack;
@@ -149,7 +152,7 @@ public class productionTest {
         DevCard cardLevel3_2 = new DevCard(3, DevCardColour.GREEN, 3, cardMap, cardMap, cardMap, "abc");
         try {
             playerBoard.addCardToDevSlot(1, cardLevel3_2);
-        }catch (EndOfGameException ignored){
+        } catch (EndOfGameException ignored) {
         }
         HashMap<LeaderCard, ResourceType> leaderProductionMap = new HashMap<>();
         for (LeaderCard leadercard : leaderCards) {
@@ -159,7 +162,7 @@ public class productionTest {
     }
 
     @Test
-    void activateProductionNotActionableLeaderCardCard(){
+    void activateProductionNotActionableLeaderCardCard() {
         leaderCards = new ArrayList<>();
         leaderCards.add(leaderCard3);
         HashMap<LeaderCard, ResourceType> leaderProductionMap = new HashMap<>();
@@ -211,7 +214,7 @@ public class productionTest {
         DevCard cardLevel3_2 = new DevCard(3, DevCardColour.GREEN, 3, cardMap, cardMap, cardMap, "abc");
         try {
             playerBoard.addCardToDevSlot(1, cardLevel3_2);
-        }catch (EndOfGameException e){
+        } catch (EndOfGameException e) {
         }
         devCards = new ArrayList<>();
         devCards.add(cardLevel3_2);
@@ -219,7 +222,7 @@ public class productionTest {
     }
 
     @Test
-    void getProductionNotActionableDevCard() throws  NegativeQuantityException {
+    void getProductionNotActionableDevCard() throws NegativeQuantityException {
         leaderCards = new LinkedList<>();
         leaderCards.add(leaderCard1);
         leaderCards.add(leaderCard2);
@@ -228,7 +231,7 @@ public class productionTest {
         DevCard cardLevel3_2 = new DevCard(3, DevCardColour.GREEN, 3, cardMap, cardMap, cardMap, "abc");
         try {
             playerBoard.addCardToDevSlot(1, cardLevel3_2);
-        }catch (EndOfGameException e){
+        } catch (EndOfGameException e) {
         }
         assertThrows(IllegalArgumentException.class, () -> playerBoard.getProductionCost(devCards, leaderCards, false));
     }

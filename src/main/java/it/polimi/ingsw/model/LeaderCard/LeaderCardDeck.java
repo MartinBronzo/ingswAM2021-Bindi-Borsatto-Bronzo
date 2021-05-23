@@ -2,10 +2,7 @@ package it.polimi.ingsw.model.LeaderCard;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
-import it.polimi.ingsw.model.FaithTrack.PopeCell;
-import it.polimi.ingsw.model.FaithTrack.ReportCell;
 import it.polimi.ingsw.model.Interfaces.Deck;
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
@@ -52,11 +49,12 @@ public class LeaderCardDeck implements Deck {
 
     /**
      * Constructs a LeaderCardDeck by reading the LeaderCards description in the specified file and by constructing them, too
+     *
      * @param configFile the file where to read the description of the LeaderCards
-     * @throws NegativeQuantityException if the described LeaderCard aren't valid because of a negative number used as a quantity for some requirement
+     * @throws NegativeQuantityException    if the described LeaderCard aren't valid because of a negative number used as a quantity for some requirement
      * @throws ParserConfigurationException if there are problems in the parsing
-     * @throws SAXException if there is a general SAX error or warning
-     * @throws IOException if an IO operations fails
+     * @throws SAXException                 if there is a general SAX error or warning
+     * @throws IOException                  if an IO operations fails
      */
     public LeaderCardDeck(File configFile) throws NegativeQuantityException, ParserConfigurationException, SAXException, IOException {
         this.leaderCards = this.initLeaderCards(configFile);
@@ -65,11 +63,12 @@ public class LeaderCardDeck implements Deck {
 
     /**
      * Constructs a copy of the specified LeaderCardDeck
+     *
      * @param original the LeaderCard to be cloned
      */
-    public LeaderCardDeck(LeaderCardDeck original){
+    public LeaderCardDeck(LeaderCardDeck original) {
         this();
-        for(LeaderCard lC: original.leaderCards)
+        for (LeaderCard lC : original.leaderCards)
             this.leaderCards.add(new LeaderCard(lC));
     }
 
@@ -145,13 +144,14 @@ public class LeaderCardDeck implements Deck {
 
     /**
      * Checks whether the first list is contained by the second list
+     *
      * @param l1 the list to be contained by the other
      * @param l2 the list to contain the other
      * @return true if the first list is contained by the second one, false otherwise
      */
-    private boolean containsAllNoDuplicates(List<LeaderCard> l1, List<LeaderCard> l2){
+    private boolean containsAllNoDuplicates(List<LeaderCard> l1, List<LeaderCard> l2) {
         List<LeaderCard> l1Copy = new ArrayList<>(l1);
-        for(LeaderCard lD: l2)
+        for (LeaderCard lD : l2)
             l1Copy.remove(lD);
         return l1Copy.isEmpty();
     }

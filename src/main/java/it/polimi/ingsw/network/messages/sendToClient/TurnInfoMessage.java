@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
 @Deprecated
-public class TurnInfoMessage implements ResponseInterface{
+public class TurnInfoMessage implements ResponseInterface {
     private boolean toPlay;
 
     public TurnInfoMessage(boolean toPlay) {

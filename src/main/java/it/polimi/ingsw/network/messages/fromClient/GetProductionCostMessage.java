@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.messages.fromClient;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetProductionCostMessage extends Message{
+public class GetProductionCostMessage extends Message {
     private List<Integer> devCards; //the index of the slot of the leader card
     private List<Integer> leaders;
     private BaseProductionParams baseProd;

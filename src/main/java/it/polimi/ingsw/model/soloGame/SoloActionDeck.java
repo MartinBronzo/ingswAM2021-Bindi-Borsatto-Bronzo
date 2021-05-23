@@ -32,7 +32,7 @@ public class SoloActionDeck implements Deck {
         this.soloDeck = new LinkedList<>(soloActionDeck.soloDeck);
     }
 
-    public LinkedList<SoloActionToken> SoloActionDeck(SoloActionDeck soloActionDeck){
+    public LinkedList<SoloActionToken> SoloActionDeck(SoloActionDeck soloActionDeck) {
         return new LinkedList<>(soloDeck);
     }
 

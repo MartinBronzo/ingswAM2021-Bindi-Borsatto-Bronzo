@@ -6,10 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.rmi.UnexpectedException;
 
@@ -42,7 +39,7 @@ class GamesManagerSingletonTest {
     }
 
     @Test
-    void sequentialAddClients() throws  InterruptedException, IllegalArgumentException {
+    void sequentialAddClients() throws InterruptedException, IllegalArgumentException {
         assertNull(gamesManagerSingleton.getStartingGame());
         Thread thread1 = new Thread(() -> {
             try {
@@ -101,7 +98,7 @@ class GamesManagerSingletonTest {
     }
 
     @Test
-    void clientConfigureBeforeOthersJoin() throws  InterruptedException {
+    void clientConfigureBeforeOthersJoin() throws InterruptedException {
         assertNull(gamesManagerSingleton.getStartingGame());
         Thread thread1 = new Thread(() -> {
             try {
@@ -150,7 +147,7 @@ class GamesManagerSingletonTest {
     }
 
     @Test
-    void solitaryGameTest() throws  InterruptedException {
+    void solitaryGameTest() throws InterruptedException {
         assertNull(gamesManagerSingleton.getStartingGame());
         Thread thread1 = new Thread(() -> {
             try {

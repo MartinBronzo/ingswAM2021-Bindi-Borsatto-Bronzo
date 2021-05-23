@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-public class ResponseMessage implements ResponseInterface{
+public class ResponseMessage implements ResponseInterface {
     private ResponseType responseType;
     private String responseContent;
 

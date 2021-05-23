@@ -3,11 +3,13 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class stringToMessageTest {
 
@@ -117,7 +119,7 @@ class stringToMessageTest {
         assertEquals(1, integers.get(0));
         assertEquals(2, integers.get(1));
         assertEquals(4, integers.get(2));
-        HashMap<Integer,ResourceType> leaderIdsMap = message.getLeaders();
+        HashMap<Integer, ResourceType> leaderIdsMap = message.getLeaders();
         assertEquals(ResourceType.COIN, leaderIdsMap.get(2));
         assertEquals(ResourceType.SERVANT, leaderIdsMap.get(1));
         assertTrue(message.getBaseProduction().isActivated());

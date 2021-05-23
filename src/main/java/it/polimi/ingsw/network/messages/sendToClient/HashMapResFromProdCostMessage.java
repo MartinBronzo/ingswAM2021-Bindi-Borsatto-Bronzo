@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.HashMap;
 
-public class HashMapResFromProdCostMessage implements ResponseInterface{
+public class HashMapResFromProdCostMessage implements ResponseInterface {
     private HashMap<ResourceType, Integer> resources;
 
     public HashMapResFromProdCostMessage(HashMap<ResourceType, Integer> resources) {

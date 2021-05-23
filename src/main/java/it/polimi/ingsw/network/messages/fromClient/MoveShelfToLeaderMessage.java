@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.fromClient;
 
-public class MoveShelfToLeaderMessage extends Message{
+public class MoveShelfToLeaderMessage extends Message {
     private int numShelf, quantity;
 
     public MoveShelfToLeaderMessage(int numShelf, int quantity) {

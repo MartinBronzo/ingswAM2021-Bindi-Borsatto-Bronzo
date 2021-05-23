@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.messages.sendToClient;
 
 import it.polimi.ingsw.view.readOnlyModel.Game;
 
-public class ModelUpdate implements ResponseInterface{
+public class ModelUpdate implements ResponseInterface {
     private Game game;
 
     public ModelUpdate(Game game) {

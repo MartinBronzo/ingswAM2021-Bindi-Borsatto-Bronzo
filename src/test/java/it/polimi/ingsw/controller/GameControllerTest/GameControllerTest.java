@@ -8,13 +8,13 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.MainBoard;
-import it.polimi.ingsw.view.Client;
-import it.polimi.ingsw.view.readOnlyModel.Player;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.net.Socket;
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class GameControllerTest {
     Reader inputStreamReader;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         gameController = new GameController();
         inputStreamReader = new InputStreamReader(System.in);
         clientHandler1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter(System.out));
@@ -41,7 +41,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void ctrlCreationFirstSetUp(){
+    public void ctrlCreationFirstSetUp() {
         gameController = new GameController();
 
         assertTrue(gameController.getNumberOfPlayers() < 0);
@@ -49,26 +49,26 @@ public class GameControllerTest {
     }
 
     @Test
-    public void ctrlCreationSettingMainBoard(){
+    public void ctrlCreationSettingMainBoard() {
         gameController.startMainBoard(4);
 
         assertEquals(gameController.getNumberOfPlayers(), 4);
     }
 
     @Test
-    public void ctrlCreationWrongNumberOfPlayersTooLow(){
+    public void ctrlCreationWrongNumberOfPlayersTooLow() {
         Exception e = assertThrows(IllegalArgumentException.class, () -> gameController.startMainBoard(0));
         assertEquals(e.getMessage(), "The number of players must be a number between 1 and 4 included!");
     }
 
     @Test
-    public void ctrlCreationWrongNumberOfPlayersTooHigh(){
+    public void ctrlCreationWrongNumberOfPlayersTooHigh() {
         Exception e = assertThrows(IllegalArgumentException.class, () -> gameController.startMainBoard(5));
         assertEquals(e.getMessage(), "The number of players must be a number between 1 and 4 included!");
     }
 
     @Test
-    public void ctrlCreationGoodNumberOfPlayers(){
+    public void ctrlCreationGoodNumberOfPlayers() {
         gameController.startMainBoard(4);
 
         assertEquals(gameController.getNumberOfPlayers(), 4);
@@ -114,8 +114,8 @@ public class GameControllerTest {
         gameController.startMainBoard(1);
         gameController.setPlayerOld(clientHandler1);
 
-        IllegalActionException e = assertThrows(IllegalActionException.class, ()->gameController.setPlayerOld(clientHandler2));
-        assertEquals(e.getMessage(),"You can't be added to this game!");
+        IllegalActionException e = assertThrows(IllegalActionException.class, () -> gameController.setPlayerOld(clientHandler2));
+        assertEquals(e.getMessage(), "You can't be added to this game!");
         assertEquals(gameController.getPlayersList().size(), 1);
         assertSame(gameController.getPlayersList().get(0), clientHandler1);
 

@@ -43,9 +43,9 @@ class CliViewTest {
 
     @BeforeAll
     static void setup() throws NegativeQuantityException {
-        player=new Player();
+        player = new Player();
         List<Requirement> requirements = new ArrayList<>();
-        requirements.add(new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2 ));
+        requirements.add(new CardRequirementColorAndLevel(2, DevCardColour.GREEN, 2));
         card1 = new LeaderCard(4, requirements, new ExtraProductionLeaderEffect(ResourceType.SHIELD, 2));
         requirements = new ArrayList<>();
         requirements.add(new CardRequirementResource(ResourceType.SERVANT, 5));
@@ -84,20 +84,20 @@ class CliViewTest {
         devCardOutput.put(ResourceType.STONE, 1);
         cost = new HashMap<>();
         cost.put(ResourceType.STONE, 3);
-        devCard = new DevCard(1, DevCardColour.YELLOW, 3,  devCardInput, devCardOutput, cost, "some/random/url");
-        devCard2 = new DevCard(1, DevCardColour.PURPLE, 2,  devCardInput, devCardOutput, cost, "some/random/url");
-        devCard3 = new DevCard(1, DevCardColour.GREEN, 2,  devCardInput, devCardOutput, cost, "some/random/url");
+        devCard = new DevCard(1, DevCardColour.YELLOW, 3, devCardInput, devCardOutput, cost, "some/random/url");
+        devCard2 = new DevCard(1, DevCardColour.PURPLE, 2, devCardInput, devCardOutput, cost, "some/random/url");
+        devCard3 = new DevCard(1, DevCardColour.GREEN, 2, devCardInput, devCardOutput, cost, "some/random/url");
         player.setPlayerState(PlayerState.PLAYING);
         player.setFaithPosition(3);
         player.setNickName("gianjd");
         player.setVictoryPoints(56);
-        List<PopeTile> popeTiles =new ArrayList<>();
+        List<PopeTile> popeTiles = new ArrayList<>();
         PopeTile popeTile = new PopeTile(1, ReportNum.REPORT1);
         popeTiles.add(popeTile);
         popeTiles.add(popeTile);
         popeTiles.add(popeTile);
         player.setPopeTiles(popeTiles);
-        for (int i = 0; i<3; i++)
+        for (int i = 0; i < 3; i++)
             player.addDepotShelf(new DepotShelf());
         devSlots = new DevSlots();
         devSlots.addDevCard(0, devCard);
@@ -114,8 +114,8 @@ class CliViewTest {
     void printMarketTest() {
         MarbleType[][] matrix = new MarbleType[3][4];
         Random random = new Random();
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
                 matrix[i][j] = MarbleType.values()[random.nextInt(6)];
         Board board = new Board();
         board.setMarketMatrix(matrix);
@@ -139,7 +139,7 @@ class CliViewTest {
 
     @Test
     void printFaithTrack() {
-        List<PopeTile> popeTiles =new ArrayList<>();
+        List<PopeTile> popeTiles = new ArrayList<>();
         PopeTile popeTile = new PopeTile(1, ReportNum.REPORT1);
         popeTiles.add(popeTile);
         popeTiles.add(popeTile);
@@ -161,11 +161,11 @@ class CliViewTest {
 
     @Test
     void printSetUpView() {
-        CliView.printSetUpView(2,0);
+        CliView.printSetUpView(2, 0);
         System.out.println("\n");
-        CliView.printSetUpView(2,1);
+        CliView.printSetUpView(2, 1);
         System.out.println("\n");
-        CliView.printSetUpView(2,2);
+        CliView.printSetUpView(2, 2);
         System.out.println("\n");
     }
 
@@ -175,7 +175,7 @@ class CliViewTest {
     }
 
     @Test
-    void printFinalScores(){
+    void printFinalScores() {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("Darth Vader", 67);
         map.put("General Grievous", 33);
@@ -192,41 +192,41 @@ class CliViewTest {
     }
 
     @Test
-    void printUnusedLeaderCards(){
+    void printUnusedLeaderCards() {
         CliView.printUnusedLeaderCards(list);
     }
 
     @Test
-    void printUsedLeaderCards(){
+    void printUsedLeaderCards() {
         CliView.printUsedLeaderCards(list);
     }
 
     @Test
-    void printStrongBox(){
+    void printStrongBox() {
         CliView.printStrongBox(resources);
     }
 
     @Test
-    void printLeaderDepot(){
+    void printLeaderDepot() {
         CliView.printLeaderDepots(resources);
     }
 
     @Test
-    void printDepotFull(){
+    void printDepotFull() {
         CliView.printDepot(shelves);
     }
 
     @Test
-    void printDepotFirstEmpty(){
+    void printDepotFirstEmpty() {
         List<DepotShelf> e = new ArrayList<>();
         e.add(new DepotShelf(null, 0));
         e.add(new DepotShelf(ResourceType.COIN, 2));
         e.add(new DepotShelf(ResourceType.SHIELD, 3));
         CliView.printDepot(e);
     }
-    
+
     @Test
-    void printDepotSecondEmpty(){
+    void printDepotSecondEmpty() {
         List<DepotShelf> e = new ArrayList<>();
         e.add(new DepotShelf(ResourceType.SERVANT, 1));
         e.add(new DepotShelf(null, 0));
@@ -235,7 +235,7 @@ class CliViewTest {
     }
 
     @Test
-    void printDepotThirdEmpty(){
+    void printDepotThirdEmpty() {
         List<DepotShelf> e = new ArrayList<>();
         e.add(new DepotShelf(ResourceType.SERVANT, 1));
         e.add(new DepotShelf(ResourceType.COIN, 2));
@@ -244,7 +244,7 @@ class CliViewTest {
     }
 
     @Test
-    void printDepotAllEmpty(){
+    void printDepotAllEmpty() {
         List<DepotShelf> e = new ArrayList<>();
         e.add(new DepotShelf(null, 0));
         e.add(new DepotShelf(null, 0));
@@ -253,7 +253,7 @@ class CliViewTest {
     }
 
     @Test
-    void printDepotSecondOneEmpty(){
+    void printDepotSecondOneEmpty() {
         List<DepotShelf> e = new ArrayList<>();
         e.add(new DepotShelf(null, 0));
         e.add(new DepotShelf(ResourceType.STONE, 1));
@@ -262,7 +262,7 @@ class CliViewTest {
     }
 
     @Test
-    void printDepotThirdOneEmpty(){
+    void printDepotThirdOneEmpty() {
         List<DepotShelf> e = new ArrayList<>();
         e.add(new DepotShelf(null, 0));
         e.add(new DepotShelf(ResourceType.STONE, 1));
@@ -271,7 +271,7 @@ class CliViewTest {
     }
 
     @Test
-    void printDepotThirdTwoEmpty(){
+    void printDepotThirdTwoEmpty() {
         List<DepotShelf> e = new ArrayList<>();
         e.add(new DepotShelf(null, 0));
         e.add(new DepotShelf(ResourceType.STONE, 1));
@@ -280,7 +280,7 @@ class CliViewTest {
     }
 
     @Test
-    void printDepotSomethingInside(){
+    void printDepotSomethingInside() {
         List<DepotShelf> e = new ArrayList<>();
         e.add(new DepotShelf(ResourceType.SERVANT, 1));
         e.add(new DepotShelf(ResourceType.STONE, 1));
@@ -289,22 +289,22 @@ class CliViewTest {
     }
 
     @Test
-    void printBaseProduction(){
+    void printBaseProduction() {
         CliView.printBaseProduction(input, output);
     }
 
     @Test
-    void printResourcesOnALine(){
+    void printResourcesOnALine() {
         CliView.printGeneralResourcesMapOnALine(resources, AnsiCommands.BLACK.getTextColor());
     }
 
     @Test
-    void printDevCard(){
+    void printDevCard() {
         CliView.printCardInfoIfValid(devCard, AnsiCommands.resetStyle());
     }
 
     @Test
-    void printDevSlots(){
+    void printDevSlots() {
         CliView.printDevSlots(devSlots);
     }
 
@@ -326,6 +326,7 @@ class CliViewTest {
         dev.addDevCard(1, devCard2);
         CliView.printDevSlots(dev);
     }
+
     @Test
     void printDevSlotsWithThreeFullSlots() throws NegativeQuantityException {
         DevSlots dev = new DevSlots();
@@ -333,25 +334,25 @@ class CliViewTest {
         dev.addDevCard(0, new DevCard(2, DevCardColour.YELLOW, 2, devCardInput, devCardOutput, cost, "url"));
         dev.addDevCard(0, new DevCard(3, DevCardColour.YELLOW, 2, devCardInput, devCardOutput, cost, "url"));
         dev.addDevCard(1, devCard2);
-        dev.addDevCard(1, new DevCard(2, DevCardColour.PURPLE, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
-        dev.addDevCard(1, new DevCard(3, DevCardColour.PURPLE, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
+        dev.addDevCard(1, new DevCard(2, DevCardColour.PURPLE, 2, devCardInput, devCardOutput, cost, "some/random/url"));
+        dev.addDevCard(1, new DevCard(3, DevCardColour.PURPLE, 2, devCardInput, devCardOutput, cost, "some/random/url"));
         dev.addDevCard(2, devCard3);
-        dev.addDevCard(2, new DevCard(2, DevCardColour.GREEN, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
-        dev.addDevCard(2, new DevCard(3, DevCardColour.GREEN, 2,  devCardInput, devCardOutput, cost, "some/random/url"));
+        dev.addDevCard(2, new DevCard(2, DevCardColour.GREEN, 2, devCardInput, devCardOutput, cost, "some/random/url"));
+        dev.addDevCard(2, new DevCard(3, DevCardColour.GREEN, 2, devCardInput, devCardOutput, cost, "some/random/url"));
         CliView.printDevSlots(dev);
     }
 
     @Test
-    void printGeneralInfo(){
+    void printGeneralInfo() {
         CliView.printGeneralInfo("Master Kenobi is thou turn!");
     }
 
     @Test
-    void printCommonParts(){
+    void printCommonParts() {
         MarbleType[][] matrix = new MarbleType[3][4];
         Random random = new Random();
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
                 matrix[i][j] = MarbleType.values()[random.nextInt(6)];
         Board board = new Board();
         board.setMarketMatrix(matrix);
@@ -366,7 +367,7 @@ class CliViewTest {
     }
 
     @Test
-    void printWaiting4TurnState(){
+    void printWaiting4TurnState() {
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");
@@ -381,7 +382,7 @@ class CliViewTest {
     }
 
     @Test
-    void printWaiting4LastTurnState(){
+    void printWaiting4LastTurnState() {
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");
@@ -396,7 +397,7 @@ class CliViewTest {
     }
 
     @Test
-    void printWaitingForTurn(){
+    void printWaitingForTurn() {
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");
@@ -411,12 +412,12 @@ class CliViewTest {
     }
 
     @Test
-    void printPlayerBoardNicer(){
+    void printPlayerBoardNicer() {
         CliView.printPlayerBoardWithFrame(player, 0);
     }
 
     @Test
-    void printPlaying(){
+    void printPlaying() {
         Game game = new Game();
         Player player1 = new Player();
         player1.setNickName("Darth Vader");
@@ -431,8 +432,8 @@ class CliViewTest {
         game.addPlayer(player);
         MarbleType[][] matrix = new MarbleType[3][4];
         Random random = new Random();
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
                 matrix[i][j] = MarbleType.values()[random.nextInt(6)];
         Board board = new Board();
         board.setMarketMatrix(matrix);
@@ -446,7 +447,7 @@ class CliViewTest {
     }
 
     @Test
-    void printWaiting4GameStart(){
+    void printWaiting4GameStart() {
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");
@@ -465,7 +466,7 @@ class CliViewTest {
     }
 
     @Test
-    void printPlayingLastTurn (){
+    void printPlayingLastTurn() {
         Game game = new Game();
         Player player1 = new Player();
         player1.setNickName("Darth Vader");
@@ -480,8 +481,8 @@ class CliViewTest {
         game.addPlayer(player);
         MarbleType[][] matrix = new MarbleType[3][4];
         Random random = new Random();
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
                 matrix[i][j] = MarbleType.values()[random.nextInt(6)];
         Board board = new Board();
         board.setMarketMatrix(matrix);
@@ -495,7 +496,7 @@ class CliViewTest {
     }
 
     @Test
-    void printWaiting4GameEnd(){
+    void printWaiting4GameEnd() {
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");
@@ -510,7 +511,7 @@ class CliViewTest {
     }
 
     @Test
-    void printWaiting4BeginningDecisions(){
+    void printWaiting4BeginningDecisions() {
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");
@@ -525,7 +526,7 @@ class CliViewTest {
     }
 
     @Test
-    void printOtherNicknames(){
+    void printOtherNicknames() {
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");
@@ -541,7 +542,7 @@ class CliViewTest {
     }
 
     @Test
-    void printOtherNicknameWhenPlayingAgainstLorenzo(){
+    void printOtherNicknameWhenPlayingAgainstLorenzo() {
         Game game = new Game();
         Player player = new Player();
         player.setNickName("Kenobi");

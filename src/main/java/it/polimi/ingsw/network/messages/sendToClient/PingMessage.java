@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-public class PingMessage implements ResponseInterface{
+public class PingMessage implements ResponseInterface {
     private String message;
 
     public PingMessage(String message) {

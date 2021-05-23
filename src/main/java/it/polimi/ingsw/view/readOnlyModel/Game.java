@@ -42,8 +42,8 @@ public class Game {
         this.players = players;
     }
 
-    public void addPlayer(Player player){
-        if(players == null)
+    public void addPlayer(Player player) {
+        if (players == null)
             players = new ArrayList<>();
         players.add(player);
     }
@@ -56,22 +56,22 @@ public class Game {
         this.lorenzosPosition = lorenzosPosition;
     }
 
-    private Player findByNick (String nick) throws NoSuchElementException{
+    private Player findByNick(String nick) throws NoSuchElementException {
         return players.stream().filter(player -> player.getNickName().equals(nick)).findAny().orElseThrow(NoSuchElementException::new);
     }
 
     public boolean merge(Game update) throws NullPointerException {
-        if (update==null) throw new NullPointerException("update is Null");
+        if (update == null) throw new NullPointerException("update is Null");
 
         Integer updateLorenzo = update.getLorenzosPosition();
-        if (updateLorenzo != null) this.lorenzosPosition=updateLorenzo;
+        if (updateLorenzo != null) this.lorenzosPosition = updateLorenzo;
 
         Board updateBoard = update.getMainBoard();
         if (updateBoard != null) this.mainBoard.merge(updateBoard);
 
         Collection<Player> updatePlayers = update.players;
         if (updatePlayers != null) {
-            for (Player updatePlayer: updatePlayers) {
+            for (Player updatePlayer : updatePlayers) {
                 try {
                     this.findByNick(updatePlayer.getNickName()).merge(updatePlayer);
                 } catch (NoSuchElementException e) {

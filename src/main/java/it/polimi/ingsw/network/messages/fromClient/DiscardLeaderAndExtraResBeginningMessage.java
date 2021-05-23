@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.messages.fromClient;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscardLeaderAndExtraResBeginningMessage extends Message{
+public class DiscardLeaderAndExtraResBeginningMessage extends Message {
     private List<Integer> leaderCard;
     private List<DepotParams> depotRes;
 

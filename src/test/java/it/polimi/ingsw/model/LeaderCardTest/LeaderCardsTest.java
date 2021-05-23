@@ -924,7 +924,7 @@ public class LeaderCardsTest {
     }
 
     @Test
-    public void ctrlGetCardWithGoodIndex(){
+    public void ctrlGetCardWithGoodIndex() {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -942,7 +942,7 @@ public class LeaderCardsTest {
     }
 
     @Test
-    public void ctrlGetCardWithOutOfBoundIndex(){
+    public void ctrlGetCardWithOutOfBoundIndex() {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);

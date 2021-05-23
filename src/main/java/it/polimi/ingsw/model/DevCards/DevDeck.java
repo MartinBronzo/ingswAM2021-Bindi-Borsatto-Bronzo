@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.DevCards;
 
-import it.polimi.ingsw.model.FaithTrack.PopeCell;
 import it.polimi.ingsw.model.Interfaces.Deck;
 
 import java.util.*;
@@ -13,12 +12,13 @@ public class DevDeck implements Deck {
 
     /**
      * Constructs a copy of the specified DevDeck
+     *
      * @param original the DevDeck to be cloned
      */
-    public DevDeck(DevDeck original){
+    public DevDeck(DevDeck original) {
         this.devCards = new LinkedList<>();
         //The cards are not cloned because they are immutable
-        for(DevCard dC: original.devCards)
+        for (DevCard dC : original.devCards)
             this.devCards.add(dC);
     }
 
@@ -95,10 +95,10 @@ public class DevDeck implements Deck {
         if (!(obj instanceof DevDeck))
             return false;
         DevDeck tmp = (DevDeck) obj;
-        if(this.devCards.size() != tmp.devCards.size())
+        if (this.devCards.size() != tmp.devCards.size())
             return false;
-        for(int i = 0; i < this.devCards.size(); i++)
-            if(this.devCards.get(i) != tmp.devCards.get(i))
+        for (int i = 0; i < this.devCards.size(); i++)
+            if (this.devCards.get(i) != tmp.devCards.get(i))
                 return false;
         //If the thread arrives here, then the two deck must contain the same cards in the same order
         return true;
@@ -106,7 +106,7 @@ public class DevDeck implements Deck {
 
 
     //This method was used only for testing purposes: checks whether two decks contain the same cards (without any regard to the order)
-    public boolean containsDeck(DevDeck deck){
+    public boolean containsDeck(DevDeck deck) {
         return this.devCards.containsAll(deck.devCards) && deck.devCards.containsAll(this.devCards);
     }
 

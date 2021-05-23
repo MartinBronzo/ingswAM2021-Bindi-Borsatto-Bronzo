@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
-import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.FaithTrack.*;
 import it.polimi.ingsw.model.Interfaces.Observer;
 import it.polimi.ingsw.model.MainBoard;
@@ -385,11 +384,10 @@ public class FaithTrackTest {
     //Checks that multiple FaithTrack objects can be made: it uses the configuration file
     public void ctrlMultipleInstancesWithConfigFile() throws ParserConfigurationException, IOException, SAXException {
         FaithTrack ft1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
-        FaithTrack ft2 =  FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack ft2 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
 
         assertNotSame(ft1, ft2);
     }
-
 
 
     @Test
@@ -438,13 +436,13 @@ public class FaithTrackTest {
         PopeCellObserver p = new PopeCellObserver(new MainBoard(1));
         f.attachObserverToPopeTiles(p);
 
-        assertEquals(((PopeCell)f.getCell(8)).getObserversList().size(), 1);
-        assertEquals(((PopeCell)f.getCell(16)).getObserversList().size(), 1);
-        assertEquals(((PopeCell)f.getCell(24)).getObserversList().size(), 1);
+        assertEquals(((PopeCell) f.getCell(8)).getObserversList().size(), 1);
+        assertEquals(((PopeCell) f.getCell(16)).getObserversList().size(), 1);
+        assertEquals(((PopeCell) f.getCell(24)).getObserversList().size(), 1);
 
-        assertSame(((PopeCell)f.getCell(8)).getObserversList().get(0), p);
-        assertSame(((PopeCell)f.getCell(16)).getObserversList().get(0), p);
-        assertSame(((PopeCell)f.getCell(24)).getObserversList().get(0), p);
+        assertSame(((PopeCell) f.getCell(8)).getObserversList().get(0), p);
+        assertSame(((PopeCell) f.getCell(16)).getObserversList().get(0), p);
+        assertSame(((PopeCell) f.getCell(24)).getObserversList().get(0), p);
     }
 
     @Test
@@ -455,13 +453,13 @@ public class FaithTrackTest {
 
         f.detachObserverToPopeTiles(p);
 
-        assertEquals(((PopeCell)f.getCell(8)).getObserversList().size(), 0);
-        assertEquals(((PopeCell)f.getCell(16)).getObserversList().size(), 0);
-        assertEquals(((PopeCell)f.getCell(24)).getObserversList().size(), 0);
+        assertEquals(((PopeCell) f.getCell(8)).getObserversList().size(), 0);
+        assertEquals(((PopeCell) f.getCell(16)).getObserversList().size(), 0);
+        assertEquals(((PopeCell) f.getCell(24)).getObserversList().size(), 0);
 
-        assertFalse(((PopeCell)f.getCell(8)).containsObserver(p));
-        assertFalse(((PopeCell)f.getCell(16)).containsObserver(p));
-        assertFalse(((PopeCell)f.getCell(24)).containsObserver(p));
+        assertFalse(((PopeCell) f.getCell(8)).containsObserver(p));
+        assertFalse(((PopeCell) f.getCell(16)).containsObserver(p));
+        assertFalse(((PopeCell) f.getCell(24)).containsObserver(p));
 
     }
 

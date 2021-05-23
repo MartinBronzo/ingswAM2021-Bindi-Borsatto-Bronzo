@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.FaithTrack;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.model.PlayerBoard;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -141,6 +140,7 @@ public class PopeTile {
 
     /**
      * Constructs a copy of the specified PopeTile
+     *
      * @param original the PopeTile to be cloned
      */
     public PopeTile(PopeTile original) {
@@ -164,16 +164,17 @@ public class PopeTile {
 
     /**
      * Constructs all the PopeTiles needed in this game
-     * @param config the configuration file where to read the PopeTiles configuration information
+     *
+     * @param config                  the configuration file where to read the PopeTiles configuration information
      * @param reportNumOrderToCompare the ReportNumOrder already created during the FaithTrack configuration via file: the order of the PopeTiles in the configuration file (the PopeTiles are ordered by
      *                                their ReportNums) must be the same as the one present in the given ReportNumOrder
      * @return a list of list of PopeTiles: each sublist contain PopeTiles with the same ReportNum
      * @throws ParserConfigurationException if there are problems in the parsing
-     * @throws IOException if an IO operations fails
-     * @throws SAXException if there is a general SAX error or warning
-     * @throws IllegalArgumentException if the order of ReportNums in the file differs from the one given by the specified ReportNumOrder
+     * @throws IOException                  if an IO operations fails
+     * @throws SAXException                 if there is a general SAX error or warning
+     * @throws IllegalArgumentException     if the order of ReportNums in the file differs from the one given by the specified ReportNumOrder
      */
-    public static List<List<PopeTile>> popeTileConfig (File config, ReportNumOrder reportNumOrderToCompare) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException {
+    public static List<List<PopeTile>> popeTileConfig(File config, ReportNumOrder reportNumOrderToCompare) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException {
         Node elementNode;
         NodeList tilesList;
         Element el;
@@ -207,7 +208,7 @@ public class PopeTile {
                 Element eElement = (Element) node;
                 report = eElement.getElementsByTagName("Name").item(0).getTextContent();
                 reportNum = ReportNum.valueOf(report);
-                if(!reportNumOrderToCompare.getReportNum(repOrditr).equals(reportNum))
+                if (!reportNumOrderToCompare.getReportNum(repOrditr).equals(reportNum))
                     throw new IllegalArgumentException("The Vatican Reports in the PopeTile configuration file don't match the ones in the FaithTrack configuration file!");
                 else
                     repOrditr++;
@@ -245,22 +246,22 @@ public class PopeTile {
 
     /**
      * Returns a copy of the specified list of list of PopeTiles
+     *
      * @param original the list to be cloned
      * @return a copy of the list
      */
-    public static List<List<PopeTile>> copyPopeTiles(List<List<PopeTile>> original){
+    public static List<List<PopeTile>> copyPopeTiles(List<List<PopeTile>> original) {
         List<PopeTile> tmp;
         List<List<PopeTile>> copy = new ArrayList<>();
-        for(List<PopeTile> list: original){
+        for (List<PopeTile> list : original) {
             tmp = new ArrayList<>();
-            for(PopeTile pT: list)
+            for (PopeTile pT : list)
                 tmp.add(new PopeTile(pT));
             copy.add(tmp);
         }
 
         return copy;
     }
-
 
 
 }

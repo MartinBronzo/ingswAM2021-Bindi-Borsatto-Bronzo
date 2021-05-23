@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
-import it.polimi.ingsw.network.messages.sendToClient.ErrorMessage;
 import it.polimi.ingsw.network.messages.sendToClient.GeneralInfoStringMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
@@ -26,8 +25,8 @@ public final class GamesManagerSingleton {
         this.startingGame = null;
     }
 
-    public static GamesManagerSingleton getInstance(){
-        if (instance == null){
+    public static GamesManagerSingleton getInstance() {
+        if (instance == null) {
             synchronized (GamesManagerSingleton.class) {
                 if (instance == null)
                     instance = new GamesManagerSingleton();
@@ -37,7 +36,8 @@ public final class GamesManagerSingleton {
     }
 
 
-    /**used to add clientHandler to a game.
+    /**
+     * used to add clientHandler to a game.
      * if a new game is created it must be configured,
      * if a game is in waiting for players the client is add to the starting game
      * if client has a occupied nickname of another disconnected client
@@ -46,7 +46,7 @@ public final class GamesManagerSingleton {
      *
      * @param client is the clientHandler added to the game, it can be also the clientHandlerConfigurator if the game must be configured
      * @return the Game where the client will play or null if the game is just created and the client must configure it
-     * @throws InterruptedException if a thread is interrupted while it is in waiting
+     * @throws InterruptedException          if a thread is interrupted while it is in waiting
      * @throws NotAvailableNicknameException if the nickname of client is not available
      */
     public synchronized GameController joinOrCreateNewGame(ClientHandler client) throws InterruptedException, NotAvailableNicknameException, IllegalActionException {
@@ -55,13 +55,13 @@ public final class GamesManagerSingleton {
             GameController gameWithThatNickname = searchPlayerInGames(client.getNickname());
             gameWithThatNickname.substitutesClient(client);
             return gameWithThatNickname;
-        } catch (NoSuchElementException e){
-            while (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING)){
+        } catch (NoSuchElementException e) {
+            while (startingGame != null && startingGame.getState().equals(GameState.CONFIGURING)) {
                 client.send(new GeneralInfoStringMessage("Another player is creating a game, please wait"));
                 wait();
             }
 
-            if (startingGame == null){
+            if (startingGame == null) {
                 startingGame = new GameController();
                 this.clientConfigurator = client;
                 startingGame.setState(GameState.CONFIGURING);
@@ -73,7 +73,7 @@ public final class GamesManagerSingleton {
             GameController returnedGame = startingGame;
             startingGame.setPlayer(client);
             /*IDK if I should add method start game or game is automatically started when reaches the correct number of players*/
-            if(startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
+            if (startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
                 games.add(startingGame);
                 startingGame = null;
                 clientConfigurator = null;
@@ -88,22 +88,22 @@ public final class GamesManagerSingleton {
         timeOutTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                timerCanCancel=true;
+                timerCanCancel = true;
                 if (!configurationTimeElapsed())
                     System.out.println("Games Manager Timer has run but but not cancelled the game. The connection will be closed soon");
             }
         }, 300000);
     }
 
-    private void stopTimer(){
+    private void stopTimer() {
         this.timeOutTimer.cancel();
         this.timerCanCancel = false;
         this.timeOutTimer = null;
     }
 
-    private synchronized boolean configurationTimeElapsed(){
-        if (startingGame!=null && startingGame.getState().equals(GameState.CONFIGURING) && timerCanCancel){
-            startingGame=null;
+    private synchronized boolean configurationTimeElapsed() {
+        if (startingGame != null && startingGame.getState().equals(GameState.CONFIGURING) && timerCanCancel) {
+            startingGame = null;
             clientConfigurator.send(new ResponseMessage(ResponseType.KICKEDOUT, "Configuration Time Elapsed\n"));
             clientConfigurator = null;
             stopTimer();
@@ -113,26 +113,31 @@ public final class GamesManagerSingleton {
         return false;
     }
 
-    /** it is used to configure the game
-     * @param client must be the same client configurator
+    /**
+     * it is used to configure the game
+     *
+     * @param client          must be the same client configurator
      * @param numberOfPlayers the desired number of players in the game, must be between 1 (solitary game) and 4 (max number of Players)
      * @return the game where the client will play
-     * @throws IllegalStateException if client is not the same client configurator
-     * @throws UnexpectedException if an unknown error synchronizing GameManager is detected
+     * @throws IllegalStateException    if client is not the same client configurator
+     * @throws UnexpectedException      if an unknown error synchronizing GameManager is detected
      * @throws IllegalArgumentException if numberOfPlayers is not between 1 and 4
      */
     public synchronized GameController configureGame(ClientHandler client, int numberOfPlayers) throws IllegalStateException, UnexpectedException, IllegalArgumentException, IllegalActionException {
         if (client == null) throw new NullPointerException("client is null");
-        if (!client.equals(this.clientConfigurator)) throw new IllegalStateException("client is not the same client manager or configuration time has elapsed");
-        if (this.startingGame == null || !this.startingGame.getState().equals(GameState.CONFIGURING)) throw new UnexpectedException("gamesManager: client IsGameConfigurator but game is null or not in configuring state");
-        if (numberOfPlayers<1 || numberOfPlayers>4) throw new IllegalArgumentException("configureGame: Not Valid number of players");
+        if (!client.equals(this.clientConfigurator))
+            throw new IllegalStateException("client is not the same client manager or configuration time has elapsed");
+        if (this.startingGame == null || !this.startingGame.getState().equals(GameState.CONFIGURING))
+            throw new UnexpectedException("gamesManager: client IsGameConfigurator but game is null or not in configuring state");
+        if (numberOfPlayers < 1 || numberOfPlayers > 4)
+            throw new IllegalArgumentException("configureGame: Not Valid number of players");
 
         stopTimer();
         this.startingGame.startMainBoard(numberOfPlayers);
         this.startingGame.setState(GameState.WAITING4PLAYERS);
         this.startingGame.setPlayer(client);
         notifyAll();
-        if(startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
+        if (startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {
             GameController returnedGame = startingGame;
             games.add(startingGame);
             startingGame = null;
@@ -153,8 +158,9 @@ public final class GamesManagerSingleton {
                 return startingGame;
             }
         }
-        if (clientConfigurator!=null){
-            if (clientConfigurator.getNickname().equals(nickname)) throw new NotAvailableNicknameException("Nick is the same of the actual configurator");
+        if (clientConfigurator != null) {
+            if (clientConfigurator.getNickname().equals(nickname))
+                throw new NotAvailableNicknameException("Nick is the same of the actual configurator");
         }
         gameWithThatNick = games.stream().filter(game -> game.getPlayersList().stream().map(ClientHandler::getNickname).anyMatch(clientUsername -> clientUsername.equals(nickname))).findAny().orElseThrow(NoSuchElementException::new);
         if (gameWithThatNick.getPlayersList().stream().anyMatch(client -> client.getNickname().equals(nickname) && !client.getPlayerState().equals(PlayerState.DISCONNECTED))) {
@@ -164,16 +170,19 @@ public final class GamesManagerSingleton {
 
     }
 
-    /** deletes an ended game from the list of the games, allowing clientHandlers to join games with previously occupied nicknames
+    /**
+     * deletes an ended game from the list of the games, allowing clientHandlers to join games with previously occupied nicknames
+     *
      * @param gameEnded the game ended
      * @return true if the action is performed correctly
-     * @throws NullPointerException if gameEnded is null
+     * @throws NullPointerException  if gameEnded is null
      * @throws IllegalStateException if the game is in configuring state, no need to delete the game, just wait for the timer
      */
     public synchronized boolean deleteGame(GameController gameEnded) throws NullPointerException, IllegalStateException {
         if (gameEnded == null) throw new NullPointerException();
-        if (gameEnded.equals(startingGame)){
-            if (startingGame.getState().equals(GameState.CONFIGURING)) throw new IllegalStateException("Configuration timer isn't yet elapsed");
+        if (gameEnded.equals(startingGame)) {
+            if (startingGame.getState().equals(GameState.CONFIGURING))
+                throw new IllegalStateException("Configuration timer isn't yet elapsed");
             else {
                 startingGame = null;
                 notifyAll();
@@ -183,17 +192,19 @@ public final class GamesManagerSingleton {
         return games.remove(gameEnded);
     }
 
-    /**used only for test purpose
+    /**
+     * used only for test purpose
      */
     @Deprecated
-    public void resetSingleton(){
+    public void resetSingleton() {
         this.games.removeAll(games);
         this.startingGame = null;
         this.clientConfigurator = null;
     }
 
 
-    /**used only for test purpose
+    /**
+     * used only for test purpose
      */
     @Deprecated
     public Collection<GameController> getGames() {
@@ -201,14 +212,16 @@ public final class GamesManagerSingleton {
     }
 
 
-    /**used only for test purpose
+    /**
+     * used only for test purpose
      */
     @Deprecated
     public GameController getStartingGame() {
         return startingGame;
     }
 
-    /**used only for test purpose
+    /**
+     * used only for test purpose
      */
     @Deprecated
     public ClientHandler getClientConfigurator() {

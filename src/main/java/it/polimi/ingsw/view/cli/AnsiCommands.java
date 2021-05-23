@@ -81,9 +81,23 @@ public enum AnsiCommands {
         }
     };
 
-    public String getTextColor(){ return "\u001B[0m"; }
-    public String getBackgroundColor(){ return "\u001B[0m"; }
-    public static String resetStyle(){ return "\u001B[0m"; }
-    public static String clearLine(){ return "\33[1A\33[2K"; }
-    public static String clear(){ return "\033[H\033[2J"; }
+    public String getTextColor() {
+        return "\u001B[0m";
+    }
+
+    public String getBackgroundColor() {
+        return "\u001B[0m";
+    }
+
+    public static String resetStyle() {
+        return "\u001B[0m";
+    }
+
+    public static String clearLine() {
+        return "\33[1A\33[2K";
+    }
+
+    public static String clear() {
+        return "\033[H\033[2J";
+    }
 }

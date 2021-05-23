@@ -516,6 +516,7 @@ public class Depot {
 
     /**
      * Returns the number of resources on the specified shelf
+     *
      * @param index the index of the shelf (must be between 1 and 3)
      * @return the number of resources in the specified shelf
      */
@@ -526,7 +527,7 @@ public class Depot {
         controlShelfNum(index);
 
         resourceType = getShelfType(index);
-        if(resourceType == null)
+        if (resourceType == null)
             return 0;
 
         qt = getResourceFromDepot(resourceType);
@@ -590,6 +591,7 @@ public class Depot {
 
     /**
      * Returns a copy of the Extra Slots this player has
+     *
      * @return a copy of the Extra Slots
      */
     public HashMap<ResourceType, Integer> getLeaderDepot() {

@@ -1,12 +1,10 @@
 package it.polimi.ingsw.model.MainBoardTest;
 
-import com.sun.tools.javac.Main;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.FaithTrack.*;
-import it.polimi.ingsw.model.Interfaces.Deck;
 import it.polimi.ingsw.model.Interfaces.Observer;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.MainBoard;
@@ -20,7 +18,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +31,7 @@ public class GeneralMainBoardMethodsClass {
     }
 
     @Test
-    public void ctrlWrongPlayersNumber(){
+    public void ctrlWrongPlayersNumber() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new MainBoard(-1));
         assertEquals(e.getMessage(), "The number of players is illegal!");
     }
@@ -65,7 +62,7 @@ public class GeneralMainBoardMethodsClass {
 
     @Test
     //Tests that MainBoard is created correctly: the DevGrid exists
-    public void ctrlCreationDevDeck(){
+    public void ctrlCreationDevDeck() {
         DevGrid inMB = mainBoard.getDevGrid();
 
         assertNotNull(inMB);
@@ -73,7 +70,7 @@ public class GeneralMainBoardMethodsClass {
 
     @Test
     //Tests that MainBoard is created correctly: the Market exists
-    public void ctrlCreationMarket(){
+    public void ctrlCreationMarket() {
         Market inMB = mainBoard.getMarket();
 
         assertNotNull(inMB);
@@ -81,7 +78,7 @@ public class GeneralMainBoardMethodsClass {
 
     @Test
     //Tests that MainBoard is created correctly: the number of player is right
-    public void ctrlCreationPlayerNum(){
+    public void ctrlCreationPlayerNum() {
         int inMB = mainBoard.getNumberOfPlayers();
 
         assertEquals(inMB, 4);
@@ -90,7 +87,7 @@ public class GeneralMainBoardMethodsClass {
 
     @Test
     //Tests that MainBoard is created correctly: the number of LeaderCards to give is right
-    public void ctrlCreationLeaderCardsToGiveNum(){
+    public void ctrlCreationLeaderCardsToGiveNum() {
         int inMB = mainBoard.getNumberOfLeaderCardsToGive();
 
         assertEquals(inMB, 4);
@@ -100,25 +97,25 @@ public class GeneralMainBoardMethodsClass {
     //Tests that MainBoard is created correctly: all the player get the right FaithTrack
     public void ctrlPlayerBoardsFaithTrack() throws ParserConfigurationException, IOException, SAXException {
         FaithTrack usual = FaithTrack.instance(new File("FaithTrackConfig.xml"));
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
             assertTrue(mainBoard.getPlayerBoard(i).getFaithTrack().lighterEquals(usual));
     }
 
     @Test
     //Tests that MainBoard is created correctly: all the player are given the right PopeTiles as the default configuration for PopeTiles dictates
-    public void ctrlPlayerPopeTiles(){
+    public void ctrlPlayerPopeTiles() {
         List<PopeTile> usual = new ArrayList<>();
         usual.add(new PopeTile(2, ReportNum.REPORT1));
         usual.add(new PopeTile(3, ReportNum.REPORT2));
         usual.add(new PopeTile(4, ReportNum.REPORT3));
 
         PlayerBoard tmp;
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             tmp = mainBoard.getPlayerBoard(i);
             List<PopeTile> list = tmp.getPopeTile();
             //Default configuration
             assertEquals(list.size(), usual.size());
-            for(int j = 0; j < 3; j++)
+            for (int j = 0; j < 3; j++)
                 assertEquals(list.get(j), usual.get(j));
         }
 
@@ -126,23 +123,23 @@ public class GeneralMainBoardMethodsClass {
 
     @Test
     //Tests that MainBoard is created correctly: the extra Faith points given to players at the beginning of the game is correct
-    public void ctrlExtraFaithPointsAtGameBeginning(){
+    public void ctrlExtraFaithPointsAtGameBeginning() {
         int[] inMB = mainBoard.getExtraFaithPointsAtBeginning();
         int[] usual = new int[]{0, 0, 1, 1};
 
         assertEquals(inMB.length, usual.length);
-        for(int i = 0; i < usual.length; i++)
+        for (int i = 0; i < usual.length; i++)
             assertEquals(inMB[i], usual[i]);
     }
 
     @Test
     //Tests that MainBoard is created correctly: the extra Faith points given to players at the beginning of the game is correct
-    public void ctrlExtraResourcesAtGameBeginning(){
+    public void ctrlExtraResourcesAtGameBeginning() {
         int[] inMB = mainBoard.getExtraResourcesAtBeginning();
         int[] usual = new int[]{0, 1, 1, 2};
 
         assertEquals(inMB.length, usual.length);
-        for(int i = 0; i < usual.length; i++)
+        for (int i = 0; i < usual.length; i++)
             assertEquals(inMB[i], usual[i]);
     }
 
@@ -216,42 +213,42 @@ public class GeneralMainBoardMethodsClass {
 
     @Test
     //Tests that the MainBoard returns the correct number of extra resources to the players in order: there are four player, the third player is first
-    public void ctrlExtraResourcesAtBeginningFourPlayer3First(){
+    public void ctrlExtraResourcesAtBeginningFourPlayer3First() {
         int[] usual = new int[]{0, 1, 1, 2};
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(3,3 ), usual[0]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(3,0 ), usual[1]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(3,1 ), usual[2]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(3,2 ), usual[3]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(3, 3), usual[0]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(3, 0), usual[1]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(3, 1), usual[2]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(3, 2), usual[3]);
     }
 
     @Test
     //Tests that the MainBoard returns the correct number of extra resources to the players in order: there are four player, the second player is first
-    public void ctrlExtraResourcesAtBeginningFourPlayer2First(){
+    public void ctrlExtraResourcesAtBeginningFourPlayer2First() {
         int[] usual = new int[]{0, 1, 1, 2};
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(2,2 ), usual[0]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(2,3 ), usual[1]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(2,0 ), usual[2]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(2,1 ), usual[3]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(2, 2), usual[0]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(2, 3), usual[1]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(2, 0), usual[2]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(2, 1), usual[3]);
     }
 
     @Test
     //Tests that the MainBoard returns the correct number of extra resources to the players in order: there are four player, the first player is first
-    public void ctrlExtraResourcesAtBeginningFourPlayer1First(){
+    public void ctrlExtraResourcesAtBeginningFourPlayer1First() {
         int[] usual = new int[]{0, 1, 1, 2};
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(1,1 ), usual[0]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(1,2 ), usual[1]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(1,3 ), usual[2]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(1,0 ), usual[3]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(1, 1), usual[0]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(1, 2), usual[1]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(1, 3), usual[2]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(1, 0), usual[3]);
     }
 
     @Test
     //Tests that the MainBoard returns the correct number of extra resources to the players in order: there are four player, the 0th player is first
-    public void ctrlExtraResourcesAtBeginningFourPlayer0First(){
+    public void ctrlExtraResourcesAtBeginningFourPlayer0First() {
         int[] usual = new int[]{0, 1, 1, 2};
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(0,0 ), usual[0]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(0,1 ), usual[1]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(0,2 ), usual[2]);
-        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(0,3 ), usual[3]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(0, 0), usual[0]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(0, 1), usual[1]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(0, 2), usual[2]);
+        assertEquals(mainBoard.getExtraResourcesAtBeginningForPlayer(0, 3), usual[3]);
     }
 
     @Test
@@ -260,9 +257,9 @@ public class GeneralMainBoardMethodsClass {
         MainBoard m1 = new MainBoard(3);
 
         int[] usual = new int[]{0, 1, 1, 2};
-        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1,1 ), usual[0]);
-        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1,2 ), usual[1]);
-        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1,0 ), usual[2]);
+        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1, 1), usual[0]);
+        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1, 2), usual[1]);
+        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1, 0), usual[2]);
     }
 
     @Test
@@ -271,8 +268,8 @@ public class GeneralMainBoardMethodsClass {
         MainBoard m1 = new MainBoard(3);
 
         int[] usual = new int[]{0, 1, 1, 2};
-        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1,1 ), usual[0]);
-        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1,0 ), usual[1]);
+        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1, 1), usual[0]);
+        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(1, 0), usual[1]);
     }
 
     @Test
@@ -281,21 +278,21 @@ public class GeneralMainBoardMethodsClass {
         MainBoard m1 = new MainBoard(3);
 
         int[] usual = new int[]{0, 1, 1, 2};
-        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(0,0 ), usual[0]);
+        assertEquals(m1.getExtraResourcesAtBeginningForPlayer(0, 0), usual[0]);
     }
 
     @Test
-    public void ctrlPlayerOrder(){
+    public void ctrlPlayerOrder() {
         //If there are four players and the first to go is the number two in the array then their are going to be the last to play
         assertEquals(mainBoard.getPlayerOder(2, 1), 3);
     }
 
     @Test
     //Tests that a random player is chosen to be the firs
-    public void getFirstPlayerRandomly(){
+    public void getFirstPlayerRandomly() {
         int result;
 
-        for(int j = 0; j < 10; j++){
+        for (int j = 0; j < 10; j++) {
             result = mainBoard.getFirstPlayerRandomly();
 
             assertTrue(result >= 0);
@@ -330,7 +327,7 @@ public class GeneralMainBoardMethodsClass {
     @Test
     //Tests that the PlayerBoard in the MainBoard reference to the same FaithTrack as the one stored in the MainBoard before and
     //after cloning and that the FaithTrack in the original MainBoard and the one in the new MainBoard are equals but are not the same instance
-    public void ctrlFaithTrackReferences(){
+    public void ctrlFaithTrackReferences() {
         assertSame(mainBoard.getPlayerBoard(0).getFaithTrack(), mainBoard.getPlayerBoard(1).getFaithTrack());
         assertSame(mainBoard.getFaithTrackReference(), mainBoard.getPlayerBoard(0).getFaithTrack());
 
@@ -345,14 +342,14 @@ public class GeneralMainBoardMethodsClass {
     }
 
     @Test
-    public void ctrlCellObserverCreationInMainBoardConstructor(){
-        assertEquals(((PopeCell)mainBoard.getFaithTrack().getCell(8)).getObserversList().size(), 1);
-        assertEquals(((PopeCell)mainBoard.getFaithTrack().getCell(16)).getObserversList().size(), 1);
-        assertEquals(((PopeCell)mainBoard.getFaithTrack().getCell(24)).getObserversList().size(), 1);
+    public void ctrlCellObserverCreationInMainBoardConstructor() {
+        assertEquals(((PopeCell) mainBoard.getFaithTrack().getCell(8)).getObserversList().size(), 1);
+        assertEquals(((PopeCell) mainBoard.getFaithTrack().getCell(16)).getObserversList().size(), 1);
+        assertEquals(((PopeCell) mainBoard.getFaithTrack().getCell(24)).getObserversList().size(), 1);
 
-        Observer p1 = ((PopeCell)mainBoard.getFaithTrack().getCell(8)).getObserversList().get(0);
-        Observer p2 = ((PopeCell)mainBoard.getFaithTrack().getCell(16)).getObserversList().get(0);
-        Observer p3 = ((PopeCell)mainBoard.getFaithTrack().getCell(24)).getObserversList().get(0);
+        Observer p1 = ((PopeCell) mainBoard.getFaithTrack().getCell(8)).getObserversList().get(0);
+        Observer p2 = ((PopeCell) mainBoard.getFaithTrack().getCell(16)).getObserversList().get(0);
+        Observer p3 = ((PopeCell) mainBoard.getFaithTrack().getCell(24)).getObserversList().get(0);
 
         assertSame(((PopeCellObserver) p1).getMainBoard(), mainBoard);
 
@@ -361,25 +358,25 @@ public class GeneralMainBoardMethodsClass {
     }
 
     @Test
-    public void ctrlGetClone(){
+    public void ctrlGetClone() {
         MainBoard copy = mainBoard.getClone();
 
         assertNotSame(copy, mainBoard);
     }
 
     @Test
-    public void ctrlCellObserverCloningInMainBoardCopyConstructor(){
+    public void ctrlCellObserverCloningInMainBoardCopyConstructor() {
         MainBoard copy = mainBoard.getClone();
 
-        Observer p0 = ((PopeCell)mainBoard.getFaithTrack().getCell(8)).getObserversList().get(0);
+        Observer p0 = ((PopeCell) mainBoard.getFaithTrack().getCell(8)).getObserversList().get(0);
 
-        assertEquals(((PopeCell)copy.getFaithTrack().getCell(8)).getObserversList().size(), 1);
-        assertEquals(((PopeCell)copy.getFaithTrack().getCell(16)).getObserversList().size(), 1);
-        assertEquals(((PopeCell)copy.getFaithTrack().getCell(24)).getObserversList().size(), 1);
+        assertEquals(((PopeCell) copy.getFaithTrack().getCell(8)).getObserversList().size(), 1);
+        assertEquals(((PopeCell) copy.getFaithTrack().getCell(16)).getObserversList().size(), 1);
+        assertEquals(((PopeCell) copy.getFaithTrack().getCell(24)).getObserversList().size(), 1);
 
-        Observer p1 = ((PopeCell)copy.getFaithTrack().getCell(8)).getObserversList().get(0);
-        Observer p2 = ((PopeCell)copy.getFaithTrack().getCell(16)).getObserversList().get(0);
-        Observer p3 = ((PopeCell)copy.getFaithTrack().getCell(24)).getObserversList().get(0);
+        Observer p1 = ((PopeCell) copy.getFaithTrack().getCell(8)).getObserversList().get(0);
+        Observer p2 = ((PopeCell) copy.getFaithTrack().getCell(16)).getObserversList().get(0);
+        Observer p3 = ((PopeCell) copy.getFaithTrack().getCell(24)).getObserversList().get(0);
 
         assertSame(p1, p2);
         assertSame(p2, p3);

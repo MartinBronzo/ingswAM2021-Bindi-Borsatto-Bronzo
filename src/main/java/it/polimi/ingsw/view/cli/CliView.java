@@ -5,13 +5,13 @@ import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevSlot;
 import it.polimi.ingsw.model.DevCards.DevSlots;
+import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.readOnlyModel.Board;
@@ -32,18 +32,21 @@ public class CliView implements view {
      */
 
     public static void printGameState(Game gameModel, String nickname) throws NoSuchElementException {
-        if (gameModel == null || nickname==null || nickname.equals("")) return;
-        
+        if (gameModel == null || nickname == null || nickname.equals("")) return;
+
 
         Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
         switch (player.getPlayerState()) {
             case WAITING4TURN:
                 printGeneralInfo("My master, thou mustn't worry. Your time will soon come! It is " + findPlayerByState(new LinkedList<>(gameModel.getPlayers()), PlayerState.PLAYING) +
-                        "'s turn!\n");
+                                         "'s turn!\n");
                 break;
             case WAITING4LASTTURN:
                 printGeneralInfo("My master, thou mustn't worry. Thee will soon play your LAST turn! It is " + findPlayerByState(new LinkedList<>(gameModel.getPlayers()), PlayerState.PLAYINGLASTTURN) +
-                        "'s turn!\n");
+                                         "'s turn!\n");
+                break;
+            case PLAYINGBEGINNINGDECISIONS:
+                printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
                 break;
             case PLAYING:
                 printGeneralInfo("Master " + player.getNickName() + " is thy turn!");
@@ -64,7 +67,6 @@ public class CliView implements view {
             case WAITING4BEGINNINGDECISIONS:
                 printGeneralInfo("We are about to start our marvellous journey togeth'r: hold tight a little longeth'r while thy dreadful competit'rs take their first choices, thee'll lief do the same ");
                 break;
-
         }
 
     }
@@ -77,17 +79,17 @@ public class CliView implements view {
     #############################################################################################
      */
 
-    public static void printWelcome(){
+    public static void printWelcome() {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.YELLOW.getTextColor());
         System.out.print("                                                                                                                                      \n" +
-                                   "  /\\\\,/\\\\,               ,                                  /\\       -__ /\\                                                           \n" +
-                                   " /| || ||    _          ||                                 ||          || \\,                _    '               _                    \n" +
-                                   " || || ||   < \\,  _-_, =||=  _-_  ,._-_  _-_,        /'\\\\ =||=        /|| /    _-_  \\\\/\\\\  < \\, \\\\  _-_,  _-_,  < \\, \\\\/\\\\  _-_  _-_  \n" +
-                                   " ||=|= ||   /-|| ||_.   ||  || \\\\  ||   ||_.        || ||  ||         \\||/-   || \\\\ || ||  /-|| || ||_.  ||_.   /-|| || || ||   || \\\\ \n" +
-                                   "~|| || ||  (( ||  ~ ||  ||  ||/    ||    ~ ||       || ||  ||          ||  \\  ||/   || || (( || ||  ~ ||  ~ || (( || || || ||   ||/   \n" +
-                                   " |, \\\\,\\\\,  \\/\\\\ ,-_-   \\\\, \\\\,/   \\\\,  ,-_-        \\\\,/   \\\\,       _---_-|, \\\\,/  \\\\ \\\\  \\/\\\\ \\\\ ,-_-  ,-_-   \\/\\\\ \\\\ \\\\ \\\\,/ \\\\,/  \n" +
-                                   "_-                                                                                                                                    \n");
+                                 "  /\\\\,/\\\\,               ,                                  /\\       -__ /\\                                                           \n" +
+                                 " /| || ||    _          ||                                 ||          || \\,                _    '               _                    \n" +
+                                 " || || ||   < \\,  _-_, =||=  _-_  ,._-_  _-_,        /'\\\\ =||=        /|| /    _-_  \\\\/\\\\  < \\, \\\\  _-_,  _-_,  < \\, \\\\/\\\\  _-_  _-_  \n" +
+                                 " ||=|= ||   /-|| ||_.   ||  || \\\\  ||   ||_.        || ||  ||         \\||/-   || \\\\ || ||  /-|| || ||_.  ||_.   /-|| || || ||   || \\\\ \n" +
+                                 "~|| || ||  (( ||  ~ ||  ||  ||/    ||    ~ ||       || ||  ||          ||  \\  ||/   || || (( || ||  ~ ||  ~ || (( || || || ||   ||/   \n" +
+                                 " |, \\\\,\\\\,  \\/\\\\ ,-_-   \\\\, \\\\,/   \\\\,  ,-_-        \\\\,/   \\\\,       _---_-|, \\\\,/  \\\\ \\\\  \\/\\\\ \\\\ ,-_-  ,-_-   \\/\\\\ \\\\ \\\\ \\\\,/ \\\\,/  \n" +
+                                 "_-                                                                                                                                    \n");
         System.out.print(AnsiCommands.YELLOW.getBackgroundColor());
         System.out.print(AnsiCommands.BLACK.getTextColor());
         System.out.print("Digital Edition by Ludovica Bindi, Martin Bronzo and Andrea Borsatto\n");
@@ -95,22 +97,22 @@ public class CliView implements view {
     }
 
     public static void printSetUpView(int nLeadersToDiscard, int resourcesToTake) {
-        System.out.print(AnsiCommands.clear()+AnsiCommands.GREEN.getTextColor());
+        System.out.print(AnsiCommands.clear() + AnsiCommands.GREEN.getTextColor());
         System.out.print("     _______________________________________________________\n" +
-                "    /\\                                                      \\\n" +
-                "(O)===)><><><><><><><><><><><><><><><><><><><><><><><><><><><)==(O)\n" +
-                "    \\/''''''''''''''''''''''''''''''''''''''''''''''''''''''/\n" +
-                "    (                                                      (\n" +
-                "     )                  YOUR LIEGE DEMANDS:                 )\n" +
-                "    (                                                      (\n" +
-                "     )            "+ nLeadersToDiscard +" LEADER CARDS OF YOUR CHOICE             )\n" +
-                "    (                                                      (\n");
+                                 "    /\\                                                      \\\n" +
+                                 "(O)===)><><><><><><><><><><><><><><><><><><><><><><><><><><><)==(O)\n" +
+                                 "    \\/''''''''''''''''''''''''''''''''''''''''''''''''''''''/\n" +
+                                 "    (                                                      (\n" +
+                                 "     )                  YOUR LIEGE DEMANDS:                 )\n" +
+                                 "    (                                                      (\n" +
+                                 "     )            " + nLeadersToDiscard + " LEADER CARDS OF YOUR CHOICE             )\n" +
+                                 "    (                                                      (\n");
         if (resourcesToTake == 0)
-            System.out.print(      "     )                                                      )\n");
+            System.out.print("     )                                                      )\n");
         else if (resourcesToTake == 1)
-            System.out.print(      "     )        IN EXCHANGE OF 1 RESOURCE OF YOUR CHOICE      )\n");
+            System.out.print("     )        IN EXCHANGE OF 1 RESOURCE OF YOUR CHOICE      )\n");
         else
-            System.out.print(      "     )       IN EXCHANGE OF 2 RESOURCES OF YOUR CHOICE      )\n");
+            System.out.print("     )       IN EXCHANGE OF 2 RESOURCES OF YOUR CHOICE      )\n");
         System.out.print(
                 "    (                                                      (\n" +
                         "    /\\''''''''''''''''''''''''''''''''''''''''''''''''''''''\\    \n" +
@@ -124,9 +126,10 @@ public class CliView implements view {
     END MESSAGES
     #############################################################################################
      */
-    
-    public static void printPlayerBoard(Player player, int lorenzoPosition){
-        if (player==null) return;
+
+    public static void printPlayerBoard(Player player, Integer lorenzoPosition) {
+        if (player == null) return;
+        if (lorenzoPosition == null) lorenzoPosition = -1;
         printVictoryPoints(player.getNickName(), player.getPlayerState(), player.getVictoryPoints());
         printDividerSmall(AnsiCommands.GREEN);
         printFaithTrack(player.getFaithPosition(), player.getPopeTiles(), lorenzoPosition);
@@ -144,7 +147,7 @@ public class CliView implements view {
         if (nickName == null || playerState == null || victoryPoints == null) return;
         if (playerState.equals(PlayerState.PLAYING)) System.out.print(AnsiCommands.RED.getTextColor());
         else System.out.print(AnsiCommands.BLUE.getTextColor());
-        System.out.println(nickName + ":\t" + victoryPoints +" VP");
+        System.out.println(nickName + ":\t" + victoryPoints + " VP");
         System.out.print(AnsiCommands.resetStyle());
     }
 
@@ -152,62 +155,62 @@ public class CliView implements view {
         if (devSlots == null) return;
         System.out.print(AnsiCommands.PURPLE.getTextColor());
         System.out.print("Thou great Slots of DevCards are hither presented:\n");
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
             printADevSlot(i + 1, devSlots.getDevSlot(i), AnsiCommands.PURPLE.getTextColor());
 
     }
 
-    private static void printADevSlot(int devSlotNumber, DevSlot devSlot, String backgroundColor){
+    private static void printADevSlot(int devSlotNumber, DevSlot devSlot, String backgroundColor) {
         List<DevCard> list = new LinkedList<>(devSlot.getDevCards());
         System.out.print(devSlotNumber + " : ");
-        if(devSlot.size() != 0) {
+        if (devSlot.size() != 0) {
             printCardInfo(list.get(devSlot.size() - 1), backgroundColor);
             System.out.print("\n");
-            if(devSlot.size() > 1) {
+            if (devSlot.size() > 1) {
                 System.out.print(" ".repeat(8));
                 String line = "Not usable: ";
                 System.out.print(line);
                 printCardInfo(list.get(devSlot.size() - 2), backgroundColor);
                 System.out.print("\n");
-                for(int i = devSlot.size() - 3; i >= 0; i--){
+                for (int i = devSlot.size() - 3; i >= 0; i--) {
                     System.out.print(" ".repeat(8 + line.length()));
                     printCardInfo(list.get(i), backgroundColor);
                     System.out.print("\n");
                 }
             }
-        }else
+        } else
             System.out.print("\n");
     }
 
     public static void printFinalScores(List<Map.Entry<String, Integer>> results) {
-        if (results==null) return;
+        if (results == null) return;
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.RED.getTextColor());
         System.out.print("\n   ______________________________\n" +
-                " / \\                             \\.\n");
+                                 " / \\                             \\.\n");
         System.out.print("|   |                            |.\n");
         System.out.print(" \\_ |                            |.\n" +
-                "    |                            |.\n");
+                                 "    |                            |.\n");
 
         String[] lines = CliView.splitInLinesBySize("The game hath sadly come to an end, we shall see the final scores:", 27);
-        for (String line: lines) {
-            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
         }
         System.out.print("    |                            |.\n");
 
-        for(Map.Entry<String, Integer> e: results)
+        for (Map.Entry<String, Integer> e : results)
             printPlayersAndScore(e.getKey(), e.getValue());
 
 
         lines = CliView.splitInLinesBySize("We shall crown our Lord,", 27);
-        for (String line: lines) {
-            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
         }
         lines = CliView.splitInLinesBySize(results.get(0).getKey(), 27);
-        for (String line: lines) {
+        for (String line : lines) {
             System.out.print("    | ");
             System.out.print(AnsiCommands.YELLOW.getTextColor());
-            System.out.print(line+ " ".repeat(27-line.length()));
+            System.out.print(line + " ".repeat(27 - line.length()));
             System.out.print(AnsiCommands.RED.getTextColor());
             System.out.print("|.\n");
         }
@@ -215,8 +218,8 @@ public class CliView implements view {
 
         System.out.print(AnsiCommands.RED.getTextColor());
         lines = CliView.splitInLinesBySize("May long live the Lord!", 27);
-        for (String line: lines) {
-            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
         }
 
         System.out.print(
@@ -236,34 +239,34 @@ public class CliView implements view {
     //SPAZI TRA I BORDI DELLA PERGAMENA PICCOLA: 28
 
     public static void printGameBoard(Game gameModel, String nickname) {
-        if (gameModel == null || nickname==null || nickname.equals("")) return;
+        if (gameModel == null || nickname == null || nickname.equals("")) return;
         try {
             Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
             printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             printError("Is not a Player in the Game");
         }
 
     }
 
-    public static void printOthersPlayersName(Game gameModel, String currentPlayer){
+    public static void printOthersPlayersName(Game gameModel, String currentPlayer) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.BLACK.getTextColor());
         System.out.print("\n   ______________________________\n" +
-                " / \\                             \\.\n");
+                                 " / \\                             \\.\n");
         System.out.print("|   |                            |.\n");
         System.out.print(" \\_ |                            |.\n" +
-                "    |                            |.\n");
+                                 "    |                            |.\n");
         String fullLine = "";
-        if(gameModel.getPlayers().size() > 1) {
+        if (gameModel.getPlayers().size() > 1) {
             fullLine = "Master" + currentPlayer + ", thou dreadful competitors are hither shown: ";
             fullLine = fullLine + getOtherPlayersNicknames(gameModel, currentPlayer);
-        }else{
+        } else {
             fullLine = "Master" + currentPlayer + ", thou dreadful competitor is the Almighty Lorenzo the Magnificent!";
         }
         String[] lines = CliView.splitInLinesBySize(fullLine, 27);
-        for (String line: lines) {
-            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
         }
 
         System.out.print("    |                            |.\n");
@@ -276,7 +279,7 @@ public class CliView implements view {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-    public static void printPlayerBoardWithFrame(Player player, int lorenzoPosition){
+    public static void printPlayerBoardWithFrame(Player player, int lorenzoPosition) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.BLUE.getTextColor());
         System.out.print("_________________________________________________________________________________\n");
@@ -294,7 +297,7 @@ public class CliView implements view {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-    public static void printCommonParts(Game gameModel){
+    public static void printCommonParts(Game gameModel) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.BLACK.getTextColor());
         System.out.print("_________________________________________________________________________________\n");
@@ -315,18 +318,18 @@ public class CliView implements view {
     }
 
 
-    public static void printGeneralInfo(String info){
+    public static void printGeneralInfo(String info) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.YELLOW.getTextColor());
         System.out.print("\n   ______________________________\n" +
-                " / \\                             \\.\n");
+                                 " / \\                             \\.\n");
         System.out.print("|   |                            |.\n");
         System.out.print(" \\_ |                            |.\n" +
-                "    |                            |.\n");
+                                 "    |                            |.\n");
 
         String[] lines = CliView.splitInLinesBySize(info, 27);
-        for (String line: lines) {
-            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
         }
         System.out.print("    |                            |.\n");
 
@@ -349,14 +352,14 @@ public class CliView implements view {
                                      "|   |            ERROR           |.\n" +
                                      " \\_ |                            |.\n" +
                                      "    |                            |.\n");
-            for (String line: lines) {
-                System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+            for (String line : lines) {
+                System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
             }
             System.out.print(
                     "    |   _________________________|___\n" +
                             "    |  /                            /.\n" +
                             "    \\_/____________________________/.\n");
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.print(AnsiCommands.RED.getBackgroundColor());
             System.out.println(error);
         }
@@ -373,14 +376,14 @@ public class CliView implements view {
                                      "|   |            INFO            |.\n" +
                                      " \\_ |                            |.\n" +
                                      "    |                            |.\n");
-            for (String line: lines) {
-                System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+            for (String line : lines) {
+                System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
             }
             System.out.print(
                     "    |   _________________________|___\n" +
                             "    |  /                            /.\n" +
                             "    \\_/____________________________/.\n");
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.print(AnsiCommands.YELLOW.getBackgroundColor());
             System.out.println(info);
         }
@@ -401,17 +404,17 @@ public class CliView implements view {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.GREEN.getTextColor());
         System.out.print("   ______________________________\n" +
-                " / \\                             \\.\n");
+                                 " / \\                             \\.\n");
         System.out.print("|   |                            |.\n");
         System.out.print(" \\_ |                            |.\n" +
-                "    |                            |.\n");
-        for (String line: lines) {
-            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+                                 "    |                            |.\n");
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
         }
 
       /*for(Map.Entry<ResourceType, Integer> e: resourcesMap.entrySet())
           printResources(e.getKey(), e.getValue(), AnsiCommands.GREEN.getTextColor());*/
-      printGeneralResourcesMapsOnSmallScroll(resourcesMap, AnsiCommands.GREEN.getTextColor() );
+        printGeneralResourcesMapsOnSmallScroll(resourcesMap, AnsiCommands.GREEN.getTextColor());
 
         System.out.print(
                 "    |   _________________________|___\n" +
@@ -421,30 +424,30 @@ public class CliView implements view {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-    private static void printPlayersAndScore(String name, Integer score){
-        if (score==null) return;
+    private static void printPlayersAndScore(String name, Integer score) {
+        if (score == null) return;
         String fullLine = name + ": " + score;
         String[] lines = CliView.splitInLinesBySize(fullLine, 27);
-        for(String line: lines){
+        for (String line : lines) {
             System.out.print("    | ");
             System.out.print(AnsiCommands.GREEN.getTextColor());
-            System.out.print(line+ " ".repeat(27-line.length()));
+            System.out.print(line + " ".repeat(27 - line.length()));
             System.out.print(AnsiCommands.RED.getTextColor());
             System.out.print("|.\n");
         }
     }
 
-    private static void printGeneralResourcesMapsOnSmallScroll(Map<ResourceType, Integer> map, String boundaryColor){
+    private static void printGeneralResourcesMapsOnSmallScroll(Map<ResourceType, Integer> map, String boundaryColor) {
         if (map == null) return;
-        for(Map.Entry<ResourceType, Integer> e: map.entrySet())
+        for (Map.Entry<ResourceType, Integer> e : map.entrySet())
             printResourcesOnScroll(e.getKey(), e.getValue(), boundaryColor);
     }
 
-    public static void printGeneralResourcesMapOnALine(Map<ResourceType, Integer> map, String boundaryColor){
+    public static void printGeneralResourcesMapOnALine(Map<ResourceType, Integer> map, String boundaryColor) {
         if (map == null) return;
         int j = 0;
-        for(Map.Entry<ResourceType, Integer> e: map.entrySet()){
-            if(j != 0)
+        for (Map.Entry<ResourceType, Integer> e : map.entrySet()) {
+            if (j != 0)
                 System.out.print(" + ");
             else
                 j++;
@@ -452,95 +455,95 @@ public class CliView implements view {
         }
     }
 
-    public static void printFaithTrack(int position, List<PopeTile> popeTiles, int lorenzoPosition){
-        if (popeTiles == null || popeTiles.size() != 3) return;
+    public static void printFaithTrack(Integer position, List<PopeTile> popeTiles, int lorenzoPosition) {
+        if (popeTiles == null || popeTiles.size() != 3 || position == null) return;
         System.out.print(AnsiCommands.resetStyle());
-        if (lorenzoPosition!=-1){
-            System.out.print(AnsiCommands.PURPLE.getBackgroundColor()+AnsiCommands.BLACK.getTextColor());
-            System.out.println(" ".repeat(lorenzoPosition*2)+"ℒ"+" ".repeat((24-lorenzoPosition)*2)+AnsiCommands.resetStyle());
+        if (lorenzoPosition != -1) {
+            System.out.print(AnsiCommands.PURPLE.getBackgroundColor() + AnsiCommands.BLACK.getTextColor());
+            System.out.println(" ".repeat(lorenzoPosition * 2) + "ℒ" + " ".repeat((24 - lorenzoPosition) * 2) + AnsiCommands.resetStyle());
         }
-        System.out.println("⚀⚀⚀⚀⚀⚀♕♕⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀♕♕⚀⚀☩☩"+AnsiCommands.resetStyle()+"♕♕⚀⚀⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"♕♕⚀⚀⚀⚀♕♕☩☩"+AnsiCommands.resetStyle()+"⚀⚀♕♕"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀⚀⚀♕♕⚀⚀⚀⚀☩☩"+AnsiCommands.resetStyle());
-        System.out.print(AnsiCommands.YELLOW.getBackgroundColor()+AnsiCommands.BLACK.getTextColor());
-        System.out.println(" ".repeat(position*2)+"⸡⸠"+" ".repeat((24-position)*2)+AnsiCommands.resetStyle());
-        System.out.println("⚀⚀⚀⚀⚀⚀♕♕⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀♕♕⚀⚀☩☩"+AnsiCommands.resetStyle()+"♕♕⚀⚀⚀⚀"+AnsiCommands.YELLOW.getTextColor()+"♕♕⚀⚀⚀⚀♕♕☩☩"+AnsiCommands.resetStyle()+"⚀⚀♕♕"+AnsiCommands.YELLOW.getTextColor()+"⚀⚀⚀⚀♕♕⚀⚀⚀⚀☩☩"+AnsiCommands.resetStyle());
+        System.out.println("⚀⚀⚀⚀⚀⚀♕♕⚀⚀" + AnsiCommands.YELLOW.getTextColor() + "⚀⚀♕♕⚀⚀☩☩" + AnsiCommands.resetStyle() + "♕♕⚀⚀⚀⚀" + AnsiCommands.YELLOW.getTextColor() + "♕♕⚀⚀⚀⚀♕♕☩☩" + AnsiCommands.resetStyle() + "⚀⚀♕♕" + AnsiCommands.YELLOW.getTextColor() + "⚀⚀⚀⚀♕♕⚀⚀⚀⚀☩☩" + AnsiCommands.resetStyle());
+        System.out.print(AnsiCommands.YELLOW.getBackgroundColor() + AnsiCommands.BLACK.getTextColor());
+        System.out.println(" ".repeat(position * 2) + "⸡⸠" + " ".repeat((24 - position) * 2) + AnsiCommands.resetStyle());
+        System.out.println("⚀⚀⚀⚀⚀⚀♕♕⚀⚀" + AnsiCommands.YELLOW.getTextColor() + "⚀⚀♕♕⚀⚀☩☩" + AnsiCommands.resetStyle() + "♕♕⚀⚀⚀⚀" + AnsiCommands.YELLOW.getTextColor() + "♕♕⚀⚀⚀⚀♕♕☩☩" + AnsiCommands.resetStyle() + "⚀⚀♕♕" + AnsiCommands.YELLOW.getTextColor() + "⚀⚀⚀⚀♕♕⚀⚀⚀⚀☩☩" + AnsiCommands.resetStyle());
         System.out.print(AnsiCommands.RED.getTextColor());
-        if (popeTiles.get(0).isDiscarded()){
+        if (popeTiles.get(0).isDiscarded()) {
             System.out.print(" ".repeat(18));
-        }else if (popeTiles.get(0).isChanged()){
-            System.out.print(" ".repeat(12)+"\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B"+" ".repeat(2));
-        }else{
-            System.out.print(" ".repeat(12)+"\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06"+" ".repeat(2));
+        } else if (popeTiles.get(0).isChanged()) {
+            System.out.print(" ".repeat(12) + "\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B" + " ".repeat(2));
+        } else {
+            System.out.print(" ".repeat(12) + "\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06" + " ".repeat(2));
         }
-        if (popeTiles.get(1).isDiscarded()){
+        if (popeTiles.get(1).isDiscarded()) {
             System.out.print(" ".repeat(16));
-        }else if (popeTiles.get(1).isChanged()){
-            System.out.print(" ".repeat(9)+"\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B"+" ".repeat(3));
-        }else{
-            System.out.print(" ".repeat(9)+"\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06"+" ".repeat(3));
+        } else if (popeTiles.get(1).isChanged()) {
+            System.out.print(" ".repeat(9) + "\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B" + " ".repeat(3));
+        } else {
+            System.out.print(" ".repeat(9) + "\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06" + " ".repeat(3));
         }
-        if (popeTiles.get(2).isDiscarded()){
+        if (popeTiles.get(2).isDiscarded()) {
             System.out.print("\n");
-        }else if (popeTiles.get(2).isChanged()){
-            System.out.print(" ".repeat(8)+"\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B"+"\n");
-        }else{
-            System.out.print(" ".repeat(8)+"\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06"+"\n");
+        } else if (popeTiles.get(2).isChanged()) {
+            System.out.print(" ".repeat(8) + "\uD83C\uDC2B\uD83C\uDC2B\uD83C\uDC2B" + "\n");
+        } else {
+            System.out.print(" ".repeat(8) + "\uD83C\uDC06\uD83C\uDC06\uD83C\uDC06" + "\n");
         }
-        System.out.print(AnsiCommands.resetStyle()+AnsiCommands.clearLine());
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-    public static void printStrongBox(Map<ResourceType, Integer> map){
+    public static void printStrongBox(Map<ResourceType, Integer> map) {
         if (map == null) return;
         System.out.print(AnsiCommands.BLACK.getTextColor());
         System.out.print("     ____________________________.\n");
         String[] lines = CliView.splitInLinesBySize("Thy precious Strongbox is hither presented: ", 27);
-        for (String line: lines) {
-            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
         }
         printGeneralResourcesMapsOnSmallScroll(map, AnsiCommands.BLACK.getTextColor());
         System.out.print("     ____________________________.\n");
     }
 
-    public static void printLeaderDepots(Map<ResourceType, Integer> map){
+    public static void printLeaderDepots(Map<ResourceType, Integer> map) {
         if (map == null) return;
         System.out.print(AnsiCommands.WHITE.getTextColor());
         System.out.print("     ____________________________.\n");
         String[] lines = CliView.splitInLinesBySize("Thy Extra Slots are hither presented: ", 27);
-        for (String line: lines) {
-            System.out.print("    | "+line+ " ".repeat(27-line.length())+ "|.\n");
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
         }
         printGeneralResourcesMapsOnSmallScroll(map, AnsiCommands.WHITE.getTextColor());
         System.out.print("     ____________________________.\n");
     }
 
-    public static void printDepot(List<DepotShelf> shelves){
+    public static void printDepot(List<DepotShelf> shelves) {
         if (shelves == null) return;
         System.out.print(AnsiCommands.BLACK.getTextColor());
         System.out.print("Thy Depot is hither presented:\n");
         DepotShelf d;
-        for( int j = 0; j < shelves.size(); j++){
+        for (int j = 0; j < shelves.size(); j++) {
             d = shelves.get(j);
-            if(j == 0)
+            if (j == 0)
                 System.out.print("         ");
-            else if(j == 1)
+            else if (j == 1)
                 System.out.print("    ");
-            if(d.getQuantity() == 0)
-                if(j == 0)
+            if (d.getQuantity() == 0)
+                if (j == 0)
                     System.out.print("|        |");
                 else if (j == 1)
                     System.out.print("|        |        |");
                 else
                     System.out.print("|        |        |        |");
-            else{
+            else {
                 System.out.print("|   ");
                 int i;
-                for(i = 0; i < d.getQuantity(); i++) {
-                    if(i != 0)
+                for (i = 0; i < d.getQuantity(); i++) {
+                    if (i != 0)
                         System.out.print("   ");
                     printResName(d.getResourceType(), AnsiCommands.BLACK.getTextColor());
                     System.out.print("   |");
                 }
                 int tmp = d.getQuantity();
-                while(tmp != j + 1){
+                while (tmp != j + 1) {
                     System.out.print("        |");
                     tmp++;
                 }
@@ -550,28 +553,28 @@ public class CliView implements view {
         }
     }
 
-    private static void printDivider(AnsiCommands color){
+    private static void printDivider(AnsiCommands color) {
         if (color != null)
             System.out.print(color.getTextColor());
         System.out.println("  .-----------------------------------------------------------------.\n" +
-                "|  /   \\                                                       /   \\  |\n" +
-                "| |\\_.  |                                                     |    /| |\n" +
-                "|\\|  | /|                                                     |\\  | |/|\n" +
-                "| `---' |                                                     | `---' |\n" +
-                "|       |-----------------------------------------------------|       |\n" +
-                "\\       |                                                     |       /\n" +
-                " `-----'                                                       `-----'");
+                                   "|  /   \\                                                       /   \\  |\n" +
+                                   "| |\\_.  |                                                     |    /| |\n" +
+                                   "|\\|  | /|                                                     |\\  | |/|\n" +
+                                   "| `---' |                                                     | `---' |\n" +
+                                   "|       |-----------------------------------------------------|       |\n" +
+                                   "\\       |                                                     |       /\n" +
+                                   " `-----'                                                       `-----'");
         System.out.print(AnsiCommands.resetStyle());
     }
 
-    private static void printDividerSmall(AnsiCommands color){
+    private static void printDividerSmall(AnsiCommands color) {
         if (color != null)
             System.out.print(color.getTextColor());
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.print(AnsiCommands.resetStyle());
     }
 
-    public static void printBaseProduction(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output){
+    public static void printBaseProduction(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output) {
         if (input == null || output == null)
             return;
         System.out.print(AnsiCommands.BLACK.getTextColor());
@@ -580,12 +583,12 @@ public class CliView implements view {
 
         System.out.print("\nFrom: ");
         int j = 0;
-        for(Map.Entry<ResourceType, Integer> e: input.entrySet()){
-            if(j != 0)
+        for (Map.Entry<ResourceType, Integer> e : input.entrySet()) {
+            if (j != 0)
                 System.out.print(" + ");
             else
                 j++;
-            for(int i = 0; i < e.getValue() - 1; i++){
+            for (int i = 0; i < e.getValue() - 1; i++) {
                 printResName(e.getKey(), AnsiCommands.BLACK.getTextColor());
                 System.out.print(" + ");
             }
@@ -602,12 +605,12 @@ public class CliView implements view {
 
         System.out.print("\nThou get: ");
         j = 0;
-        for(Map.Entry<ResourceType, Integer> e: output.entrySet()){
-            if(j != 0)
+        for (Map.Entry<ResourceType, Integer> e : output.entrySet()) {
+            if (j != 0)
                 System.out.print(" + ");
             else
                 j++;
-            for(int i = 0; i < e.getValue() - 1; i++){
+            for (int i = 0; i < e.getValue() - 1; i++) {
                 printResName(e.getKey(), AnsiCommands.BLACK.getTextColor());
                 System.out.print(" + ");
             }
@@ -618,24 +621,28 @@ public class CliView implements view {
 
     }
 
-    public static void printMarket(Board board){
+    public static void printMarket(Board board) {
         System.out.print(AnsiCommands.resetStyle());
-        if (board==null)
+        if (board == null || board.getMarketMatrix() == null || board.getMarbleOnSlide() == null) {
+            System.out.println("missing board or getMatrix or marble on slide in print market");
             return;
+        }
         MarbleType[][] matrix = board.getMarketMatrix();
-        System.out.println("___________ "+ board.getMarbleOnSlide().toString());
+        System.out.println("___________ " + board.getMarbleOnSlide().toString());
         for (int i = 0; i < matrix.length; i++) {
             System.out.print("|");
             for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j].toString()+"|");
+                System.out.print(matrix[i][j].toString() + "|");
             }
             System.out.println("\n___________");
         }
     }
 
-    public static void printDevGrid(Board board){
-        if (board==null)
+    public static void printDevGrid(Board board) {
+        if (board == null || board.getDevGrid() == null) {
+            System.out.println("missing board or devgrid in print devgrid");
             return;
+        }
         DevCard[][] devGrid = board.getDevMatrix();
         System.out.print(AnsiCommands.RED.getBackgroundColor());
         System.out.print("_____________");
@@ -646,22 +653,22 @@ public class CliView implements view {
             System.out.print("|");
             System.out.print(AnsiCommands.resetStyle());
             for (int j = 0; j < devGrid[i].length; j++) {
-                c = (1+j+4*i);
+                c = (1 + j + 4 * i);
                 System.out.print(c);
-                if (c<10){
-                    System.out.print(" "+AnsiCommands.RED.getBackgroundColor()+"|"+AnsiCommands.resetStyle());
+                if (c < 10) {
+                    System.out.print(" " + AnsiCommands.RED.getBackgroundColor() + "|" + AnsiCommands.resetStyle());
                 } else {
-                    System.out.print(AnsiCommands.RED.getBackgroundColor()+"|"+AnsiCommands.resetStyle());
+                    System.out.print(AnsiCommands.RED.getBackgroundColor() + "|" + AnsiCommands.resetStyle());
                 }
             }
-            System.out.print("\n"+AnsiCommands.RED.getBackgroundColor());
+            System.out.print("\n" + AnsiCommands.RED.getBackgroundColor());
             System.out.print("_____________");
             System.out.println(AnsiCommands.resetStyle());
         }
 
         for (int i = 0; i < devGrid.length; i++) {
             for (int j = 0; j < devGrid[i].length; j++) {
-                c = (1+i+4*j);
+                c = (1 + i + 4 * j);
                 //System.out.println(c+":\t");
                 System.out.print(c + " : ");
                 printCardInfo(devGrid[i][j], AnsiCommands.resetStyle());
@@ -677,25 +684,25 @@ public class CliView implements view {
     #############################################################################################
      */
 
-    public static void printUnusedLeaderCards(List<LeaderCard> list){
+    public static void printUnusedLeaderCards(List<LeaderCard> list) {
         System.out.print(AnsiCommands.RED.getTextColor());
         System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
         System.out.print("Thy Not Active Card of the Leader are hither presented:\n\n");
         printLeaderCards(list, AnsiCommands.RED.getTextColor());
     }
 
-    public static void printUsedLeaderCards(List<LeaderCard> list){
+    public static void printUsedLeaderCards(List<LeaderCard> list) {
         System.out.print(AnsiCommands.GREEN.getTextColor());
         System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
         System.out.print("Thy Active Card of the Leader are hither presented:\n\n");
         printLeaderCards(list, AnsiCommands.GREEN.getTextColor());
     }
 
-    public static void printLeaderCards(List<LeaderCard> list, String backgroundColor){
-        if (list==null)
+    public static void printLeaderCards(List<LeaderCard> list, String backgroundColor) {
+        if (list == null)
             return;
-        for(LeaderCard lD: list){
-            printLeaderCard(lD, backgroundColor );
+        for (LeaderCard lD : list) {
+            printLeaderCard(lD, backgroundColor);
             System.out.print("\n");
         }
 
@@ -703,109 +710,107 @@ public class CliView implements view {
 
     }
 
-    public static void printLeaderCard(LeaderCard card, String backgroundColor){
-        if (card==null)
+    public static void printLeaderCard(LeaderCard card, String backgroundColor) {
+        if (card == null)
             return;
         System.out.print(backgroundColor);
         System.out.print("CARD OF THE LEADER\n");
         System.out.print("PV: " + card.getVictoryPoints() + " | ");
-        for(Requirement r: card.getRequirementsListSafe()) {
+        for (Requirement r : card.getRequirementsListSafe()) {
             printRequirements(r, backgroundColor);
             System.out.print(" | ");
         }
         printEffects(card.getEffect(), backgroundColor);
     }
 
-    private static void printRequirements(Requirement req, String backgroundColor){
-        if (req==null)
+    private static void printRequirements(Requirement req, String backgroundColor) {
+        if (req == null)
             return;
-        if(req instanceof CardRequirementColor)
+        if (req instanceof CardRequirementColor)
             printCardRequirementColor((CardRequirementColor) req, backgroundColor);
-        else if(req instanceof CardRequirementColorAndLevel)
+        else if (req instanceof CardRequirementColorAndLevel)
             printCardRequirementColorAndLevel((CardRequirementColorAndLevel) req, backgroundColor);
-        else if(req instanceof CardRequirementResource)
+        else if (req instanceof CardRequirementResource)
             printCardRequirementResource((CardRequirementResource) req, backgroundColor);
     }
 
-    private static void printCardRequirementColor(CardRequirementColor req, String backgroundColor){
+    private static void printCardRequirementColor(CardRequirementColor req, String backgroundColor) {
         System.out.print("Card and Color Req: ");
-        if(req.getQuantity() == 1) {
+        if (req.getQuantity() == 1) {
             System.out.print("a ");
             printColor(req.getCardColour(), backgroundColor);
             System.out.print(" card");
-        }
-        else{
+        } else {
             System.out.print(req.getQuantity() + " ");
             printColor(req.getCardColour(), backgroundColor);
-            System.out.print(" cards");}
+            System.out.print(" cards");
+        }
 
     }
 
-    private static void printCardRequirementColorAndLevel(CardRequirementColorAndLevel req, String backgroundColor){
+    private static void printCardRequirementColorAndLevel(CardRequirementColorAndLevel req, String backgroundColor) {
         System.out.print("Card, Color and Level Req: ");
-        if(req.getQuantity() == 1){
+        if (req.getQuantity() == 1) {
             System.out.print("a ");
             printColor(req.getCardColour(), backgroundColor);
-            System.out.print(" card of at lest level "+ req.getLevel());
+            System.out.print(" card of at lest level " + req.getLevel());
 
-        }else {
+        } else {
             System.out.print(req.getLevel() + " ");
             printColor(req.getCardColour(), backgroundColor);
             System.out.print(" cards of at lest level " + req.getLevel());
         }
     }
 
-    private static void printCardRequirementResource(CardRequirementResource req, String backgroundColor){
+    private static void printCardRequirementResource(CardRequirementResource req, String backgroundColor) {
         System.out.print("Resources Req: ");
-        if(req.getQuantity() == 1) {
+        if (req.getQuantity() == 1) {
             System.out.print("a ");
             printResName(req.getResourceType(), backgroundColor);
-        }
-        else{
+        } else {
             System.out.print(req.getQuantity() + " ");
             printResName(req.getResourceType(), backgroundColor);
         }
     }
 
-    private static void printEffects(Effect effect, String backgroundColor){
-        if (effect==null)
+    private static void printEffects(Effect effect, String backgroundColor) {
+        if (effect == null)
             return;
-        if(effect instanceof DiscountLeaderEffect)
+        if (effect instanceof DiscountLeaderEffect)
             printDiscountLeaderEffect((DiscountLeaderEffect) effect, backgroundColor);
-        else if(effect instanceof ExtraProductionLeaderEffect)
+        else if (effect instanceof ExtraProductionLeaderEffect)
             printExtraProductionLeaderEffect((ExtraProductionLeaderEffect) effect, backgroundColor);
-        else if(effect instanceof ExtraSlotLeaderEffect)
+        else if (effect instanceof ExtraSlotLeaderEffect)
             printExtraSlotLeaderEffect((ExtraSlotLeaderEffect) effect, backgroundColor);
-        else if(effect instanceof WhiteMarbleLeaderEffect)
+        else if (effect instanceof WhiteMarbleLeaderEffect)
             printWhiteMarbleEffect((WhiteMarbleLeaderEffect) effect, backgroundColor);
         System.out.print("\n");
     }
 
     private static void printDiscountLeaderEffect(DiscountLeaderEffect e, String backgroundColor) {
         System.out.print("Card Discount Eff: ");
-        if (e.getDiscountAmount() == 1){
+        if (e.getDiscountAmount() == 1) {
             System.out.print(" a ");
             printResName(e.getDiscountType(), backgroundColor);
             System.out.print(" off");
-        }else {
+        } else {
             System.out.print(" " + e.getDiscountAmount());
             printResName(e.getDiscountType(), backgroundColor);
             System.out.print(" off");
         }
     }
 
-    private static void printExtraProductionLeaderEffect(ExtraProductionLeaderEffect e, String backgroundColor){
+    private static void printExtraProductionLeaderEffect(ExtraProductionLeaderEffect e, String backgroundColor) {
         System.out.print("Extra Prod Eff: ");
         String line;
-        if(e.getRequiredInputNumber() == 1) {
+        if (e.getRequiredInputNumber() == 1) {
             System.out.print("from: ");
             printResName(e.getRequiredInputType(), backgroundColor);
-        }
-        else {
+        } else {
             System.out.print("from: " + e.getRequiredInputNumber() + " ");
             printResName(e.getRequiredInputType(), backgroundColor);
         }
-        if(e.getExtraOutputQuantity() == 1)
+        if (e.getExtraOutputQuantity() == 1)
             System.out.print(" --> 1 Res of your choice ");
         else
             System.out.print(" --> " + e.getExtraOutputQuantity() + " resources of your choice ");
@@ -815,22 +820,22 @@ public class CliView implements view {
 
     private static void printExtraSlotLeaderEffect(ExtraSlotLeaderEffect e, String backgroundColor) {
         System.out.print("Depot Slots Eff: ");
-        if (e.extraSlotGetResourceNumber() == 1){
+        if (e.extraSlotGetResourceNumber() == 1) {
             System.out.print("a extra Slot for ");
-        }else {
-            System.out.print( + e.extraSlotGetResourceNumber() + " extra Slots for ");
+        } else {
+            System.out.print(+e.extraSlotGetResourceNumber() + " extra Slots for ");
         }
         printResName(e.extraSlotGetType(), backgroundColor);
     }
 
-    private static void printWhiteMarbleEffect(WhiteMarbleLeaderEffect e, String backgroundColor){
+    private static void printWhiteMarbleEffect(WhiteMarbleLeaderEffect e, String backgroundColor) {
         System.out.print("White Marble Eff: ");
-        if(e.getExtraResourceAmount() == 1) {
+        if (e.getExtraResourceAmount() == 1) {
             System.out.print("get a ");
             printResName(e.getExtraResourceType(), backgroundColor);
             System.out.print("from a WhiteMarble");
 
-        }else {
+        } else {
             System.out.print("get " + e.getExtraResourceAmount() + " ");
             printResName(e.getExtraResourceType(), backgroundColor);
             System.out.print(" from a WhiteMarble");
@@ -849,15 +854,15 @@ public class CliView implements view {
         return devCard.toString();
     }*/
 
-    public static void printCardInfo(DevCard devCard, String backgroundColor){
-        if (devCard==null)
+    public static void printCardInfo(DevCard devCard, String backgroundColor) {
+        if (devCard == null)
             System.out.print("Empty Slot");
         else
             printCardInfoIfValid(devCard, backgroundColor);
     }
 
     //Prints a DevCard if it is a valid card (it has all the attributes it is supposed to have)
-    public static void printCardInfoIfValid(DevCard devCard, String backgroundColor){
+    public static void printCardInfoIfValid(DevCard devCard, String backgroundColor) {
         System.out.print(AnsiCommands.BLACK.getTextColor());
         printCardColorAndLevel(devCard.getLevel(), devCard.getColour(), AnsiCommands.BLACK.getTextColor());
         System.out.print(" VP: " + devCard.getVictoryPoints() + " | ");
@@ -871,8 +876,8 @@ public class CliView implements view {
         System.out.print(backgroundColor);
     }
 
-    private static void printCardColorAndLevel(Integer level, DevCardColour color, String backgroundColor){
-        switch (color){
+    private static void printCardColorAndLevel(Integer level, DevCardColour color, String backgroundColor) {
+        switch (color) {
             case PURPLE:
                 System.out.print(AnsiCommands.PURPLE.getTextColor());
                 System.out.print("C: ");
@@ -907,8 +912,8 @@ public class CliView implements view {
 
     //Prints only a SINGLE symbol of the resources with their corresponding color. The background color is the one which must be
     //reinstate after the resource has been printed
-    private static void printResName(ResourceType res, String boundaryColor){
-        switch (res){
+    private static void printResName(ResourceType res, String boundaryColor) {
+        switch (res) {
             case COIN:
                 System.out.print(AnsiCommands.YELLOW.getTextColor());
                 //System.out.print("©©©©©");
@@ -943,8 +948,8 @@ public class CliView implements view {
     }
 
     //Prints the resources and their corresponding quantity given. It prints the whole line of a small scroll
-    private static void printResourcesOnScroll(ResourceType type, Integer quantity, String boundaryColor){
-        switch (type){
+    private static void printResourcesOnScroll(ResourceType type, Integer quantity, String boundaryColor) {
+        switch (type) {
             case COIN:
                 coins(quantity, boundaryColor);
                 break;
@@ -964,8 +969,8 @@ public class CliView implements view {
     }
 
     //Prints the resources and their corresponding quantity given
-    private static void printResAndNumberWithSameColor(ResourceType res, Integer quantity, String backgroundColor){
-        switch (res){
+    private static void printResAndNumberWithSameColor(ResourceType res, Integer quantity, String backgroundColor) {
+        switch (res) {
             case COIN:
                 printResName(res, AnsiCommands.YELLOW.getTextColor());
                 break;
@@ -989,35 +994,33 @@ public class CliView implements view {
 
     //The following methods print the resources and their quantity in a line for a small scroll
 
-    private static void coins(int quantity, String color){
+    private static void coins(int quantity, String color) {
         System.out.print("    | ");
         System.out.print(AnsiCommands.YELLOW.getTextColor());
         //System.out.print("©©©©©: ");
-        System.out.print("\uD83D\uDCB0\uD83D\uDCB0" +" : ");
-        if(quantity < 10) {
+        System.out.print("\uD83D\uDCB0\uD83D\uDCB0" + " : ");
+        if (quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
             System.out.print(" ".repeat(20) + "|.\n");
-        }
-        else{
+        } else {
             System.out.print(quantity);
             System.out.print(color);
-            System.out.print(" ".repeat(19) + "|.\n" );
+            System.out.print(" ".repeat(19) + "|.\n");
             System.out.print("");
         }
     }
 
-    private static void stones(int quantity, String color){
+    private static void stones(int quantity, String color) {
         System.out.print("    | ");
         System.out.print(AnsiCommands.WHITE.getTextColor());
         //System.out.print("Stones: ");
         System.out.print("\uD83D\uDDFF\uD83D\uDDFF" + " : ");
-        if(quantity < 10) {
+        if (quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
             System.out.print(" ".repeat(20) + "|.\n");
-        }
-        else{
+        } else {
             System.out.print(quantity);
             System.out.print(color);
             System.out.print(" ".repeat(19) + "|.\n");
@@ -1025,17 +1028,16 @@ public class CliView implements view {
         }
     }
 
-    private static void servants(int quantity, String color){
+    private static void servants(int quantity, String color) {
         System.out.print("    | ");
         System.out.print(AnsiCommands.PURPLE.getTextColor());
         //System.out.print("Servants: ");
         System.out.print("\uD83D\uDC68\uD83D\uDC68" + " : ");
-        if(quantity < 10) {
+        if (quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
             System.out.print(" ".repeat(20) + "|.\n");
-        }
-        else{
+        } else {
             System.out.print(quantity);
             System.out.print(color);
             System.out.print(" ".repeat(19) + "|.\n");
@@ -1043,17 +1045,16 @@ public class CliView implements view {
         }
     }
 
-    private static void shields(int quantity, String color){
+    private static void shields(int quantity, String color) {
         System.out.print("    | ");
         System.out.print(AnsiCommands.BLUE.getTextColor());
         //System.out.print("Shields: ");
-        System.out.print("\uD83D\uDEE1"+"\uD83D\uDEE1️" + " : ");
-        if(quantity < 10) {
+        System.out.print("\uD83D\uDEE1" + "\uD83D\uDEE1️" + " : ");
+        if (quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
             System.out.print(" ".repeat(20) + "|.\n");
-        }
-        else{
+        } else {
             System.out.print(quantity);
             System.out.print(color);
             System.out.print(" ".repeat(19) + "|.\n");
@@ -1061,20 +1062,19 @@ public class CliView implements view {
         }
     }
 
-    private static void faithPoints(int quantity, String color){
+    private static void faithPoints(int quantity, String color) {
         System.out.print("    | ");
         System.out.print(AnsiCommands.RED.getTextColor());
         //System.out.print("Points of Faith: ");
         System.out.print("✝✝  : ");
-        if(quantity < 10) {
+        if (quantity < 10) {
             System.out.print(quantity);
             System.out.print(color);
             System.out.print(" ".repeat(20) + "|.\n");
-        }
-        else{
+        } else {
             System.out.print(quantity);
             System.out.print(color);
-            System.out.print(" ".repeat(19) + "|.\n" );
+            System.out.print(" ".repeat(19) + "|.\n");
             System.out.print("");
         }
     }
@@ -1087,8 +1087,8 @@ public class CliView implements view {
 
     //Prints the name of the color using the corresponding color. The background color is the one which must be
     //reinstate after the resource has been printed
-    private static void printColor(DevCardColour color, String backgroundColor){
-        switch (color){
+    private static void printColor(DevCardColour color, String backgroundColor) {
+        switch (color) {
             case BLUE:
                 System.out.print(AnsiCommands.BLUE.getTextColor());
                 System.out.print("BLUE");
@@ -1118,16 +1118,16 @@ public class CliView implements view {
     ###########################
      */
 
-    private static String[] splitInLinesBySize(String string, int limit) throws IllegalArgumentException{
+    private static String[] splitInLinesBySize(String string, int limit) throws IllegalArgumentException {
         List<String> words = Arrays.stream(string.split(" ")).map(String::strip).collect(Collectors.toList());
         ArrayList<String> lines = new ArrayList<>();
         lines.add("");
         int c = 0;
-        for (String word: words) {
+        for (String word : words) {
             if (word.length() > limit) throw new IllegalArgumentException("word is too long");
             if (lines.get(c).equals("")) lines.set(c, word);
             else if (lines.get(c).length() + word.length() < limit) lines.set(c, lines.get(c) + " " + word);
-            else{
+            else {
                 c++;
                 lines.add(word);
             }
@@ -1135,7 +1135,7 @@ public class CliView implements view {
         return lines.toArray(new String[0]);
     }
 
-    private static String findPlayerByState(List<Player> players, PlayerState state){
+    private static String findPlayerByState(List<Player> players, PlayerState state) {
         return players.stream().filter(x -> x.getPlayerState() == state).findAny().map(Player::getNickName).orElseThrow(NoSuchElementException::new);
     }
 
@@ -1143,8 +1143,8 @@ public class CliView implements view {
         List<String> nicknames = gameModel.getPlayers().stream().map(Player::getNickName).filter(x -> !x.equals(currentPlayer)).collect(Collectors.toList());
         String output = "";
         int j = 0;
-        for(String name: nicknames) {
-            if(j != 0)
+        for (String name : nicknames) {
+            if (j != 0)
                 output = output + ", ";
             else j++;
             output = output + name;

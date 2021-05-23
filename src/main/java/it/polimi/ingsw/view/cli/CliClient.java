@@ -1,7 +1,14 @@
 package it.polimi.ingsw.view.cli;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
 import it.polimi.ingsw.network.messages.sendToClient.*;
@@ -15,7 +22,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CliClient extends Client implements Runnable {
@@ -26,7 +33,7 @@ public class CliClient extends Client implements Runnable {
     private PrintWriter out;
     private BufferedReader in;
     private static BufferedReader stdIn;
-    private static final Gson gson = new Gson();
+    private final Gson gson;
     private static Thread thread;
     private Map<ResourceType, Integer> resourcesMap;
     private String mapDescription;
@@ -37,7 +44,6 @@ public class CliClient extends Client implements Runnable {
     private String logoutMessage = "Thanks for Playing, See you next time :D";
 
 
-
     public CliClient(int portNumber, String hostName) {
         this.gamemodel = null;
         this.portNumber = portNumber;
@@ -45,6 +51,24 @@ public class CliClient extends Client implements Runnable {
         this.forceLogout = new AtomicBoolean();
         this.forceLogout.set(false);
         this.stdIn = new BufferedReader(new InputStreamReader(System.in));
+
+        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
+                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
+        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
+        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
+
+        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
+                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
+        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
+
+        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
+                .registerTypeAdapterFactory(effectTypeFactory).create();
     }
 
     public CliClient(int portNumber, String hostName, BufferedReader bufferedReader) {
@@ -54,11 +78,29 @@ public class CliClient extends Client implements Runnable {
         this.forceLogout = new AtomicBoolean();
         this.forceLogout.set(false);
         this.stdIn = bufferedReader;
+
+        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
+                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
+        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
+        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
+
+        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
+                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
+        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
+
+        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
+                .registerTypeAdapterFactory(effectTypeFactory).create();
     }
 
 
     @Override
-    public void startConnection(){
+    public void startConnection() {
         try {
             socket = new Socket(hostName, portNumber);
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -86,7 +128,7 @@ public class CliClient extends Client implements Runnable {
                 cliCommandType = CliCommandType.valueOf(line);
                 switch (cliCommandType) {
                     case QUIT:
-                        synchronized (this){
+                        synchronized (this) {
                             sendMessage(new Command("quit"));
                         }
                         break;
@@ -133,24 +175,24 @@ public class CliClient extends Client implements Runnable {
                         this.activateLeader();
                         break;
                     case ENDTURN:
-                        synchronized (this){
+                        synchronized (this) {
                             sendMessage(new Command("endTurn"));
                         }
                         break;
                     case SEEPLAYERBOARD:
-                        synchronized (this){
+                        synchronized (this) {
                             CliView.printGameBoard(gamemodel, stdIn.readLine());
                         }
                         break;
                     case PRINTMYBOARD:
-                        synchronized (this){
+                        synchronized (this) {
                             if (this.gamemodel == null)
                                 CliView.printGameState(gamemodel, nickname);
                             else
                                 CliView.printInfo("It can't be printed yet");
                         }
                     case SEEOTHERSPLAYERSNAMES:
-                        synchronized (this){
+                        synchronized (this) {
                             if (this.gamemodel == null)
                                 CliView.printOthersPlayersName(gamemodel, nickname);
                             else
@@ -162,10 +204,10 @@ public class CliClient extends Client implements Runnable {
             } catch (IOException e) {
                 System.err.println("can't read your stream");
                 System.exit(1);
-            }catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 System.err.println("your Command doesn't exists");
             }
-        }while (!cliCommandType.equals(CliCommandType.QUIT) && !forceLogout.get());
+        } while (!cliCommandType.equals(CliCommandType.QUIT) && !forceLogout.get());
         this.endConnection();
     }
 
@@ -186,7 +228,7 @@ public class CliClient extends Client implements Runnable {
     public void sendMessage(Command command) throws NullPointerException {
         if (out == null) throw new NullPointerException("PrintWriter is null");
         out.println(gson.toJson(command));
-        System.out.println("Sending:\t"+gson.toJson(command));
+        System.out.println("Sending:\t" + gson.toJson(command));
     }
 
     @Override
@@ -206,7 +248,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command configureStartCommand = new Command("discardLeaderAndExtraResBeginning", StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(usrCommand));
             sendMessage(configureStartCommand);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -220,7 +262,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command setNumPlayerCommand = new Command("setNumPlayer", StringToMessage.toSetNumPlayerMessage(usrCommand));
             sendMessage(setNumPlayerCommand);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -233,7 +275,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command getResourcesFromMarket = new Command("getResourcesFromMarket", StringToMessage.toMatrixMessageLine(usrCommand));
             sendMessage(getResourcesFromMarket);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -246,7 +288,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command buyFromMarketCommand = new Command("buyFromMarket", StringToMessage.toBuyFromMarketMessage(usrCommand));
             sendMessage(buyFromMarketCommand);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -259,7 +301,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command getDevCardCost = new Command("getCardCost", StringToMessage.toMatrixMessageCell(usrCommand));
             sendMessage(getDevCardCost);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -272,7 +314,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command buyDevCard = new Command("buyDevCard", StringToMessage.toBuyDevCardMessage(usrCommand));
             sendMessage(buyDevCard);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -285,7 +327,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command getProductionCost = new Command("getProductionCost", StringToMessage.toGetProductionCostMessage(usrCommand));
             sendMessage(getProductionCost);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -298,7 +340,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command activateProduction = new Command("activateProductionMesssage", StringToMessage.toActivateProductionMessage(usrCommand));
             sendMessage(activateProduction);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -311,7 +353,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command moveBetweenShelves = new Command("moveBetweenShelves", StringToMessage.toMoveBetweenShelvesMessage(usrCommand));
             sendMessage(moveBetweenShelves);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -324,7 +366,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command moveLeaderToShelf = new Command("moveLeaderToShelf", StringToMessage.toMoveLeaderToShelfMessage(usrCommand));
             sendMessage(moveLeaderToShelf);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -337,7 +379,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command moveShelfToLeader = new Command("moveShelfToLeader", StringToMessage.toMoveShelfToLeaderMessage(usrCommand));
             sendMessage(moveShelfToLeader);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -350,7 +392,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command discardLeader = new Command("discardLeader", StringToMessage.toLeaderMessage(usrCommand));
             sendMessage(discardLeader);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -363,7 +405,7 @@ public class CliClient extends Client implements Runnable {
         try {
             Command activateLeader = new Command("ActivateLeader", StringToMessage.toLeaderMessage(usrCommand));
             sendMessage(activateLeader);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -379,15 +421,17 @@ public class CliClient extends Client implements Runnable {
                 response = in.readLine();
                 responseMessage = gson.fromJson(response, ResponseMessage.class);
                 //TODO: DA TOGLIERE QUESTO IF
-                if(responseMessage.getResponseType() != ResponseType.PING)
-                    System.out.println("Received:\t"+response);
+                if (responseMessage.getResponseType() != ResponseType.PING)
+                    System.out.println("Received:\t" + response);
                 responseContent = responseMessage.getResponseContent();
                 switch (responseMessage.getResponseType()) {
                     case PING:
-                        synchronized (this){sendMessage(new Command("pingResponse"));}
+                        synchronized (this) {
+                            sendMessage(new Command("pingResponse"));
+                        }
                         break;
                     case UPDATE:
-                        synchronized (this){
+                        synchronized (this) {
                             ModelUpdate modelUpdate = gson.fromJson(responseContent, ModelUpdate.class);
                             Game update = modelUpdate.getGame();
                             if (this.gamemodel == null)
@@ -396,20 +440,20 @@ public class CliClient extends Client implements Runnable {
                                 gamemodel.merge(update);
                             try {
                                 CliView.printGameState(gamemodel, nickname);
-                            } catch (NullPointerException e){
+                            } catch (NullPointerException e) {
                                 CliView.printError(e.getMessage());
                             }
                         }
                         break;
                     case ERROR:
-                        synchronized (this){
+                        synchronized (this) {
                             ErrorMessage errorMessage = gson.fromJson(responseContent, ErrorMessage.class);
                             String error = errorMessage.getErrorMessage();
                             CliView.printError(error);
                         }
                         break;
                     case EXTRARESOURCEANDLEADERCARDBEGINNING:
-                        synchronized (this){
+                        synchronized (this) {
                             ExtraResAndLeadToDiscardBeginningMessage message = gson.fromJson(responseContent, ExtraResAndLeadToDiscardBeginningMessage.class);
                             nLeadersToDiscard = message.getNumLeader();
                             resourcesToTake = message.getNumRes();
@@ -417,38 +461,38 @@ public class CliClient extends Client implements Runnable {
                         }
                         break;
                     case HASHMAPRESOURCESFROMDEVGRID:
-                        synchronized (this){
+                        synchronized (this) {
                             HashMapResFromDevGridMessage message = gson.fromJson(responseContent, HashMapResFromDevGridMessage.class);
                             this.resourcesMap = message.getResources();
-                            this.mapDescription = "Master "+ nickname+ ", this improvement shall cost thou:";
+                            this.mapDescription = "Master " + nickname + ", this improvement shall cost thou:";
                             CliView.printResourcesMap(resourcesMap, mapDescription);
                         }
                         break;
                     case HASHMAPRESOURCESFROMMARKET:
-                        synchronized (this){
+                        synchronized (this) {
                             HashMapResFromMarketMessage message = gson.fromJson(responseContent, HashMapResFromMarketMessage.class);
                             this.resourcesMap = message.getResources();
-                            this.mapDescription = "Master "+ nickname+ ", this morrow, local shopkeepers tenders thou:";
+                            this.mapDescription = "Master " + nickname + ", this morrow, local shopkeepers tenders thou:";
                             CliView.printResourcesMap(resourcesMap, mapDescription);
                         }
                         break;
                     case HASHMAPRESOURCESFROMPRODCOST:
-                        synchronized (this){
+                        synchronized (this) {
                             HashMapResFromProdCostMessage message = gson.fromJson(responseContent, HashMapResFromProdCostMessage.class);
                             this.resourcesMap = message.getResources();
-                            this.mapDescription = "Master "+ nickname+ ", the craftsman needs these resources to produce what you ask for:";
+                            this.mapDescription = "Master " + nickname + ", the craftsman needs these resources to produce what you ask for:";
                             CliView.printResourcesMap(resourcesMap, mapDescription);
                         }
                         break;
                     case INFOSTRING:
-                        synchronized (this){
+                        synchronized (this) {
                             GeneralInfoStringMessage infoMessage = gson.fromJson(responseContent, GeneralInfoStringMessage.class);
                             String info = infoMessage.getMessage();
                             CliView.printInfo(info);
                         }
                         break;
                     case ASKFORNUMPLAYERS:
-                        synchronized (this){
+                        synchronized (this) {
                             String info = "You are the game Creator, you must set the number of players (1-4)";
                             CliView.printInfo(info);
                         }
@@ -461,14 +505,14 @@ public class CliClient extends Client implements Runnable {
                     case TURNINFO:
                         break;
                     case SETNICK:
-                        synchronized (this){
+                        synchronized (this) {
                             LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
                             nickname = setNickMessage.getConfirmedNickname();
                             CliView.printInfo("From now on thou shall known as master " + nickname + ", thou shall serve under thy liege demands and any committed crime shall cause our Holy Lord disappointment.");
                         }
                         break;
                     case SETBEGINNINGDECISIONS:
-                        synchronized (this){
+                        synchronized (this) {
                             nLeadersToDiscard = 0;
                             resourcesToTake = 0;
                             CliView.printInfo("Master " + nickname + ", I thank thee for showing thy great example of service.");
@@ -507,7 +551,7 @@ public class CliClient extends Client implements Runnable {
 
 
     public static void main(String[] args) throws IOException {
-        String hostName ="127.0.0.1";
+        String hostName = "127.0.0.1";
         int portNumber = 9047;
         Client client = new CliClient(portNumber, hostName);
         client.startConnection();
@@ -515,9 +559,14 @@ public class CliClient extends Client implements Runnable {
     }
 
     //used only for testing
-    public String getNickname(){return nickname;}
+    public String getNickname() {
+        return nickname;
+    }
+
     //used only for testing
-    public Game getGameModel(){return gamemodel;}
+    public Game getGameModel() {
+        return gamemodel;
+    }
 }
 
 

@@ -11,7 +11,7 @@ public class DepotShelf {
         this.quantity = quantity;
     }
 
-    public DepotShelf(){
+    public DepotShelf() {
         this.resourceType = null;
         this.quantity = -1;
     }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.DevCards;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.FaithTrack.PopeCell;
 import it.polimi.ingsw.model.ResourceType;
 
 import java.util.Collection;

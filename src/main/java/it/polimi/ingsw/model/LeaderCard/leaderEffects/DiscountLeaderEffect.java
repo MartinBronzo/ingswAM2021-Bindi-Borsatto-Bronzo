@@ -12,7 +12,7 @@ public class DiscountLeaderEffect extends Effect {
     private final ResourceType discountType;
     private final int discountAmount;
 
-    public DiscountLeaderEffect(){
+    public DiscountLeaderEffect() {
         this.discountType = null;
         this.discountAmount = 0;
     }
@@ -59,7 +59,7 @@ public class DiscountLeaderEffect extends Effect {
         /*if (futureCost < 0)
             futureCost = 0;*/
         //If the discounted amount for the resource is less than or equal to zero, then the resource is removed from the cost
-        if(futureCost <= 0){
+        if (futureCost <= 0) {
             cost.remove(this.discountType);
             return true;
         }

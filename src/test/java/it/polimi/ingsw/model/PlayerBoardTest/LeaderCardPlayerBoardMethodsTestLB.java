@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.PlayerBoardTest;
 
-import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.exceptions.EndOfGameException;
+import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.LastVaticanReportException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.FaithTrack.FaithTrack;
@@ -524,7 +527,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
     }
 
     @Test
-    public void ctrlGettingCardsFromGoodIndexes(){
+    public void ctrlGettingCardsFromGoodIndexes() {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -551,7 +554,7 @@ public class LeaderCardPlayerBoardMethodsTestLB {
     }
 
     @Test
-    public void ctlrGettingCardsFromWrongIndexes(){
+    public void ctlrGettingCardsFromWrongIndexes() {
         List<LeaderCard> list = new ArrayList<>();
         List<Requirement> metRequirements = new ArrayList<>();
         metRequirements.add(requirement1);
@@ -570,8 +573,8 @@ public class LeaderCardPlayerBoardMethodsTestLB {
         indexes.add(1);
         indexes.add(4);
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, ()->playerBoard.getNotPlayedLeaderCardsFromIndex(indexes));
-        assertEquals(e.getMessage(),"The player doesn't hold this card (the given index is out of bound)!");
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> playerBoard.getNotPlayedLeaderCardsFromIndex(indexes));
+        assertEquals(e.getMessage(), "The player doesn't hold this card (the given index is out of bound)!");
     }
 
 }

@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
@@ -74,7 +73,7 @@ public class ConfigurationMethodsPlayerBoardTest {
 
         playerBoard.setBeginningExtraResources(map, 0);
 
-        for(ResourceType rT: resources)
+        for (ResourceType rT : resources)
             assertEquals(playerBoard.getResourceFromDepot(rT), 0);
 
         assertEquals(playerBoard.getPositionOnFaithTrack(), 0);
@@ -82,12 +81,12 @@ public class ConfigurationMethodsPlayerBoardTest {
 
     @Test
     //Tests that at the creation the player board is empty
-    public void ctrlCreation(){
+    public void ctrlCreation() {
         PlayerBoard playerBoard1 = new PlayerBoard();
 
         assertNull(playerBoard1.getFaithTrack());
         assertEquals(playerBoard1.getPositionOnFaithTrack(), 0);
-        for(ResourceType rT: resources) {
+        for (ResourceType rT : resources) {
             assertEquals(playerBoard.getResourceFromDepot(rT), 0);
             assertEquals(playerBoard.getResourceFromStrongbox(rT), 0);
         }

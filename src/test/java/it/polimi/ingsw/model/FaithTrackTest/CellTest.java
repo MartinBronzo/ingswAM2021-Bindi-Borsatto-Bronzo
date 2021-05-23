@@ -294,7 +294,7 @@ public class CellTest {
 
     @Test
     //Tests whether a clone of the Cell is created with the getClone() method which is overridden by the subclasses of Cell: cell
-    public void ctrlCellCloningOverriding(){
+    public void ctrlCellCloningOverriding() {
         Cell c1 = new Cell(3, ReportNum.REPORT1);
         Cell c1bis = c1.getClone();
 

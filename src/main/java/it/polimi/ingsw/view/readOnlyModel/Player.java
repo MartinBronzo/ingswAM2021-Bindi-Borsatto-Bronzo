@@ -1,12 +1,11 @@
 package it.polimi.ingsw.view.readOnlyModel;
 
-import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
-import it.polimi.ingsw.view.readOnlyModel.player.Devslot;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.FaithTrack.PopeTile;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +54,8 @@ public class Player {
         this.nickName = nickName;
     }
 
-    public void addDepotShelf(DepotShelf depotShelf){
-        if(depotShelves == null)
+    public void addDepotShelf(DepotShelf depotShelf) {
+        if (depotShelves == null)
             depotShelves = new ArrayList<>();
         depotShelves.add(depotShelf);
     }
@@ -85,7 +84,9 @@ public class Player {
         return devSlots;
     }
 
-    public void setDevSlots(DevSlots devSlots){this.devSlots = devSlots;}
+    public void setDevSlots(DevSlots devSlots) {
+        this.devSlots = devSlots;
+    }
 
     public List<LeaderCard> getUnUsedLeaders() {
         return unUsedLeaders;
@@ -115,7 +116,9 @@ public class Player {
         return strongBox;
     }
 
-    public void setStrongBox(HashMap strongBoxMap){this.strongBox = strongBoxMap;}
+    public void setStrongBox(HashMap strongBoxMap) {
+        this.strongBox = strongBoxMap;
+    }
 
     public HashMap<ResourceType, Integer> getLeaderSlots() {
         return leaderSlots;
@@ -150,39 +153,39 @@ public class Player {
 
     public void merge(Player updatePlayer) {
         PlayerState updateState = updatePlayer.getPlayerState();
-        if (updateState!=null) this.playerState = updateState;
+        if (updateState != null) this.playerState = updateState;
 
         DevSlots updateDevslots = updatePlayer.getDevSlots();
-        if (updateDevslots!=null) this.devSlots = updateDevslots;
+        if (updateDevslots != null) this.devSlots = updateDevslots;
 
         List<LeaderCard> leaders = updatePlayer.getUnUsedLeaders();
-        if (leaders!=null) this.unUsedLeaders = leaders;
+        if (leaders != null) this.unUsedLeaders = leaders;
 
         leaders = updatePlayer.getUsedLeaders();
-        if (leaders!=null) this.usedLeaders = leaders;
+        if (leaders != null) this.usedLeaders = leaders;
 
         Integer updateInteger = updatePlayer.getFaithPosition();
-        if (updateInteger!=null) this.faithPosition = updateInteger;
+        if (updateInteger != null) this.faithPosition = updateInteger;
 
         updateInteger = updatePlayer.getVictoryPoints();
-        if (updateInteger!=null) this.victoryPoints = updateInteger;
+        if (updateInteger != null) this.victoryPoints = updateInteger;
 
-        HashMap<ResourceType,Integer> updateMap = updatePlayer.getBaseProductionInput();
-        if (updateMap!=null) this.baseProductionInput = updateMap;
+        HashMap<ResourceType, Integer> updateMap = updatePlayer.getBaseProductionInput();
+        if (updateMap != null) this.baseProductionInput = updateMap;
 
         updateMap = updatePlayer.getBaseProductionOutput();
-        if (updateMap!=null) this.baseProductionOutput = updateMap;
+        if (updateMap != null) this.baseProductionOutput = updateMap;
 
         updateMap = updatePlayer.getStrongBox();
-        if (updateMap!=null) this.strongBox = updateMap;
+        if (updateMap != null) this.strongBox = updateMap;
 
         updateMap = updatePlayer.getLeaderSlots();
-        if (updateMap!=null) this.leaderSlots = updateMap;
+        if (updateMap != null) this.leaderSlots = updateMap;
 
         List<DepotShelf> updateDepotShelves = updatePlayer.getDepotShelves();
-        if (updateDepotShelves!=null) this.depotShelves = updateDepotShelves;
+        if (updateDepotShelves != null) this.depotShelves = updateDepotShelves;
 
         List<PopeTile> updatePopeTiles = updatePlayer.getPopeTiles();
-        if (updatePopeTiles!=null) this.popeTiles = updatePopeTiles;
+        if (updatePopeTiles != null) this.popeTiles = updatePopeTiles;
     }
 }

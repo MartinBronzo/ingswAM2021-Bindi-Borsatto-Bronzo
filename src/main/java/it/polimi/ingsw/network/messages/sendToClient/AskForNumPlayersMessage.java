@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-public class AskForNumPlayersMessage implements ResponseInterface{
+public class AskForNumPlayersMessage implements ResponseInterface {
     private String message;
 
     public AskForNumPlayersMessage(String message) {

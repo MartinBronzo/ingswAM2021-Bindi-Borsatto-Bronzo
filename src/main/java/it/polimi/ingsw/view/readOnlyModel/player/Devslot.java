@@ -10,6 +10,7 @@ public class Devslot {
     public List<DevCard> getDevCards() {
         return devCards;
     }
+
     @Override
     public String toString() {
         return "Devslot{" +

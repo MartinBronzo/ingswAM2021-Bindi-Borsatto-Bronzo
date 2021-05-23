@@ -2,16 +2,11 @@ package it.polimi.ingsw.model.soloGame;
 
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.model.FaithTrack.FaithLevelBasic;
-import it.polimi.ingsw.model.FaithTrack.FaithTrack;
-import it.polimi.ingsw.model.FaithTrack.ReportNumOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

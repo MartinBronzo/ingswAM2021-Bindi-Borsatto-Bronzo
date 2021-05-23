@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ActivateProductionMessage extends Message{
+public class ActivateProductionMessage extends Message {
     private List<Integer> devCards;
     private Map<Integer, ResourceType> leaders;
     private BaseProductionParams baseProduction;

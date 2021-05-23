@@ -1,23 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.enums.GameState;
-import it.polimi.ingsw.controller.enums.PlayerState;
-import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
-import it.polimi.ingsw.view.Client;
-import it.polimi.ingsw.view.cli.CliClient;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-
-import java.io.*;
-import java.rmi.UnexpectedException;
-
-import static java.lang.Thread.sleep;
-import static org.junit.jupiter.api.Assertions.*;
-
 class ServerTest {
     /*private Server server;
     private final static int portNumber =9047;

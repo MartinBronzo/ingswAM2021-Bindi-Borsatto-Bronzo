@@ -22,34 +22,33 @@ public class MarketMainBoardMethodsTest {
 
     @Test
     //Tests that the inside methods of market are called: moveRow
-    public void ctrlMoveRow(){
+    public void ctrlMoveRow() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.moveRowInMarket(155, new ArrayList<>()));
     }
 
     @Test
     //Tests that the inside methods of market are called: moveColumn
-    public void ctrlMoveColumn(){
+    public void ctrlMoveColumn() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.moveColumnInMarket(5, new ArrayList<>()));
     }
 
     @Test
     //Tests that the inside methods of market are called: getResourcesInRow
-    public void ctrlGetResInRow(){
+    public void ctrlGetResInRow() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.getResourcesFromRowInMarket(5, new ArrayList<>()));
     }
 
     @Test
     //Tests that the inside methods of market are called: getResourcesInColumn
-    public void ctrlGetResInColumn(){
+    public void ctrlGetResInColumn() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.getResourcesFromColumnInMarket(5, new ArrayList<>()));
     }
 
     @Test
     //Tests that the inside methods of market are called: getMarble
-    public void ctrlGetMarble(){
+    public void ctrlGetMarble() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.getMarbleInMarket(155, 155));
     }
-
 
 
 }

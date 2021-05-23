@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.DevCards;
 
 import it.polimi.ingsw.exceptions.EmptyDeckException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.FaithTrack.PopeCell;
 import it.polimi.ingsw.model.ResourceType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,7 +14,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 public class DevGrid {
@@ -30,9 +32,9 @@ public class DevGrid {
         if (!(obj instanceof DevGrid))
             return false;
         DevGrid tmp = (DevGrid) obj;
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
-                if(!(this.devDecksGrid[i][j].equals(tmp.devDecksGrid[i][j]))){
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
+                if (!(this.devDecksGrid[i][j].equals(tmp.devDecksGrid[i][j]))) {
                     return false;
                 }
 
@@ -42,7 +44,7 @@ public class DevGrid {
 
     //This method was used for testing purposes: it says whether two decks are equals without any regard for the order the cards are
     //in the deck (two decks are considered equal if they store the same cards, the order the cards are in is irrelevant)
-    public boolean equalsFake(Object obj){
+    public boolean equalsFake(Object obj) {
         if (obj == null)
             return false;
         if (obj == this)
@@ -51,9 +53,9 @@ public class DevGrid {
             return false;
         DevGrid tmp = (DevGrid) obj;
 
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
-                if(!(this.devDecksGrid[i][j].containsDeck(tmp.devDecksGrid[i][j]))){
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
+                if (!(this.devDecksGrid[i][j].containsDeck(tmp.devDecksGrid[i][j]))) {
                     return false;
                 }
 
@@ -85,7 +87,7 @@ public class DevGrid {
 
     }
 
-    public DevGrid(){
+    public DevGrid() {
         this.devDecksGrid = new DevDeck[3][4];
     }
 
@@ -106,12 +108,13 @@ public class DevGrid {
 
     /**
      * Constructs a copy of the specified DevGrid
+     *
      * @param original the DevGrid to be cloned
      */
-    public DevGrid(DevGrid original){
+    public DevGrid(DevGrid original) {
         this.devDecksGrid = new DevDeck[3][4];
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
                 this.devDecksGrid[i][j] = new DevDeck(original.devDecksGrid[i][j]);
     }
 
@@ -291,8 +294,8 @@ public class DevGrid {
      */
     public DevCard[][] getDevMatrix() {
         DevCard[][] devMatrix = new DevCard[3][4];
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
                 devMatrix[i][j] = this.devDecksGrid[i][j].getFirst();
 
         return devMatrix;

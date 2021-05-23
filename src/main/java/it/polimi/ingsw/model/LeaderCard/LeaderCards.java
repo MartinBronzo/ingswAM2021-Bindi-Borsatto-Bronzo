@@ -117,24 +117,26 @@ public class LeaderCards {
 
     /**
      * Returns the effect of the LeaderCard whose position in the ordered collection of active LeaderCards is given as a parameter
+     *
      * @param cardIndex the position inside the ordered collection of active LeaderCards of the desired LeaderCard
      * @return the effect of the desired LeaderCard
      * @throws IllegalArgumentException if the given index is out of bound
      */
-    public Effect getEffectFromCard(int cardIndex) throws IllegalArgumentException{
-        if(cardIndex >= this.activeCards.size())
+    public Effect getEffectFromCard(int cardIndex) throws IllegalArgumentException {
+        if (cardIndex >= this.activeCards.size())
             throw new IllegalArgumentException("The player doesn't hold this card (the given index is out of bound)!");
         return this.activeCards.get(cardIndex).getEffect();
     }
 
     /**
      * Returns the LeaderCard whose position in the ordered collection of not player LeaderCards is given as a parameter
+     *
      * @param cardIndex the position inside the ordered collection of not player LeaderCards of the desired LeaderCard (it is a non-negative integer)
      * @return the desired LeaderCard
      * @throws IllegalArgumentException if the given index is out of bound
      */
-    public LeaderCard getNotPlayedLeaderCardFromIndex(int cardIndex) throws IllegalArgumentException{
-        if(cardIndex >= this.notPlayedCards.size())
+    public LeaderCard getNotPlayedLeaderCardFromIndex(int cardIndex) throws IllegalArgumentException {
+        if (cardIndex >= this.notPlayedCards.size())
             throw new IllegalArgumentException("The player doesn't hold this card (the given index is out of bound)!");
         return this.notPlayedCards.get(cardIndex);
     }
@@ -265,6 +267,7 @@ public class LeaderCards {
 
     /**
      * Constructs a copy of the specified LeaderCards object
+     *
      * @param original the LeaderCards object to be cloned
      */
     public LeaderCards(LeaderCards original) {
@@ -294,17 +297,17 @@ public class LeaderCards {
         return areNotPlayedCardsSet;
     }
 
-    public int getNotActiveCardsSize(){
+    public int getNotActiveCardsSize() {
         return this.notPlayedCards.size();
     }
 
-    public int getActiveCardsSize(){
+    public int getActiveCardsSize() {
         return this.activeCards.size();
     }
 
-    public boolean checkIfWhiteMarbleActive(){
-        for(LeaderCard lD: this.activeCards)
-            if(lD.getEffect() instanceof WhiteMarbleLeaderEffect)
+    public boolean checkIfWhiteMarbleActive() {
+        for (LeaderCard lD : this.activeCards)
+            if (lD.getEffect() instanceof WhiteMarbleLeaderEffect)
                 return true;
         return false;
     }

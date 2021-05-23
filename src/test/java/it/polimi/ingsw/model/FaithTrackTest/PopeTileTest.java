@@ -247,7 +247,7 @@ public class PopeTileTest {
         //Report1
         tmp = tiles.get(0);
         assertEquals(tmp.size(), 4);
-        for(PopeTile pT: tmp){
+        for (PopeTile pT : tmp) {
             assertEquals(pT.getPoints(), 0); //The tile is born inactive
             pT.dealWithVaticanReport(ReportNum.REPORT1, true); //This line is need to activate the tiles in order to be able to extract the actual points
             assertEquals(pT.getPoints(), 2);
@@ -257,7 +257,7 @@ public class PopeTileTest {
         //Report2
         tmp = tiles.get(1);
         assertEquals(tmp.size(), 4);
-        for(PopeTile pT: tmp){
+        for (PopeTile pT : tmp) {
             assertEquals(pT.getPoints(), 0); //The tile is born inactive
             pT.dealWithVaticanReport(ReportNum.REPORT2, true); //This line is need to activate the tiles in order to be able to extract the actual points
             assertEquals(pT.getPoints(), 3);
@@ -267,7 +267,7 @@ public class PopeTileTest {
         //Report3
         tmp = tiles.get(2);
         assertEquals(tmp.size(), 4);
-        for(PopeTile pT: tmp){
+        for (PopeTile pT : tmp) {
             assertEquals(pT.getPoints(), 0); //The tile is born inactive
             pT.dealWithVaticanReport(ReportNum.REPORT3, true); //This line is need to activate the tiles in order to be able to extract the actual points
             assertEquals(pT.getPoints(), 4);
@@ -276,7 +276,7 @@ public class PopeTileTest {
     }
 
     @Test
-    public void ctrlListOfPopeTileListCloning(){
+    public void ctrlListOfPopeTileListCloning() {
         PopeTile p1 = new PopeTile(2, ReportNum.REPORT1);
         PopeTile p2 = new PopeTile(3, ReportNum.REPORT2);
         PopeTile p3 = new PopeTile(4, ReportNum.REPORT3);
@@ -284,21 +284,21 @@ public class PopeTileTest {
 
         //Report1
         List<PopeTile> tmp = new ArrayList<>();
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
             tmp.add(new PopeTile(p1));
         assertEquals(tmp.size(), 3);
         original.add(tmp);
 
         //Report2
         tmp = new ArrayList<>();
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
             tmp.add(new PopeTile(p2));
         assertEquals(tmp.size(), 3);
         original.add(tmp);
 
         //Report3
         tmp = new ArrayList<>();
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
             tmp.add(new PopeTile(p3));
         assertEquals(tmp.size(), 3);
         original.add(tmp);
@@ -312,18 +312,18 @@ public class PopeTileTest {
 
         //Report1
         assertEquals(copy.get(0).size(), 3);
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
             assertEquals(copy.get(0).get(i), original.get(0).get(i));
 
         //Report2
         assertEquals(copy.get(1).size(), 3);
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
             assertEquals(copy.get(1).get(i), original.get(1).get(i));
 
 
         //Report3
         assertEquals(copy.get(2).size(), 3);
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
             assertEquals(copy.get(2).get(i), original.get(2).get(i));
     }
 

@@ -32,30 +32,30 @@ public class DevGridMainBoardMethodsTest {
 
     @Test
     //Tests that the inside methods of devGrid are called: getDevCard with position
-    public void ctrlGetDevCardPosition(){
+    public void ctrlGetDevCardPosition() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.getDevCardFromDeckInDevGrid(155, 155));
     }
 
     @Test
     //Tests that the inside methods of devGrid are called: getDevCard with level and color
-    public void ctrlGetDevCardLevCol(){
+    public void ctrlGetDevCardLevCol() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.getDevCardFromDeckInDevGrid(155, DevCardColour.PURPLE));
     }
 
     @Test
     //Tests that the inside methods of devGrid are called: drawDevCard with position (Exception thrown in the method of DevGrid)
-    public void ctrlDrawDevCardPosInsideException(){
+    public void ctrlDrawDevCardPosInsideException() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.drawDevCardFromDeckInDevGrid(155, 155));
     }
 
     @Test
     //Tests that the inside methods of devGrid are called: drawDevCard with position (Exception thrown in the method of main board)
-    public void ctrlDrawDevCardPosOutsideException(){
+    public void ctrlDrawDevCardPosOutsideException() {
         boolean tmp = false;
-        while(!tmp){
+        while (!tmp) {
             try {
-                this.mainBoard.drawDevCardFromDeckInDevGrid(1,1);
-            }catch(IllegalActionException e){
+                this.mainBoard.drawDevCardFromDeckInDevGrid(1, 1);
+            } catch (IllegalActionException e) {
                 tmp = true;
             }
         }
@@ -66,20 +66,20 @@ public class DevGridMainBoardMethodsTest {
 
     @Test
     //Tests that the inside methods of devGrid are called: drawDevCard with position (Exception thrown in the method of DevGrid)
-    public void ctrlDrawDevCardLevColInsideException(){
+    public void ctrlDrawDevCardLevColInsideException() {
         assertThrows(IllegalArgumentException.class, () -> mainBoard.drawDevCardFromDeckInDevGrid(155, DevCardColour.PURPLE));
     }
 
     @Test
     //Tests that the inside methods of devGrid are called: getDrawableCards
-    public void ctrlGetDrawableCards(){
+    public void ctrlGetDrawableCards() {
         //When the main board is not changed, yet, (like at the beginning of the game) there are still drawable cards
         assertFalse(mainBoard.getDrawableCardsInDevGrid().isEmpty());
     }
 
     @Test
     //Tests that the inside methods of devGrid are called: getDevDeckSize
-    public void ctrlGetDevDeckSize(){
+    public void ctrlGetDevDeckSize() {
         //When the main board is not changed, yet, (like at the beginning of the game) there are still cards with the specified color
         assertTrue(mainBoard.getDevDeckSizeInDevGrid(DevCardColour.PURPLE) > 0);
     }
@@ -120,8 +120,6 @@ public class DevGridMainBoardMethodsTest {
         assertEquals(discountedCost.get(ResourceType.COIN), 3);
         assertEquals(discountedCost.get(ResourceType.SERVANT), 2);
     }
-
-
 
 
 }

@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.marble.MarbleType;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Board {
     private MarbleType[][] marketMatrix;
@@ -33,7 +32,7 @@ public class Board {
         return devGrid;
     }
 
-    public void setDevGrid(DevGrid devGrid){
+    public void setDevGrid(DevGrid devGrid) {
         this.devGrid = devGrid;
     }
 
@@ -58,14 +57,16 @@ public class Board {
 
     /**
      * Returns how many White Marbles are in the specified row
+     *
      * @param rowNumber the row where to count the number of White Marbles
      * @return the number of White Marbles in the row
      * @throws IllegalArgumentException if the specified row index is invalid (it is greater than 2 or less than 0)
      */
-    public int getNumberOfWhiteMarbleInTheRow(int rowNumber) throws IllegalArgumentException{
-        if (rowNumber < 0 || rowNumber >= 3) throw new IllegalArgumentException("getNWhiteRow Market: not valid rowNumber");
+    public int getNumberOfWhiteMarbleInTheRow(int rowNumber) throws IllegalArgumentException {
+        if (rowNumber < 0 || rowNumber >= 3)
+            throw new IllegalArgumentException("getNWhiteRow Market: not valid rowNumber");
 
-        int c=0;
+        int c = 0;
         for (int j = 0; j < marketMatrix[rowNumber].length; j++) {
             if (marketMatrix[rowNumber][j].isWhiteMarble())
                 c++;
@@ -76,6 +77,7 @@ public class Board {
 
     /**
      * Returns how many White Marbles are in the specified column
+     *
      * @param columnNumber the column where to count the number of White Marbles
      * @return the number of White Marbles in the column
      * @throws IllegalArgumentException if the specified column index is invalid (it is greater than 3 or less than 0)
@@ -100,7 +102,7 @@ public class Board {
         if (marbleUpdate != null) this.marbleOnSlide = marbleUpdate;
 
         DevGrid updateDev = updateBoard.getDevGrid();
-        if (updateDev!=null) this.devGrid = updateDev;
+        if (updateDev != null) this.devGrid = updateDev;
 
         return false;
     }

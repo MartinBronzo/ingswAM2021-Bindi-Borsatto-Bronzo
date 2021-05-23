@@ -14,7 +14,9 @@ public class Command {
     }
 
 
-    /** this constructor is used when cmd doesn't need any paterameter
+    /**
+     * this constructor is used when cmd doesn't need any paterameter
+     *
      * @param cmdWithoutParameters can be "quit" or "endTurn" or "pingResponse"
      */
     public Command(String cmdWithoutParameters) {

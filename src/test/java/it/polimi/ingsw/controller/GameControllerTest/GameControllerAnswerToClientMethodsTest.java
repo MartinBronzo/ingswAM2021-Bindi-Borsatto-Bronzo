@@ -4,12 +4,6 @@ package it.polimi.ingsw.controller.GameControllerTest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
-import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.readOnlyModel.Game;
-import it.polimi.ingsw.view.readOnlyModel.Player;
-import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.exceptions.EndOfGameException;
@@ -18,26 +12,27 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.DiscountLeaderEffect;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.PlayerBoard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.readOnlyModel.Game;
+import it.polimi.ingsw.view.readOnlyModel.Player;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameControllerAnswerToClientMethodsTest {
@@ -720,7 +715,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 0));
-        if(result.getOrder() == 0)
+        if (result.getOrder() == 0)
             assertEquals(gameController.getFirstPlayer(), 0);
         assertEquals(p1.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
 
@@ -732,7 +727,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 1));
-        if(result.getOrder() == 0)
+        if (result.getOrder() == 0)
             assertEquals(gameController.getFirstPlayer(), 1);
         assertEquals(p2.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
 
@@ -744,7 +739,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 2));
-        if(result.getOrder() == 0)
+        if (result.getOrder() == 0)
             assertEquals(gameController.getFirstPlayer(), 2);
         assertEquals(p3.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
 
@@ -756,7 +751,7 @@ public class GameControllerAnswerToClientMethodsTest {
         assertEquals(result.getNumLeader(), mainBoard.getNumberOfLeaderCardsToDiscardAtBeginning());
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginning()[result.getOrder()]);
         assertEquals(result.getNumRes(), mainBoard.getExtraResourcesAtBeginningForPlayer(gameController.getFirstPlayer(), 3));
-        if(result.getOrder() == 0)
+        if (result.getOrder() == 0)
             assertEquals(gameController.getFirstPlayer(), 3);
         assertEquals(p4.getPositionOnFaithTrack(), mainBoard.getExtraFaithPointsAtBeginning()[result.getOrder()]);
     }
@@ -771,16 +766,16 @@ public class GameControllerAnswerToClientMethodsTest {
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
 
         p1.addResourceToDepot(ResourceType.SHIELD, 2, 2);
-        p1.addResourceToDepot(ResourceType.COIN, 1,3);
+        p1.addResourceToDepot(ResourceType.COIN, 1, 3);
 
 
-        MoveBetweenShelvesMessage moveBetweenShelvesMessage = new MoveBetweenShelvesMessage(2,3);
+        MoveBetweenShelvesMessage moveBetweenShelvesMessage = new MoveBetweenShelvesMessage(2, 3);
         assertTrue(gameController.moveResourcesBetweenShelves(moveBetweenShelvesMessage, c1));
 
-        assertEquals(p1.getResourceTypeFromShelf(2),ResourceType.COIN);
-        assertEquals(p1.getResourceTypeFromShelf(3),ResourceType.SHIELD);
-        assertEquals(p1.getNumberOfResInShelf(2),1);
-        assertEquals(p1.getNumberOfResInShelf(3),2);
+        assertEquals(p1.getResourceTypeFromShelf(2), ResourceType.COIN);
+        assertEquals(p1.getResourceTypeFromShelf(3), ResourceType.SHIELD);
+        assertEquals(p1.getNumberOfResInShelf(2), 1);
+        assertEquals(p1.getNumberOfResInShelf(3), 2);
 
         String result1 = fileReader1.readLine();
         String result2 = fileReader2.readLine();
@@ -792,7 +787,7 @@ public class GameControllerAnswerToClientMethodsTest {
         Game game = update.getGame();
         Collection<Player> playersCollection = game.getPlayers();
         Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
-        List<DepotShelf> shelves =  playerModel1.getDepotShelves();
+        List<DepotShelf> shelves = playerModel1.getDepotShelves();
         assertNull(shelves.get(0).getResourceType());
         assertEquals(shelves.get(1).getResourceType(), ResourceType.COIN);
         assertEquals(shelves.get(2).getResourceType(), ResourceType.SHIELD);
@@ -818,16 +813,16 @@ public class GameControllerAnswerToClientMethodsTest {
         p1.activateLeaderCard(p1.getNotPlayedLeaderCards().get(0));
 
         p1.addResourceToDepot(ResourceType.SHIELD, 2, 2);
-        p1.addResourceToDepot(ResourceType.COIN, 3,3);
+        p1.addResourceToDepot(ResourceType.COIN, 3, 3);
 
 
         MoveShelfToLeaderMessage moveLeaderToShelfMessage = new MoveShelfToLeaderMessage(3, 2);
         assertTrue(gameController.moveResourcesToLeader(moveLeaderToShelfMessage, c1));
 
-        assertEquals(p1.getResourceTypeFromShelf(2),ResourceType.SHIELD);
-        assertEquals(p1.getResourceTypeFromShelf(3),ResourceType.COIN);
-        assertEquals(p1.getNumberOfResInShelf(2),2);
-        assertEquals(p1.getNumberOfResInShelf(3),1);
+        assertEquals(p1.getResourceTypeFromShelf(2), ResourceType.SHIELD);
+        assertEquals(p1.getResourceTypeFromShelf(3), ResourceType.COIN);
+        assertEquals(p1.getNumberOfResInShelf(2), 2);
+        assertEquals(p1.getNumberOfResInShelf(3), 1);
 
 
         String result1 = fileReader1.readLine();
@@ -840,7 +835,7 @@ public class GameControllerAnswerToClientMethodsTest {
         Game game = update.getGame();
         Collection<Player> playersCollection = game.getPlayers();
         Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
-        List<DepotShelf> shelves =  playerModel1.getDepotShelves();
+        List<DepotShelf> shelves = playerModel1.getDepotShelves();
         assertNull(shelves.get(0).getResourceType());
         assertEquals(shelves.get(1).getResourceType(), ResourceType.SHIELD);
         assertEquals(shelves.get(2).getResourceType(), ResourceType.COIN);
@@ -866,16 +861,16 @@ public class GameControllerAnswerToClientMethodsTest {
         p1.activateLeaderCard(p1.getNotPlayedLeaderCards().get(0));
 
         p1.addResourceToDepot(ResourceType.SHIELD, 2, 2);
-        p1.addResourceToDepot(ResourceType.COIN, 1,3);
-        p1.addResourceToLeader(ResourceType.COIN,1);
+        p1.addResourceToDepot(ResourceType.COIN, 1, 3);
+        p1.addResourceToLeader(ResourceType.COIN, 1);
 
         MoveLeaderToShelfMessage moveLeaderToShelfMessage = new MoveLeaderToShelfMessage(ResourceType.COIN, 1, 3);
         assertTrue(gameController.moveResourcesToShelf(moveLeaderToShelfMessage, c1));
 
-        assertEquals(p1.getResourceTypeFromShelf(2),ResourceType.SHIELD);
-        assertEquals(p1.getResourceTypeFromShelf(3),ResourceType.COIN);
-        assertEquals(p1.getNumberOfResInShelf(2),2);
-        assertEquals(p1.getNumberOfResInShelf(3),2);
+        assertEquals(p1.getResourceTypeFromShelf(2), ResourceType.SHIELD);
+        assertEquals(p1.getResourceTypeFromShelf(3), ResourceType.COIN);
+        assertEquals(p1.getNumberOfResInShelf(2), 2);
+        assertEquals(p1.getNumberOfResInShelf(3), 2);
 
 
         String result1 = fileReader1.readLine();
@@ -888,7 +883,7 @@ public class GameControllerAnswerToClientMethodsTest {
         Game game = update.getGame();
         Collection<Player> playersCollection = game.getPlayers();
         Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
-        List<DepotShelf> shelves =  playerModel1.getDepotShelves();
+        List<DepotShelf> shelves = playerModel1.getDepotShelves();
         assertNull(shelves.get(0).getResourceType());
         assertEquals(shelves.get(1).getResourceType(), ResourceType.SHIELD);
         assertEquals(shelves.get(2).getResourceType(), ResourceType.COIN);
@@ -910,12 +905,12 @@ public class GameControllerAnswerToClientMethodsTest {
         input1.put(ResourceType.STONE, 3);
         input1.put(ResourceType.COIN, 1);
         HashMap<ResourceType, Integer> output1 = new HashMap<>();
-        output1.put(ResourceType.SHIELD,2);
+        output1.put(ResourceType.SHIELD, 2);
 
         HashMap<ResourceType, Integer> input2 = new HashMap<>();
         input2.put(ResourceType.COIN, 1);
         HashMap<ResourceType, Integer> output2 = new HashMap<>();
-        output2.put(ResourceType.STONE,1);
+        output2.put(ResourceType.STONE, 1);
 
         DevCard devCard1 = new DevCard(1, DevCardColour.GREEN, 1, input1, output1, new HashMap<>(), "");
         DevCard devCard2 = new DevCard(1, DevCardColour.GREEN, 1, input2, output2, new HashMap<>(), "");
@@ -924,22 +919,22 @@ public class GameControllerAnswerToClientMethodsTest {
         p1.addCardToDevSlot(1, devCard2);
 
         p1.addResourceToDepot(ResourceType.COIN, 2, 2);
-        p1.addResourceToDepot(ResourceType.STONE, 3,3);
+        p1.addResourceToDepot(ResourceType.STONE, 3, 3);
 
         List<Integer> devCardIndexes = new ArrayList<>();
         devCardIndexes.add(0);
         devCardIndexes.add(1);
 
         List<DepotParams> depoRes = new ArrayList<>();
-        depoRes.add(new DepotParams(ResourceType.STONE, 3,3));
-        depoRes.add(new DepotParams(ResourceType.COIN, 2,2));
+        depoRes.add(new DepotParams(ResourceType.STONE, 3, 3));
+        depoRes.add(new DepotParams(ResourceType.COIN, 2, 2));
         ActivateProductionMessage activateProductionMessage = new ActivateProductionMessage(devCardIndexes, new HashMap<>(), new BaseProductionParams(false, new ArrayList<>(), new ArrayList<>()), depoRes, new HashMap<>(), new HashMap<>());
         assertTrue(gameController.activateProduction(activateProductionMessage, c1));
 
         assertNull(p1.getResourceTypeFromShelf(2));
         assertNull(p1.getResourceTypeFromShelf(3));
-        assertEquals(p1.getNumberOfResInShelf(2),0);
-        assertEquals(p1.getNumberOfResInShelf(3),0);
+        assertEquals(p1.getNumberOfResInShelf(2), 0);
+        assertEquals(p1.getNumberOfResInShelf(3), 0);
 
         String result1 = fileReader1.readLine();
         String result2 = fileReader2.readLine();
@@ -951,15 +946,15 @@ public class GameControllerAnswerToClientMethodsTest {
         Game game = update.getGame();
         Collection<Player> playersCollection = game.getPlayers();
         Player playerModel1 = playersCollection.stream().filter(x -> x.getNickName().equals(c1.getNickname())).findFirst().get();
-        List<DepotShelf> shelves =  playerModel1.getDepotShelves();
+        List<DepotShelf> shelves = playerModel1.getDepotShelves();
         assertNull(shelves.get(0).getResourceType());
         assertNull(shelves.get(1).getResourceType());
         assertNull(shelves.get(2).getResourceType());
         HashMap<ResourceType, Integer> strongboxMap = playerModel1.getStrongBox();
-        assertEquals(strongboxMap.get(ResourceType.COIN),0);
-        assertEquals(strongboxMap.get(ResourceType.STONE),1);
-        assertEquals(strongboxMap.get(ResourceType.SHIELD),2);
-        assertEquals(strongboxMap.get(ResourceType.SERVANT),0);
+        assertEquals(strongboxMap.get(ResourceType.COIN), 0);
+        assertEquals(strongboxMap.get(ResourceType.STONE), 1);
+        assertEquals(strongboxMap.get(ResourceType.SHIELD), 2);
+        assertEquals(strongboxMap.get(ResourceType.SERVANT), 0);
     }
 
     @Test

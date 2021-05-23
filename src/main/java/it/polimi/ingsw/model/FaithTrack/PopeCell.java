@@ -142,10 +142,11 @@ public class PopeCell extends ReportCell implements Subject {
 
     /**
      * Returns whether the specified Observer is attached to this PopeCell
+     *
      * @param observer an Observer who may be attached to this PopeCell
      * @return true if the specified Observer is attached to this PopeCell, false otherwise
      */
-    public boolean containsObserver(Observer observer){
+    public boolean containsObserver(Observer observer) {
         return this.observersList.contains(observer);
     }
 }

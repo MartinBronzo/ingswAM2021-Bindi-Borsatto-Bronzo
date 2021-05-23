@@ -7,19 +7,12 @@ import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.FaithTrack.FaithLevelBasic;
-import it.polimi.ingsw.model.FaithTrack.FaithTrack;
-import it.polimi.ingsw.model.FaithTrack.PopeCellObserver;
-import it.polimi.ingsw.model.FaithTrack.PopeTile;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.MainBoard;
-import it.polimi.ingsw.model.Market.Market;
-import it.polimi.ingsw.model.PlayerBoard;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * This class represents the SoloBoard, which is the container of all the elements of the game
@@ -51,7 +44,7 @@ public class SoloBoard extends MainBoard {
         this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"), discardTokenObserver, faithPointTokenObserver);
     }
 
-    public SoloBoard(SoloBoard original){
+    public SoloBoard(SoloBoard original) {
         super(original);
 
         //copy of soloBoard objects
@@ -84,9 +77,10 @@ public class SoloBoard extends MainBoard {
 
     /**
      * Draws the token from the token deck and activates its effect
+     *
      * @return true if the action is performed without errors
      * @throws LastVaticanReportException if a vatican report is called during the action
-     * @throws EmptyDevColumnException if an entire column of devGrid is empty
+     * @throws EmptyDevColumnException    if an entire column of devGrid is empty
      */
     public boolean drawSoloToken() throws LastVaticanReportException, EmptyDevColumnException {
         tokenDeck.drawFromDeck().playEffect();

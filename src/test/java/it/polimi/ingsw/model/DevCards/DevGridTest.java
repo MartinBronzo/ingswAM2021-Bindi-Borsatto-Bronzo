@@ -35,9 +35,9 @@ class DevGridTest {
     */
 
     @Test
-    public void initialization(){
-        for(int i = 0; i < 3; i++)
-            for(int j = 0 ; j < 4; j++)
+    public void initialization() {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
                 assertEquals(4, devGrid.getDevDeckInTheGrid(i, j).size());
     }
 
@@ -137,22 +137,22 @@ class DevGridTest {
         assertTrue(devGrid.equalsFake(d2));
     }*/
 
-   @Test
+    @Test
     //This methods uses the fakeEquals method which doesn't consider the order of the cards in the deck
     public void ctrlFakeEqualsFalse() throws EmptyDeckException, NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
         DevGrid d2 = devGrid.createDevGridWithoutShuffling(xmlDevCardsConfig);
-        d2.drawDevCardFromDeck(0,1);
+        d2.drawDevCardFromDeck(0, 1);
         assertNotSame(devGrid, d2);
         assertFalse(devGrid.equalsFake(d2)); //Because they don't contain the same cards anymore
     }
 
     @Test
-    public void ctrlCloning(){
+    public void ctrlCloning() {
         DevGrid d2 = new DevGrid(devGrid);
 
         assertNotSame(devGrid, d2);
         assertEquals(devGrid, d2);
     }
-    
+
 
 }

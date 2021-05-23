@@ -8,9 +8,10 @@ public enum MarbleType {
         public Marble getMarble() {
             return blueMarble;
         }
+
         @Override
         public String toString() {
-            return AnsiCommands.BLUE.getTextColor() +"Ⓑ"+AnsiCommands.resetStyle();
+            return AnsiCommands.BLUE.getTextColor() + "Ⓑ" + AnsiCommands.resetStyle();
         }
     },
     GREYMARBLE {
@@ -18,9 +19,10 @@ public enum MarbleType {
         public Marble getMarble() {
             return greyMarble;
         }
+
         @Override
         public String toString() {
-            return AnsiCommands.WHITE.getTextColor() +"Ⓖ"+AnsiCommands.resetStyle();
+            return AnsiCommands.WHITE.getTextColor() + "Ⓖ" + AnsiCommands.resetStyle();
         }
     },
     PURPLEMARBLE {
@@ -28,9 +30,10 @@ public enum MarbleType {
         public Marble getMarble() {
             return purpleMarble;
         }
+
         @Override
         public String toString() {
-            return AnsiCommands.PURPLE.getTextColor() +"Ⓟ"+AnsiCommands.resetStyle();
+            return AnsiCommands.PURPLE.getTextColor() + "Ⓟ" + AnsiCommands.resetStyle();
         }
     },
     REDMARBLE {
@@ -38,9 +41,10 @@ public enum MarbleType {
         public Marble getMarble() {
             return redMarble;
         }
+
         @Override
         public String toString() {
-            return AnsiCommands.RED.getTextColor() +"Ⓡ"+AnsiCommands.resetStyle();
+            return AnsiCommands.RED.getTextColor() + "Ⓡ" + AnsiCommands.resetStyle();
         }
     },
     WHITEMARBLE {
@@ -48,13 +52,15 @@ public enum MarbleType {
         public Marble getMarble() {
             return whiteMarble;
         }
+
         @Override
         public Boolean isWhiteMarble() {
             return false;
         }
+
         @Override
         public String toString() {
-            return AnsiCommands.resetStyle() +"ⓦ"+AnsiCommands.resetStyle();
+            return AnsiCommands.resetStyle() + "ⓦ" + AnsiCommands.resetStyle();
         }
     },
     YELLOWMARBLE {
@@ -62,9 +68,10 @@ public enum MarbleType {
         public Marble getMarble() {
             return yellowMarble;
         }
+
         @Override
         public String toString() {
-            return AnsiCommands.YELLOW.getTextColor() +"Ⓨ"+AnsiCommands.resetStyle();
+            return AnsiCommands.YELLOW.getTextColor() + "Ⓨ" + AnsiCommands.resetStyle();
         }
     };
 
@@ -78,6 +85,7 @@ public enum MarbleType {
     public Marble getMarble() {
         return null;
     }
+
     public Boolean isWhiteMarble() {
         return false;
     }

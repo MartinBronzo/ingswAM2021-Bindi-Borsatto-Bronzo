@@ -9,11 +9,11 @@ import it.polimi.ingsw.model.PlayerResourcesAndCards;
  * LeaderCard, the player must meet all of its requirements represented by those classes.
  */
 public /*abstract*/ class Requirement {
-    public /*abstract*/ boolean checkRequirement(PlayerResourcesAndCards playerResourcesAndCards){
+    public /*abstract*/ boolean checkRequirement(PlayerResourcesAndCards playerResourcesAndCards) {
         return true;
     }
 
-    public /*abstract*/ Requirement getClone() throws NegativeQuantityException{
+    public /*abstract*/ Requirement getClone() throws NegativeQuantityException {
         return new Requirement();
     }
 

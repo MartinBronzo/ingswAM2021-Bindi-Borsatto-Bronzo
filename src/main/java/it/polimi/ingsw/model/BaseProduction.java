@@ -28,6 +28,7 @@ public class BaseProduction {
 
     /**
      * Creates a copy of the baseProduction parameter
+     *
      * @param baseProduction the BaseProduction to be copied
      */
     public BaseProduction(BaseProduction baseProduction) {

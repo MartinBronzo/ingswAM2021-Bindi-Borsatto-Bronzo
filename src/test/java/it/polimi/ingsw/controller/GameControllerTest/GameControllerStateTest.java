@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.ClientHandler;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

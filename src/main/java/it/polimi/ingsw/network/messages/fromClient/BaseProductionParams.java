@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.List;
 
-public class BaseProductionParams{
+public class BaseProductionParams {
     private boolean activated;
     private List<ResourceType> baseInput;
     private List<ResourceType> baseOutput;
@@ -15,7 +15,7 @@ public class BaseProductionParams{
         this.baseOutput = null;
     }*/
 
-    public BaseProductionParams(boolean activated, List<ResourceType> baseInput, List<ResourceType> baseOutput){
+    public BaseProductionParams(boolean activated, List<ResourceType> baseInput, List<ResourceType> baseOutput) {
         this.activated = activated;
         this.baseInput = baseInput;
         this.baseOutput = baseOutput;

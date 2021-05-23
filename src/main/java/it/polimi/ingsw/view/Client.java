@@ -6,12 +6,15 @@ import java.io.IOException;
 
 public abstract class Client {
     public abstract void startConnection() throws IOException;
+
     public abstract void doConnection();
+
     protected abstract void endConnection();
 
     public abstract void sendMessage(Command message) throws NullPointerException;
 
     protected abstract void manageLogin() throws IOException;
+
     protected abstract void manageGameStarting() throws IOException;
 
     protected abstract void buyFromMarket() throws InterruptedException, IOException;

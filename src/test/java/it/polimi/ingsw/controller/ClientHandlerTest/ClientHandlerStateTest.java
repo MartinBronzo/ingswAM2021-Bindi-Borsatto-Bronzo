@@ -6,7 +6,6 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,7 +66,7 @@ public class ClientHandlerStateTest {
 
         gameController.setPlayer(c4);
 
-        if(gameController.getFirstPlayer() == 0){
+        if (gameController.getFirstPlayer() == 0) {
             assertEquals(c1.getPlayerState(), PlayerState.PLAYINGBEGINNINGDECISIONS);
             assertEquals(c2.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
             assertEquals(c3.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
@@ -75,7 +74,7 @@ public class ClientHandlerStateTest {
 
         }
 
-        if(gameController.getFirstPlayer() == 1){
+        if (gameController.getFirstPlayer() == 1) {
             assertEquals(c1.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
             assertEquals(c2.getPlayerState(), PlayerState.PLAYINGBEGINNINGDECISIONS);
             assertEquals(c3.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
@@ -83,14 +82,14 @@ public class ClientHandlerStateTest {
 
         }
 
-        if(gameController.getFirstPlayer() == 2){
+        if (gameController.getFirstPlayer() == 2) {
             assertEquals(c1.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
             assertEquals(c2.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
             assertEquals(c3.getPlayerState(), PlayerState.PLAYINGBEGINNINGDECISIONS);
             assertEquals(c4.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
 
         }
-        if(gameController.getFirstPlayer() == 3){
+        if (gameController.getFirstPlayer() == 3) {
             assertEquals(c1.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
             assertEquals(c2.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);
             assertEquals(c3.getPlayerState(), PlayerState.WAITING4BEGINNINGDECISIONS);

@@ -6,8 +6,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server
-{
+public class Server {
     final private int port;
 
     public Server(int port) {
@@ -15,7 +14,7 @@ public class Server
     }
 
 
-    public void startServer(){
+    public void startServer() {
         ExecutorService executor = Executors.newCachedThreadPool();
         ServerSocket serverSocket;
 
@@ -23,23 +22,23 @@ public class Server
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             System.err.println(e.getMessage()); // Porta non disponibile
-            return; }
+            return;
+        }
 
         System.out.println("Server ready");
-        while (true)
-        {
+        while (true) {
             Socket socket;
             try {
                 socket = serverSocket.accept();
                 System.out.println("A new client is connected : " + socket);
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 break;
             }
             try {
                 System.out.println("Adding Client to thread Pool");
                 executor.submit(new ClientHandler(socket));
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 break;
             }

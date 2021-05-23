@@ -18,14 +18,13 @@ import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
 import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.Socket;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GameControllerTurnsManagementTest {
     GameController gameController;
@@ -41,7 +40,6 @@ public class GameControllerTurnsManagementTest {
     BufferedReader fileReader3;
     BufferedReader fileReader4;
     Gson gson;
-
 
 
     @BeforeEach
@@ -90,7 +88,7 @@ public class GameControllerTurnsManagementTest {
 
     @Test
     //All the players are still connected to the game: the player who's finishing their turn is the third in the list
-    public void ctrlAllPlayersPresent(){
+    public void ctrlAllPlayersPresent() {
         c1.setPlayerState(PlayerState.WAITING4TURN);
         c2.setPlayerState(PlayerState.WAITING4TURN);
         c3.setPlayerState(PlayerState.PLAYING);
@@ -106,7 +104,7 @@ public class GameControllerTurnsManagementTest {
 
     @Test
     //All the players are still connected to the game: the player who's finishing their turn is the last in the list
-    public void ctrlAllPlayersPresentTakingARoundTrip(){
+    public void ctrlAllPlayersPresentTakingARoundTrip() {
         c1.setPlayerState(PlayerState.WAITING4TURN);
         c2.setPlayerState(PlayerState.WAITING4TURN);
         c3.setPlayerState(PlayerState.WAITING4TURN);
@@ -121,7 +119,7 @@ public class GameControllerTurnsManagementTest {
     }
 
     @Test
-    public void ctrlOnePlayerDisconnected(){
+    public void ctrlOnePlayerDisconnected() {
         c1.setPlayerState(PlayerState.WAITING4TURN);
         c2.setPlayerState(PlayerState.PLAYING);
         c3.setPlayerState(PlayerState.DISCONNECTED);
@@ -136,7 +134,7 @@ public class GameControllerTurnsManagementTest {
     }
 
     @Test
-    public void ctrlTwoPlayerDisconnected(){
+    public void ctrlTwoPlayerDisconnected() {
         c1.setPlayerState(PlayerState.WAITING4TURN);
         c2.setPlayerState(PlayerState.PLAYING);
         c3.setPlayerState(PlayerState.DISCONNECTED);
@@ -151,7 +149,7 @@ public class GameControllerTurnsManagementTest {
     }
 
     @Test
-    public void ctrlThreePlayerDisconnected(){
+    public void ctrlThreePlayerDisconnected() {
         c1.setPlayerState(PlayerState.DISCONNECTED);
         c2.setPlayerState(PlayerState.PLAYING);
         c3.setPlayerState(PlayerState.DISCONNECTED);
