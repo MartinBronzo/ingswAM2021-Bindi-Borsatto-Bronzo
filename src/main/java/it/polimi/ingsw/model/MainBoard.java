@@ -391,6 +391,10 @@ public class MainBoard {
         return -1;
     }
 
+    public DevCard[][] getDevMatrix(){
+        return this.devGrid.getDevMatrix();
+    }
+
     /*
     ###########################################################################################################
      CONFIGURATION METHODS

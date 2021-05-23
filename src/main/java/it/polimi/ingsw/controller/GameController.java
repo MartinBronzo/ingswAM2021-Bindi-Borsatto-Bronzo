@@ -595,6 +595,12 @@ public class GameController {
             player.setUnUsedLeaders(players.get(i).getValue().getNotPlayedLeaderCards());
             game.addPlayer(player);
         }
+        //Sends the DevGrid and the Market for the first time
+        Board board = new Board();
+        board.setDevMatrix(mainBoard.getDevMatrix());
+        board.setMarketMatrix(mainBoard.getMarketMatrixWithMarbleType());
+        board.setMarbleOnSlide(mainBoard.getMarbleOnSlideWithMarbleType());
+        game.setMainBoard(board);
 
         this.sendBroadcastUpdate(new ModelUpdate(game));
 
