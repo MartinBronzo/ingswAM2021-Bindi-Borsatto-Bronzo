@@ -266,6 +266,8 @@ public class ClientHandler implements Runnable {
                                 throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
                             SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
                             this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
+                            //If we arrive here, then the player has set a valid number of players
+                            this.send(new SetNumPlayersConfirmationMessage(game.getNumberOfPlayers()));
                             //game.setState(GameState.WAITING4PLAYERS);
                             //game.setPlayer(this);
                             break;

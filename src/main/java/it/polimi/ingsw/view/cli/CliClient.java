@@ -540,6 +540,16 @@ public class CliClient extends Client implements Runnable {
                             CliView.printFinalScores(message.getResults());
                         }
                         break;*/
+                    case SETNUMPLAYERCONF:
+                        synchronized (this) {
+                            SetNumPlayersConfirmationMessage setNickMessage = gson.fromJson(responseContent, SetNumPlayersConfirmationMessage.class);
+                            int numPlayers = setNickMessage.getConfirmedNumPlayers();
+                            if(numPlayers == 1)
+                                CliView.printInfo("Thou archenemy is the Almighty Lorenzo The Magnificent! But Glory is for you to be taken!");
+                            else
+                                CliView.printInfo("My Master, what a quest for Glory lies in front of you: " + numPlayers + "dreadful competitors will be ready to challenge you every step of the way!");
+                        }
+                        break;
                 }
             } catch (IOException | NullPointerException e) {
                 logoutMessage = "the server is offline. Please try restart the game.";
