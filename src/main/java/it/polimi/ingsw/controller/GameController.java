@@ -138,8 +138,7 @@ public class GameController {
             }
 
         if (state != GameState.WAITING4PLAYERS)
-            for (
-                    ClientHandler ch : disconnectedBeforeStarting) {
+            for (ClientHandler ch : disconnectedBeforeStarting) {
                 if (ch.getNickname().equals(newClientHandler.getNickname())) {
                     newClientHandler.setPlayerState(PlayerState.WAITING4BEGINNINGDECISIONS);
                     for (Pair<ClientHandler, PlayerBoard> e : players)
@@ -1044,8 +1043,7 @@ public class GameController {
 
         Game game = new Game();
         Board board = new Board();
-        //board.setDevGrid(mainBoard.getDevGrid());
-        board.setDevMatrix(mainBoard.getDevMatrix());
+        board.setDevMatrix(this.mainBoard.getDevMatrix());
         game.setMainBoard(board);
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
@@ -1292,8 +1290,7 @@ public class GameController {
         Board board = new Board();
         Player player = new Player();
 
-        //board.setDevGrid(soloBoard.getDevGrid());
-        board.setDevMatrix(soloBoard.getDevMatrix());
+        board.setDevMatrix(mainBoard.getDevMatrix());
         game.setMainBoard(board);
         player.setNickName(clientHandler.getNickname());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());

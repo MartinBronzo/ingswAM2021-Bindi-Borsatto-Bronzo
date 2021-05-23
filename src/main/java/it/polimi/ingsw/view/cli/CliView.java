@@ -265,7 +265,7 @@ public class CliView implements view {
         System.out.print("|   |                            |.\n");
         System.out.print(" \\_ |                            |.\n" +
                                  "    |                            |.\n");
-        String fullLine = "";
+        String fullLine;
         if (gameModel.getPlayers().size() > 1) {
             fullLine = "Master" + currentPlayer + ", thou dreadful competitors are hither shown: ";
             fullLine = fullLine + getOtherPlayersNicknames(gameModel, currentPlayer);
@@ -647,7 +647,6 @@ public class CliView implements view {
     }
 
     public static void printDevGrid(Board board) {
-        //if (board == null || board.getDevGrid() == null) {
         if (board == null || board.getDevMatrix() == null) {
             System.out.println("missing board or devgrid in print devgrid");
             return;

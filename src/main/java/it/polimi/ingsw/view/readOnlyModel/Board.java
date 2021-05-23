@@ -28,7 +28,7 @@ public class Board {
         return marbleOnSlide;
     }
 
-    /*ublic DevGrid getDevGrid() {
+    /*public DevGrid getDevGrid() {
         return devGrid;
     }*/
 
@@ -50,7 +50,7 @@ public class Board {
         return "Board{" +
                 "marketMatrix=" + Arrays.toString(marketMatrix) +
                 ", marbleOnSlide=" + marbleOnSlide +
-               // ", devGrid=" + devGrid +
+                ", devGrid=" + Arrays.deepToString(devMatrix) +
                 '}';
     }
 
@@ -101,9 +101,8 @@ public class Board {
         MarbleType marbleUpdate = updateBoard.getMarbleOnSlide();
         if (marbleUpdate != null) this.marbleOnSlide = marbleUpdate;
 
-        /*DevGrid updateDev = updateBoard.getDevGrid();
-        if (updateDev != null) this.devGrid = updateDev;*/
-
+        //DevGrid updateDev = updateBoard.getDevGrid();
+        //if (updateDev != null) this.devGrid = updateDev;
         DevCard[][] updateDev = updateBoard.getDevMatrix();
         if (updateDev != null) this.devMatrix = updateDev;
 
