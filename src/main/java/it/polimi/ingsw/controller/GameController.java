@@ -586,7 +586,7 @@ public class GameController {
     public boolean showLeaderCardAtBeginning() {
         mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
 
-        Game game = new Game();
+        /*Game game = new Game();
         Player player;
         for (int i = 0; i < this.numberOfPlayers; i++) {
             player = new Player();
@@ -602,7 +602,10 @@ public class GameController {
         board.setMarbleOnSlide(mainBoard.getMarbleOnSlideWithMarbleType());
         game.setMainBoard(board);
 
-        this.sendBroadcastUpdate(new ModelUpdate(game));
+
+        this.sendBroadcastUpdate(new ModelUpdate(game));*/
+
+        this.sendBroadcastUpdate(this.getWholeMessageUpdateToClient());
 
         //TODO: controllare se va bene
         for (Pair<ClientHandler, PlayerBoard> e : players)
@@ -795,7 +798,7 @@ public class GameController {
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
             throw new IllegalArgumentException("Specify only a column or row!");
 
-        HashMap<ResourceType, Integer> result = null;
+        HashMap<ResourceType, Integer> result;
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         List<Effect> effects = playerBoard.getEffectsFromCards(resFromMkt.getLeaderList());
 
@@ -1296,7 +1299,7 @@ public class GameController {
     /**
      * Updates all the player that the specified player has been disconnected
      *
-     * @param disconnectedPlayer
+     * //@param disconnectedPlayer
      */
     /*@Deprecated
     public void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
@@ -1419,7 +1422,7 @@ public class GameController {
         Board board = new Board();
         board.setMarketMatrix(this.mainBoard.getMarketMatrixWithMarbleType());
         board.setMarbleOnSlide(this.mainBoard.getMarbleOnSlideWithMarbleType());
-        board.setDevGrid(this.mainBoard.getDevGrid());
+        board.setDevMatrix(this.mainBoard.getDevMatrix());
         game.setMainBoard(board);
         for (int i = 0; i < this.numberOfPlayers; i++) {
             PlayerBoard playerBoard = players.get(i).getValue();
