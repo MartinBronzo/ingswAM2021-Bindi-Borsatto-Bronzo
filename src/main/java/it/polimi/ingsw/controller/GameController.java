@@ -116,7 +116,7 @@ public class GameController {
      *                         specified object
      * @return true if the substitution took place correctly, false if there was no substitution because the client associated with the specified ClientHandler is not in this game
      */
-    public boolean substitutesClient(ClientHandler newClientHandler) throws IllegalActionException {
+    public synchronized boolean substitutesClient(ClientHandler newClientHandler) throws IllegalActionException {
         //Case gameState == STARTED when disconnection happend
         //If the player was adding the resources and discarding the leaderCards at the beginning of the game, before disconnecting
 
@@ -131,6 +131,7 @@ public class GameController {
                             newClientHandler.setPlayerState(PlayerState.WAITING4LASTTURN);
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
+
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
                         updatesAfterDisconnection(newClientHandler);
                         return true;
@@ -375,7 +376,7 @@ public class GameController {
         }, 120000); //TODO: DECIDERE QUANTO FAR DURARE IL TURNO
     }
 
-    private void checkIfGameMustBegin() {
+    /*private void checkIfGameMustBegin() {
         synchronized (this.howManyPlayersReady) {
             //TODO: fare un lock unico e metterlo anche dall'altra parte
             synchronized (this.disconnectedBeforeStarting) {
@@ -390,7 +391,7 @@ public class GameController {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Communicates to the GameController that the specified player (represented by their ClientHandler) has been found disconnected before they were able to
@@ -411,7 +412,7 @@ public class GameController {
      *
      * @param currentPlayer the player who is ending their turn
      */
-    public void specifyNextPlayer(ClientHandler currentPlayer) throws IllegalStateException {
+    public synchronized void specifyNextPlayer(ClientHandler currentPlayer) throws IllegalStateException {
         numOfTurn++;
 
         //checks if the timer has already elapsed

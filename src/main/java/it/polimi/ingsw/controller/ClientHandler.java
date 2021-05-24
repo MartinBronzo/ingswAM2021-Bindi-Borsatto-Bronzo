@@ -486,6 +486,11 @@ public class ClientHandler implements Runnable {
                     }
                     command = gson.fromJson(line, Command.class);
                 }
+
+
+                //TODO: logout utente(lo setta disconnesso) e passa il turno
+
+
             } catch (SocketException e) {
                 //If the socket is closed by the timer and the thread was waiting waiting a message from InputStream, this exception is launched
                 //we simply print what happened and we finish the thread. The socket is closed only if the client haven't logged in yet
@@ -514,6 +519,8 @@ public class ClientHandler implements Runnable {
             }
         }
 
+
+
         //Close stream and socket
         try {
             in.close();
@@ -537,6 +544,7 @@ public class ClientHandler implements Runnable {
     }
 
     public synchronized void send(ResponseInterface response) {
+        gson.toJson(response);
         ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
         out.println(gson.toJson(responseMessage));
         //out.flush();
