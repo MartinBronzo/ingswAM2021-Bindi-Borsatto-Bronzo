@@ -414,13 +414,25 @@ public class CliClient extends Client implements Runnable {
 
     @Override
     public void run() {
-        String response;
-        ResponseMessage responseMessage;
+        String response = null;
+        ResponseMessage responseMessage = null;
         String responseContent;
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 response = in.readLine();
+                if (response == null)
+                    throw new IOException();
                 responseMessage = gson.fromJson(response, ResponseMessage.class);
+            } catch (IOException e) {
+                logoutMessage = "the server is offline. Please try restart the game.";
+                forceLogout.set(true);
+                thread.interrupt();
+            }catch (com.google.gson.JsonSyntaxException gsone){
+                logoutMessage = "message received from server is not well format";
+                forceLogout.set(true);
+                thread.interrupt();
+            }
+            try {
                 //TODO: DA TOGLIERE QUESTO IF
                 if (responseMessage.getResponseType() != ResponseType.PING)
                     System.out.println("Received:\t" + response);
@@ -439,11 +451,7 @@ public class CliClient extends Client implements Runnable {
                                 gamemodel = update;
                             else
                                 gamemodel.merge(update);
-                            try {
-                                CliView.printGameState(gamemodel, nickname);
-                            } catch (NullPointerException e) {
-                                CliView.printError(e.getMessage());
-                            }
+                            CliView.printGameState(gamemodel, nickname);
                         }
                         break;
                     case ERROR:
@@ -510,6 +518,7 @@ public class CliClient extends Client implements Runnable {
                             LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
                             nickname = setNickMessage.getConfirmedNickname();
                             CliView.printInfo("From now on thou shall known as master " + nickname + ", thou shall serve under thy liege demands and any committed crime shall cause our Holy Lord disappointment.");
+                            CliView.printGameState(gamemodel, nickname);
                         }
                         break;
                     case SETBEGINNINGDECISIONS:
@@ -561,10 +570,8 @@ public class CliClient extends Client implements Runnable {
                         }
                         break;
                 }
-            } catch (IOException | NullPointerException e) {
-                logoutMessage = "the server is offline. Please try restart the game.";
-                forceLogout.set(true);
-                thread.interrupt();
+            } catch (NullPointerException e) {
+                CliView.printError(e.getMessage());
             }
         }
     }

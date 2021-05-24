@@ -653,31 +653,31 @@ public class CliView implements view {
             return;
         }
         DevCard[][] devGrid = board.getDevMatrix();
-        System.out.print(AnsiCommands.RED.getBackgroundColor());
+        System.out.print(AnsiCommands.RED.getTextColor());
         System.out.print("_____________");
         System.out.println(AnsiCommands.resetStyle());
         int c;
         for (int i = 0; i < devGrid.length; i++) {
-            System.out.print(AnsiCommands.RED.getBackgroundColor());
+            System.out.print(AnsiCommands.RED.getTextColor());
             System.out.print("|");
             System.out.print(AnsiCommands.resetStyle());
             for (int j = 0; j < devGrid[i].length; j++) {
                 c = (1 + j + 4 * i);
                 System.out.print(c);
                 if (c < 10) {
-                    System.out.print(" " + AnsiCommands.RED.getBackgroundColor() + "|" + AnsiCommands.resetStyle());
+                    System.out.print(" " + AnsiCommands.RED.getTextColor() + "|" + AnsiCommands.resetStyle());
                 } else {
-                    System.out.print(AnsiCommands.RED.getBackgroundColor() + "|" + AnsiCommands.resetStyle());
+                    System.out.print(AnsiCommands.RED.getTextColor() + "|" + AnsiCommands.resetStyle());
                 }
             }
-            System.out.print("\n" + AnsiCommands.RED.getBackgroundColor());
+            System.out.print("\n" + AnsiCommands.RED.getTextColor());
             System.out.print("_____________");
             System.out.println(AnsiCommands.resetStyle());
         }
 
         for (int i = 0; i < devGrid.length; i++) {
             for (int j = 0; j < devGrid[i].length; j++) {
-                c = (1 + i + 4 * j);
+                c = (1 + j + 4 * i);
                 //System.out.println(c+":\t");
                 System.out.print(c + " : ");
                 printCardInfo(devGrid[i][j], AnsiCommands.resetStyle());
