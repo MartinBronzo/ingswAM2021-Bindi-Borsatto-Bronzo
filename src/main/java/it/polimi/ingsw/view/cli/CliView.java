@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.model.soloGame.DiscardToken;
 import it.polimi.ingsw.model.soloGame.FaithPointToken;
+import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
@@ -914,6 +915,138 @@ public class CliView implements view {
 
     /*
     #############################################################################################
+    LORENZOS ACTION METHODS
+    #############################################################################################
+     */
+
+    public static void printLorenzosAction(SoloActionToken soloActionToken){
+        if(soloActionToken instanceof DiscardToken){
+            printDiscardToken((DiscardToken) soloActionToken);
+        } else if(soloActionToken instanceof ShuffleToken) {
+            printShuffleToken((ShuffleToken) soloActionToken);
+        } else if(soloActionToken instanceof FaithPointToken){
+            printFaithPointToken((FaithPointToken) soloActionToken, null);
+        }
+        System.out.print("\n");
+
+    }
+
+    private static void printDiscardToken(DiscardToken token) {
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        System.out.print("\n   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |       LORENZO PLAYED       |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+        String fullLine = "The Almighty Lorenzo The Magnificent decided to take for His selfish needs ";
+        if(token.getNumCards() == 1){
+            String[] lines = CliView.splitInLinesBySize(fullLine, 27);
+            for (String line : lines) {
+                System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+            }
+
+            System.out.print("    | ");
+            printNumberWithColor(token.getNumCards(), getColorOfDevColor(token.getCardColour()), AnsiCommands.BLACK.getTextColor());
+            System.out.print(" ");
+            printColor(token.getCardColour(), AnsiCommands.BLACK.getTextColor());
+            switch (token.getCardColour()) {
+                case YELLOW:
+                case PURPLE:
+                    System.out.print(" card!" + " ".repeat(27 - 14) + "|.\n");
+                    break;
+                case GREEN:
+                    System.out.print(" card!" + " ".repeat(27 - 13) + "|.\n");
+                    break;
+                case BLUE:
+                    System.out.print(" card!" + " ".repeat(27 - 12) + "|.\n");
+                    break;
+            }
+
+        } else {
+            fullLine = fullLine + token.getNumCards() + " ";
+            String[] lines = CliView.splitInLinesBySize(fullLine, 27);
+            for (String line : lines) {
+                System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+            }
+
+            System.out.print("    | ");
+            printNumberWithColor(token.getNumCards(), getColorOfDevColor(token.getCardColour()), AnsiCommands.BLACK.getTextColor());
+            System.out.print(" ");
+            printColor(token.getCardColour(), AnsiCommands.BLACK.getTextColor());
+            switch (token.getCardColour()) {
+                case YELLOW:
+                case PURPLE:
+                    System.out.print(" cards!" + " ".repeat(27 - 15) + "|.\n");
+                    break;
+                case GREEN:
+                    System.out.print(" cards!" + " ".repeat(27 - 14) + "|.\n");
+                    break;
+                case BLUE:
+                    System.out.print(" cards!" + " ".repeat(27 - 13) + "|.\n");
+                    break;
+            }
+        }
+
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+
+    }
+
+    private static void printFaithPointToken(FaithPointToken token, String endingForShuffleToken) {
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        System.out.print("\n   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |       LORENZO PLAYED       |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+        String fullLine = "The Almighty Lorenzo The Magnificent charmed the Vatican with His foul words: He advanced of ";
+        String[] lines = CliView.splitInLinesBySize(fullLine, 27);
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+        }
+        System.out.print("    | ");
+        System.out.print(AnsiCommands.RED.getTextColor());
+        System.out.print(token.getFaithPoints() + " ");
+        System.out.print(AnsiCommands.BLACK.getTextColor());
+        printResName(ResourceType.FAITHPOINT, AnsiCommands.BLACK.getTextColor());
+        System.out.print(" on the FaithTrack");
+        System.out.print(" !" + " ".repeat(27 - 23) + "|.\n");
+
+        if(endingForShuffleToken != null){
+            System.out.print("    |                            |.\n");
+            lines = CliView.splitInLinesBySize(endingForShuffleToken, 27);
+            for (String line : lines) {
+                System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+            }
+        }
+
+        printSmallScrollClosing();
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
+
+    private static void printShuffleToken(ShuffleToken token) {
+        String end = "His Lordness was vicious in another way: He shuffled all the tokens!";
+
+        printFaithPointToken(token, end);
+    }
+
+    private static void printSmallScrollClosing(){
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+    }
+
+
+    /*
+    #############################################################################################
     RESOURCES-RELATED METHODS
     #############################################################################################
      */
@@ -1087,36 +1220,36 @@ public class CliView implements view {
         }
     }
 
-     /*
-    #############################################################################################
-    LORENZOS ACTION METHODS
-    #############################################################################################
-     */
-
-    public static void printLorenzosAction(SoloActionToken soloActionToken, String description){
-        if(soloActionToken instanceof DiscardToken){
-            printDiscardToken((DiscardToken) soloActionToken);
-        } else if(soloActionToken instanceof FaithPointToken){
-            printFaithPointToken((FaithPointToken) soloActionToken);
-        }
-        System.out.print("\n");
-
-    }
-
-    public static void printDiscardToken(DiscardToken token) {
-
-    }
-
-    public static void printFaithPointToken(FaithPointToken token) {
-
-    }
-
-
     /*
     ###########################
     COLOR-RELATED METHODS
     ###########################
      */
+
+    private static void printNumberWithColor(int number, String color, String backgroundColor){
+        System.out.print(color);
+        System.out.print(number);
+        System.out.print(backgroundColor);
+    }
+
+    private static String getColorOfDevColor(DevCardColour dev){
+        String color = AnsiCommands.resetStyle();
+        switch (dev){
+            case GREEN:
+                color = AnsiCommands.GREEN.getTextColor();
+                break;
+            case PURPLE:
+                color = AnsiCommands.PURPLE.getTextColor();
+                break;
+            case BLUE:
+                color = AnsiCommands.BLUE.getTextColor();
+                break;
+            case YELLOW:
+                color = AnsiCommands.YELLOW.getTextColor();
+                break;
+        }
+        return color;
+    }
 
     //Prints the name of the color using the corresponding color. The background color is the one which must be
     //reinstate after the resource has been printed

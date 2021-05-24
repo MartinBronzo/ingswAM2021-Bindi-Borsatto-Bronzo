@@ -525,8 +525,7 @@ public class CliClient extends Client implements Runnable {
                         synchronized (this){
                             LorenzosActionMessage lorenzosActionMessage = gson.fromJson(responseContent, LorenzosActionMessage.class);
                             SoloActionToken token = lorenzosActionMessage.getSoloActionToken();
-                            String description = "Lorenzos' decision has been taken: ";
-                            CliView.printLorenzosAction(token, description);
+                            CliView.printLorenzosAction(token);
                         }
                         break;
                     /*case FINALSCORES:

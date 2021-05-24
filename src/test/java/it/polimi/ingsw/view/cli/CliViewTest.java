@@ -15,6 +15,9 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraProductionLeaderEffec
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
+import it.polimi.ingsw.model.soloGame.DiscardToken;
+import it.polimi.ingsw.model.soloGame.FaithPointToken;
+import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -549,6 +552,83 @@ class CliViewTest {
         game.addPlayer(player);
 
         CliView.printOthersPlayersName(game, "Kenobi");
+    }
+
+    @Test
+    void printDiscardTokenGreen(){
+        DiscardToken token = new DiscardToken(DevCardColour.GREEN, 1);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printDiscardTokenBlue(){
+        DiscardToken token = new DiscardToken(DevCardColour.BLUE, 1);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printDiscardTokenYellow(){
+        DiscardToken token = new DiscardToken(DevCardColour.YELLOW, 1);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printDiscardTokenPurple(){
+        DiscardToken token = new DiscardToken(DevCardColour.PURPLE, 1);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printDiscardTokenGreenCards(){
+        DiscardToken token = new DiscardToken(DevCardColour.GREEN, 2);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printDiscardTokenBlueCards(){
+        DiscardToken token = new DiscardToken(DevCardColour.BLUE, 2);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printDiscardTokenYellowCards(){
+        DiscardToken token = new DiscardToken(DevCardColour.YELLOW, 2);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printDiscardTokenPurpleCards(){
+        DiscardToken token = new DiscardToken(DevCardColour.PURPLE, 2);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printFaithPointTokenOnePoint(){
+        FaithPointToken token = new FaithPointToken(1);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printFaithPointTokenTwoPoints() {
+        FaithPointToken token = new FaithPointToken(2);
+
+        CliView.printLorenzosAction(token);
+    }
+
+    @Test
+    void printShuffleToken(){
+        ShuffleToken token = new ShuffleToken(1);
+
+        CliView.printLorenzosAction(token);
     }
 
 }
