@@ -203,6 +203,12 @@ public class CliClient extends Client implements Runnable {
                             else
                                 CliView.printInfo("It can't be printed yet");
                         }
+                    case HELP:
+                    case HOLP:
+                        synchronized (this) {
+                            CliView.printHolpMessage();
+                        }
+                        break;
                     default:
                         System.err.println("Command not Valid\n");
                 }

@@ -77,7 +77,7 @@ public class CliView implements view {
                 printGeneralInfo("We are about to start our marvellous journey togeth'r: hold tight a little longeth'r while thy dreadful competit'rs take their first choices, thee'll lief do the same ");
                 break;
         }
-
+        printOthersPlayersName(gameModel, player.getNickName());
     }
 
 
@@ -1358,6 +1358,51 @@ public class CliView implements view {
             output = output + name;
         }
         return output;
+    }
+
+    public static void printHolpMessage() {
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.resetStyle());
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+        System.out.print("***********************************************************************************\n");
+        /*String beginning = "My Master, thee mustn't feel lost: thou devoted servant is here to holp you out! Hither presented the commands are: ";
+        String[] lines = CliView.splitInLinesBySize(beginning, 40);
+        for (String line : lines) {
+            System.out.print(line + "\n");
+        }*/
+        System.out.print("My Master, thee mustn't feel lost: thou devoted servant is here to holp you out!\n");
+        System.out.print("Hither presented the commands are:\n");
+        printCommandAndString(CliCommandType.QUIT, ": disconnects you from the game", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.SETNICKNAME, ": sets your nickname", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.SETNUMOFPLAYERS, ": sets the number of the players in your game", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.CONFIGURESTART, ": plays your beginning decisions", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.GETRESOURCESFROMMARKET, ": tells you how many resources you'd get from the market", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.BUYFROMMARKET, ": gets you the resources from the market", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.GETDEVCARDCOST, ": tells you how much a DevCard would cost", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.BUYDEVCARD, ": buys a DevCard", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.GETPRODUCTIONCOST, ": tells you how much producing would cost you", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.ACTIVATEPRODUCTION, ": activates your production", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.DISCARDLEADER, ": discards a LeaderCard", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.ACTIVATELEADER, ": activates a LeaderCard", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.MOVEBETWEENSHELF, ": moves resources between shelves", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.MOVELEADERTOSHELF, ": moves resources from Leader Depots to the Depot shelves", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.MOVESHELFTOLEADER, ": moves resources from Depot shelves to the Leader Depots", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.SEEPLAYERBOARD, ": lets you see the public PlayerBoard of another player", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.PRINTMYBOARD, ": lets you see your PlayerBoard", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.ENDTURN, ": ends your turn", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.SEEOTHERSPLAYERSNAMES, ": tells your your competitors' names", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.MOVESHELFTOLEADER, ": moves resources from Depot shelves to the Leader Depots", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.HELP, ": less cool way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.HOLP, ": cooler way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());
+
+        System.out.print("***********************************************************************************\n");
+    }
+
+    private static void printCommandAndString(CliCommandType command, String line, String backgroundColor){
+        System.out.print(AnsiCommands.YELLOW.getTextColor());
+        System.out.print(command);
+        System.out.print(backgroundColor);
+        System.out.print(line + "\n");
     }
 
 

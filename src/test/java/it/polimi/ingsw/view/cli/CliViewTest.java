@@ -645,4 +645,9 @@ class CliViewTest {
         CliView.printPlayerBoard(player, -1);
     }
 
+    @Test
+    void printHolpMessage(){
+        CliView.printHolpMessage();
+    }
+
 }
