@@ -77,6 +77,8 @@
             <Resource>SHIELD</Resource>
             <Quantity>1</Quantity>
         </ExtraProductionEffect>
+
+        <Url>...</Url>
     </LeaderCard>
 
     <!--THE FOLLOWING FOUR LEADERCARDS ARE JUST THE BARE COPY OF THE PREVIOUS FOURS (it was necessary in order to do some not ordinary testing)-->
@@ -159,6 +161,8 @@
             <Resource>SHIELD</Resource>
             <Quantity>1</Quantity>
         </ExtraProductionEffect>
+
+        <Url>...</Url>
     </LeaderCard>
 
 
@@ -240,6 +244,8 @@
             <Resource>SHIELD</Resource>
             <Quantity>1</Quantity>
         </ExtraProductionEffect>
+
+        <Url>...</Url>
     </LeaderCard>
 
     <!--LeaderCard-->
@@ -320,6 +326,8 @@
             <Resource>SHIELD</Resource>
             <Quantity>1</Quantity>
         </ExtraProductionEffect>
+
+        <Url>...</Url>
     </LeaderCard>
 
 </LeaderCardConfig>

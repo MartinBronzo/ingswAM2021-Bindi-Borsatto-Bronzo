@@ -168,6 +168,7 @@ public class LeaderCardDeck implements Deck {
         int victoryPoints;
         ArrayList<Requirement> requirementList;
         Effect effect;
+        String url;
 
         //Prepare the reading of the file
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -187,6 +188,8 @@ public class LeaderCardDeck implements Deck {
                 cardNode = nodeLeaderCardList.item(i);
                 if (cardNode.getNodeType() == Node.ELEMENT_NODE) {
                     elementLeaderCard = (Element) cardNode;
+
+                    //Reads the VictoryPoints
                     victoryPoints = Integer.parseInt(elementLeaderCard.getElementsByTagName("VictoryPoints").item(0).getTextContent());
 
                     //Reads the requirements
@@ -196,7 +199,11 @@ public class LeaderCardDeck implements Deck {
                     //Reads the effect
                     effect = readEffectFromXML(elementLeaderCard);
 
-                    leaderCard = new LeaderCard(victoryPoints, requirementList, effect);
+                    //Reads the Url
+                    url = elementLeaderCard.getElementsByTagName("Url").item(0).getTextContent();
+
+                    //leaderCard = new LeaderCard(victoryPoints, requirementList, effect);
+                    leaderCard = new LeaderCard(victoryPoints, requirementList, effect, url);
                     deck.add(leaderCard);
                 }
             }

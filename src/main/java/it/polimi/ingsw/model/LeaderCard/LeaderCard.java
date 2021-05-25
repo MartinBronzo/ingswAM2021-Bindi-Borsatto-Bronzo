@@ -23,6 +23,7 @@ public class LeaderCard {
     private final int outputAmountWhenDiscarded;
     private final List<Requirement> requirementsList;
     private final Effect effect;
+    private final String url;
 
     /**
      * Constructs a LeaderCard with the specified victoryPoints, list of requirements and effect
@@ -30,8 +31,23 @@ public class LeaderCard {
      * @param victoryPoints    the Victory points this card may gives the player at the end of the game if the player plays the card
      * @param requirementsList the requirements which must be met in order to be able to play this card
      * @param effect           the extra effect this LeaderCard has
+     * @param url              the url of the this LeaderCard
      * @throws NullPointerException if either the requirementsList or the effect is a null pointer
      */
+    public LeaderCard(int victoryPoints, List<Requirement> requirementsList, Effect effect, String url) {
+        if (requirementsList == null)
+            throw new NullPointerException("The requirement list can't be a null pointer!");
+        if (effect == null)
+            throw new NullPointerException("The effect can't be a null pointer!");
+        this.victoryPoints = victoryPoints;
+        this.requirementsList = getCloneList(requirementsList);
+        this.effect = effect;
+        this.outputTypeWhenDiscarded = ResourceType.FAITHPOINT;
+        this.outputAmountWhenDiscarded = 1;
+        this.url = url;
+    }
+
+    @Deprecated
     public LeaderCard(int victoryPoints, List<Requirement> requirementsList, Effect effect) {
         if (requirementsList == null)
             throw new NullPointerException("The requirement list can't be a null pointer!");
@@ -42,6 +58,7 @@ public class LeaderCard {
         this.effect = effect;
         this.outputTypeWhenDiscarded = ResourceType.FAITHPOINT;
         this.outputAmountWhenDiscarded = 1;
+        this.url = "";
     }
 
     /**
@@ -55,6 +72,7 @@ public class LeaderCard {
         this.effect = original.effect.getClone();
         this.outputTypeWhenDiscarded = ResourceType.FAITHPOINT;
         this.outputAmountWhenDiscarded = 1;
+        this.url = original.url;
     }
 
     public static List<Requirement> getCloneList(List<Requirement> originalList) {
@@ -149,5 +167,13 @@ public class LeaderCard {
                 this.outputAmountWhenDiscarded == tmp.outputAmountWhenDiscarded &&
                 this.requirementsList.containsAll(tmp.requirementsList) && tmp.requirementsList.containsAll(this.requirementsList) &&
                 this.effect.equals(tmp.effect);
+    }
+
+    /**
+     * Returns the url of this LeaderCard
+     * @return the url of this LeaderCard
+     */
+    public String getUrl() {
+        return url;
     }
 }
