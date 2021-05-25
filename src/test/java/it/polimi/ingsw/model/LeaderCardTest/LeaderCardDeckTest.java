@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.LeaderCardTest;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
@@ -51,5 +52,14 @@ public class LeaderCardDeckTest {
 
         assertNotSame(l1, l2);
         assertEquals(l1, l2);
+    }
+
+    @Test
+    public void ctrlReadingTheUrl() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
+        LeaderCardDeck l1 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        for(LeaderCard leaderCard : l1.getCopyLeaderCards()) {
+            //assertFalse(leaderCard.getUrl().isEmpty());
+            assertNotNull(leaderCard.getUrl());
+        }
     }
 }

@@ -77,7 +77,7 @@ public class CliView implements view {
                 printGeneralInfo("We are about to start our marvellous journey togeth'r: hold tight a little longeth'r while thy dreadful competit'rs take their first choices, thee'll lief do the same ");
                 break;
         }
-
+        printOthersPlayersName(gameModel, player.getNickName());
     }
 
 
@@ -150,6 +150,30 @@ public class CliView implements view {
         printDevSlots(player.getDevSlots());
         printUsedLeaderCards(player.getUsedLeaders());
         printUnusedLeaderCards(player.getUnUsedLeaders());
+    }
+
+    public static void printOtherBoard(Player player, Integer lorenzoPosition) {
+        if (player == null) return;
+        if (lorenzoPosition == null) lorenzoPosition = -1;
+        printVictoryPoints(player.getNickName(), player.getPlayerState(), player.getVictoryPoints());
+        printDividerSmall(AnsiCommands.GREEN);
+        printFaithTrack(player.getFaithPosition(), player.getPopeTiles(), lorenzoPosition);
+        printDividerSmall(AnsiCommands.PURPLE);
+        printDepot(player.getDepotShelves());
+        printStrongBox(player.getStrongBox());
+        printLeaderDepots(player.getLeaderSlots());
+        printBaseProduction(player.getBaseProductionInput(), player.getBaseProductionOutput());
+        printDevSlots(player.getDevSlots());
+        printUsedLeaderCards(player.getUsedLeaders());
+        if(player.getUnUsedLeaders().size() != 0){
+            System.out.print(AnsiCommands.RED.getTextColor());
+            System.out.print(".... and ");
+            if(player.getUnUsedLeaders().size() == 1)
+                System.out.print("one other not active Leader Card!\n");
+            else
+                System.out.print(player.getUsedLeaders().size() + " other not active Leader Cards!\n");
+        }
+        System.out.print(AnsiCommands.resetStyle());
     }
 
     private static void printVictoryPoints(String nickName, PlayerState playerState, Integer victoryPoints) {
@@ -247,11 +271,11 @@ public class CliView implements view {
 
     //SPAZI TRA I BORDI DELLA PERGAMENA PICCOLA: 28
 
-    public static void printGameBoard(Game gameModel, String nickname) {
+    public static void printOtherGameBoard(Game gameModel, String nickname) {
         if (gameModel == null || nickname == null || nickname.equals("")) return;
         try {
             Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
-            printPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
+            printOthersPlayerBoardWithFrame(player, gameModel.getLorenzosPosition());
         } catch (NoSuchElementException e) {
             printError("Is not a Player in the Game");
         }
@@ -268,10 +292,10 @@ public class CliView implements view {
                                  "    |                            |.\n");
         String fullLine;
         if (gameModel.getPlayers().size() > 1) {
-            fullLine = "Master" + currentPlayer + ", thou dreadful competitors are hither shown: ";
+            fullLine = "Master" + currentPlayer + ", thy dreadful competitors are hither shown: ";
             fullLine = fullLine + getOtherPlayersNicknames(gameModel, currentPlayer);
         } else {
-            fullLine = "Master" + currentPlayer + ", thou dreadful competitor is the Almighty Lorenzo the Magnificent!";
+            fullLine = "Master" + currentPlayer + ", thy dreadful competitor is the Almighty Lorenzo the Magnificent!";
         }
         String[] lines = CliView.splitInLinesBySize(fullLine, 27);
         for (String line : lines) {
@@ -299,6 +323,24 @@ public class CliView implements view {
         System.out.print(AnsiCommands.BLUE.getTextColor());
 
         printPlayerBoard(player, lorenzoPosition);
+
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
+
+    public static void printOthersPlayerBoardWithFrame(Player player, int lorenzoPosition) {
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+        System.out.print("_________________________________________________________________________________\n");
+        System.out.print("_________________________________________________________________________________\n");
+
+        System.out.print(AnsiCommands.WHITE.getTextColor());
+        System.out.print("\n" + player.getNickName() + "'s Board!\n\n");
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+
+        printOtherBoard(player, lorenzoPosition);
 
         System.out.print(AnsiCommands.BLUE.getTextColor());
         System.out.print("_________________________________________________________________________________\n");
@@ -535,7 +577,7 @@ public class CliView implements view {
                 System.out.print("         ");
             else if (j == 1)
                 System.out.print("    ");
-            if (d.getQuantity() == 0)
+            if (d.getQuantity() == 0 || d.getResourceType() == null)
                 if (j == 0)
                     System.out.print("|        |");
                 else if (j == 1)
@@ -1316,6 +1358,51 @@ public class CliView implements view {
             output = output + name;
         }
         return output;
+    }
+
+    public static void printHolpMessage() {
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.resetStyle());
+        System.out.print(AnsiCommands.BLUE.getTextColor());
+        System.out.print("***********************************************************************************\n");
+        /*String beginning = "My Master, thee mustn't feel lost: thou devoted servant is here to holp you out! Hither presented the commands are: ";
+        String[] lines = CliView.splitInLinesBySize(beginning, 40);
+        for (String line : lines) {
+            System.out.print(line + "\n");
+        }*/
+        System.out.print("My Master, thee mustn't feel lost: thou devoted servant is here to holp you out!\n");
+        System.out.print("Hither presented the commands are:\n");
+        printCommandAndString(CliCommandType.QUIT, ": disconnects you from the game", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.SETNICKNAME, ": sets your nickname", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.SETNUMOFPLAYERS, ": sets the number of the players in your game", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.CONFIGURESTART, ": plays your beginning decisions", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.GETRESOURCESFROMMARKET, ": tells you how many resources you'd get from the market", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.BUYFROMMARKET, ": gets you the resources from the market", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.GETDEVCARDCOST, ": tells you how much a DevCard would cost", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.BUYDEVCARD, ": buys a DevCard", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.GETPRODUCTIONCOST, ": tells you how much producing would cost you", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.ACTIVATEPRODUCTION, ": activates your production", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.DISCARDLEADER, ": discards a LeaderCard", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.ACTIVATELEADER, ": activates a LeaderCard", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.MOVEBETWEENSHELF, ": moves resources between shelves", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.MOVELEADERTOSHELF, ": moves resources from Leader Depots to the Depot shelves", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.MOVESHELFTOLEADER, ": moves resources from Depot shelves to the Leader Depots", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.SEEPLAYERBOARD, ": lets you see the public PlayerBoard of another player", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.PRINTMYBOARD, ": lets you see your PlayerBoard", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.ENDTURN, ": ends your turn", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.SEEOTHERSPLAYERSNAMES, ": tells your your competitors' names", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.MOVESHELFTOLEADER, ": moves resources from Depot shelves to the Leader Depots", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.HELP, ": less cool way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.HOLP, ": cooler way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());
+
+        System.out.print("***********************************************************************************\n");
+    }
+
+    private static void printCommandAndString(CliCommandType command, String line, String backgroundColor){
+        System.out.print(AnsiCommands.YELLOW.getTextColor());
+        System.out.print(command);
+        System.out.print(backgroundColor);
+        System.out.print(line + "\n");
     }
 
 
