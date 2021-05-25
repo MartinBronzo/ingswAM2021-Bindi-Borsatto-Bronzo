@@ -182,12 +182,16 @@ public class CliClient extends Client implements Runnable {
                         break;
                     case SEEPLAYERBOARD:
                         synchronized (this) {
-                            CliView.printGameBoard(gamemodel, stdIn.readLine());
+                            if(gamemodel != null) {
+                                System.out.print("\n");
+                                CliView.printOtherGameBoard(gamemodel, stdIn.readLine());
+                            }else
+                                CliView.printInfo("It can't be printed yet");
                         }
                         break;
                     case PRINTMYBOARD:
                         synchronized (this) {
-                            if (this.gamemodel == null)
+                            if (this.gamemodel != null)
                                 CliView.printGameState(gamemodel, nickname);
                             else
                                 CliView.printInfo("It can't be printed yet");

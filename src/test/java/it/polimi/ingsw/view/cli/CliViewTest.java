@@ -631,4 +631,18 @@ class CliViewTest {
         CliView.printLorenzosAction(token);
     }
 
+    @Test
+    void printOthersPlayerBoard(){
+        Game game = new Game();
+        game.addPlayer(player);
+        CliView.printOtherGameBoard(game, "gianjd");
+    }
+
+    @Test
+    void printMyPlayerBoard(){
+        Game game = new Game();
+        game.addPlayer(player);
+        CliView.printPlayerBoard(player, -1);
+    }
+
 }
