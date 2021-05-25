@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class DiscardToken extends SoloActionToken {
-    private final List<DiscardTokenObserver> observersList;
+    private transient final List<DiscardTokenObserver> observersList;
     private final DevCardColour cardColour;
     private final int numCards;
 

@@ -4,9 +4,7 @@ import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
-import it.polimi.ingsw.network.messages.sendToClient.GeneralInfoStringMessage;
-import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
-import it.polimi.ingsw.network.messages.sendToClient.ResponseType;
+import it.polimi.ingsw.network.messages.sendToClient.*;
 
 import java.rmi.UnexpectedException;
 import java.util.*;
@@ -61,12 +59,15 @@ public final class GamesManagerSingleton {
                 wait();
             }
 
+            client.send(new LoginConfirmationMessage(client.getNickname()));
+
             if (startingGame == null) {
                 startingGame = new GameController();
                 this.clientConfigurator = client;
                 startingGame.setState(GameState.CONFIGURING);
                 client.setPlayerState(PlayerState.WAITING4SETNUMPLAYER);
                 startTimer();
+                client.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
                 return null;
             }
 
@@ -135,6 +136,7 @@ public final class GamesManagerSingleton {
         stopTimer();
         this.startingGame.startMainBoard(numberOfPlayers);
         this.startingGame.setState(GameState.WAITING4PLAYERS);
+        client.send(new SetNumPlayersConfirmationMessage(startingGame.getNumberOfPlayers()));
         this.startingGame.setPlayer(client);
         notifyAll();
         if (startingGame.getNumberOfPlayers() == startingGame.getPlayersList().size()) {

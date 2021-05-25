@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+import com.sun.tools.javac.Main;
 import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
@@ -12,11 +13,11 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementCo
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.model.soloGame.DiscardToken;
-import it.polimi.ingsw.model.soloGame.FaithPointToken;
-import it.polimi.ingsw.model.soloGame.SoloActionToken;
+import it.polimi.ingsw.model.MainBoard;
+import it.polimi.ingsw.model.soloGame.*;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.rmi.UnexpectedException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,6 +42,9 @@ public class ClientHandler implements Runnable {
     private final Gson gson;
     private boolean keepRunning;
     private boolean beginningActionDone;
+    private final int MAX_LEADER_ACTION = 2;
+    //ONLY FOR TESTING PURPOSE
+    private boolean startTimer;
 
 
     private ClientHandler(ClientHandler original) {
@@ -103,34 +108,7 @@ public class ClientHandler implements Runnable {
         pingAnswered = true;
         keepRunning = true;
         beginningActionDone = false;
-
-        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
-                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
-        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
-        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
-        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
-
-        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
-                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
-        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
-        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
-        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
-        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
-
-        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
-                .registerTypeAdapterFactory(effectTypeFactory).create();
-    }
-
-    public ClientHandler(Socket socket) throws IOException {
-        this.socket = socket;
-        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new PrintWriter(socket.getOutputStream(), true);
-        this.playerState = PlayerState.WAITING4NAME;
-        pingAnswered = true;
-        keepRunning = true;
-        beginningActionDone = false;
+        startTimer = true;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -152,10 +130,89 @@ public class ClientHandler implements Runnable {
         tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
+        tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
 
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
                 .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
+
+
+    public ClientHandler(Socket socket) throws IOException {
+        this.socket = socket;
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.out = new PrintWriter(socket.getOutputStream(), true);
+        this.playerState = PlayerState.WAITING4NAME;
+        pingAnswered = true;
+        keepRunning = true;
+        beginningActionDone = false;
+        startTimer = true;
+
+        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
+                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
+        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
+        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
+
+        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
+                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
+        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
+
+        RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
+                = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
+        tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
+        tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
+
+        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
+                .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
+    }
+
+    //Used only for testing purpose
+    @Deprecated
+    public ClientHandler(Socket socket, BufferedReader in, PrintWriter out, boolean startTimer) {
+        this.socket = socket;
+        this.in = in;
+        this.out = new PrintWriter(out, true);
+        this.playerState = PlayerState.WAITING4NAME;
+        mainActionDone = false;
+        numLeaderActionDone = 0;
+        pingAnswered = true;
+        keepRunning = true;
+        beginningActionDone = false;
+        this.startTimer = startTimer;
+
+        RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
+                = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
+        requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
+        requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
+
+        RuntimeTypeAdapterFactory<Effect> effectTypeFactory
+                = RuntimeTypeAdapterFactory.of(Effect.class, "type");
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
+        effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
+        effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
+
+        RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
+                = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
+        tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
+        tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
+
+        this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
+                .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
+    }
+
 
     /**
      * Creates a new thread for the communication with the client. This thread receives the message from the client,
@@ -165,52 +222,53 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         Command command;
-        final int MAX_LEADER_ACTION = 2;
 
         Timer pingTimer = new Timer();
         //Creates a timer that pings the client every 5 sec
-        pingTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (pingAnswered) {
-                    send(new PingMessage("Ping"));
-                    pingAnswered = false;
-                } else {
+        if (startTimer) {
+            pingTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (pingAnswered) {
+                        send(new PingMessage("Ping"));
+                        pingAnswered = false;
+                    } else {
                     /*if(game.getNumberOfPlayers() == 1){
                         setPlayerState(PlayerState.DISCONNECTED);
                         GamesManagerSingleton.getInstance().deleteGame(game);
                     }*/
+                        updatePlayerState();
 
+                        /*if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART) {
+                            //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato) (non dovrebbe servire)
+                            game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
+                        }
 
-                    if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART) {
-                        //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato) (non dovrebbe servire)
-                        game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
+                        PlayerState tmp = playerState;
+
+                        if (playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
+                            setPlayerState(PlayerState.DISCONNECTED);
+                            game.updatesAfterDisconnection(ClientHandler.this);
+                        } else
+                            setPlayerState(PlayerState.DISCONNECTED);
+
+                        if (tmp == PlayerState.PLAYING)
+                            game.specifyNextPlayer(ClientHandler.this);
+                        */
+
+                        try {
+                            socket.close();
+                            pingTimer.cancel();
+                            keepRunning = false;
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                            keepRunning = false;
+                            System.out.println("Error while trying to close the socket");
+                        }
                     }
-
-                    PlayerState tmp = playerState;
-
-                    if (playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
-                        setPlayerState(PlayerState.DISCONNECTED);
-                        game.updatesAfterDisconnection(ClientHandler.this);
-                    } else
-                        setPlayerState(PlayerState.DISCONNECTED);
-
-                    if (tmp == PlayerState.PLAYING)
-                        game.specifyNextPlayer(ClientHandler.this);
-
-                    try {
-                        socket.close();
-                        pingTimer.cancel();
-                        keepRunning = false;
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                        keepRunning = false;
-                        System.out.println("Error while trying to close the socket");
-                    }
-
                 }
-            }
-        }, 0, 200000);
+            }, 0, 200000);
+        }
 
         while (keepRunning) {
             try {
@@ -222,16 +280,18 @@ public class ClientHandler implements Runnable {
                 }
                 command = gson.fromJson(line, Command.class);
                 while (!socket.isClosed() && !command.getCmd().equals("quit")) {
+                    executeCommand(command);
 
+                    /*
                     switch (command.getCmd()) {
-
                         case "pingResponse":
                             pingAnswered = true;
-                            // send("ok");
                             break;
 
                         case "login":
-                            if (playerState != PlayerState.WAITING4NAME) {
+                            login(command);
+
+                            /*if (playerState != PlayerState.WAITING4NAME) {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
@@ -244,11 +304,13 @@ public class ClientHandler implements Runnable {
                             if (this.game == null) {
                                 this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
                                 this.playerState = PlayerState.WAITING4SETNUMPLAYER;
-                            }
+                            }*//*
                             break;
 
                         case "setNumPlayer":
-                            if (playerState != PlayerState.WAITING4SETNUMPLAYER) {
+                            setNumOfPlayers(command);
+
+                            /*if (playerState != PlayerState.WAITING4SETNUMPLAYER) {
                                 this.send(new ErrorMessage("You can't do this action now"));
                                 break;
                             }
@@ -259,11 +321,13 @@ public class ClientHandler implements Runnable {
                             //If we arrive here, then the player has set a valid number of players
                             this.send(new SetNumPlayersConfirmationMessage(game.getNumberOfPlayers()));
                             //game.setState(GameState.WAITING4PLAYERS);
-                            //game.setPlayer(this);
+                            //game.setPlayer(this);*//*
                             break;
 
                         case "getResourcesFromMarket":
-                            if(!checkBeginningActionDone()){
+                            getResourcesFromMarket(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -271,11 +335,13 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                             GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
-                            game.getResFromMkt(resFromMkt, this);
+                            game.getResFromMkt(resFromMkt, this);*//*
                             break;
 
                         case "buyFromMarket":
-                            if(!checkBeginningActionDone()){
+                            buyFromMarket(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -288,11 +354,13 @@ public class ClientHandler implements Runnable {
                                 mainActionDone = true;
                             } else {
                                 this.send(new ErrorMessage("You've already done your main action in this turn"));
-                            }
+                            }*//*
                             break;
 
                         case "getCardCost":
-                            if(!checkBeginningActionDone()){
+                            getCardCost(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -300,11 +368,13 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                             GetFromMatrixMessage cardCost = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
-                            game.getCardCost(cardCost, this);
+                            game.getCardCost(cardCost, this);*//*
                             break;
 
                         case "buyDevCard":
-                            if(!checkBeginningActionDone()){
+                            buyDevCard(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -318,11 +388,13 @@ public class ClientHandler implements Runnable {
                                 mainActionDone = true;
                             } else {
                                 this.send(new ErrorMessage("You've already done your main action in this turn"));
-                            }
+                            }*//*
                             break;
 
                         case "getProductionCost":
-                            if(!checkBeginningActionDone()){
+                            getProductionCost(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -330,11 +402,13 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                             GetProductionCostMessage productionCost = gson.fromJson(command.getParameters(), GetProductionCostMessage.class);
-                            game.getProductionCost(productionCost, this);
+                            game.getProductionCost(productionCost, this);*//*
                             break;
 
                         case "activateProductionMessage":
-                            if(!checkBeginningActionDone()){
+                            activateProduction(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -347,7 +421,7 @@ public class ClientHandler implements Runnable {
                                 mainActionDone = true;
                             } else {
                                 this.send(new ErrorMessage("You've already done your main action in this turn"));
-                            }
+                            }*//*
                             break;
 
                         case "discardLeaderAndExtraResBeginning":
@@ -363,7 +437,7 @@ public class ClientHandler implements Runnable {
                             if (game.getState() != GameState.STARTED || game.getNumberOfPlayers() == 1) {
                                 if (playerState != PlayerState.DISCONNECTED)
                                     playerState = PlayerState.PLAYING;
-                                if(game.getNumberOfPlayers() == 1) {
+                                if (game.getNumberOfPlayers() == 1) {
                                     game.setState(GameState.INSESSION);
                                     game.sendUpdateSolo(this);
                                 }
@@ -374,7 +448,7 @@ public class ClientHandler implements Runnable {
                                 this.send(new ErrorMessage("Wait your turn to do the action"));
                                 break;
                             }
-                            if(!checkBeginningActionDone()){
+                            if (!checkBeginningActionDone()) {
                                 break;
                             }
 
@@ -391,7 +465,9 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "moveBetweenShelves":
-                            if(!checkBeginningActionDone()){
+                            moveBetweenShelves(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -399,11 +475,13 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                             MoveBetweenShelvesMessage moveBetweenShelves = gson.fromJson(command.getParameters(), MoveBetweenShelvesMessage.class);
-                            game.moveResourcesBetweenShelves(moveBetweenShelves, this);
+                            game.moveResourcesBetweenShelves(moveBetweenShelves, this);*//*
                             break;
 
                         case "moveLeaderToShelf":
-                            if(!checkBeginningActionDone()){
+                            moveLeaderToShelf(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -411,11 +489,13 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                             MoveLeaderToShelfMessage moveLeaderToShelf = gson.fromJson(command.getParameters(), MoveLeaderToShelfMessage.class);
-                            game.moveResourcesToShelf(moveLeaderToShelf, this);
+                            game.moveResourcesToShelf(moveLeaderToShelf, this);*//*
                             break;
 
                         case "moveShelfToLeader":
-                            if(!checkBeginningActionDone()){
+                            moveShelfToLeader(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -423,11 +503,13 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                             MoveShelfToLeaderMessage moveShelfToLeader = gson.fromJson(command.getParameters(), MoveShelfToLeaderMessage.class);
-                            game.moveResourcesToLeader(moveShelfToLeader, this);
+                            game.moveResourcesToLeader(moveShelfToLeader, this);*//*
                             break;
 
                         case "discardLeader":
-                            if(!checkBeginningActionDone()){
+                            discardLeader(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -440,11 +522,13 @@ public class ClientHandler implements Runnable {
                                 game.discardLeader(discardLeader, this);
                             } else {
                                 this.send(new ErrorMessage("You've already done all the possible leader actions"));
-                            }
+                            }*//*
                             break;
 
                         case "ActivateLeader":
-                            if(!checkBeginningActionDone()){
+                            activateLeader(command);
+
+                            /*if (!checkBeginningActionDone()) {
                                 break;
                             }
                             if (playerState != PlayerState.PLAYING) {
@@ -457,7 +541,7 @@ public class ClientHandler implements Runnable {
                                 game.activateLeader(activateLeader, this);
                             } else {
                                 this.send(new ErrorMessage("You've already done all the possible leader actions"));
-                            }
+                            }*//*
                             break;
 
                         /*case "endTurn":
@@ -472,12 +556,13 @@ public class ClientHandler implements Runnable {
                                 game.specifyNextPlayer(this);
                             }
                             mainActionDone = false;
-                            break;*/
+                            break;*//*
+
 
                         default:
                             this.send(new ErrorMessage("No command found"));
                             break;
-                    }
+                    }*/
 
                     line = in.readLine();
                     while (!(line.charAt(0) == '{' && line.contains("{\"cmd\":") && line.contains("\"parameters\":") && line.charAt(line.length() - 1) == '}')) {
@@ -487,9 +572,9 @@ public class ClientHandler implements Runnable {
                     command = gson.fromJson(line, Command.class);
                 }
 
-
                 //TODO: logout utente(lo setta disconnesso) e passa il turno
-
+                updatePlayerState();
+                keepRunning = false;
 
             } catch (SocketException e) {
                 //If the socket is closed by the timer and the thread was waiting waiting a message from InputStream, this exception is launched
@@ -519,8 +604,6 @@ public class ClientHandler implements Runnable {
             }
         }
 
-
-
         //Close stream and socket
         try {
             in.close();
@@ -535,7 +618,6 @@ public class ClientHandler implements Runnable {
             System.out.println("An error occurred while closing Socket");
             e.printStackTrace();
         }
-
     }
 
     public synchronized void send(String message) {
@@ -544,10 +626,30 @@ public class ClientHandler implements Runnable {
     }
 
     public synchronized void send(ResponseInterface response) {
-        gson.toJson(response);
         ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
         out.println(gson.toJson(responseMessage));
         //out.flush();
+    }
+
+    public void updatePlayerState() {
+        //check if the player has done the beginning action
+        if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART || (playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone)) {
+            //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato) (non dovrebbe servire)
+            game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
+        }
+
+        PlayerState tmp = playerState;
+
+        //Set the player's state to disconnected
+        if (playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
+            setPlayerState(PlayerState.DISCONNECTED);
+            game.updatesAfterDisconnection(ClientHandler.this);
+        } else
+            setPlayerState(PlayerState.DISCONNECTED);
+
+        //If the player was playing his turn, the turn is ended
+        if (tmp == PlayerState.PLAYING || tmp == PlayerState.PLAYINGBEGINNINGDECISIONS)
+            game.specifyNextPlayer(ClientHandler.this);
     }
 
     public void setNickname(String nickname) {
@@ -582,7 +684,7 @@ public class ClientHandler implements Runnable {
         return beginningActionDone;
     }
 
-    private boolean checkBeginningActionDone(){
+    private boolean checkBeginningActionDone() {
         if (playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone) {
             this.send(new ErrorMessage("You must satisfy your liege's demand first"));
             return false;
@@ -600,5 +702,481 @@ public class ClientHandler implements Runnable {
     public void setBeginningActionDone(boolean value) {
         this.beginningActionDone = value;
     }
+
+
+    public void executeCommand(Command command) throws IllegalActionException, UnexpectedException, NotAvailableNicknameException, InterruptedException {
+        switch (command.getCmd()) {
+            case "pingResponse":
+                pingAnswered = true;
+                break;
+
+            case "login":
+                login(command);
+
+                            /*if (playerState != PlayerState.WAITING4NAME) {
+                                this.send(new ErrorMessage("You can't do this action now"));
+                                break;
+                            }
+
+                            LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
+                            this.nickname = loginMessage.getNickName();
+                            this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
+                            //If we arrive here, then the player has a valid login
+                            this.send(new LoginConfirmationMessage(this.nickname));
+                            if (this.game == null) {
+                                this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
+                                this.playerState = PlayerState.WAITING4SETNUMPLAYER;
+                            }*/
+                break;
+
+            case "setNumPlayer":
+                setNumOfPlayers(command);
+
+                            /*if (playerState != PlayerState.WAITING4SETNUMPLAYER) {
+                                this.send(new ErrorMessage("You can't do this action now"));
+                                break;
+                            }
+                            if (game != null)
+                                throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
+                            SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
+                            this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
+                            //If we arrive here, then the player has set a valid number of players
+                            this.send(new SetNumPlayersConfirmationMessage(game.getNumberOfPlayers()));
+                            //game.setState(GameState.WAITING4PLAYERS);
+                            //game.setPlayer(this);*/
+                break;
+
+            case "getResourcesFromMarket":
+                getResourcesFromMarket(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
+                            game.getResFromMkt(resFromMkt, this);*/
+                break;
+
+            case "buyFromMarket":
+                buyFromMarket(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            if (!mainActionDone) {
+                                BuyFromMarketMessage buyFromMarket = gson.fromJson(command.getParameters(), BuyFromMarketMessage.class);
+                                game.buyFromMarket(buyFromMarket, this);
+                                mainActionDone = true;
+                            } else {
+                                this.send(new ErrorMessage("You've already done your main action in this turn"));
+                            }*/
+                break;
+
+            case "getCardCost":
+                getCardCost(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            GetFromMatrixMessage cardCost = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
+                            game.getCardCost(cardCost, this);*/
+                break;
+
+            case "buyDevCard":
+                buyDevCard(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+
+                            if (!mainActionDone) {
+                                BuyDevCardMessage buyDevCard = gson.fromJson(command.getParameters(), BuyDevCardMessage.class);
+                                game.buyDevCard(buyDevCard, this);
+                                mainActionDone = true;
+                            } else {
+                                this.send(new ErrorMessage("You've already done your main action in this turn"));
+                            }*/
+                break;
+
+            case "getProductionCost":
+                getProductionCost(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            GetProductionCostMessage productionCost = gson.fromJson(command.getParameters(), GetProductionCostMessage.class);
+                            game.getProductionCost(productionCost, this);*/
+                break;
+
+            case "activateProductionMessage":
+                activateProduction(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            if (!mainActionDone) {
+                                ActivateProductionMessage activateProduction = gson.fromJson(command.getParameters(), ActivateProductionMessage.class);
+                                game.activateProduction(activateProduction, this);
+                                mainActionDone = true;
+                            } else {
+                                this.send(new ErrorMessage("You've already done your main action in this turn"));
+                            }*/
+                break;
+
+            case "discardLeaderAndExtraResBeginning":
+                if (playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
+                    this.send(new ErrorMessage("You can't do this action now"));
+                    break;
+                }
+
+                DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning = gson.fromJson(command.getParameters(), DiscardLeaderAndExtraResBeginningMessage.class);
+                game.discardLeaderAndExtraResBeginning(discardLeaderCardBeginning, this);
+                beginningActionDone = true;
+
+                if (game.getState() != GameState.STARTED || game.getNumberOfPlayers() == 1) {
+                    if (playerState != PlayerState.DISCONNECTED)
+                        playerState = PlayerState.PLAYING;
+                    if (game.getNumberOfPlayers() == 1) {
+                        game.setState(GameState.INSESSION);
+                        game.sendUpdateSolo(this);
+                    }
+                    break;
+                }
+            case "endTurn":
+                if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
+                    this.send(new ErrorMessage("Wait your turn to do the action"));
+                    break;
+                }
+                if (!checkBeginningActionDone()) {
+                    break;
+                }
+
+                if (game.getNumberOfPlayers() == 1) {
+                    send(new GeneralInfoStringMessage("Lorenzos' Turn"));
+                    game.drawSoloToken(this);
+                    send(new GeneralInfoStringMessage("Now it's Your turn, Master " + nickname));
+                } else {
+                    send(new GeneralInfoStringMessage("You ended the turn"));
+                    game.specifyNextPlayer(this);
+
+                }
+                mainActionDone = false;
+                break;
+
+            case "moveBetweenShelves":
+                moveBetweenShelves(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            MoveBetweenShelvesMessage moveBetweenShelves = gson.fromJson(command.getParameters(), MoveBetweenShelvesMessage.class);
+                            game.moveResourcesBetweenShelves(moveBetweenShelves, this);*/
+                break;
+
+            case "moveLeaderToShelf":
+                moveLeaderToShelf(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            MoveLeaderToShelfMessage moveLeaderToShelf = gson.fromJson(command.getParameters(), MoveLeaderToShelfMessage.class);
+                            game.moveResourcesToShelf(moveLeaderToShelf, this);*/
+                break;
+
+            case "moveShelfToLeader":
+                moveShelfToLeader(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            MoveShelfToLeaderMessage moveShelfToLeader = gson.fromJson(command.getParameters(), MoveShelfToLeaderMessage.class);
+                            game.moveResourcesToLeader(moveShelfToLeader, this);*/
+                break;
+
+            case "discardLeader":
+                discardLeader(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            if (numLeaderActionDone < MAX_LEADER_ACTION) {
+                                numLeaderActionDone++;
+                                LeaderMessage discardLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
+                                game.discardLeader(discardLeader, this);
+                            } else {
+                                this.send(new ErrorMessage("You've already done all the possible leader actions"));
+                            }*/
+                break;
+
+            case "ActivateLeader":
+                activateLeader(command);
+
+                            /*if (!checkBeginningActionDone()) {
+                                break;
+                            }
+                            if (playerState != PlayerState.PLAYING) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            if (numLeaderActionDone < MAX_LEADER_ACTION) {
+                                numLeaderActionDone++;
+                                LeaderMessage activateLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
+                                game.activateLeader(activateLeader, this);
+                            } else {
+                                this.send(new ErrorMessage("You've already done all the possible leader actions"));
+                            }*/
+                break;
+
+                        /*case "endTurn":
+                            if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
+                                this.send(new ErrorMessage("Wait your turn to do the action"));
+                                break;
+                            }
+                            if (game.getNumberOfPlayers() == 1) {
+                                //this.playerState = PlayerState.WAITING4TURN; //Ci sarà da dire al player che non è il suo turno?
+                                game.drawSoloToken(this);
+                            } else {
+                                game.specifyNextPlayer(this);
+                            }
+                            mainActionDone = false;
+                            break;*/
+
+
+            default:
+                this.send(new ErrorMessage("No command found"));
+                break;
+        }
+    }
+
+    public void login(Command command) throws InterruptedException, NotAvailableNicknameException, IllegalActionException {
+        if (playerState != PlayerState.WAITING4NAME) {
+            this.send(new ErrorMessage("You can't do this action now"));
+            return;
+        }
+
+        LoginMessage loginMessage = gson.fromJson(command.getParameters(), LoginMessage.class);
+        this.nickname = loginMessage.getNickName();
+        this.game = GamesManagerSingleton.getInstance().joinOrCreateNewGame(this);
+        //If we arrive here, then the player has a valid login
+        //this.send(new LoginConfirmationMessage(this.nickname));
+        if (this.game == null) {
+            //TODO: spostare questo
+            //this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
+            this.playerState = PlayerState.WAITING4SETNUMPLAYER;
+        }
+    }
+
+    public void setNumOfPlayers(Command command) throws IllegalActionException, UnexpectedException {
+        if (playerState != PlayerState.WAITING4SETNUMPLAYER) {
+            this.send(new ErrorMessage("You can't do this action now"));
+            return;
+        }
+        if (game != null)
+            throw new IllegalActionException("You are not supposed to set the number of players for this game: it has already been set!");
+        SetNumPlayerMessage setNumPlayerMessage = gson.fromJson(command.getParameters(), SetNumPlayerMessage.class);
+        this.game = GamesManagerSingleton.getInstance().configureGame(this, setNumPlayerMessage.getNumPlayer());
+        //If we arrive here, then the player has set a valid number of players
+        //this.send(new SetNumPlayersConfirmationMessage(game.getNumberOfPlayers()));
+        //game.setState(GameState.WAITING4PLAYERS);
+        //game.setPlayer(this);
+    }
+
+    public void getResourcesFromMarket(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        GetFromMatrixMessage resFromMkt = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
+        game.getResFromMkt(resFromMkt, this);
+    }
+
+    public void buyFromMarket(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        if (!mainActionDone) {
+            BuyFromMarketMessage buyFromMarket = gson.fromJson(command.getParameters(), BuyFromMarketMessage.class);
+            game.buyFromMarket(buyFromMarket, this);
+            mainActionDone = true;
+        } else {
+            this.send(new ErrorMessage("You've already done your main action in this turn"));
+        }
+    }
+
+    public void getCardCost(Command command) {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        GetFromMatrixMessage cardCost = gson.fromJson(command.getParameters(), GetFromMatrixMessage.class);
+        game.getCardCost(cardCost, this);
+    }
+
+    public void buyDevCard(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+
+        if (!mainActionDone) {
+            BuyDevCardMessage buyDevCard = gson.fromJson(command.getParameters(), BuyDevCardMessage.class);
+            game.buyDevCard(buyDevCard, this);
+            mainActionDone = true;
+        } else {
+            this.send(new ErrorMessage("You've already done your main action in this turn"));
+        }
+    }
+
+    public void getProductionCost(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        GetProductionCostMessage productionCost = gson.fromJson(command.getParameters(), GetProductionCostMessage.class);
+        game.getProductionCost(productionCost, this);
+    }
+
+    public void activateProduction(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        if (!mainActionDone) {
+            ActivateProductionMessage activateProduction = gson.fromJson(command.getParameters(), ActivateProductionMessage.class);
+            game.activateProduction(activateProduction, this);
+            mainActionDone = true;
+        } else {
+            this.send(new ErrorMessage("You've already done your main action in this turn"));
+        }
+    }
+
+    public void moveBetweenShelves(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        MoveBetweenShelvesMessage moveBetweenShelves = gson.fromJson(command.getParameters(), MoveBetweenShelvesMessage.class);
+        game.moveResourcesBetweenShelves(moveBetweenShelves, this);
+    }
+
+    public void moveLeaderToShelf(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        MoveLeaderToShelfMessage moveLeaderToShelf = gson.fromJson(command.getParameters(), MoveLeaderToShelfMessage.class);
+        game.moveResourcesToShelf(moveLeaderToShelf, this);
+    }
+
+    public void moveShelfToLeader(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        MoveShelfToLeaderMessage moveShelfToLeader = gson.fromJson(command.getParameters(), MoveShelfToLeaderMessage.class);
+        game.moveResourcesToLeader(moveShelfToLeader, this);
+    }
+
+    public void discardLeader(Command command) {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        if (numLeaderActionDone < MAX_LEADER_ACTION) {
+            numLeaderActionDone++;
+            LeaderMessage discardLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
+            game.discardLeader(discardLeader, this);
+        } else {
+            this.send(new ErrorMessage("You've already done all the possible leader actions"));
+        }
+    }
+
+    public void activateLeader(Command command) throws IllegalActionException {
+        if (!checkBeginningActionDone()) {
+            return;
+        }
+        if (playerState != PlayerState.PLAYING) {
+            this.send(new ErrorMessage("Wait your turn to do the action"));
+            return;
+        }
+        if (numLeaderActionDone < MAX_LEADER_ACTION) {
+            numLeaderActionDone++;
+            LeaderMessage activateLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
+            game.activateLeader(activateLeader, this);
+        } else {
+            this.send(new ErrorMessage("You've already done all the possible leader actions"));
+        }
+    }
+
 
 }

@@ -99,7 +99,7 @@ public class SoloActionDeck implements Deck {
                     numPoints = Integer.parseInt(tokenElement.getElementsByTagName("NumPoints").item(0).getTextContent());
                     shuffle = Boolean.parseBoolean(tokenElement.getElementsByTagName("Shuffle").item(0).getTextContent());
 
-                    if (shuffle)
+                    if (!shuffle)
                         faithPointToken = new FaithPointToken(numPoints);
                     else
                         faithPointToken = new ShuffleToken(numPoints);

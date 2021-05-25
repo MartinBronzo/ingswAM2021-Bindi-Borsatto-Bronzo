@@ -1,7 +1,5 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-import it.polimi.ingsw.model.soloGame.DiscardToken;
-import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 
 public class LorenzosActionMessage implements ResponseInterface {
