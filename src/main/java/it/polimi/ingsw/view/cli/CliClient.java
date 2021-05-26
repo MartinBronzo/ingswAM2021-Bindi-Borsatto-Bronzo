@@ -471,9 +471,7 @@ public class CliClient extends Client implements Runnable {
                 responseContent = responseMessage.getResponseContent();
                 switch (responseMessage.getResponseType()) {
                     case PING:
-                        synchronized (this) {
-                            sendMessage(new Command("pingResponse"));
-                        }
+                        sendMessage(new Command("pingResponse"));
                         break;
                     case UPDATE:
                         synchronized (this) {
