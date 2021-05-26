@@ -10,20 +10,12 @@ import java.io.InputStream;
 public class CustomFrame extends JFrame {
 
     public void paint(Graphics g) {
-        g.drawString("Hello", 200, 50); int x = 30;
-        int y = 100;
-        int rectwidth = 50;
-        int rectheight = 100;
-        Color c = Color.red;
-        g.setColor(c);
-        x=100;
-        g.drawRect(x, y, rectwidth, rectheight);
         this.myDrawImage(g);
     }
 
     private void myDrawImage(Graphics g){
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("PlayerBoard.jpg");
+        InputStream url = cl.getResourceAsStream("PlayerBoard.jpeg");
         BufferedImage img= null;
         try {
             img = ImageIO.read(url);
@@ -31,5 +23,5 @@ public class CustomFrame extends JFrame {
             e.printStackTrace();
             return;
         }
-        g.drawImage(img, 10,20, 50,50, null); }
+        g.drawImage(img, 0,100, 1000,515, null); }
 }
