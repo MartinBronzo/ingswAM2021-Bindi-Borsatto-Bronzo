@@ -51,6 +51,7 @@ public final class GamesManagerSingleton {
         if (client == null) throw new NullPointerException("client is null");
         try {
             GameController gameWithThatNickname = searchPlayerInGames(client.getNickname());
+            client.send(new LoginConfirmationMessage(client.getNickname()));
             gameWithThatNickname.substitutesClient(client);
             return gameWithThatNickname;
         } catch (NoSuchElementException e) {
@@ -93,7 +94,7 @@ public final class GamesManagerSingleton {
                 if (!configurationTimeElapsed())
                     System.out.println("Games Manager Timer has run but but not cancelled the game. The connection will be closed soon");
             }
-        }, 300000);
+        }, 30000);
     }
 
     private void stopTimer() {
