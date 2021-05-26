@@ -104,7 +104,7 @@ public class GameController {
      *
      * @param state the new GameState the game will be in
      */
-    public void setState(GameState state) {
+    public synchronized void setState(GameState state) {
         this.state = state;
     }
 
@@ -338,7 +338,7 @@ public class GameController {
         return true;
     }
 
-    private void startGame() {
+    private synchronized void startGame() {
         this.state = GameState.STARTED;
         for (Pair<ClientHandler, PlayerBoard> e : players)
             if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED)
@@ -399,12 +399,10 @@ public class GameController {
      *
      * @param disconnectedPlayer the player who disconnected before taking their beginning decisions
      */
-    public void registerPlayerDisconnectionBeforeStarting(ClientHandler disconnectedPlayer) {
-        synchronized (this.disconnectedBeforeStarting) {
-            if (this.disconnectedBeforeStarting.contains(disconnectedPlayer))
-                return;
-            this.disconnectedBeforeStarting.add(disconnectedPlayer);
-        }
+    public synchronized void registerPlayerDisconnectionBeforeStarting(ClientHandler disconnectedPlayer) {
+        if (this.disconnectedBeforeStarting.contains(disconnectedPlayer))
+            return;
+        this.disconnectedBeforeStarting.add(disconnectedPlayer);
     }
 
     /**
@@ -510,7 +508,7 @@ public class GameController {
      *
      * @return a list of the player's ClientHandler added to the game
      */
-    public List<ClientHandler> getPlayersList() {
+    public synchronized List<ClientHandler> getPlayersList() {
         List<ClientHandler> result = new ArrayList<>();
         for (Pair<ClientHandler, PlayerBoard> entry : players)
             result.add(entry.getKey());
@@ -623,11 +621,11 @@ public class GameController {
         this.sendBroadcastUpdate(this.getWholeMessageUpdateToClient());
 
         //TODO: controllare se va bene
+        synchronized (this) {
         for (Pair<ClientHandler, PlayerBoard> e : players)
             if (e.getKey().getPlayerState() == PlayerState.DISCONNECTED)
-                synchronized (this.disconnectedBeforeStarting) {
                     this.disconnectedBeforeStarting.add(e.getKey());
-                }
+        }
 
         return true;
     }
@@ -658,12 +656,14 @@ public class GameController {
     public boolean sendNumExtraResBeginningToDisconnectedPlayer(ClientHandler usedToBeDisconnected) throws IllegalActionException {
         /*if (!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
             throw new IllegalActionException("The player has already given their beginning decisions!");*/
-        boolean tmp = false;
-        for (ClientHandler ch : disconnectedBeforeStarting)
-            if (ch.getNickname().equals(usedToBeDisconnected.getNickname()))
-                tmp = true;
-        if (!tmp)
-            throw new IllegalActionException("The player has already given their beginning decisions!");
+        synchronized (this) {
+            boolean tmp = false;
+            for (ClientHandler ch : disconnectedBeforeStarting)
+                if (ch.getNickname().equals(usedToBeDisconnected.getNickname()))
+                    tmp = true;
+            if (!tmp)
+                throw new IllegalActionException("The player has already given their beginning decisions!");
+        }
         //For the specified player it computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
         //It sends this information back to all the players
         int index = this.getPlayerNumber(usedToBeDisconnected);
@@ -732,7 +732,7 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
         this.sendBroadcastUpdate(new ModelUpdate(game));
-        synchronized (this.disconnectedBeforeStarting) {
+        synchronized (this) {
             if (this.disconnectedBeforeStarting.contains(clientHandler))
                 this.disconnectedBeforeStarting.remove(clientHandler);
         }
@@ -809,7 +809,7 @@ public class GameController {
     }
 
     //Tested
-    public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
+    public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalArgumentException {
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
             throw new IllegalArgumentException("Specify only a column or row!");
 
@@ -1341,7 +1341,7 @@ public class GameController {
      *
      * @param disconnectedPlayer the player that disconnected/reconnected from the game
      */
-    public void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
+    public synchronized void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
         int index = this.getPlayerNumber(disconnectedPlayer);
 
         Game game = new Game();
@@ -1360,7 +1360,7 @@ public class GameController {
      *
      * @param playerToBecomeActive the playing who is about to be play
      */
-    private void updatesTurnAndSendInfo(int playerToBecomeActive) {
+    private synchronized void updatesTurnAndSendInfo(int playerToBecomeActive) {
         Game game = new Game();
 
         for (int i = 0; i < this.numberOfPlayers; i++) {
@@ -1418,7 +1418,7 @@ public class GameController {
     }
 
 
-    private void endGame() {
+    private synchronized void endGame() {
         this.distributeFinalPoints();
         GamesManagerSingleton.getInstance().deleteGame(this);
         //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
@@ -1478,7 +1478,7 @@ public class GameController {
     }
 
     //Is public only for testing purposes
-    public void setLastTurn() {
+    public synchronized void setLastTurn() {
         //TODO: se è stato attivato l'ultimo turno e il giocatore ha già giocato, va in WAITEND, se non ha ancora giocato va in WAITLAST
         this.state = GameState.LASTTURN;
 
@@ -1545,7 +1545,7 @@ public class GameController {
     /**
      * Saves the inner state of the Model by saving a copy of the MainBoard (and, therefore, a copy of all the PlayerBoards).
      */
-    private void saveState() {
+    private synchronized void saveState() {
         //Saves a copy of the MainBoard
         //this.modelCopy = new MainBoard(mainBoard);
         this.modelCopy = mainBoard.getClone();
@@ -1563,7 +1563,7 @@ public class GameController {
     /**
      * Rollbacks the current changes by restoring the previous inner state.
      */
-    private void rollbackState() {
+    private synchronized void rollbackState() {
         //Reinstates the MainBoard
         this.mainBoard = modelCopy;
         int i = 0;
