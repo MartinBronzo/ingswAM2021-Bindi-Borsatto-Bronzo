@@ -4,53 +4,84 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.ClientHandler;
+import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.GamesManagerSingleton;
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
+import it.polimi.ingsw.model.soloGame.DiscardToken;
+import it.polimi.ingsw.model.soloGame.FaithPointToken;
+import it.polimi.ingsw.model.soloGame.ShuffleToken;
+import it.polimi.ingsw.model.soloGame.SoloActionToken;
+import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.network.messages.sendToClient.LorenzosActionMessage;
+import it.polimi.ingsw.view.readOnlyModel.Player;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.Socket;
+import java.rmi.UnexpectedException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ClientHandlerConnectionTest {
 
+    private static GamesManagerSingleton gamesManagerSingleton;
     GameController gameController;
     ClientHandler c1;
     ClientHandler c2;
     ClientHandler c3;
     ClientHandler c4;
     Reader inputStreamReader;
-    BufferedReader reader;
+    //BufferedReader reader;
     File file;
-    BufferedReader fileReader1;
-    BufferedReader fileReader2;
-    BufferedReader fileReader3;
-    BufferedReader fileReader4;
     Gson gson;
-    PrintWriter fileWriter1;
-    PrintWriter fileWriter2;
-    PrintWriter fileWriter3;
-    PrintWriter fileWriter4;
+    Scanner clientFileReader;
+    Scanner clientFileReader2;
+    Scanner clientFileReader3;
+    Scanner clientFileReader4;
+
+    PipedWriter writer;
+    PipedReader pipedReader;
+    PrintWriter printWriter;
+    BufferedReader bufferedReader;
+    PipedWriter writer2;
+    PipedReader pipedReader2;
+    PrintWriter printWriter2;
+    PipedWriter writer3;
+    PipedReader pipedReader3;
+    PrintWriter printWriter3;
+    PipedWriter writer4;
+    PipedReader pipedReader4;
+    PrintWriter printWriter4;
 
     /*public static void cleanFiles(){
         try {
-            final PrintWriter pw1 = new PrintWriter(new FileWriter("ClientHandler1File.json"));
+            final PrintWriter pw1 = new PrintWriter(new FileWriter("ClientHandler1File.txt"));
             pw1.write("{}");
             pw1.flush();
             pw1.close();
-            final PrintWriter pw2 = new PrintWriter(new FileWriter("ClientHandler2File.json"));
+            final PrintWriter pw2 = new PrintWriter(new FileWriter("ClientHandler2File.txt"));
             pw2.write("{}");
             pw2.flush();
             pw2.close();
-            final PrintWriter pw3 = new PrintWriter(new FileWriter("ClientHandler3File.json"));
+            final PrintWriter pw3 = new PrintWriter(new FileWriter("ClientHandler3File.txt"));
             pw3.write("{}");
             pw3.flush();
             pw3.close();
-            final PrintWriter pw4 = new PrintWriter(new FileWriter("ClientHandler4File.json"));
+            final PrintWriter pw4 = new PrintWriter(new FileWriter("ClientHandler4File.txt"));
             pw4.write("{}");
             pw4.flush();
             pw4.close();
@@ -75,28 +106,43 @@ public class ClientHandlerConnectionTest {
         }
     }*/
 
+    @BeforeAll
+    static void setUpAll() {
+        gamesManagerSingleton = GamesManagerSingleton.getInstance();
+    }
+
     @BeforeEach
     public void setup() throws IOException, IllegalActionException {
+        gamesManagerSingleton.resetSingleton();
         gameController = new GameController();
 
+        writer = new PipedWriter();
+        pipedReader = new PipedReader(writer);
+        printWriter = new PrintWriter(writer);
+
+        writer2 = new PipedWriter();
+        pipedReader2 = new PipedReader(writer2);
+        printWriter2 = new PrintWriter(writer2);
+
+        writer3 = new PipedWriter();
+        pipedReader3 = new PipedReader(writer3);
+        printWriter3 = new PrintWriter(writer3);
+
+        writer4 = new PipedWriter();
+        pipedReader4 = new PipedReader(writer4);
+        printWriter4 = new PrintWriter(writer4);
+
+        clientFileReader = new Scanner(new File("ClientHandler1File.txt"));
+        clientFileReader2 = new Scanner(new File("ClientHandler2File.txt"));
+        clientFileReader3 = new Scanner(new File("ClientHandler3File.txt"));
+        clientFileReader4 = new Scanner(new File("ClientHandler4File.txt"));
+
         //The ClientHandlers read from the Client files and write to the ClientHandler files
-        c1 = new ClientHandler(new Socket(), new BufferedReader(new FileReader("Client1File.json")), new PrintWriter("ClientHandler1File.json"));
-        c2 = new ClientHandler(new Socket(), new BufferedReader(new FileReader("Client2File.json")), new PrintWriter("ClientHandler2File.json"));
-        c3 = new ClientHandler(new Socket(), new BufferedReader(new FileReader("Client3File.json")), new PrintWriter("ClientHandler3File.json"));
-        c4 = new ClientHandler(new Socket(), new BufferedReader(new FileReader("Client4File.json")), new PrintWriter("ClientHandler4File.json"));
-        reader = new BufferedReader(new InputStreamReader(System.in));
-        c1.setNickname("Client 1");
-        c2.setNickname("Client 2");
-        c3.setNickname("Client 3");
-        c4.setNickname("Client 4");
-        fileReader1 = new BufferedReader(new FileReader("ClientHandler1File.json"));
-        fileReader2 = new BufferedReader(new FileReader("ClientHandler2File.json"));
-        fileReader3 = new BufferedReader(new FileReader("ClientHandler3File.json"));
-        fileReader4 = new BufferedReader(new FileReader("ClientHandler4File.json"));
-        fileWriter1 = new PrintWriter("Client1File.json");
-        fileWriter2 = new PrintWriter("Client2File.json");
-        fileWriter3 = new PrintWriter("Client3File.json");
-        fileWriter4 = new PrintWriter("Client4File.json");
+        c1 = new ClientHandler(new Socket(), new BufferedReader(pipedReader), new PrintWriter("ClientHandler1File.txt"), false);
+        c2 = new ClientHandler(new Socket(), new BufferedReader(pipedReader2), new PrintWriter("ClientHandler2File.txt"), false);
+        c3 = new ClientHandler(new Socket(), new BufferedReader(pipedReader3), new PrintWriter("ClientHandler3File.txt"), false);
+        c4 = new ClientHandler(new Socket(), new BufferedReader(pipedReader4), new PrintWriter("ClientHandler4File.txt"), false);
+        //reader = new BufferedReader(new InputStreamReader(System.in));
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -113,43 +159,153 @@ public class ClientHandlerConnectionTest {
         effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
 
+        RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
+                = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
+        tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
+
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
-                .registerTypeAdapterFactory(effectTypeFactory).create();
-    }
-
-
-
-/*
-    @Test
-    public void waitYourTurn() throws IOException, InterruptedException {
-        //Writes the json that the client handler will read
-        fileWriter1.write("{\"cmd\":\"pingResponse\",\"parameters\":\"\"}");
-        fileWriter1.write("\n{\"cmd\":\"quit\",\"parameters\":\"\"}");
-        fileWriter1.close();
-
-        assertEquals(c1.getPlayerState(), PlayerState.WAITING4NAME);
-        new Thread(c1).start();
-        Thread.sleep(2000);
-        System.out.println(fileReader1.readLine());
-        System.out.println(fileReader1.readLine());
-    }
-
-*/
-
-    /*@Test
-    public void ctrlReadingAndWriting() throws IOException {
-        fileWriter1.write("this is a test");
-        fileWriter1.close();
-
-        System.out.println(c1.getInput());
+                .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
 
     @Test
-    public void ctrlRunMethod(){
-        fileWriter1.write(gson.toJson(new Command("login", null)));
-        fileWriter1.close();
-        new Thread(c1).start(); //Se decommenti la System.out.println() che c'è nel run prima del while allora vedi che legge i comandi
-    }*/
+    public void setnickname() throws InterruptedException, UnexpectedException, IllegalActionException, NotAvailableNicknameException {
+        c1.executeCommand(new Command("login", new LoginMessage("1")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"1\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ASKFORNUMPLAYERS\",\"responseContent\":\"{\\\"message\\\":\\\"You are creating a game! Tell me how many players you want in this game!\\\"}\"}");
+
+        c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(4)));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":4}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        c2.executeCommand(new Command("login", new LoginMessage("2")));
+        assertEquals(clientFileReader2.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"2\\\"}\"}");
+        assertEquals(clientFileReader2.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        c3.executeCommand(new Command("login", new LoginMessage("3")));
+        assertEquals(clientFileReader3.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"3\\\"}\"}");
+        assertEquals(clientFileReader3.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        c4.executeCommand(new Command("login", new LoginMessage("4")));
+        assertEquals(clientFileReader4.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"4\\\"}\"}");
+        assertEquals(clientFileReader4.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+    }
+
+    @Test
+    public void setnicknameError() throws InterruptedException, UnexpectedException, IllegalActionException, NotAvailableNicknameException {
+        c1.executeCommand(new Command("login", new LoginMessage("1")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"1\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ASKFORNUMPLAYERS\",\"responseContent\":\"{\\\"message\\\":\\\"You are creating a game! Tell me how many players you want in this game!\\\"}\"}");
+
+        Exception exception = assertThrows(NotAvailableNicknameException.class, () -> c2.executeCommand(new Command("login", new LoginMessage("1"))));
+        assertEquals("Nick is the same of the actual configurator", exception.getMessage());
+    }
+
+    @Test
+    public void setnicknameError2() throws InterruptedException, UnexpectedException, IllegalActionException, NotAvailableNicknameException {
+        c1.executeCommand(new Command("login", new LoginMessage("1")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"1\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ASKFORNUMPLAYERS\",\"responseContent\":\"{\\\"message\\\":\\\"You are creating a game! Tell me how many players you want in this game!\\\"}\"}");
+
+        c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(4)));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":4}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        Exception exception = assertThrows(NotAvailableNicknameException.class, () -> c2.executeCommand(new Command("login", new LoginMessage("1"))));
+        assertEquals("Nick is taken", exception.getMessage());
+
+        c3.executeCommand(new Command("login", new LoginMessage("3")));
+        assertEquals(clientFileReader3.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"3\\\"}\"}");
+        assertEquals(clientFileReader3.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        c4.executeCommand(new Command("login", new LoginMessage("4")));
+        assertEquals(clientFileReader4.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"4\\\"}\"}");
+        assertEquals(clientFileReader4.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+    }
+
+    @Test
+    public void setnicknameErrorState() throws InterruptedException, UnexpectedException, IllegalActionException, NotAvailableNicknameException {
+        //c1.setPlayerState(PlayerState.PLAYING);
+
+        c1.executeCommand(new Command("login", new LoginMessage("1")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"1\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ASKFORNUMPLAYERS\",\"responseContent\":\"{\\\"message\\\":\\\"You are creating a game! Tell me how many players you want in this game!\\\"}\"}");
+
+        c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(4)));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":4}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        c1.executeCommand(new Command("login", new LoginMessage("5")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ERROR\",\"responseContent\":\"{\\\"errorMessage\\\":\\\"You can\\\\u0027t do this action now\\\"}\"}");
+    }
+
+    @Test
+    public void setnicknameErrorState2() throws InterruptedException, UnexpectedException, IllegalActionException, NotAvailableNicknameException {
+        //c1.setPlayerState(PlayerState.PLAYING);
+
+        c1.executeCommand(new Command("login", new LoginMessage("1")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"1\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ASKFORNUMPLAYERS\",\"responseContent\":\"{\\\"message\\\":\\\"You are creating a game! Tell me how many players you want in this game!\\\"}\"}");
+
+        c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(4)));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":4}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(2)));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ERROR\",\"responseContent\":\"{\\\"errorMessage\\\":\\\"You can\\\\u0027t do this action now\\\"}\"}");
+    }
+
+    @Test
+    public void configureStart() throws InterruptedException, UnexpectedException, IllegalActionException, NotAvailableNicknameException {
+        c1.executeCommand(new Command("login", new LoginMessage("1")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"1\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ASKFORNUMPLAYERS\",\"responseContent\":\"{\\\"message\\\":\\\"You are creating a game! Tell me how many players you want in this game!\\\"}\"}");
+
+        c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(2)));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":2}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        c2.executeCommand(new Command("login", new LoginMessage("2")));
+        assertEquals(clientFileReader2.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"2\\\"}\"}");
+        assertEquals(clientFileReader2.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        assertTrue((PlayerState.PLAYINGBEGINNINGDECISIONS == c1.getPlayerState() && PlayerState.WAITING4BEGINNINGDECISIONS == c2.getPlayerState() )
+                    || (PlayerState.PLAYINGBEGINNINGDECISIONS == c2.getPlayerState() && PlayerState.WAITING4BEGINNINGDECISIONS == c1.getPlayerState()));
+
+
+        List<Integer> indexList = new ArrayList<>();
+        indexList.add(0);
+        indexList.add(1);
+        if(c1.getPlayerState() == PlayerState.PLAYINGBEGINNINGDECISIONS)
+            c1.executeCommand(new Command("discardLeaderAndExtraResBeginning", new DiscardLeaderAndExtraResBeginningMessage(indexList, new ArrayList<>())));
+        else
+            c2.executeCommand(new Command("discardLeaderAndExtraResBeginning", new DiscardLeaderAndExtraResBeginningMessage(indexList, new ArrayList<>())));
+
+        assertTrue((PlayerState.WAITING4TURN == c1.getPlayerState() && PlayerState.PLAYINGBEGINNINGDECISIONS == c2.getPlayerState())
+                    ||(PlayerState.WAITING4TURN == c2.getPlayerState() && PlayerState.PLAYINGBEGINNINGDECISIONS == c1.getPlayerState()));
+    }
+
+    @Test
+    public void soloGame() throws InterruptedException, UnexpectedException, IllegalActionException, NotAvailableNicknameException {
+        c1.executeCommand(new Command("login", new LoginMessage("1")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"1\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ASKFORNUMPLAYERS\",\"responseContent\":\"{\\\"message\\\":\\\"You are creating a game! Tell me how many players you want in this game!\\\"}\"}");
+
+        c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(1)));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":1}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+
+        List<Integer> indexList = new ArrayList<>();
+        indexList.add(0);
+        indexList.add(1);
+        c1.executeCommand(new Command("discardLeaderAndExtraResBeginning", new DiscardLeaderAndExtraResBeginningMessage(indexList, new ArrayList<>())));
+        assertEquals(PlayerState.PLAYING, c1.getPlayerState());
+
+        c1.executeCommand(new Command("endTurn", new Message()));
+
+    }
 
 
 }

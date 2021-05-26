@@ -28,10 +28,10 @@ class GamesManagerSingletonTest {
     @BeforeEach
     void setUp() throws FileNotFoundException {
         gamesManagerSingleton.resetSingleton();
-        client1 = new ClientHandler(null, null, new PrintWriter("ClientHandler1File.json"));
-        client2 = new ClientHandler(null, null, new PrintWriter("ClientHandler2File.json"));
-        client3 = new ClientHandler(null, null, new PrintWriter("ClientHandler3File.json"));
-        client4 = new ClientHandler(null, null, new PrintWriter("ClientHandler4File.json"));
+        client1 = new ClientHandler(null, null, new PrintWriter("ClientHandler1File.txt"));
+        client2 = new ClientHandler(null, null, new PrintWriter("ClientHandler2File.txt"));
+        client3 = new ClientHandler(null, null, new PrintWriter("ClientHandler3File.txt"));
+        client4 = new ClientHandler(null, null, new PrintWriter("ClientHandler4File.txt"));
         client1.setNickname("1");
         client2.setNickname("2");
         client3.setNickname("3");
@@ -166,7 +166,7 @@ class GamesManagerSingletonTest {
 
     @Test
     void sameNicksTest() throws InterruptedException, FileNotFoundException {
-        ClientHandler clientSameNick = new ClientHandler(null, null, new PrintWriter("ClientHandler1File.json"));
+        ClientHandler clientSameNick = new ClientHandler(null, null, new PrintWriter("ClientHandler1File.txt"));
         clientSameNick.setNickname("1");
 
         assertNull(gamesManagerSingleton.getStartingGame());

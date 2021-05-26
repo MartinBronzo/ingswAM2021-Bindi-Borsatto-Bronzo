@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementRe
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.soloGame.DiscardToken;
+import it.polimi.ingsw.model.soloGame.FaithPointToken;
+import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
 import it.polimi.ingsw.network.messages.sendToClient.*;
@@ -69,8 +72,16 @@ public class CliClient extends Client implements Runnable {
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
         effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
 
+        RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
+                = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
+        tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
+        tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
+
+
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
-                .registerTypeAdapterFactory(effectTypeFactory).create();
+                .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
 
     public CliClient(int portNumber, String hostName, BufferedReader bufferedReader) {
@@ -96,8 +107,16 @@ public class CliClient extends Client implements Runnable {
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
         effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
 
+        RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
+                = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
+        tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
+        tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
+
+
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
-                .registerTypeAdapterFactory(effectTypeFactory).create();
+                .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
 
 
@@ -197,13 +216,15 @@ public class CliClient extends Client implements Runnable {
                             else
                                 CliView.printInfo("It can't be printed yet");
                         }
+                        break;
                     case SEEOTHERSPLAYERSNAMES:
                         synchronized (this) {
-                            if (this.gamemodel == null)
+                            if (this.gamemodel != null)
                                 CliView.printOthersPlayersName(gamemodel, nickname);
                             else
                                 CliView.printInfo("It can't be printed yet");
                         }
+                        break;
                     case HELP:
                     case HOLP:
                         synchronized (this) {

@@ -170,9 +170,9 @@ class stringToMessageTest {
         String string = "1, 2, 4; COIN 2 3, STONE 1 4;";
         DiscardLeaderAndExtraResBeginningMessage message = StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(string);
         List<Integer> integers = message.getLeaderCard();
-        assertEquals(1, integers.get(0));
-        assertEquals(2, integers.get(1));
-        assertEquals(4, integers.get(2));
+        assertEquals(0, integers.get(0));
+        assertEquals(1, integers.get(1));
+        assertEquals(3, integers.get(2));
         List<DepotParams> depotParamsList = message.getDepotRes();
         assertEquals(ResourceType.COIN, depotParamsList.get(0).getResourceType());
         assertEquals(2, depotParamsList.get(0).getQt());

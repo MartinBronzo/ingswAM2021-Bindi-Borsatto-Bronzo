@@ -33,10 +33,10 @@ public class ClientHandlerStateTest {
     public void setup() throws IOException {
         gameController = new GameController();
         inputStreamReader = new InputStreamReader(System.in);
-        c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler1File.json"));
-        c2 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler2File.json"));
-        c3 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler3File.json"));
-        c4 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler4File.json"));
+        c1 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler1File.txt"));
+        c2 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler2File.txt"));
+        c3 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler3File.txt"));
+        c4 = new ClientHandler(new Socket(), new BufferedReader(inputStreamReader), new PrintWriter("ClientHandler4File.txt"));
         reader = new BufferedReader(new InputStreamReader(System.in));
         c1.setNickname("Client 1");
         c2.setNickname("Client 2");
@@ -44,10 +44,10 @@ public class ClientHandlerStateTest {
         c4.setNickname("Client 4");
         gameController.startMainBoard(4);
 
-        fileReader1 = new BufferedReader(new FileReader("ClientHandler1File.json"));
-        fileReader2 = new BufferedReader(new FileReader("ClientHandler2File.json"));
-        fileReader3 = new BufferedReader(new FileReader("ClientHandler3File.json"));
-        fileReader4 = new BufferedReader(new FileReader("ClientHandler4File.json"));
+        fileReader1 = new BufferedReader(new FileReader("ClientHandler1File.txt"));
+        fileReader2 = new BufferedReader(new FileReader("ClientHandler2File.txt"));
+        fileReader3 = new BufferedReader(new FileReader("ClientHandler3File.txt"));
+        fileReader4 = new BufferedReader(new FileReader("ClientHandler4File.txt"));
     }
 
     @Test

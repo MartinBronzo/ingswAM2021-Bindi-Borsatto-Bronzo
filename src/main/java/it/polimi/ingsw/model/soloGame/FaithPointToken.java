@@ -11,7 +11,7 @@ import java.util.List;
  * It calls an observer to make the SoloTable move the faith point marker
  */
 public class FaithPointToken extends SoloActionToken {
-    private final List<FaithPointTokenObserver> observersList;
+    private transient final List<FaithPointTokenObserver> observersList;
     private final int faithPoints;
     protected boolean shuffleToken;
 
