@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CliClient extends Client implements Runnable {
