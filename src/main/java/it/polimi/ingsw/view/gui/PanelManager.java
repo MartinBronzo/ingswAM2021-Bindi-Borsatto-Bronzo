@@ -15,12 +15,14 @@ import it.polimi.ingsw.model.soloGame.DiscardToken;
 import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
-import it.polimi.ingsw.network.messages.sendToClient.ResponseMessage;
+import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.cli.CliView;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public final class PanelManager {
     private final GuiClient gui;
@@ -29,10 +31,20 @@ public final class PanelManager {
 
     private JFrame gameFrame;
 
+    private Welcome welcome;
+
     //TODO: add here label/frame created for each view
     //TODO: add here attibutes used in panels
+    private String nickname;
     private Game gameModel;
-    private HashMap<ResourceType, Integer> map;
+    private HashMap<ResourceType, Integer> resourcesMap;
+    private String mapDescription;
+    private int nLeadersToDiscard;
+    private int resourcesToTake;
+    private Map<String, Integer> results;
+    private SoloActionToken lorenzoToken;
+    /*idk if can be useful selected cell, row, column attributes and relatives methods*/
+
 
     private PanelManager(GuiClient gui) {
         this.gameModel = null;
@@ -87,22 +99,215 @@ public final class PanelManager {
         throw new IllegalStateException("Panel manager instance is not null");
     }
 
-    public void readMessage(ResponseMessage responseMessage) {
+    public void init() {
+        /*Initializing frame, panels....*/
+        gameFrame = new JFrame();
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setResizable(false);
+
+        welcome = new Welcome(gameFrame);
+        //gameFrame.add(welcome);
+        gameFrame.setVisible(true);
+        gameFrame.setSize(600,600);
+        gameFrame.setLocation(400,20);
+        gameFrame.validate();
+        welcome.setVisible(true);
+
     }
+
 
     public void writeMessage(Command command) {
         gui.sendMessage(command);
     }
 
-    public void init() {
-        /*Initializing frame, panels....*/
-        gameFrame = new JFrame();
+    public void forceLogout(String logoutMessage) {
+        //TODO: print logout view
     }
 
-    public void forceLogout(String logoutMessage) {
+    public void readMessage(ResponseMessage responseMessage) {
+        String responseContent = responseMessage.getResponseContent();
+        switch (responseMessage.getResponseType()){
+            case UPDATE:
+                this.manageUpdate(responseContent);
+                break;
+            case ERROR:
+                this.manageError(responseContent);
+                break;
+            case INFOSTRING:
+                this.manageInfo(responseContent);
+                break;
+            case EXTRARESOURCEANDLEADERCARDBEGINNING:
+                this.manageStart(responseContent);
+                break;
+            case HASHMAPRESOURCESFROMDEVGRID:
+                this.manageCardCost(responseContent);
+                break;
+            case HASHMAPRESOURCESFROMMARKET:
+                this.manageMarketResources(responseContent);
+                break;
+            case HASHMAPRESOURCESFROMPRODCOST:
+                this.manageProductionResources(responseContent);
+                break;
+            case ASKFORNUMPLAYERS:
+                this.manageGameConfiguration(responseContent);
+                break;
+            case SETNICK:
+                this.manageNickSetting(responseContent);
+                break;
+            case SETBEGINNINGDECISIONS:
+                this.managePostStart(responseContent);
+                break;
+            case FINALSCORES:
+                this.manageleaderboard(responseContent);
+                break;
+            case SETNUMPLAYERCONF:
+                this.manageConfigurationDone(responseContent);
+                break;
+            case LORENZOSACTION:
+                this.manageLorenzoAction(responseContent);
+                break;
+            default:
+                System.out.println("unmanaged respone:\t"+responseMessage);
+                System.exit(1);
+        }
+    }
+
+    private void manageLorenzoAction(String responseContent) {
+        synchronized (this){
+            LorenzosActionMessage lorenzosActionMessage = gson.fromJson(responseContent, LorenzosActionMessage.class);
+            lorenzoToken = lorenzosActionMessage.getSoloActionToken();
+        }
+        //TODO: do things to print Lorenzo Action
+
+    }
+
+
+    private void manageleaderboard(String responseContent) {
+        synchronized (this){
+            FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
+            this.results = message.getResults();
+        }
+        //TODO: do things to setup view
+
+    }
+
+    private void manageConfigurationDone(String responseContent) {
+
+        //Todo idk if there is something to print
+    }
+
+    private void manageNickSetting(String responseContent) {
+        synchronized (this) {
+            LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
+            nickname = setNickMessage.getConfirmedNickname();
+        }
+        //Todo idk if there is something to print
+
+    }
+
+    private void manageGameConfiguration(String responseContent) {
+        //TODO: do things to setup view
+    }
+
+    private void manageProductionResources(String responseContent) {
+        synchronized (this) {
+            HashMapResFromProdCostMessage message = gson.fromJson(responseContent, HashMapResFromProdCostMessage.class);
+            this.resourcesMap = message.getResources();
+            this.mapDescription = "resourcesProduced";
+        }
+        //TODO: do things to setup view
+
+    }
+
+    private void manageMarketResources(String responseContent) {
+        synchronized (this) {
+            HashMapResFromMarketMessage message = gson.fromJson(responseContent, HashMapResFromMarketMessage.class);
+            this.resourcesMap = message.getResources();
+            this.mapDescription = "MarketResource";
+        }
+
+        //TODO: do things to setup view
+
+    }
+
+    private void manageCardCost(String responseContent) {
+        synchronized (this) {
+            HashMapResFromDevGridMessage message = gson.fromJson(responseContent, HashMapResFromDevGridMessage.class);
+            this.resourcesMap = message.getResources();
+            this.mapDescription = "DevCardCost";
+        }
+
+        //TODO: do things to setup view
+
+    }
+
+    private void manageStart(String responseContent) {
+        synchronized (this) {
+            ExtraResAndLeadToDiscardBeginningMessage message = gson.fromJson(responseContent, ExtraResAndLeadToDiscardBeginningMessage.class);
+            nLeadersToDiscard = message.getNumLeader();
+            resourcesToTake = message.getNumRes();
+        }
+
+        //TODO: do things to setup view
+
+    }
+
+    private void managePostStart(String responseContent) {
+        synchronized (this) {
+            nLeadersToDiscard = 0;
+            resourcesToTake = 0;
+        }
+
+        //TODO: do things to remove manageStartView and setup new view
+    }
+
+    private void manageInfo(String responseContent) {
+        //TODO: do things to setup view
+
+    }
+
+    private void manageError(String responseContent) {
+        //TODO: do things to setup view
+    }
+
+    private void manageUpdate(String responseContent) {
+        synchronized (this) {
+            ModelUpdate modelUpdate = gson.fromJson(responseContent, ModelUpdate.class);
+            Game update = modelUpdate.getGame();
+            if (this.gameModel == null)
+                gameModel = update;
+            else
+                gameModel.merge(update);
+        }
+
+        //TODO: do things to setup view
     }
 
     public Game getGameModel() {
         return gameModel;
     }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public HashMap<ResourceType, Integer> getResourcesMap() {
+        return resourcesMap;
+    }
+
+    public String getMapDescription() {
+        return mapDescription;
+    }
+
+    public int getnLeadersToDiscard() {
+        return nLeadersToDiscard;
+    }
+    public Map<String, Integer> getResults() {
+        return results;
+    }
+
+    public SoloActionToken getLorenzoToken() {
+        return lorenzoToken;
+    }
+
 }

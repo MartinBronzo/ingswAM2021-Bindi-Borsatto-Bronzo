@@ -14,6 +14,9 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
+import it.polimi.ingsw.view.cli.CliClient;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,6 +24,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -34,12 +39,16 @@ public class GuiClient implements Runnable{
     private final Gson gson;
     private final AtomicBoolean forceLogout;
     private Thread threadReader;
+    private ExecutorService writers;
+    private ExecutorService readers;
 
     public GuiClient(int portNumber, String hostName) {
         this.portNumber = portNumber;
         this.hostName = hostName;
         this.forceLogout = new AtomicBoolean();
         this.forceLogout.set(false);
+        this.writers = Executors.newCachedThreadPool();
+        this.readers = Executors.newSingleThreadExecutor();
 
         PanelManager.createInstance(this);
 
@@ -83,7 +92,6 @@ public class GuiClient implements Runnable{
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }
-        doConnection();
     }
 
 
@@ -109,6 +117,8 @@ public class GuiClient implements Runnable{
 
 
     protected void endConnection() {
+            writers.shutdown();
+            readers.shutdown();
         try {
             socket.close();
         } catch (IOException e) {
@@ -121,11 +131,10 @@ public class GuiClient implements Runnable{
     public void sendMessage(Command command) throws NullPointerException {
         if (out == null) throw new NullPointerException("PrintWriter is null");
         if (command == null) throw new NullPointerException("Command is null");
-        Thread writer = new Thread(()->{
+        writers.submit(() -> {
             out.println(gson.toJson(command));
             System.out.println("Sending:\t" + gson.toJson(command));
         });
-        writer.start();
         return;
     }
 
@@ -146,7 +155,6 @@ public class GuiClient implements Runnable{
     public void run() {
         String response = null;
         ResponseMessage responseMessage = null;
-        String responseContent;
         while (!Thread.currentThread().isInterrupted()){
             try {
                 response = in.readLine();
@@ -158,12 +166,40 @@ public class GuiClient implements Runnable{
                 forceLogout.set(true);
                 threadReader.interrupt();
             } catch (com.google.gson.JsonSyntaxException gsone){
-                PanelManager.getInstance().forceLogout("serverError formatting comunication");
+                PanelManager.getInstance().forceLogout("serverError formatting communication");
                 forceLogout.set(true);
                 threadReader.interrupt();
             } finally {
-                PanelManager.getInstance().readMessage(responseMessage);
+                //TODO: DA TOGLIERE QUESTO IF
+                if (responseMessage.getResponseType() != ResponseType.PING)
+                    System.out.println("Received:\t" + response);
+                switch (responseMessage.getResponseType()){
+                    case PING:
+                        sendMessage(new Command("pingResponse"));
+                        break;
+                    case KICKEDOUT:
+                        PanelManager.getInstance().forceLogout("kicked out");
+                        forceLogout.set(true);
+                        threadReader.interrupt();
+                        break;
+                    default:
+                        ResponseMessage finalResponseMessage = responseMessage;
+                        this.readers.submit(() -> {
+                            PanelManager.getInstance().readMessage(finalResponseMessage);
+                        });
+                        break;
+                }
             }
         }
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        String hostName = "127.0.0.1";
+        int portNumber = 9047;
+        GuiClient client = new GuiClient(portNumber, hostName);
+        client.startConnection();
+        client.doConnection();
+        System.out.println("eedwqw");
     }
 }
