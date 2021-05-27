@@ -41,6 +41,8 @@ public class GuiClient implements Runnable{
         this.forceLogout = new AtomicBoolean();
         this.forceLogout.set(false);
 
+        PanelManager.createInstance(this);
+
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
         requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
@@ -118,6 +120,7 @@ public class GuiClient implements Runnable{
 
     public void sendMessage(Command command) throws NullPointerException {
         if (out == null) throw new NullPointerException("PrintWriter is null");
+        if (command == null) throw new NullPointerException("Command is null");
         Thread writer = new Thread(()->{
             out.println(gson.toJson(command));
             System.out.println("Sending:\t" + gson.toJson(command));
