@@ -75,6 +75,7 @@ public class Game {
                 try {
                     this.findByNick(updatePlayer.getNickName()).merge(updatePlayer);
                 } catch (NoSuchElementException e) {
+                    System.out.println("ERRORE NEL MERGE DEL PLAYER");
                     players.add(updatePlayer);
                 }
             }

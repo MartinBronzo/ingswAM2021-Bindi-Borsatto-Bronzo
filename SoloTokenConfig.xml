@@ -6,35 +6,41 @@
     <DiscardToken>
         <Color>GREEN</Color>
         <NumCards>2</NumCards>
+        <Url>...</Url>
     </DiscardToken>
 
     <!--TOKEN-->
     <DiscardToken>
         <Color>YELLOW</Color>
         <NumCards>2</NumCards>
+        <Url>...</Url>
     </DiscardToken>
 
     <!--TOKEN-->
     <DiscardToken>
         <Color>PURPLE</Color>
         <NumCards>2</NumCards>
+        <Url>...</Url>
     </DiscardToken>
 
     <!--TOKEN-->
     <DiscardToken>
         <Color>BLUE</Color>
         <NumCards>2</NumCards>
+        <Url>...</Url>
     </DiscardToken>
 
     <!--TOKEN-->
     <FaithPointToken>
         <NumPoints>2</NumPoints>
         <Shuffle>false</Shuffle>
+        <Url>...</Url>
     </FaithPointToken>
 
     <!--TOKEN-->
     <FaithPointToken>
         <NumPoints>1</NumPoints>
         <Shuffle>true</Shuffle>
+        <Url>...</Url>
     </FaithPointToken>
 </SoloTokenConfig>

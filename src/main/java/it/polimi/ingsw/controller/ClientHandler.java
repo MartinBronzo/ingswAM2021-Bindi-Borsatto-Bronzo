@@ -267,7 +267,7 @@ public class ClientHandler implements Runnable {
                         }
                     }
                 }
-            }, 0, 200000);
+            }, 0, 30000);
         }
 
         while (keepRunning) {
@@ -643,7 +643,8 @@ public class ClientHandler implements Runnable {
         //Set the player's state to disconnected
         if (playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
             setPlayerState(PlayerState.DISCONNECTED);
-            game.updatesAfterDisconnection(ClientHandler.this);
+            if(tmp != PlayerState.PLAYING && tmp != PlayerState.PLAYINGBEGINNINGDECISIONS)
+                game.updatesAfterDisconnection(ClientHandler.this);
         } else
             setPlayerState(PlayerState.DISCONNECTED);
 
@@ -701,6 +702,11 @@ public class ClientHandler implements Runnable {
     //used only for testing purpose
     public void setBeginningActionDone(boolean value) {
         this.beginningActionDone = value;
+    }
+
+    //used only for testing purpose
+    public GameController getGame(){
+        return game;
     }
 
 
@@ -857,8 +863,10 @@ public class ClientHandler implements Runnable {
                 beginningActionDone = true;
 
                 if (game.getState() != GameState.STARTED || game.getNumberOfPlayers() == 1) {
-                    if (playerState != PlayerState.DISCONNECTED)
+                    if (playerState != PlayerState.DISCONNECTED) {
                         playerState = PlayerState.PLAYING;
+                        game.updatesPlayersStates();
+                    }
                     if (game.getNumberOfPlayers() == 1) {
                         game.setState(GameState.INSESSION);
                         game.sendUpdateSolo(this);
@@ -999,7 +1007,6 @@ public class ClientHandler implements Runnable {
         //If we arrive here, then the player has a valid login
         //this.send(new LoginConfirmationMessage(this.nickname));
         if (this.game == null) {
-            //TODO: spostare questo
             //this.send(new AskForNumPlayersMessage("You are creating a game! Tell me how many players you want in this game!"));
             this.playerState = PlayerState.WAITING4SETNUMPLAYER;
         }

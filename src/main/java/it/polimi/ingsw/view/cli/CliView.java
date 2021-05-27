@@ -995,13 +995,13 @@ public class CliView implements view {
             switch (token.getCardColour()) {
                 case YELLOW:
                 case PURPLE:
-                    System.out.print(" card!" + " ".repeat(27 - 13) + "|.\n");
+                    System.out.print(" card!" + " ".repeat(27 - 14) + "|.\n");
                     break;
                 case GREEN:
-                    System.out.print(" card!" + " ".repeat(27 - 12) + "|.\n");
+                    System.out.print(" card!" + " ".repeat(27 - 13) + "|.\n");
                     break;
                 case BLUE:
-                    System.out.print(" card!" + " ".repeat(27 - 11) + "|.\n");
+                    System.out.print(" card!" + " ".repeat(27 - 12) + "|.\n");
                     break;
             }
 

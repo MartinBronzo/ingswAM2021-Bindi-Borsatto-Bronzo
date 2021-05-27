@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.model.soloGame.SoloBoard;
 import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.cli.CliClient;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
@@ -146,9 +147,11 @@ public class GameController {
                         if (e.getKey().getNickname().equals(newClientHandler.getNickname()))
                             e.setKey(newClientHandler);
 
+                    newClientHandler.send(this.getWholeMessageUpdateToClient());
                     this.sendNumExtraResBeginningToDisconnectedPlayer(newClientHandler);
+                    //TODO:QUESTO NON DOVREBBE PIù SERVIRE
                     //updates all the other clients that tha player has reconnected
-                    updatesAfterDisconnection(newClientHandler);
+                    //updatesAfterDisconnection(newClientHandler);
                     return true;
                 }
             }
@@ -904,7 +907,7 @@ public class GameController {
             //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
             for (DepotParams e : depotRes) {
-                if (res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt()) {
+                if (e.getResourceType() != ResourceType.FAITHPOINT && (res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt())) {
                     //this.rollbackState();
                     throw new IllegalArgumentException("The given input parameters for the Depot don't match the result!");
                 }
@@ -918,7 +921,7 @@ public class GameController {
             for (Map.Entry<ResourceType, Integer> e : resToLeader.entrySet()) {
                 //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
                 //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
-                if (res.get(e.getKey()) == null || res.get(e.getKey()) < e.getValue()) {
+                if (e.getKey() != ResourceType.FAITHPOINT && (res.get(e.getKey()) == null || res.get(e.getKey()) < e.getValue())) {
                     //this.rollbackState();
                     throw new IllegalArgumentException("The given input parameters for the LeaderDepot don't match the result!");
                 }
@@ -932,7 +935,7 @@ public class GameController {
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity which in this case
             //means that the need to equal to the remaining resources because all resources coming from the market must be dealt with)!
             for (Map.Entry<ResourceType, Integer> e : buyFromMarket.getDiscardRes().entrySet())
-                if (res.get(e.getKey()) == null || !res.get(e.getKey()).equals(e.getValue()))
+                if (e.getKey() != ResourceType.FAITHPOINT && ( res.get(e.getKey()) == null || !res.get(e.getKey()).equals(e.getValue())))
                     throw new IllegalArgumentException("The given input parameters for the discarded resources don't match the result!");
                 else
                     res.put(e.getKey(), res.get(e.getKey()) - e.getValue()); //Updates the res map
@@ -948,7 +951,7 @@ public class GameController {
             //resources they are supposed to (this is particular useful to check the case in which the player doesn't specify any parameter: while they don't gain any resource
             //they still have changed the market composition even if they weren't supposed to).
             for (Map.Entry<ResourceType, Integer> e : res.entrySet())
-                if (e.getValue() != 0)
+                if (e.getKey() != ResourceType.FAITHPOINT && e.getValue() != 0)
                     throw new IllegalArgumentException("The given input parameters don't match the result: you are missing out some resources!");
 
         } catch (IllegalActionException e) {
@@ -1342,7 +1345,7 @@ public class GameController {
      * @param disconnectedPlayer the player that disconnected/reconnected from the game
      */
     public synchronized void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
-        int index = this.getPlayerNumber(disconnectedPlayer);
+        /*int index = this.getPlayerNumber(disconnectedPlayer);
 
         Game game = new Game();
         Player player = new Player();
@@ -1350,7 +1353,30 @@ public class GameController {
         player.setPlayerState(this.players.get(index).getKey().getPlayerState());
         game.addPlayer(player);
 
+        this.sendBroadcastUpdate(new ModelUpdate(game), disconnectedPlayer);*/
+
+
+        List<ClientHandler> playerList = getPlayersList();
+        Game game = new Game();
+        for(ClientHandler playerInGame : playerList){
+            Player player = new Player();
+            player.setNickName(playerInGame.getNickname());
+            player.setPlayerState(playerInGame.getPlayerState());
+            game.addPlayer(player);
+        }
         this.sendBroadcastUpdate(new ModelUpdate(game), disconnectedPlayer);
+    }
+
+    public synchronized void updatesPlayersStates() {
+        List<ClientHandler> playerList = getPlayersList();
+        Game game = new Game();
+        for(ClientHandler playerInGame : playerList){
+            Player player = new Player();
+            player.setNickName(playerInGame.getNickname());
+            player.setPlayerState(playerInGame.getPlayerState());
+            game.addPlayer(player);
+        }
+        this.sendBroadcastUpdate(new ModelUpdate(game));
     }
 
 
@@ -1515,12 +1541,10 @@ public class GameController {
      * Sends an update message to all the players in the game
      *
      * @param broadcastMessage the message to be sent to every player in the game
-     * @return true if the messages were correctly sent to all the players
      */
-    private boolean sendBroadcastUpdate(ResponseInterface broadcastMessage) {
+    private void sendBroadcastUpdate(ResponseInterface broadcastMessage) {
         for (Pair<ClientHandler, PlayerBoard> e : players)
             e.getKey().send(broadcastMessage);
-        return true;
     }
 
     /**
@@ -1528,13 +1552,11 @@ public class GameController {
      *
      * @param broadcastMessage   the message to be sent to every player in the game
      * @param disconnectedPlayer the player who has been found disconnected
-     * @return true if the messages were sent correctly to all the players
      */
-    private boolean sendBroadcastUpdate(ResponseInterface broadcastMessage, ClientHandler disconnectedPlayer) {
+    private void sendBroadcastUpdate(ResponseInterface broadcastMessage, ClientHandler disconnectedPlayer) {
         for (Pair<ClientHandler, PlayerBoard> e : players)
             if (e.getKey() != disconnectedPlayer)
                 e.getKey().send(broadcastMessage);
-        return true;
     }
 
     /*private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
