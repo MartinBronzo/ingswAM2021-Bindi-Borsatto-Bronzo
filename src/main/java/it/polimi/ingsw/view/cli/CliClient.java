@@ -26,8 +26,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CliClient extends Client implements Runnable {
@@ -567,16 +566,17 @@ public class CliClient extends Client implements Runnable {
                             CliView.printLorenzosAction(token);
                         }
                         break;
-                    /*case FINALSCORES:
+                    case FINALSCORES:
                         synchronized (this){
                             FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
                             //Orders the list of players by their scores
                             List<Map.Entry<String, Integer>> results = new LinkedList<>(message.getResults().entrySet());
-                            Collections.sort(results, (x, y) -> y.getValue().compareTo(x.getValue()));
+                            results.sort((x, y) -> y.getValue().compareTo(x.getValue()));
                             CliView.printFinalScores(results);
+                            //TODO: dobbiamo chiudere il client ????
                         }
                         break;
-                    case SETBEGINNINGDECISIONS:
+                   /* case SETBEGINNINGDECISIONS:
                         synchronized (this){
                             nLeadersToDiscard = 0;
                             resourcesToTake = 0;
