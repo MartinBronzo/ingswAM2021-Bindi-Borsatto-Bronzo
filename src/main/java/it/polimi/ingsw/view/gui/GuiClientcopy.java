@@ -11,21 +11,19 @@ public class GuiClientcopy {
         SwingUtilities.invokeLater(
             new Runnable() {
                     public void run() {
-                        //createAndShowGUI();
-                        createDialogLogin();
+                        createAndShowGUI();
+                        //createDialogLogin();
                     }
             }
         );
     }
-    /*
     private static void createAndShowGUI() {
         System.out.println("Created GUI on EDT? "+ SwingUtilities.isEventDispatchThread());
-        this.f = new CustomFrame();
-        this.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.f.setSize(1000,615);
-        this.f.setVisible(true);
+        JFrame f = new CustomFrame();
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(1000,615);
+        f.setVisible(true);
     }
-     */
 
 
     private static void createDialogLogin(){
