@@ -14,8 +14,7 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.Client;
-import it.polimi.ingsw.view.cli.CliClient;
+import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
 import java.io.BufferedReader;

@@ -1,20 +1,18 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.panels;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class Welcome extends JDialog {
+public class LoginDialog extends JDialog {
     private final JLabel label;
     private final JTextField textField;
     private final JButton button;
 
 
-    public Welcome(Frame owner) {
+    public LoginDialog(Frame owner) {
         super(owner, "What's your Nickname?", true);
 
         label = new JLabel("Insert your Nickname:");

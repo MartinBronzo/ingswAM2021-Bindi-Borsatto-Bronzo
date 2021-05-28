@@ -1,10 +1,9 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.panels;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
-import it.polimi.ingsw.controller.GamesManagerSingleton;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
@@ -16,22 +15,23 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.cli.CliView;
+import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 public final class PanelManager {
     private final GuiClient gui;
     private final Gson gson;
     private static PanelManager instance;
-
     private JFrame gameFrame;
 
-    private Welcome welcome;
+    private EntryViewPanel entryPanel;
+    private LoginDialog loginDialog;
+    private SetNumOfPlayersDialog configureGameDialog;
 
     //TODO: add here label/frame created for each view
     //TODO: add here attibutes used in panels
@@ -99,20 +99,28 @@ public final class PanelManager {
         throw new IllegalStateException("Panel manager instance is not null");
     }
 
-    public void init() {
+    public void init() throws IOException {
         /*Initializing frame, panels....*/
         gameFrame = new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setResizable(false);
 
-        welcome = new Welcome(gameFrame);
+        loginDialog = new LoginDialog(gameFrame);
+        configureGameDialog = new SetNumOfPlayersDialog(gameFrame);
         //gameFrame.add(welcome);
         gameFrame.setVisible(true);
         gameFrame.setSize(600,600);
         gameFrame.setLocation(400,20);
         gameFrame.validate();
-        welcome.setVisible(true);
 
+        entryPanel = new EntryViewPanel();
+        gameFrame.add(entryPanel);
+        entryPanel.setVisible(true);
+
+    }
+
+    public void seeLoginPopup() {
+        loginDialog.setVisible(true);
     }
 
 
@@ -149,7 +157,7 @@ public final class PanelManager {
                 this.manageProductionResources(responseContent);
                 break;
             case ASKFORNUMPLAYERS:
-                this.manageGameConfiguration(responseContent);
+                this.manageGameConfiguration();
                 break;
             case SETNICK:
                 this.manageNickSetting(responseContent);
@@ -192,8 +200,7 @@ public final class PanelManager {
     }
 
     private void manageConfigurationDone(String responseContent) {
-
-        //Todo idk if there is something to print
+        configureGameDialog.setVisible(false);
     }
 
     private void manageNickSetting(String responseContent) {
@@ -201,12 +208,12 @@ public final class PanelManager {
             LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
             nickname = setNickMessage.getConfirmedNickname();
         }
-        //Todo idk if there is something to print
+        loginDialog.setVisible(false);
 
     }
 
-    private void manageGameConfiguration(String responseContent) {
-        //TODO: do things to setup view
+    private void manageGameConfiguration() {
+        configureGameDialog.setVisible(true);
     }
 
     private void manageProductionResources(String responseContent) {
@@ -309,5 +316,10 @@ public final class PanelManager {
     public SoloActionToken getLorenzoToken() {
         return lorenzoToken;
     }
+
+    public JFrame getGameFrame() {
+        return gameFrame;
+    }
+
 
 }
