@@ -260,7 +260,7 @@ public class CliClient extends Client implements Runnable {
     public void sendMessage(Command command) throws NullPointerException {
         if (out == null) throw new NullPointerException("PrintWriter is null");
         out.println(gson.toJson(command));
-        System.out.println("Sending:\t" + gson.toJson(command));
+        //System.out.println("Sending:\t" + gson.toJson(command));
     }
 
     @Override
