@@ -1,7 +1,8 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.View;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
+import it.polimi.ingsw.view.gui.PanelManager;
 
 import javax.swing.*;
 import java.awt.*;

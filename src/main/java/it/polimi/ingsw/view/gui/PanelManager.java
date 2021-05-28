@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
-import it.polimi.ingsw.controller.GamesManagerSingleton;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
@@ -16,12 +15,11 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.cli.CliView;
+import it.polimi.ingsw.view.gui.View.Welcome;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 
 import javax.swing.*;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 public final class PanelManager {
