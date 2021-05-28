@@ -10,26 +10,31 @@ public class InstructionPanel extends JPanel{
 
 
     public InstructionPanel() {
-        // create a label to display text
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        this.setBackground(Color.YELLOW);
+
         l = new JLabel();
+        c.fill = GridBagConstraints.RELATIVE;
+        c.ipady = 40;      //make this component tall
+        c.weightx = 0.0;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 1;
+        this.add(l, c);
 
-        // create a new buttons
-        b = new JButton("Confirm");
-
-        // set Box Layout
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        // add buttons and textfield to panel
-        //The order the elements are added determines how they will be displayed: since we added the label before the button,
-        //then we'll see the label above the button
-        this.add(l);
-        this.add(b);
-
-
-
-        // setbackground of panel
-        this.setBackground(Color.yellow);
+        b = new SubmitButton("Confirm");
+        c.fill = GridBagConstraints.RELATIVE;
+        c.ipady = 0;       //reset to default
+        c.weighty = 1.0;   //request any extra vertical space
+        c.anchor = GridBagConstraints.PAGE_END; //bottom of space
+        c.insets = new Insets(10,10,10,10);  //top padding
+        c.gridx = 3;       //aligned with button 2
+        c.gridwidth = 1;   //2 columns wide
+        c.gridy = 2;       //third row
+        this.add(b, c);
     }
+
     public void setButtonActionListener(ActionListener actionListener){
         this.b.addActionListener(actionListener);
     }
