@@ -78,6 +78,17 @@ public class GuiClient implements Runnable{
                 .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
 
+    /**
+     * USED ONLY FOR TEST PURPOSE
+     */
+    @Deprecated
+    public GuiClient() {
+        portNumber = 9047;
+        hostName = "127.0.0.1";
+        gson = new Gson();
+        forceLogout = new AtomicBoolean();
+    }
+
 
     public void startConnection() throws IOException {
         try {

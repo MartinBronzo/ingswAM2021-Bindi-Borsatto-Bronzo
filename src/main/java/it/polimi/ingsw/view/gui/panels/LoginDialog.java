@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoginDialog extends JDialog {
+    private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
+    private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
+    private static final int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
     private final JLabel label;
     private final JTextField textField;
     private final JButton button;
@@ -25,7 +28,8 @@ public class LoginDialog extends JDialog {
         this.add(label);
         this.add(textField);
         this.add(button);
-        this.setSize(600, 200);
+        this.setSize(panelWidth, 200);
+        this.setLocation(panelXPosition, panelYPosition);
 
 
     }

@@ -18,7 +18,7 @@ import java.io.InputStream;
 public class EntryViewPanel extends JPanel {
 
     private static final int panelHeight = PanelManager.getInstance().getGameFrame().getHeight();
-    private final int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
+    private static final int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
     private final ImageIcon logo;
     private final String logoPath = "src/main/resources/logo.png";
     //private final Image logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
@@ -62,7 +62,7 @@ public class EntryViewPanel extends JPanel {
         entryPane = new JTextPane();
         entryPane.setText("welcome in our Game");
         entryPane.setEditable(false);
-        entryPane.setBounds(0, 0, 600, 100);
+        entryPane.setBounds(0, 0, panelWidth, 100);
         entryPane.setFont(f);
         entryPane.setBackground(color);
         StyledDocument doc = entryPane.getStyledDocument();
@@ -74,7 +74,7 @@ public class EntryViewPanel extends JPanel {
 
         logo = new ImageIcon(logoPath);
         imageLabel = new JLabel("", logo, JLabel.CENTER);
-        imageLabel.setBounds(0, 0, 600, 400);
+        imageLabel.setBounds(0, 0, panelWidth, panelHeight-200);
         imageLabel.setSize(600, 400);
         this.add(imageLabel, BorderLayout.CENTER);
         imageLabel.setVisible(true);
@@ -82,7 +82,7 @@ public class EntryViewPanel extends JPanel {
         instruction = new JTextPane();
         instruction.setText("click to continue");
         instruction.setEditable(false);
-        instruction.setBounds(0, 0, 600, 100);
+        instruction.setBounds(0, 0, panelWidth, 100);
         instruction.setFont(f);
         instruction.setBackground(color);
         doc = instruction.getStyledDocument();

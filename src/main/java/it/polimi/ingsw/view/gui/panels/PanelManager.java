@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.cli.CliView;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 
@@ -34,11 +35,16 @@ public final class PanelManager {
 
     private JFrame gameFrame;
 
-    private EntryViewPanel entryPanel;
+    //TODO: add here dialogs
     private LoginDialog loginDialog;
+    private ErrorDialog errorDialog;
+    private InfoDialog infoDialog;
     private SetNumOfPlayersDialog configureGameDialog;
 
-    //TODO: add here label/frame created for each view
+    //TODO: add here panels created for each view
+    private EntryViewPanel entryPanel;
+    private WaitingRoomPanel waitingRoomPanel;
+
     //TODO: add here attibutes used in panels
     private String nickname;
     private Game gameModel;
@@ -106,22 +112,42 @@ public final class PanelManager {
         throw new IllegalStateException("Panel manager instance is not null");
     }
 
+    /**
+     * usedOnly for Test Purpose
+     */
+    @Deprecated
+    public void initTest(){
+        gameFrame = new JFrame();
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setResizable(false);
+        gameFrame.setSize(600,600);
+        gameFrame.setLocation(400,20);
+        gameFrame.setVisible(false);
+    }
+
     public void init() throws IOException {
         /*Initializing frame, panels....*/
         gameFrame = new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setResizable(false);
-
-        loginDialog = new LoginDialog(gameFrame);
-        configureGameDialog = new SetNumOfPlayersDialog(gameFrame);
-        //gameFrame.add(welcome);
-        gameFrame.setVisible(true);
         gameFrame.setSize(600,600);
         gameFrame.setLocation(400,20);
-        gameFrame.validate();
 
+        //TODO: add here dialog with gameframe owner
+        loginDialog = new LoginDialog(gameFrame);
+        configureGameDialog = new SetNumOfPlayersDialog(gameFrame);
+        infoDialog = new InfoDialog(gameFrame);
+        errorDialog = new ErrorDialog(gameFrame);
+
+        //TODO: add here panels to frame
         entryPanel = new EntryViewPanel();
         gameFrame.add(entryPanel);
+        waitingRoomPanel = new WaitingRoomPanel();
+        gameFrame.add(waitingRoomPanel);
+
+        gameFrame.validate();
+
+        gameFrame.setVisible(true);
         entryPanel.setVisible(true);
 
     }
@@ -217,6 +243,10 @@ public final class PanelManager {
         }
 
         loginDialog.setVisible(false);
+        visualizer.submit(()->{
+            entryPanel.setVisible(false);
+            waitingRoomPanel.setVisible(true);
+            });
 
     }
 
@@ -281,12 +311,22 @@ public final class PanelManager {
     }
 
     private void manageInfo(String responseContent) {
-        //TODO: do things to setup view
+        visualizer.submit(()->{
+            GeneralInfoStringMessage errorMessage = gson.fromJson(responseContent, GeneralInfoStringMessage.class);
+            String info = errorMessage.getMessage();
+            infoDialog.setInfoMessage(info);
+            infoDialog.setVisible(true);
+        });
 
     }
 
     private void manageError(String responseContent) {
-        //TODO: do things to setup view
+        visualizer.submit(()->{
+            ErrorMessage errorMessage = gson.fromJson(responseContent, ErrorMessage.class);
+            String error = errorMessage.getErrorMessage();
+            errorDialog.setErrorMessage(error);
+            errorDialog.setVisible(true);
+        });
     }
 
     private void manageUpdate(String responseContent) {
@@ -333,5 +373,27 @@ public final class PanelManager {
         return gameFrame;
     }
 
+    public LoginDialog getLoginDialog() {
+        return loginDialog;
+    }
 
+    public ErrorDialog getErrorDialog() {
+        return errorDialog;
+    }
+
+    public InfoDialog getInfoDialog() {
+        return infoDialog;
+    }
+
+    public SetNumOfPlayersDialog getConfigureGameDialog() {
+        return configureGameDialog;
+    }
+
+    public EntryViewPanel getEntryPanel() {
+        return entryPanel;
+    }
+
+    public WaitingRoomPanel getWaitingRoomPanel() {
+        return waitingRoomPanel;
+    }
 }
