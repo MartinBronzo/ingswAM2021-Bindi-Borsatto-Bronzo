@@ -16,18 +16,21 @@ import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.gui.GuiClient;
-import it.polimi.ingsw.view.gui.View.Welcome;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public final class PanelManager {
     private final GuiClient gui;
     private final Gson gson;
     private static PanelManager instance;
+
+    private ExecutorService visualizer;
 
     private JFrame gameFrame;
 
@@ -77,6 +80,8 @@ public final class PanelManager {
 
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
                 .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
+
+        this.visualizer = Executors.newCachedThreadPool();
     }
 
     public static PanelManager getInstance() {
@@ -210,12 +215,17 @@ public final class PanelManager {
             LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
             nickname = setNickMessage.getConfirmedNickname();
         }
+
         loginDialog.setVisible(false);
 
     }
 
     private void manageGameConfiguration() {
-        configureGameDialog.setVisible(true);
+        visualizer.submit(()->{
+            configureGameDialog.setVisible(true);
+            System.out.println("Ended GameConfiguration set visible true");
+        });
+
     }
 
     private void manageProductionResources(String responseContent) {
