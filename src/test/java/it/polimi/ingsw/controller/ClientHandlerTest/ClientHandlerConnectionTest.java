@@ -196,8 +196,7 @@ public class ClientHandlerConnectionTest {
         assertEquals(clientFileReader4.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"4\\\"}\"}");
         assertEquals(clientFileReader4.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
 
-        c1.executeCommand(new Command("endTurn", new Message()));
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ERROR\",\"responseContent\":\"{\\\"errorMessage\\\":\\\"You must satisfy your liege\\\\u0027s demand first\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"GAME STARTED!\\\"}\"}");
     }
 
     @Test
