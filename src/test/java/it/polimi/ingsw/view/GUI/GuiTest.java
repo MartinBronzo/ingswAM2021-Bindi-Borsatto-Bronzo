@@ -36,7 +36,7 @@ public class GuiTest {
         //moveResourceChoice();
 
         //test
-        seeOthersPlayers();
+        //seeOthersPlayers();
 
         printButtons(gameFrame);
         gameFrame.setVisible(true);
@@ -66,8 +66,7 @@ public class GuiTest {
         c.gridy = 2;
         allPanel.add(p, c);
 
-
-        f.add(allPanel);
+        gameFrame.add(allPanel);
     }
 
     private static void printButtons(JFrame f){
@@ -78,8 +77,6 @@ public class GuiTest {
         f.add(submit);
         f.add(back);
         f.add(undo);
-        // add panel to frame
-        gameFrame.add(p);
     }
 
     private static void addLeaderCheckBoxPanel() throws InterruptedException {
@@ -105,7 +102,6 @@ public class GuiTest {
 
         MainPanel mainPanel = new MainPanel(playersNames, "satto");
         gameFrame.add(mainPanel);
-
     }
 
 }
