@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.GUI;
 
-import it.polimi.ingsw.view.gui.panels.InstructionPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 
 import javax.swing.*;
 

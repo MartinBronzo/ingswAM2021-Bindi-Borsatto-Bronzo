@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.gui.GuiClient;
+import it.polimi.ingsw.view.gui.View.Welcome;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 
 import javax.swing.*;
@@ -27,6 +28,7 @@ public final class PanelManager {
     private final GuiClient gui;
     private final Gson gson;
     private static PanelManager instance;
+
     private JFrame gameFrame;
 
     private EntryViewPanel entryPanel;
