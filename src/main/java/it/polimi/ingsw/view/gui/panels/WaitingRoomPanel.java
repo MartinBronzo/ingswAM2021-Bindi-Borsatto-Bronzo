@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.panels;
 
 import javax.swing.*;
+import javax.swing.text.BoxView;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -17,6 +18,15 @@ public class WaitingRoomPanel extends JPanel {
     private JLabel label;
     private final Color color;
 
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setColor(new Color(194, 115, 27));
+        g2d.fillRect(100, 100, panelWidth-200, panelHeight-230);
+    }
+
     /**
      * Creates a new <code>JPanel</code> with a double buffer
      * and a flow layout.
@@ -29,10 +39,7 @@ public class WaitingRoomPanel extends JPanel {
         this.setOpaque(true);
 
         label = new JLabel("WAITING ROOM", null, JLabel.CENTER);
-        label.setSize( panelWidth-200, panelHeight-200);
-        label.setBackground(new Color(194, 115, 27));
-        label.setOpaque(true);
         this.add(label, BorderLayout.CENTER);
-        label.setVisible(true);
+
     }
 }
