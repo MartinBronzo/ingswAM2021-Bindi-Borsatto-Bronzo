@@ -21,8 +21,8 @@ public class Test {
 
     public static void main(String[] args) {
         //createAndShowJFrame();
-        createAndShowJFrameWithChecksAdded();
-        //createAndShowJFrameWithResourcesInside();
+        //createAndShowJFrameWithChecksAdded();
+        createAndShowJFrameWithResourcesInside();
     }
 
     public static void createAndShowJFrame() {

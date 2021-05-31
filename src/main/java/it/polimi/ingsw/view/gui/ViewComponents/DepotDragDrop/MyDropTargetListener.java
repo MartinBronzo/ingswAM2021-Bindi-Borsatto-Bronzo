@@ -57,6 +57,9 @@ class MyDropTargetListener extends DropTargetAdapter {
                         this.makeCall.accept(ico);
                     }else{
                         event.rejectDrop();
+                        //TODO: è necessario far uscire un messaggio più particolare in base al perché non può farlo (tipo non può aggiungere allo shelft perché pieno, etc.)?
+                        //Proposta per farlo: fare che la CheckDrop restituisca un messaggio di errore / lanci un'eccezione MA allora vorrebbe dire che tutti i check drop fanno questa cosa
+                        JOptionPane.showMessageDialog(null, "You can't do this!");
                         System.out.println("Nope");
                     }
                 }
