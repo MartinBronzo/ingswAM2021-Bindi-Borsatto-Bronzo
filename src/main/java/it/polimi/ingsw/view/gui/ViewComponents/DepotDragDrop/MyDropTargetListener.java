@@ -13,26 +13,26 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-class MyDropTargetListener extends DropTargetAdapter {
+public class MyDropTargetListener extends DropTargetAdapter {
 
     private DropTarget dropTarget;
     private JPanel p;
     private Consumer<Icon> makeCall;
     private DropChecker checkDrop;
 
-    public MyDropTargetListener(MyDepotPanel panel) {
+    public MyDropTargetListener(JPanel panel) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         //makeCall = new RegisterDrop(panel);
     }
 
-    public MyDropTargetListener(MyDepotPanel panel, Consumer<Icon> actionListener) {
+    public MyDropTargetListener(JPanel panel, Consumer<Icon> actionListener) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         makeCall = actionListener;
     }
 
-    public MyDropTargetListener(MyDepotPanel panel, Consumer<Icon> actionListener, DropChecker checkDrop){
+    public MyDropTargetListener(JPanel panel, Consumer<Icon> actionListener, DropChecker checkDrop){
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         makeCall = actionListener;

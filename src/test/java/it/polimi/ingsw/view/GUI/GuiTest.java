@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.view.gui.ViewComponents.BackButton;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.CheckBaseProd;
+import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.DragAndDropBaseProd;
 import it.polimi.ingsw.view.gui.panels.CardCheckbox;
 import it.polimi.ingsw.view.gui.panels.MoveResourceChoice;
 import it.polimi.ingsw.view.gui.panels.MainPanel;
@@ -17,11 +19,12 @@ public class GuiTest {
 
     static CardCheckbox check;
     static JFrame gameFrame;
+    static DragAndDropBaseProd dragAndDropBaseProd;
 
     public static void main(String[] args) throws InterruptedException {
         gameFrame= new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setResizable(false);
+        gameFrame.setResizable(true);
 
         gameFrame.setSize(600,600);
         gameFrame.setLocation(400,20);
@@ -38,12 +41,20 @@ public class GuiTest {
         //test
         //seeOthersPlayers();
 
-        printButtons(gameFrame);
+        //test for base production
+        baseProduction();
+
+        //printButtons(gameFrame);
         gameFrame.setVisible(true);
 
         //test of the leaderCheckboxPanel's checkbox functionality
         /*Thread.sleep(5000);
         System.out.println(check.getSelectedLeaderIndexes());*/
+
+        //test for base production choices
+        Thread.sleep(5000);
+        System.out.println("input: " + dragAndDropBaseProd.getInputs() + " output: " + dragAndDropBaseProd.getOutput());
+
     }
 
 
@@ -102,6 +113,13 @@ public class GuiTest {
 
         MainPanel mainPanel = new MainPanel(playersNames, "satto");
         gameFrame.add(mainPanel);
+    }
+
+    private static void baseProduction(){
+        dragAndDropBaseProd = new DragAndDropBaseProd();
+        dragAndDropBaseProd.setCheckDropFunction(new CheckBaseProd(dragAndDropBaseProd));
+        gameFrame.add(dragAndDropBaseProd);
+
     }
 
 }

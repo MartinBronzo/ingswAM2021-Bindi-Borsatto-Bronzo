@@ -17,7 +17,7 @@ public class CheckDropAtBeginningDecisionsTime implements DropChecker {
     public boolean test(JPanel jPanel) throws IllegalActionException {
         PanelManager manager = PanelManager.getInstance();
         MyDepotPanel depotPanel = (MyDepotPanel) jPanel;
-        //Checks whether the user has already has already specified all the resources they are supposed to
+        //Checks whether the user has already specified all the resources they are supposed to
         if(depot.getDecisions().size() == manager.getResourcesToTake())
             if(manager.getResourcesToTake() > 0)
                 throw new IllegalActionException("You have already specified your choices!");
