@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDepotPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.Droppable;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.RegisterDrop;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -12,15 +14,15 @@ import java.awt.datatransfer.Transferable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DiscardedResDrop extends JPanel implements Droppable {
-    private Map<ResourceType, Integer> resToBeDiscarded;
+public class StrongBoxDrop extends JPanel implements Droppable {
+    private Map<ResourceType, Integer> resToStrongBox;
     private MyDropTargetListener targetListener;
-
-    public DiscardedResDrop(){
+    
+    public StrongBoxDrop(){
         super();
-        resToBeDiscarded = new HashMap<>();
+        resToStrongBox = new HashMap<>();
 
-        this.setBorder(new TitledBorder("Drag here the resource you want to discard"));
+        this.setBorder(new TitledBorder("Drag here the resource you want to store in your StrongBox"));
 
         TransferHandler dnd = new TransferHandler() {
             @Override
@@ -49,14 +51,13 @@ public class DiscardedResDrop extends JPanel implements Droppable {
                     e.printStackTrace();
                     return false;
                 }
-                DiscardedResDrop.this.add(new JLabel(ico));
+                StrongBoxDrop.this.add(new JLabel(ico));
                 return true;
             }
         };
 
         this.setTransferHandler(dnd);
         this.targetListener = null;
-
 
     }
 
@@ -67,10 +68,10 @@ public class DiscardedResDrop extends JPanel implements Droppable {
 
     @Override
     public void addDecision(Integer shelf, ResourceType res) {
-        if(this.resToBeDiscarded.get(res) != null && this.resToBeDiscarded.get(res) > 0)
-            this.resToBeDiscarded.put(res, this.resToBeDiscarded.get(res) + 1);
+        if(this.resToStrongBox.get(res) != null && this.resToStrongBox.get(res) > 0)
+            this.resToStrongBox.put(res, this.resToStrongBox.get(res) + 1);
         else
-            this.resToBeDiscarded.put(res, 1);
+            this.resToStrongBox.put(res, 1);
     }
 
     @Override
@@ -81,14 +82,15 @@ public class DiscardedResDrop extends JPanel implements Droppable {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(new ImageIcon("src/main/resources/trashcan medium.png").getImage(), 100, 100, null);
+        g.drawImage(new ImageIcon("src/main/resources/strongbox medium.png").getImage(), 100, 100, null);
     }
 
     public void resetState(){
-        this.resToBeDiscarded = new HashMap<>();
+        this.resToStrongBox = new HashMap<>();
     }
 
     public Map<ResourceType, Integer> getDecisions() {
-        return resToBeDiscarded;
+        return resToStrongBox;
     }
+
 }
