@@ -2,10 +2,9 @@ package it.polimi.ingsw.view.GUI.panels;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CheckDropAtBeginningDecisionsTime;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CollectBeginningChoices;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DnDDepot;
+import it.polimi.ingsw.view.gui.ViewComponents.CheckTrashCanDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
+import it.polimi.ingsw.view.gui.ViewComponents.DiscardedResDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Game;
@@ -23,7 +22,8 @@ public class Test {
     public static void main(String[] args) {
         //createAndShowJFrame();
         //createAndShowJFrameWithChecksAdded();
-        createAndShowJFrameWithResourcesInside();
+        //createAndShowJFrameWithResourcesInside();
+        checkTrashCanDrop();
     }
 
     public static void createAndShowJFrame() {
@@ -107,6 +107,21 @@ public class Test {
             frame.add(submit, BorderLayout.PAGE_END);
             frame.setVisible(true);
         });
+
+    }
+
+    public static void checkTrashCanDrop(){
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        DiscardedResDrop trashCan = new DiscardedResDrop();
+        trashCan.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
+        frame.add(trashCan, BorderLayout.CENTER);
+        frame.setTitle("Trash Can test");
+        ResourcesPanel res = new ResourcesPanel();
+        frame.add(res, BorderLayout.PAGE_END);
+        frame.pack();
+        frame.setVisible(true);
 
     }
 }

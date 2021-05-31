@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a Depot where the player can drop resources.
+ */
 public class DepotDrop extends JPanel {
     private List<MyDepotPanel> depots;
     private List<MyDropTargetListener> targetListeners;
