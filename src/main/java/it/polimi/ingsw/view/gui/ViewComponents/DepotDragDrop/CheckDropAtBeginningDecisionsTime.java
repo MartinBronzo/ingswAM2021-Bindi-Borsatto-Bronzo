@@ -1,11 +1,12 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
 import java.util.function.Predicate;
 
-public class CheckDropAtBeginningDecisionsTime implements Predicate<JPanel> {
+public class CheckDropAtBeginningDecisionsTime implements DropChecker {
     private DepotDragAndDrop depot;
 
     public CheckDropAtBeginningDecisionsTime(DepotDragAndDrop depot){
@@ -13,14 +14,19 @@ public class CheckDropAtBeginningDecisionsTime implements Predicate<JPanel> {
     }
 
     @Override
-    public boolean test(JPanel jPanel) {
+    public boolean test(JPanel jPanel) throws IllegalActionException {
         PanelManager manager = PanelManager.getInstance();
         MyDepotPanel depotPanel = (MyDepotPanel) jPanel;
         //Checks whether the user has already has already specified all the resources they are supposed to
         if(depot.getDecisions().size() == manager.getResourcesToTake())
-            return false;
+            if(manager.getResourcesToTake() > 0)
+                throw new IllegalActionException("You have already specified your choices!");
+            else
+                throw new IllegalActionException("You cannot choose any extra resource!");
+
+        //Checks whether there is still room onto the shelf
         if(depotPanel.getResToDepot().size() + manager.getDepotShelves().get(depotPanel.getShelfNumber() - 1).getQuantity() == getMaxShelfCapacity(depotPanel.getShelfNumber()))
-            return false;
+            throw new IllegalActionException("There is no room on this shelf!");
         return true;
     }
 

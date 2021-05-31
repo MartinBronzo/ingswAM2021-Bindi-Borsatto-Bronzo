@@ -59,7 +59,7 @@ public class DepotDragAndDrop extends JPanel {
             e.resetState();
     }
 
-    public void setCheckDropFunction(Predicate<JPanel> checkDropFunction){
+    public void setCheckDropFunction(DropChecker checkDropFunction){
         for(MyDropTargetListener listener : this.targetListeners)
             listener.setCheckDrop(checkDropFunction);
     }

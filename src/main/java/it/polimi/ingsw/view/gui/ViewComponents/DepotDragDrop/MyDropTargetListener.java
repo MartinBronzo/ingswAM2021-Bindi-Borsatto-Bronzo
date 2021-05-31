@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -16,7 +18,7 @@ class MyDropTargetListener extends DropTargetAdapter {
     private DropTarget dropTarget;
     private JPanel p;
     private Consumer<Icon> makeCall;
-    private Predicate<JPanel> checkDrop;
+    private DropChecker checkDrop;
 
     public MyDropTargetListener(MyDepotPanel panel) {
         p = panel;
@@ -30,7 +32,7 @@ class MyDropTargetListener extends DropTargetAdapter {
         makeCall = actionListener;
     }
 
-    public MyDropTargetListener(MyDepotPanel panel, Consumer<Icon> actionListener, Predicate<JPanel> checkDrop){
+    public MyDropTargetListener(MyDepotPanel panel, Consumer<Icon> actionListener, DropChecker checkDrop){
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         makeCall = actionListener;
@@ -49,18 +51,20 @@ class MyDropTargetListener extends DropTargetAdapter {
                 Icon ico = (Icon) tr.getTransferData(DataFlavor.imageFlavor);
 
                 if (ico != null) {
-                    if(checkDrop.test(p)) {
-                        p.add(new JLabel(ico));
-                        p.revalidate();
-                        p.repaint();
-                        event.dropComplete(true);
-                        this.makeCall.accept(ico);
-                    }else{
-                        event.rejectDrop();
-                        //TODO: è necessario far uscire un messaggio più particolare in base al perché non può farlo (tipo non può aggiungere allo shelft perché pieno, etc.)?
-                        //Proposta per farlo: fare che la CheckDrop restituisca un messaggio di errore / lanci un'eccezione MA allora vorrebbe dire che tutti i check drop fanno questa cosa
-                        JOptionPane.showMessageDialog(null, "You can't do this!");
-                        System.out.println("Nope");
+                    try {
+                        if (checkDrop.test(p)) {
+                            p.add(new JLabel(ico));
+                            p.revalidate();
+                            p.repaint();
+                            event.dropComplete(true);
+                            this.makeCall.accept(ico);
+                        } else {
+                            event.rejectDrop();
+                            JOptionPane.showMessageDialog(null, "You can't do this!");
+                            System.out.println("Nope");
+                        }
+                    }catch (IllegalActionException e){
+                        JOptionPane.showMessageDialog(null, e.getMessage());
                     }
                 }
             } else {
@@ -76,7 +80,7 @@ class MyDropTargetListener extends DropTargetAdapter {
         this.makeCall = function;
     }
 
-    public void setCheckDrop(Predicate<JPanel> checkDrop) {
+    public void setCheckDrop(DropChecker checkDrop) {
         this.checkDrop = checkDrop;
     }
 }
