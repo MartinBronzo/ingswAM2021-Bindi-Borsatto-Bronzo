@@ -18,10 +18,13 @@ import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.cli.CliView;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.readOnlyModel.Game;
+import it.polimi.ingsw.view.readOnlyModel.Player;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -395,5 +398,31 @@ public final class PanelManager {
 
     public WaitingRoomPanel getWaitingRoomPanel() {
         return waitingRoomPanel;
+    }
+
+    public int getResourcesToTake() {
+        return resourcesToTake;
+    }
+
+    /**
+     * Returns the player's depot shelves
+     * @return the player's depot shelves
+     */
+    public List<DepotShelf> getDepotShelves(){
+        return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getDepotShelves();
+    }
+
+    //For testing purposes:
+
+    public void setGameModel(Game gameModel) {
+        this.gameModel = gameModel;
+    }
+
+    public void setResourcesToTake(int resourcesToTake) {
+        this.resourcesToTake = resourcesToTake;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
