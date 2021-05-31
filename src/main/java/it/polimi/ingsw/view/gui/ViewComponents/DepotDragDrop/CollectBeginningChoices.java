@@ -1,13 +1,9 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
-import it.polimi.ingsw.controller.Command;
-import it.polimi.ingsw.model.Depot;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.network.messages.fromClient.BuyFromMarketMessage;
 import it.polimi.ingsw.network.messages.fromClient.DepotParams;
 import it.polimi.ingsw.network.messages.fromClient.DiscardLeaderAndExtraResBeginningMessage;
 import it.polimi.ingsw.network.messages.fromClient.Message;
-import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,18 +15,18 @@ import java.util.stream.Collectors;
  * This ActionListener will listen to the Confirm button of the Beginning Decisions view
  */
 public class CollectBeginningChoices implements ActionListener {
-    private DepotDragAndDrop depotDragAndDrop;
+    private DepotDrop depotDrop;
     private static ResourceType[] resources= new ResourceType[]{ResourceType.COIN, ResourceType.STONE, ResourceType.SERVANT, ResourceType.SHIELD};
 
-   public CollectBeginningChoices(DepotDragAndDrop dragAndDrop){
-        this.depotDragAndDrop = dragAndDrop;
+   public CollectBeginningChoices(DepotDrop dragAndDrop){
+        this.depotDrop = dragAndDrop;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println("Clicked!");
         //Collects the DepotChoices
-        List<MyDepotPanel.Pair<Integer, ResourceType>> depotDecisions = this.depotDragAndDrop.getDecisions();
+        List<MyDepotPanel.Pair<Integer, ResourceType>> depotDecisions = this.depotDrop.getDecisions();
 
         List<DepotParams> depotInfo = this.getDepotInfoForModel(depotDecisions);
 
@@ -44,7 +40,7 @@ public class CollectBeginningChoices implements ActionListener {
         //PanelManager.getInstance().writeMessage(new Command("discardLeaderAndExtraResBeginning", message));
 
         //Resets the inner state
-        this.depotDragAndDrop.resetState();
+        this.depotDrop.resetState();
     }
 
     private List<DepotParams> getDepotInfoForModel(List<MyDepotPanel.Pair<Integer, ResourceType>> depotDecisions){

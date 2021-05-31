@@ -4,12 +4,11 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
-import java.util.function.Predicate;
 
 public class CheckDropAtBeginningDecisionsTime implements DropChecker {
-    private DepotDragAndDrop depot;
+    private DepotDrop depot;
 
-    public CheckDropAtBeginningDecisionsTime(DepotDragAndDrop depot){
+    public CheckDropAtBeginningDecisionsTime(DepotDrop depot){
         this.depot = depot;
     }
 
