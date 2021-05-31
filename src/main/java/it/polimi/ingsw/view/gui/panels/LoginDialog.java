@@ -5,6 +5,8 @@ import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 public class LoginDialog extends JDialog {
     private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
@@ -20,6 +22,14 @@ public class LoginDialog extends JDialog {
 
         label = new JLabel("Insert your Nickname:");
         textField = new JTextField(("Nickname"));
+        textField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+                textField.setText("");
+            }
+            public void focusLost(FocusEvent e) {
+                // nothing
+            }
+        });
         button = new JButton("Login");
         button.addActionListener(event -> PanelManager.getInstance().writeMessage(new Command("login", new LoginMessage(textField.getText()))));
 

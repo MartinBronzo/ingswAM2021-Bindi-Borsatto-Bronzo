@@ -6,6 +6,8 @@ import it.polimi.ingsw.network.messages.fromClient.SetNumPlayerMessage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 public class SetNumOfPlayersDialog extends JDialog {
     private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
@@ -19,8 +21,16 @@ public class SetNumOfPlayersDialog extends JDialog {
     public SetNumOfPlayersDialog(Frame owner) {
         super(owner, "How many Players there will be in the Game", true);
 
-        label = new JLabel("Insert the number of desired players:");
+        label = new JLabel("Insert the number of desired players (1-4):");
         textField = new JTextField(("1-4"));
+        textField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+                textField.setText("");
+            }
+            public void focusLost(FocusEvent e) {
+                // nothing
+            }
+        });
         button = new JButton("Configure Game");
         button.addActionListener(event -> {
             try {
