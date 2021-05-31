@@ -1,8 +1,12 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.gui.panels.PanelManager;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -39,6 +43,8 @@ public class DepotDragAndDrop extends JPanel {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        fillDepot();
     }
 
     public List<MyDepotPanel.Pair<Integer, ResourceType>> getDecisions(){
@@ -56,5 +62,39 @@ public class DepotDragAndDrop extends JPanel {
     public void setCheckDropFunction(Predicate<JPanel> checkDropFunction){
         for(MyDropTargetListener listener : this.targetListeners)
             listener.setCheckDrop(checkDropFunction);
+    }
+
+    private void fillDepot(){
+        List<DepotShelf> depotShelves = PanelManager.getInstance().getDepotShelves();
+        int i = 0;
+        for(DepotShelf dS: depotShelves) {
+            fillShelf(dS, this.depots.get(i));
+            i++;
+        }
+    }
+
+    private void fillShelf(DepotShelf depotShelf, MyDepotPanel panel) {
+        JLabel resource;
+        for(int i = 0; i < depotShelf.getQuantity(); i++){
+            resource = new JLabel(new ImageIcon(DepotDragAndDrop.getImagePathFromResource(depotShelf.getResourceType())));
+            panel.add(resource);
+        }
+    }
+
+    private static String getImagePathFromResource(ResourceType resource){
+        switch (resource){
+            case SHIELD:
+                return "src/main/resources/shield small.png";
+            case SERVANT:
+                return "src/main/resources/servant small.png";
+            case STONE:
+                return "src/main/resources/stone small.png";
+            case COIN:
+                return "src/main/resources/coins small.png";
+            case FAITHPOINT:
+                return "src/main/resources/faithpoint small.png";
+            default:
+                return "";
+        }
     }
 }

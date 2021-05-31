@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI.panels;
 
+import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CheckDropAtBeginningDecisionsTime;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CollectBeginningChoices;
@@ -21,6 +22,7 @@ public class Test {
     public static void main(String[] args) {
         //createAndShowJFrame();
         createAndShowJFrameWithChecksAdded();
+        //createAndShowJFrameWithResourcesInside();
     }
 
     public static void createAndShowJFrame() {
@@ -51,6 +53,39 @@ public class Test {
             player.addDepotShelf(new DepotShelf(null, 0));
             player.addDepotShelf(new DepotShelf(null, 0));
             player.addDepotShelf(new DepotShelf(null, 0));
+            Game game = new Game();
+            game.addPlayer(player);
+            panelManager.setGameModel(game);
+            panelManager.setResourcesToTake(2);
+            panelManager.setNickname("Obi-Wan");
+
+            //JFrame frame = createJFrame();
+            JFrame frame = new JFrame();
+            frame.setLayout(new BorderLayout());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            DepotDragAndDrop depotPanels = new DepotDragAndDrop();
+            depotPanels.setCheckDropFunction(new CheckDropAtBeginningDecisionsTime(depotPanels));
+            frame.add(depotPanels, BorderLayout.CENTER);
+            frame.setTitle("Depot test");
+            frame.pack();
+            JButton submit = new SubmitButton("Confirm");
+            submit.addActionListener(new CollectBeginningChoices(depotPanels));
+            frame.add(submit, BorderLayout.PAGE_END);
+            frame.setVisible(true);
+        });
+
+    }
+
+    public static void createAndShowJFrameWithResourcesInside(){
+        SwingUtilities.invokeLater(() -> {
+
+
+            PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+            Player player = new Player();
+            player.setNickName("Obi-Wan");
+            player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+            player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+            player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
             Game game = new Game();
             game.addPlayer(player);
             panelManager.setGameModel(game);
