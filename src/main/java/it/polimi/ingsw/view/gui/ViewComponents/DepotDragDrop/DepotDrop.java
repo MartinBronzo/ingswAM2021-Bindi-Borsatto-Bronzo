@@ -5,17 +5,17 @@ import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragSource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
-public class DepotDragAndDrop extends JPanel {
+/**
+ * This class represents a Depot where the player can drop resources.
+ */
+public class DepotDrop extends JPanel {
     private List<MyDepotPanel> depots;
     private List<MyDropTargetListener> targetListeners;
 
-    public DepotDragAndDrop(){
+    public DepotDrop(){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -36,13 +36,6 @@ public class DepotDragAndDrop extends JPanel {
         this.targetListeners.add(new MyDropTargetListener(panel3, new RegisterDrop(panel3)));//this must be done or we wont be able to drop any image onto the empty panel
         this.add(panel3);
         depots.add(panel3);
-
-
-        try {
-            this.add(new ResourcesPanel());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
         fillDepot();
     }
@@ -76,7 +69,7 @@ public class DepotDragAndDrop extends JPanel {
     private void fillShelf(DepotShelf depotShelf, MyDepotPanel panel) {
         JLabel resource;
         for(int i = 0; i < depotShelf.getQuantity(); i++){
-            resource = new JLabel(new ImageIcon(DepotDragAndDrop.getImagePathFromResource(depotShelf.getResourceType())));
+            resource = new JLabel(new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType())));
             panel.add(resource);
         }
     }

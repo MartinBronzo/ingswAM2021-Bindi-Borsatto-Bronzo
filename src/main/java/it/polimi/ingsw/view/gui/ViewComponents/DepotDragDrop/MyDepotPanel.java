@@ -51,7 +51,7 @@ public class MyDepotPanel extends JPanel implements Droppable {
         this.shelfNumber = shelfNumber;
         resToDepot = new ArrayList<>();
 
-        this.setBorder(new TitledBorder("Drag Image onto shelf number " + this.shelfNumber));
+        this.setBorder(new TitledBorder("Drag Resources onto shelf number " + this.shelfNumber));
         TransferHandler dnd = new TransferHandler() {
             @Override
             public boolean canImport(TransferSupport support) {
