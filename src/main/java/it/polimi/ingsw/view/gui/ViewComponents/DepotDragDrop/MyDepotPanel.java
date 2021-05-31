@@ -52,7 +52,6 @@ public class MyDepotPanel extends JPanel {
         resToDepot = new ArrayList<>();
 
         this.setBorder(new TitledBorder("Drag Image onto shelf number " + this.shelfNumber));
-        MyDepotPanel theDepotPanel = this;
         TransferHandler dnd = new TransferHandler() {
             @Override
             public boolean canImport(TransferSupport support) {
@@ -80,7 +79,7 @@ public class MyDepotPanel extends JPanel {
                     e.printStackTrace();
                     return false;
                 }
-                theDepotPanel.add(new JLabel(ico));
+                MyDepotPanel.this.add(new JLabel(ico));
                 return true;
             }
         };

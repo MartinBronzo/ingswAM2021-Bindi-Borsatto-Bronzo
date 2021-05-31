@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 class MyDropTargetListener extends DropTargetAdapter {
 
     private DropTarget dropTarget;
-    private MyDepotPanel p;
+    private JPanel p;
     private Consumer<Icon> makeCall;
 
     public MyDropTargetListener(MyDepotPanel panel) {
