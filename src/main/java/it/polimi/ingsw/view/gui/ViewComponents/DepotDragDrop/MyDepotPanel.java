@@ -10,7 +10,7 @@ import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyDepotPanel extends JPanel {
+public class MyDepotPanel extends JPanel implements Droppable {
     //TODO: ci sarà da stampare le risorse già presenti nel depot
     private int shelfNumber;
     /**
@@ -93,11 +93,13 @@ public class MyDepotPanel extends JPanel {
         return new Dimension(300, 300);
     }
 
+    @Override
     public void addDecision(Integer shelf, ResourceType res){
         Pair<Integer, ResourceType> decision = new Pair<>(shelf, res);
         this.resToDepot.add(decision);
     }
 
+    @Override
     public int getShelfNumber() {
         return shelfNumber;
     }
