@@ -148,6 +148,12 @@ public class GuiClient implements Runnable{
         return;
     }
 
+    public void quitCommand(){
+        PanelManager.getInstance().printLogout("Thanks for playing");
+        forceLogout.set(true);
+        threadReader.interrupt();
+    }
+
 
 
     /**
@@ -172,11 +178,11 @@ public class GuiClient implements Runnable{
                     throw new IOException();
                 responseMessage = gson.fromJson(response, ResponseMessage.class);
             } catch (IOException e) {
-                PanelManager.getInstance().forceLogout("the server is offline. Please try restart the game.");
+                PanelManager.getInstance().printLogout("the server is offline. Please try restart the game.");
                 forceLogout.set(true);
                 threadReader.interrupt();
             } catch (com.google.gson.JsonSyntaxException gsone){
-                PanelManager.getInstance().forceLogout("serverError formatting communication");
+                PanelManager.getInstance().printLogout("serverError formatting communication");
                 forceLogout.set(true);
                 threadReader.interrupt();
             } finally {
@@ -188,7 +194,7 @@ public class GuiClient implements Runnable{
                         sendMessage(new Command("pingResponse"));
                         break;
                     case KICKEDOUT:
-                        PanelManager.getInstance().forceLogout("kicked out");
+                        PanelManager.getInstance().printLogout("kicked out");
                         forceLogout.set(true);
                         threadReader.interrupt();
                         break;

@@ -161,8 +161,17 @@ public final class PanelManager {
         gui.sendMessage(command);
     }
 
-    public void forceLogout(String logoutMessage) {
-        //TODO: print logout view
+    public void printLogout(String logoutMessage) {
+        infoDialog.setInfoMessage(logoutMessage);
+        infoDialog.setVisible(true);
+        visualizer.shutdown();
+        gameFrame.dispose();
+    }
+
+    /*method to be called when in a panel is called the quitCommand*/
+    public void manageLogoutCommand(){
+        writeMessage(new Command("quit"));
+        gui.quitCommand();
     }
 
     public void readMessage(ResponseMessage responseMessage) {
