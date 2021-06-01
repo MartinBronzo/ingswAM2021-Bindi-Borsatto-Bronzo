@@ -1,8 +1,5 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
-import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -11,20 +8,19 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
-import java.util.function.Consumer;
 
 /**
  * This class listens to whether a resources is drop to a depot which is actually a drag source.
  */
-public class UnWantedDropTargetInDepot extends DropTargetAdapter {
+public class UnWantedDropTarget extends DropTargetAdapter {
 
     private DropTarget dropTarget;
     private JPanel p;
-    private Consumer<Icon> makeCall;
-    private DropChecker checkDrop;
-    private DepotDrag depot;
+    //private Consumer<Icon> makeCall;
+    //private DropChecker checkDrop;
+    private DragUpdatable depot;
 
-    public UnWantedDropTargetInDepot(JPanel panel, DepotDrag depot) {
+    public UnWantedDropTarget(JPanel panel, DragUpdatable depot) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         this.depot = depot;
@@ -43,25 +39,26 @@ public class UnWantedDropTargetInDepot extends DropTargetAdapter {
 
                 if (ico != null) {
                     ImageIcon image = (ImageIcon) ico;
-                    switch (image.getDescription()){
+                    /*switch (image.getDescription()){
                         //TODO: questo metodo dipende molto dal fatto che su i singoli shelf ci siano solo risorse dello stesso tipo, come renderlo più estendibile?
                         //Guarda setResourceVisibleInShelf(): cerca un qualsiasi elemento invisibile e lo setta a true, se ci fossero elementi di tipi diversi questo
                         //darebbe problemi. Questa soluzione non è molto omogenea perché da altri parti NON abbiamo supposto che su un solo scaffale ci potessero
                         //stare risorse diverse
                         case "1":
                             System.out.println(1);
-                            depot.setResourceVisibleInShelf(1);
+                            depot.undoDrag("1");
                             break;
                         case "2":
                             System.out.println(2);
-                            depot.setResourceVisibleInShelf(2);
+                            depot.undoDrag("2");
                             break;
                         case "3":
                             System.out.println(3);
-                            depot.setResourceVisibleInShelf(3);
+                            depot.undoDrag("3");
 
                             break;
-                    }
+                    }*/
+                    depot.undoDrag(image.getDescription());
                 }
             } else {
                 System.out.println("Drop rejected");

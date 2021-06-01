@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * This panel represents a depot where we can drag the resources from the shelves.
  */
-public class DepotDrag extends JPanel {
+public class DepotDrag extends JPanel implements DragUpdatable{
     private List<ShelfDrag> shelves;
 
     public DepotDrag(){
@@ -22,24 +22,24 @@ public class DepotDrag extends JPanel {
         this.shelves = new ArrayList<>();
 
         ShelfDrag shelf = new ShelfDrag(1);
-        //new UnWantedDropTargetInDepot(shelf);
+        //new UnWantedDropTarget(shelf);
         this.shelves.add(shelf);
         this.add(shelf);
 
         shelf = new ShelfDrag(2);
-        //new UnWantedDropTargetInDepot(shelf);
+        //new UnWantedDropTarget(shelf);
         this.shelves.add(shelf);
         this.add(shelf);
 
         shelf = new ShelfDrag(3);
-        //new UnWantedDropTargetInDepot(shelf);
+        //new UnWantedDropTarget(shelf);
         this.shelves.add(shelf);
         this.add(shelf);
     }
 
     public void initDepotDrag() {
         for (ShelfDrag s : this.shelves) {
-            new UnWantedDropTargetInDepot(s, this);
+            new UnWantedDropTarget(s, this);
             s.setDlistener(this);
         }
 
@@ -54,12 +54,13 @@ public class DepotDrag extends JPanel {
         }
     }
 
-    public void setResourceVisibleInShelf(int shelf){
-        this.shelves.get(shelf - 1).setResourceVisible();
+    public void undoDrag(String shelf){
+        this.shelves.get(Integer.parseInt(shelf) - 1).setResourceVisible();
     }
 
-    public void updateResourceRemovedCounterInShelf(int shelf){
-        this.shelves.get(shelf - 1).updateResourcesRemovedCounter();
+    @Override
+    public void updateAfterDragBegin(String info){
+        this.shelves.get(Integer.parseInt(info) - 1).updateResourcesRemovedCounter();
     }
 
     //For testing purposes
