@@ -1,16 +1,12 @@
 package it.polimi.ingsw.view.gui.panels;
 
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CardCheckbox extends JPanel {
     List<JCheckBox> checkBoxList;
-    String checkBoxText;
 
     /**
      * Prints the images of the leaderCards in a horizontal list

@@ -22,12 +22,12 @@ public class Test {
 
     public static void main(String[] args) {
         //createAndShowJFrame();
-        //createAndShowJFrameWithChecksAdded();
+        createAndShowJFrameWithChecksAdded();
         //createAndShowJFrameWithResourcesInside();
         //checkTrashCanDrop();
         //checkStrongBoxCanDrop();
         //checkDepotDrag();
-        checkLimitedResDrag();
+        //checkLimitedResDrag();
     }
 
     public static void createAndShowJFrame() {
