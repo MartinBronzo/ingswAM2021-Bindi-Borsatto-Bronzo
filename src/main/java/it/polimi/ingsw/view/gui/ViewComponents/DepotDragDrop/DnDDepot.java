@@ -7,7 +7,7 @@ import javax.swing.*;
  */
 public class DnDDepot extends JPanel {
     DepotDrop depot;
-    ResourcesPanel resources;
+    InfiniteResourcesDrag resources;
 
     public DnDDepot(){
         super();
@@ -18,7 +18,7 @@ public class DnDDepot extends JPanel {
         this.add(depot);
 
         try {
-            this.add(new ResourcesPanel());
+            this.add(new InfiniteResourcesDrag());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

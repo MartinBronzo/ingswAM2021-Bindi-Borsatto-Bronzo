@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
 
+//TODO: ci sarà da fare una checkDropIndepot simile a questa ma senza il controllo sulle resource to take
 public class CheckDropAtBeginningDecisionsTime implements DropChecker {
     private DepotDrop depot;
 
@@ -15,7 +16,7 @@ public class CheckDropAtBeginningDecisionsTime implements DropChecker {
     @Override
     public boolean test(JPanel jPanel) throws IllegalActionException {
         PanelManager manager = PanelManager.getInstance();
-        MyDepotPanel depotPanel = (MyDepotPanel) jPanel;
+        ShelfDrop depotPanel = (ShelfDrop) jPanel;
         //Checks whether the user has already specified all the resources they are supposed to
         if(depot.getDecisions().size() == manager.getResourcesToTake())
             if(manager.getResourcesToTake() > 0)

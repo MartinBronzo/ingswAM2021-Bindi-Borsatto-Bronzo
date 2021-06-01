@@ -68,6 +68,7 @@ public class MyDropTargetListener extends DropTargetAdapter {
                     }
                 }
             } else {
+                System.out.println("Drop rejected");
                 event.rejectDrop();
             }
         } catch (Exception e) {

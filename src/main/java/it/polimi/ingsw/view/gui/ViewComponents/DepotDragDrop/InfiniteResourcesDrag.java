@@ -5,13 +5,13 @@ import javax.swing.border.TitledBorder;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 
-public class ResourcesPanel extends JPanel {
+public class InfiniteResourcesDrag extends JPanel {
     private JLabel label1;
     private JLabel label2;
     private JLabel label3;
     private JLabel label4;
 
-    public ResourcesPanel(){
+    public InfiniteResourcesDrag(){
         super();
         this.setBorder(new TitledBorder("Drag Resources from here to the Depot above"));
 

@@ -1,7 +1,7 @@
-package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
-
+package it.polimi.ingsw.view.gui.ViewComponents;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -9,7 +9,15 @@ import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.io.IOException;
 
-public class MyDragGestureListener implements DragGestureListener {
+/**
+ * This class makes the label being dragged invisible in its origin panel
+ */
+public class DragGestureListenerOneShot implements DragGestureListener {
+    private DepotDrag depot;
+
+    public DragGestureListenerOneShot(DepotDrag depotDrag){
+        this.depot = depotDrag;
+    }
 
     @Override
     public void dragGestureRecognized(DragGestureEvent event) {
@@ -37,7 +45,9 @@ public class MyDragGestureListener implements DragGestureListener {
             }
         };
         System.out.println("Drag to start");
+        label.setVisible(false);
+        ImageIcon image = (ImageIcon) ico;
+        this.depot.updateResourceRemovedCounterInShelf(Integer.parseInt(image.getDescription()));
         event.startDrag(null, transferable);
     }
 }
-

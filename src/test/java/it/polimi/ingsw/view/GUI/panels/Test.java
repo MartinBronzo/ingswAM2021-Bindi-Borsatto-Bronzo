@@ -2,17 +2,16 @@ package it.polimi.ingsw.view.GUI.panels;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
-import it.polimi.ingsw.view.gui.ViewComponents.CheckTrashCanDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
-import it.polimi.ingsw.view.gui.ViewComponents.DiscardedResDrop;
-import it.polimi.ingsw.view.gui.ViewComponents.StrongBoxDrop;
-import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -25,7 +24,8 @@ public class Test {
         //createAndShowJFrameWithChecksAdded();
         //createAndShowJFrameWithResourcesInside();
         //checkTrashCanDrop();
-        checkStrongBoxCanDrop();
+        //checkStrongBoxCanDrop();
+        checkDepotDrag();
     }
 
     public static void createAndShowJFrame() {
@@ -120,7 +120,7 @@ public class Test {
         trashCan.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
         frame.add(trashCan, BorderLayout.CENTER);
         frame.setTitle("Trash Can test");
-        ResourcesPanel res = new ResourcesPanel();
+        InfiniteResourcesDrag res = new InfiniteResourcesDrag();
         frame.add(res, BorderLayout.PAGE_END);
         frame.pack();
         frame.setVisible(true);
@@ -135,10 +135,50 @@ public class Test {
         strongBoxDrop.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
         frame.add(strongBoxDrop, BorderLayout.CENTER);
         frame.setTitle("StrongBox test");
-        ResourcesPanel res = new ResourcesPanel();
+        InfiniteResourcesDrag res = new InfiniteResourcesDrag();
         frame.add(res, BorderLayout.PAGE_END);
         frame.pack();
         frame.setVisible(true);
+
+    }
+
+    public static void checkDepotDrag(){
+        SwingUtilities.invokeLater(() -> {
+
+            PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+            Player player = new Player();
+            player.setNickName("Obi-Wan");
+            player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+            player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+            player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+            Game game = new Game();
+            game.addPlayer(player);
+            panelManager.setGameModel(game);
+            panelManager.setResourcesToTake(2);
+            panelManager.setNickname("Obi-Wan");
+
+            //JFrame frame = createJFrame();
+            JFrame frame = new JFrame();
+            frame.setLayout(new BorderLayout());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            DepotDrag depot = new DepotDrag();
+            depot.initDepotDrag();
+            frame.add(depot, BorderLayout.CENTER);
+            StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
+            strongBoxDrop.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
+            frame.add(strongBoxDrop, BorderLayout.PAGE_END);
+            SubmitButton submitButton = new SubmitButton("confirm");
+            submitButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    depot.printChoices();
+                }
+            });
+            frame.add(submitButton, BorderLayout.LINE_END);
+            frame.setTitle("Depot drag test");
+            frame.pack();
+            frame.setVisible(true);
+        });
 
     }
 }
@@ -189,15 +229,15 @@ public class Test {
         JPanel panelContainer = new JPanel();
         panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 
-        MyDepotPanel panel1 = createEmptyJPanel(1);
+        ShelfDrop panel1 = createEmptyJPanel(1);
         new MyDropTargetListener(panel1);//this must be done or we wont be able to drop any image onto the empty panel
         panelContainer.add(panel1);
 
-        MyDepotPanel panel2 = createEmptyJPanel(2);
+        ShelfDrop panel2 = createEmptyJPanel(2);
         new MyDropTargetListener(panel2);//this must be done or we wont be able to drop any image onto the empty panel
         panelContainer.add(panel2);
 
-        MyDepotPanel panel3 = createEmptyJPanel(3);
+        ShelfDrop panel3 = createEmptyJPanel(3);
         new MyDropTargetListener(panel3);//this must be done or we wont be able to drop any image onto the empty panel
         panelContainer.add(panel3);
 
@@ -218,11 +258,11 @@ public class Test {
 
         frame.setTitle("Test");
 
-        MyDepotPanel panel = createEmptyJPanel(1);
+        ShelfDrop panel = createEmptyJPanel(1);
         new MyDropTargetListener(panel);//this must be done or we wont be able to drop any image onto the empty panel
-        MyDepotPanel panel2 = createEmptyJPanel(2);
+        ShelfDrop panel2 = createEmptyJPanel(2);
         new MyDropTargetListener(panel2);//this must be done or we wont be able to drop any image onto the empty panel
-        MyDepotPanel panel3 = createEmptyJPanel(3);
+        ShelfDrop panel3 = createEmptyJPanel(3);
         new MyDropTargetListener(panel3);//this must be done or we wont be able to drop any image onto the empty panel
 
         frame.add(panel, BorderLayout.NORTH);
@@ -240,8 +280,8 @@ public class Test {
     }
 
 
-    private static MyDepotPanel createEmptyJPanel(int shelf) {
-        final MyDepotPanel p = new MyDepotPanel(shelf);
+    private static ShelfDrop createEmptyJPanel(int shelf) {
+        final ShelfDrop p = new ShelfDrop(shelf);
 
         p.setBorder(new TitledBorder("Drag Image onto this panel "+ shelf));
 
@@ -314,10 +354,10 @@ public class Test {
 class MyDropTargetListener extends DropTargetAdapter {
 
     private DropTarget dropTarget;
-    private MyDepotPanel p;
+    private ShelfDrop p;
     private Consumer<Icon> makeCall;
 
-    public MyDropTargetListener(MyDepotPanel panel) {
+    public MyDropTargetListener(ShelfDrop panel) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         makeCall = new RegisterDrop(panel);
@@ -388,7 +428,7 @@ class MyDragGestureListener implements DragGestureListener {
 }
 */
 /*
-class MyDepotPanel extends JPanel{
+class ShelfDrop extends JPanel{
     private int shelfNumber;
     /**
      * In each depot panel we have this resToDepot list which takes track of all the resources moved to this depot. When  the confirm
@@ -423,7 +463,7 @@ class MyDepotPanel extends JPanel{
         }
     }
 
-    public MyDepotPanel(int shelfNumber){
+    public ShelfDrop(int shelfNumber){
         super();
         this.shelfNumber = shelfNumber;
         resToDepot = new ArrayList<>();
@@ -463,9 +503,9 @@ class MyDepotPanel extends JPanel{
 }
 
 class RegisterDrop implements Consumer<Icon>{
-    private final MyDepotPanel panel;
+    private final ShelfDrop panel;
 
-    public RegisterDrop(MyDepotPanel panel){
+    public RegisterDrop(ShelfDrop panel){
         this.panel = panel;
     }
     @Override

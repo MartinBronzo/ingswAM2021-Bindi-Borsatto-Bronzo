@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDepotPanel;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

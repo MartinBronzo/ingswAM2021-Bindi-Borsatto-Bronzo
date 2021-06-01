@@ -10,7 +10,7 @@ import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyDepotPanel extends JPanel implements Droppable {
+public class ShelfDrop extends JPanel implements Droppable {
     //TODO: ci sarà da stampare le risorse già presenti nel depot
     private int shelfNumber;
     /**
@@ -46,7 +46,7 @@ public class MyDepotPanel extends JPanel implements Droppable {
         }
     }
 
-    public MyDepotPanel(int shelfNumber){
+    public ShelfDrop(int shelfNumber){
         super();
         this.shelfNumber = shelfNumber;
         resToDepot = new ArrayList<>();
@@ -79,7 +79,7 @@ public class MyDepotPanel extends JPanel implements Droppable {
                     e.printStackTrace();
                     return false;
                 }
-                MyDepotPanel.this.add(new JLabel(ico));
+                ShelfDrop.this.add(new JLabel(ico));
                 return true;
             }
         };

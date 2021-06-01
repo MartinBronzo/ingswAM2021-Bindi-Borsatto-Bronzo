@@ -12,7 +12,7 @@ public class RegisterDrop implements Consumer<Icon> {
     }
     @Override
     public void accept(Icon icon) {
-        //TODO: controllare che non si possano aggiungere più risorse di quanto sia lo spazio libero (le risorse presenti saranno visualizzate da - e forse salvate nel - MyDepotPanel: guardare lì per capire quante risorse l'utente può mettere)
+        //TODO: controllare che non si possano aggiungere più risorse di quanto sia lo spazio libero (le risorse presenti saranno visualizzate da - e forse salvate nel - ShelfDrop: guardare lì per capire quante risorse l'utente può mettere)
         switch (icon.toString()){
             case "src/main/resources/coins small.png":
                 dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.COIN);

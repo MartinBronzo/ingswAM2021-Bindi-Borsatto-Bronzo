@@ -26,7 +26,7 @@ public class CollectBeginningChoices implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         System.out.println("Clicked!");
         //Collects the DepotChoices
-        List<MyDepotPanel.Pair<Integer, ResourceType>> depotDecisions = this.depotDrop.getDecisions();
+        List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions = this.depotDrop.getDecisions();
 
         List<DepotParams> depotInfo = this.getDepotInfoForModel(depotDecisions);
 
@@ -43,13 +43,13 @@ public class CollectBeginningChoices implements ActionListener {
         this.depotDrop.resetState();
     }
 
-    private List<DepotParams> getDepotInfoForModel(List<MyDepotPanel.Pair<Integer, ResourceType>> depotDecisions){
-        List<MyDepotPanel.Pair<Integer, ResourceType>> someChoices;
+    private List<DepotParams> getDepotInfoForModel(List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions){
+        List<ShelfDrop.Pair<Integer, ResourceType>> someChoices;
         int quantity;
         List<DepotParams> result = new ArrayList<>();
 
         //Gets how many shelves are there
-        List<Integer> presentShelves = depotDecisions.stream().map(MyDepotPanel.Pair::getKey).distinct().collect(Collectors.toList());
+        List<Integer> presentShelves = depotDecisions.stream().map(ShelfDrop.Pair::getKey).distinct().collect(Collectors.toList());
 
         //For each shelves we blend the many decisions
         for(Integer i: presentShelves){

@@ -1,13 +1,9 @@
 package it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDepotPanel;
-import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
-import java.util.List;
 
 public class CheckBaseProd implements DropChecker {
     DragAndDropBaseProd dragAndDropBaseProd;

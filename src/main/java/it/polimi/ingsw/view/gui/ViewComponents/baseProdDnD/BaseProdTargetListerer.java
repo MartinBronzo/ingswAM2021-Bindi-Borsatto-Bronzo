@@ -1,6 +1,6 @@
 /*package it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD;
 
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDepotPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ShelfDrop;
 
 import javax.swing.*;
 import java.awt.*;

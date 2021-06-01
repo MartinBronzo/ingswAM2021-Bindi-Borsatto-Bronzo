@@ -3,16 +3,15 @@ package it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ResourcesPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.InfiniteResourcesDrag;
 
-import javax.sound.sampled.BooleanControl;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DragAndDropBaseProd extends JPanel {
-    private ResourcesPanel resourcesPanel;
+    private InfiniteResourcesDrag infiniteResourcesDrag;
     private List<MyDropTargetListener> targetListeners;
     private BaseProdPanel input1;
     private BaseProdPanel input2;
@@ -24,8 +23,8 @@ public class DragAndDropBaseProd extends JPanel {
 
         this.targetListeners = new ArrayList<>();
 
-        resourcesPanel = new ResourcesPanel();
-        this.add(resourcesPanel);
+        infiniteResourcesDrag = new InfiniteResourcesDrag();
+        this.add(infiniteResourcesDrag);
 
         //panel that contains all the components for the base production
         JPanel prodPanel = new JPanel();
