@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
+import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -12,6 +13,8 @@ import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
 
@@ -22,12 +25,47 @@ public class Test {
 
     public static void main(String[] args) {
         //createAndShowJFrame();
-        createAndShowJFrameWithChecksAdded();
+        //createAndShowJFrameWithChecksAdded();
         //createAndShowJFrameWithResourcesInside();
         //checkTrashCanDrop();
         //checkStrongBoxCanDrop();
         //checkDepotDrag();
         //checkLimitedResDrag();
+        showSetBeginningDecisionsPanel();
+    }
+
+    public static void showSetBeginningDecisionsPanel(){
+        SwingUtilities.invokeLater(() -> {
+            final int resToTake = 2;
+            final int leaderToDiscard = 2;
+
+            PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+            Player player = new Player();
+            player.setNickName("Obi-Wan");
+            player.addDepotShelf(new DepotShelf(null, 0));
+            player.addDepotShelf(new DepotShelf(null, 0));
+            player.addDepotShelf(new DepotShelf(null, 0));
+            Game game = new Game();
+            game.addPlayer(player);
+            panelManager.setGameModel(game);
+            panelManager.setResourcesToTake(resToTake);
+            panelManager.setNickname("Obi-Wan");
+
+            JFrame frame = new JFrame();
+            frame.setLayout(new BorderLayout());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            ArrayList<String> leaderList = new ArrayList<>();
+            leaderList.add("src/main/resources/PUNCHBOARD/cerchio1.png");
+            leaderList.add("src/main/resources/PUNCHBOARD/cerchio2.png");
+            leaderList.add("src/main/resources/PUNCHBOARD/cerchio3.png");
+            leaderList.add("src/main/resources/PUNCHBOARD/cerchio4.png");
+
+            BeginningDecisionsPanel beginningDecisionsPanel = new BeginningDecisionsPanel(leaderList, resToTake, leaderToDiscard);
+            frame.add(beginningDecisionsPanel, BorderLayout.CENTER);
+            frame.setTitle("Depot test");
+            frame.pack();
+            frame.setVisible(true);
+        });
     }
 
     public static void createAndShowJFrame() {

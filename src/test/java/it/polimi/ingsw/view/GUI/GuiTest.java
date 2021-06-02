@@ -68,7 +68,7 @@ public class GuiTest {
         leaderList.add("src/main/resources/PUNCHBOARD/cerchio3.png");
         leaderList.add("src/main/resources/PUNCHBOARD/cerchio4.png");
 
-        BeginningDecisionsPanel beginningDecisionsPanel = new BeginningDecisionsPanel(gameFrame, leaderList);
+        BeginningDecisionsPanel beginningDecisionsPanel = new BeginningDecisionsPanel(leaderList, 2, 2);
         gameFrame.add(beginningDecisionsPanel);
     }
 
