@@ -34,10 +34,12 @@ public class EntryViewPanel extends JPanel {
      */
     public EntryViewPanel() throws IOException {
         super(new BorderLayout());
+        this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         color = new Color(206,98,49);
         this.setBackground(color);
 
         f = new Font(Font.SANS_SERIF, Font.BOLD | Font.ITALIC,30);
+        System.out.println(panelWidth);
         this.setSize(panelWidth, panelHeight);
 
         this.addMouseListener(new MouseListener() {
@@ -69,8 +71,21 @@ public class EntryViewPanel extends JPanel {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        this.add(entryPane, BorderLayout.NORTH);
+        this.add(entryPane, BorderLayout.PAGE_START);
         entryPane.setVisible(true);
+
+
+        instruction = new JTextPane();
+        instruction.setText("click to continue");
+        instruction.setEditable(false);
+        instruction.setSize(panelWidth, 500);
+        //instruction.setBounds(0, 0, panelWidth, 300);
+        instruction.setFont(f);
+        instruction.setBackground(color);
+        doc = instruction.getStyledDocument();
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        this.add(instruction, BorderLayout.PAGE_END);
+        instruction.setVisible(true);
 
         logo = new ImageIcon(logoPath);
         imageLabel = new JLabel("", logo, JLabel.CENTER);
@@ -79,15 +94,5 @@ public class EntryViewPanel extends JPanel {
         this.add(imageLabel, BorderLayout.CENTER);
         imageLabel.setVisible(true);
 
-        instruction = new JTextPane();
-        instruction.setText("click to continue");
-        instruction.setEditable(false);
-        instruction.setBounds(0, 0, panelWidth, 100);
-        instruction.setFont(f);
-        instruction.setBackground(color);
-        doc = instruction.getStyledDocument();
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        this.add(instruction, BorderLayout.SOUTH);
-        instruction.setVisible(true);
     }
 }

@@ -22,6 +22,7 @@ import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -124,7 +125,6 @@ public final class PanelManager {
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setResizable(false);
         gameFrame.setSize(600,600);
-        gameFrame.setLocation(400,20);
         gameFrame.setVisible(false);
     }
 
@@ -132,9 +132,9 @@ public final class PanelManager {
         /*Initializing frame, panels....*/
         gameFrame = new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setResizable(false);
-        gameFrame.setSize(600,600);
-        gameFrame.setLocation(400,20);
+        //gameFrame.setResizable(false);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        gameFrame.setSize(screenSize.width,screenSize.height-100);
 
         //TODO: add here dialog with gameframe owner
         loginDialog = new LoginDialog(gameFrame);
@@ -322,6 +322,14 @@ public final class PanelManager {
         //TODO: do things to remove manageStartView and setup new view
     }
 
+
+    public void printInfo(String info){
+        visualizer.submit(()->{
+            infoDialog.setInfoMessage(info);
+            infoDialog.setVisible(true);
+        });
+    }
+
     private void manageInfo(String responseContent) {
         visualizer.submit(()->{
             GeneralInfoStringMessage errorMessage = gson.fromJson(responseContent, GeneralInfoStringMessage.class);
@@ -330,6 +338,13 @@ public final class PanelManager {
             infoDialog.setVisible(true);
         });
 
+    }
+
+    public void printError(String error){
+        visualizer.submit(()->{
+            errorDialog.setErrorMessage(error);
+            errorDialog.setVisible(true);
+        });
     }
 
     private void manageError(String responseContent) {
