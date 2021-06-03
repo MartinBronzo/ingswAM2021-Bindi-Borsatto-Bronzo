@@ -84,7 +84,6 @@ public class DevGridPanel extends JPanel{
                 button.setText("Empty Deck");
             }else {
                 try {
-                    System.out.println(devCard.getUrl());
                     img = ImageIO.read(new File(directoryPath+devCard.getUrl()));
                     dimg = img.getScaledInstance(component.getWidth(), component.getHeight(), Image.SCALE_SMOOTH);
                     imageIcon = new ImageIcon(dimg);
