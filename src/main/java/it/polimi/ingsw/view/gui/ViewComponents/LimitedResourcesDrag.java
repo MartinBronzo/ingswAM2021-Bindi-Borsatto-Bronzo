@@ -48,7 +48,7 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
         }
     }
 
-    public void setDlistener(DepotDrag depot) {
+    /*public void setDlistener(DepotDrag depot) {
         this.dlistener = new DragGestureListenerOneShot(depot);
     }
 
@@ -61,7 +61,7 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
     //@Override
     public void updateAfterDragBegin(String info) {
         return;
-    }
+    }*/
 
     @Override
     public void updateAfterDrop(String info) {
