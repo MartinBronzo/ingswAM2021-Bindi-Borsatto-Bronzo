@@ -2,10 +2,12 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ShelfDrop;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class ShelfDrag extends JPanel {
     private List<JLabel> resources;
     private int resourceRemoved;
     DragGestureListenerOneShot dlistener;
+    //TODO: mettere i listiner più semplici, complicare le checkDrop
 
     public ShelfDrag(int shelfNumber){
         super();
@@ -68,6 +71,12 @@ public class ShelfDrag extends JPanel {
     //For testing purposes:
     public void printChoices(){
         System.out.println("From shelf " + this.shelfNumber + ", " + this.resourceRemoved + " removed");
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(new ImageIcon(ShelfDrop.getDepotFileName(shelfNumber)).getImage(), 100, 100, null);
     }
 
 }

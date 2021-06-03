@@ -110,7 +110,7 @@ public class ShelfDrop extends JPanel implements Droppable {
         g.drawImage(new ImageIcon(getDepotFileName(shelfNumber)).getImage(), 100, 100, null);
     }
 
-    private String getDepotFileName(int shelf){
+    public static String getDepotFileName(int shelf){
         switch (shelf){
             case 1:
                 return "src/main/resources/shelf 1.png";

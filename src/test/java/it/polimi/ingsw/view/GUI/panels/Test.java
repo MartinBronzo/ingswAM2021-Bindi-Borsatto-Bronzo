@@ -27,7 +27,8 @@ public class Test {
         //checkTrashCanDrop();
         //checkStrongBoxCanDrop();
         //checkDepotDrag();
-        checkLimitedResDrag();
+        //checkLimitedResDrag();
+        checkStrongBoxDrag();
     }
 
     public static void createAndShowJFrame() {
@@ -217,6 +218,25 @@ public class Test {
             frame.setVisible(true);
         });
 
+    }
+
+    public static void checkStrongBoxDrag(){
+        //JFrame frame = createJFrame();
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        StrongBoxDrag strongBox = new StrongBoxDrag();
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.STONE, 3);
+        strongBox.init(res, new MyDragGestureListener());
+        StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
+        strongBoxDrop.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
+        frame.add(strongBoxDrop, BorderLayout.PAGE_END);
+        frame.add(strongBox, BorderLayout.CENTER);
+        frame.setTitle("StrongBox drag test");
+        frame.pack();
+        frame.setVisible(true);
     }
 }
 /*

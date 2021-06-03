@@ -58,7 +58,7 @@ public class DepotDrag extends JPanel implements DragUpdatable{
         this.shelves.get(Integer.parseInt(shelf) - 1).setResourceVisible();
     }
 
-    @Override
+    //@Override
     public void updateAfterDragBegin(String info){
         this.shelves.get(Integer.parseInt(info) - 1).updateResourcesRemovedCounter();
     }
@@ -70,4 +70,8 @@ public class DepotDrag extends JPanel implements DragUpdatable{
     }
 
 
+    @Override
+    public void updateAfterDrop(String info) {
+
+    }
 }

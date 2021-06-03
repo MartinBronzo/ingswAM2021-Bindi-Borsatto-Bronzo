@@ -56,8 +56,13 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
         this.resources.stream().filter(x -> ((ImageIcon )x.getIcon()).getDescription().split(" ")[1].equals(rType)).filter(x -> !x.isVisible()).findAny().get().setVisible(true);
     }
 
-    @Override
+    //@Override
     public void updateAfterDragBegin(String info) {
         return;
+    }
+
+    @Override
+    public void updateAfterDrop(String info) {
+
     }
 }
