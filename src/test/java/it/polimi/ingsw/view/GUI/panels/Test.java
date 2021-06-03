@@ -29,7 +29,8 @@ public class Test {
         //checkDepotDrag();
         //checkLimitedResDrag();
         //checkStrongBoxDrag();
-        checkPanelDropStrongBoxDrag();
+        //checkPanelDropStrongBoxDrag();
+        checkPanelDepotDrag();
     }
 
     public static void createAndShowJFrame() {
@@ -121,7 +122,7 @@ public class Test {
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         DiscardedResDrop trashCan = new DiscardedResDrop();
-        trashCan.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
+        trashCan.setTargetListenerAndCheckDropFunction(new DumbCheckDrop());
         frame.add(trashCan, BorderLayout.CENTER);
         frame.setTitle("Trash Can test");
         InfiniteResourcesDrag res = new InfiniteResourcesDrag();
@@ -136,7 +137,7 @@ public class Test {
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
-        strongBoxDrop.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
+        strongBoxDrop.setTargetListenerAndCheckDropFunction(new DumbCheckDrop());
         frame.add(strongBoxDrop, BorderLayout.CENTER);
         frame.setTitle("StrongBox test");
         InfiniteResourcesDrag res = new InfiniteResourcesDrag();
@@ -169,7 +170,7 @@ public class Test {
             depot.initDepotDrag();
             frame.add(depot, BorderLayout.CENTER);
             StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
-            strongBoxDrop.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
+            strongBoxDrop.setTargetListenerAndCheckDropFunction(new DumbCheckDrop());
             frame.add(strongBoxDrop, BorderLayout.PAGE_END);
             SubmitButton submitButton = new SubmitButton("confirm");
             submitButton.addActionListener(new ActionListener() {
@@ -212,7 +213,7 @@ public class Test {
             limited.initLimitedResDrag(res);
             frame.add(limited, BorderLayout.CENTER);
             StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
-            strongBoxDrop.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
+            strongBoxDrop.setTargetListenerAndCheckDropFunction(new DumbCheckDrop());
             frame.add(strongBoxDrop, BorderLayout.PAGE_END);
             frame.setTitle("Limited res drag test");
             frame.pack();
@@ -232,7 +233,7 @@ public class Test {
         res.put(ResourceType.STONE, 3);
         strongBox.init(res, new MyDragGestureListener());
         StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
-        strongBoxDrop.setTargetListenerAndCheckDropFunction(new CheckTrashCanDrop());
+        strongBoxDrop.setTargetListenerAndCheckDropFunction(new DumbCheckDrop());
         frame.add(strongBoxDrop, BorderLayout.PAGE_END);
         frame.add(strongBox, BorderLayout.CENTER);
         frame.setTitle("StrongBox drag test");
@@ -262,6 +263,47 @@ public class Test {
         resToBeTaken.remove(ResourceType.SERVANT);
         CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
         RegisterDropInterface registerDrop = new RegisterLimitedDrop(checker, strongBox, new DepotDrag());
+        MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
+        pDrop.init(dListener);
+        frame.add(pDrop, BorderLayout.PAGE_END);
+
+        //Finishing it up
+        frame.setTitle("StrongBox drag & Panel Drop test");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkPanelDepotDrag(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Setting up the strongBox drag
+        DepotDrag depotDrag = new DepotDrag();
+        depotDrag.initDepotDrag();
+        frame.add(depotDrag, BorderLayout.CENTER);
+
+        //Setting up the PanelDrop
+        PanelDrop pDrop = new PanelDrop();
+        HashMap<ResourceType, Integer> resToBeTaken = new HashMap<>();
+        resToBeTaken.put(ResourceType.COIN, 1);
+        resToBeTaken.put(ResourceType.SERVANT, 1);
+        CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
+        RegisterDropInterface registerDrop = new RegisterLimitedDrop(checker, new StrongBoxDrag(), depotDrag);
         MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
         pDrop.init(dListener);
         frame.add(pDrop, BorderLayout.PAGE_END);

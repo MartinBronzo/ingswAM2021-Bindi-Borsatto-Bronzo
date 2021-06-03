@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ShelfDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.DragGestureListenerOneShot;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
@@ -13,11 +14,11 @@ import java.awt.dnd.DragSource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShelfDrag extends JPanel {
+public class ShelfDrag extends JPanel implements DragUpdatable{
     private int shelfNumber;
     private List<JLabel> resources;
     private int resourceRemoved;
-    DragGestureListenerOneShot dlistener;
+    MyDragGestureListener dlistener;
     //TODO: mettere i listiner più semplici, complicare le checkDrop
 
     public ShelfDrag(int shelfNumber){
@@ -36,7 +37,7 @@ public class ShelfDrag extends JPanel {
         DragSource ds;
         for(int i = 0; i < depotShelf.getQuantity(); i++){
             resource = new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType()));
-            resource.setDescription("" + this.shelfNumber);
+            resource.setDescription("depot " + depotShelf.getResourceType() + " " + this.shelfNumber );
             label = new JLabel(resource);
             this.resources.add(label);
             ds = new DragSource();
@@ -46,7 +47,32 @@ public class ShelfDrag extends JPanel {
         }
     }
 
-    public void setDlistener(DepotDrag depot) {
+    //For testing purposes:
+    public void printChoices(){
+        System.out.println("From shelf " + this.shelfNumber + ", " + this.resourceRemoved + " removed");
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(new ImageIcon(ShelfDrop.getDepotFileName(shelfNumber)).getImage(), 100, 100, null);
+    }
+
+    public void setDlistener() {
+        this.dlistener = new MyDragGestureListener();
+    }
+
+    @Override
+    public void updateAfterDrop(String info) {
+        JLabel draggedAway = this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get();
+        draggedAway.setVisible(false);
+    }
+
+
+
+
+
+   /* public void setDlistener(DepotDrag depot) {
         this.dlistener = new DragGestureListenerOneShot(depot);
     }
 
@@ -62,22 +88,13 @@ public class ShelfDrag extends JPanel {
 
     /**
      * Increases the number of resources removed by one unit.
-     */
+     *//*
     public void updateResourcesRemovedCounter(){
         //TODO: anche questo fa leva sul fatto che sul depot ci possono essere solo risorse dello steso tipo, come renderlo più estendibile? Con una mappa?
         this.resourceRemoved++;
-    }
+    }*/
 
-    //For testing purposes:
-    public void printChoices(){
-        System.out.println("From shelf " + this.shelfNumber + ", " + this.resourceRemoved + " removed");
-    }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(new ImageIcon(ShelfDrop.getDepotFileName(shelfNumber)).getImage(), 100, 100, null);
-    }
 
 }
 

@@ -42,7 +42,7 @@ public class CheckLimitedDrop implements DropChecker {
             resToBeTaken.remove(type);
             return false;
         }
-        oldNum = resToBeTaken.put(type, oldNum);
+        resToBeTaken.put(type, oldNum);
         return true;
     }
 }

@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.DragGestureListenerOneShot;
+import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.UnWantedDropTarget;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

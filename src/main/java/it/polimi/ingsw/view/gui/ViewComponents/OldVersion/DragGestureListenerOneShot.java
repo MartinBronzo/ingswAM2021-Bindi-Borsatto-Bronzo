@@ -1,4 +1,6 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.OldVersion;
+
+import it.polimi.ingsw.view.gui.ViewComponents.DragUpdatable;
 
 import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;

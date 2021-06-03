@@ -26,6 +26,8 @@ public class RegisterLimitedDrop implements RegisterDropInterface {
             case "strongbox":
                 strongBoxDrag.updateAfterDrop(infos[1]);
                 return;
+            case "depot":
+                depotDrag.updateAfterDrop(infos[1] + " " + infos[2]);
             default:
                 return;
         }
