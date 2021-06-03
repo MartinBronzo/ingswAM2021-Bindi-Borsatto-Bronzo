@@ -322,6 +322,12 @@ public final class PanelManager {
         //TODO: do things to remove manageStartView and setup new view
     }
 
+    public void printBuyCardDialog(int row, int col) throws IllegalArgumentException, IllegalStateException{
+        visualizer.submit(()->{
+            //TODO
+        });
+    }
+
 
     public void printInfo(String info){
         visualizer.submit(()->{

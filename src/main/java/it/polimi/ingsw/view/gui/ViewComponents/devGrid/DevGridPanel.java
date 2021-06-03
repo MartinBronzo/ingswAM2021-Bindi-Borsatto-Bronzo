@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class DevGridPanel extends JPanel{
     DevCard[][] devGrid;
-    private final String logoPath = "src/main/resources/logo.png";
+    private final String directoryPath = "src/main/resources/front/";
 
     public DevGridPanel(Board mainBoard){
         super(new GridLayout(3, 4, 10, 10));
@@ -43,8 +43,18 @@ public class DevGridPanel extends JPanel{
         for (int i = 0; i < this.devGrid.length; i++) {
             for (int j = 0; j < this.devGrid[i].length; j++) {
                 c = (1 + j + 4 * i);
+                int row = i;
+                int col = j;
                 button = new JButton(Integer.toString(c));
-                button.addActionListener(event -> {});
+                button.addActionListener(event -> {
+                    try {
+                        PanelManager.getInstance().printBuyCardDialog(row, col);
+                    }catch (IllegalArgumentException ae){
+                        PanelManager.getInstance().printError("You can't by this card");
+                    }catch (IllegalStateException se){
+                        PanelManager.getInstance().printError("You can't by a card now");
+                    }
+                });
                 this.add(button);
                 /*
                 dimg = img.getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
@@ -58,19 +68,38 @@ public class DevGridPanel extends JPanel{
 
     public void update(){
         BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(logoPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Image dimg;
-        ImageIcon logo = new ImageIcon(logoPath);
+        ImageIcon imageIcon;
         JButton button;
+        DevCard devCard;
+        int i=0;
+        int j=0;
         for (Component component:this.getComponents()){
-            dimg = img.getScaledInstance(component.getWidth(), component.getHeight(), Image.SCALE_SMOOTH);
-            logo = new ImageIcon(dimg);
+            System.out.println(i+","+j);
+            devCard = devGrid[i][j];
             button = (JButton)component;
-            button.setIcon(logo);
+
+            if (devCard == null){
+                button.setIcon(null);
+                button.setText("Empty Deck");
+            }else {
+                try {
+                    System.out.println(devCard.getUrl());
+                    img = ImageIO.read(new File(directoryPath+devCard.getUrl()));
+                    dimg = img.getScaledInstance(component.getWidth(), component.getHeight(), Image.SCALE_SMOOTH);
+                    imageIcon = new ImageIcon(dimg);
+                    button.setIcon(imageIcon);
+                } catch (IOException e) {
+                    button.setIcon(null);
+                    button.setText(devCard.toString());
+                }
+            }
+
+            j++;
+            if (j == this.devGrid[i].length) {
+                i++;
+                j = 0;
+            }
         }
 
     }
