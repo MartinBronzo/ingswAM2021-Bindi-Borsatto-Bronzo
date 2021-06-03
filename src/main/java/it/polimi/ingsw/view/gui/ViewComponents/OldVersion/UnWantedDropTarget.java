@@ -1,4 +1,6 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.OldVersion;
+
+import it.polimi.ingsw.view.gui.ViewComponents.DragUpdatable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,7 +60,7 @@ public class UnWantedDropTarget extends DropTargetAdapter {
 
                             break;
                     }*/
-                    depot.undoDrag(image.getDescription());
+                    //depot.undoDrag(image.getDescription());
                 }
             } else {
                 System.out.println("Drop rejected");

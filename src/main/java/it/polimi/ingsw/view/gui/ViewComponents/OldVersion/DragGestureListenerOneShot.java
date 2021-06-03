@@ -1,4 +1,6 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.OldVersion;
+
+import it.polimi.ingsw.view.gui.ViewComponents.DragUpdatable;
 
 import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;
@@ -20,7 +22,7 @@ public class DragGestureListenerOneShot implements DragGestureListener {
 
     @Override
     public void dragGestureRecognized(DragGestureEvent event) {
-        JLabel label = (JLabel) event.getComponent();
+        /*JLabel label = (JLabel) event.getComponent();
         final Icon ico = label.getIcon();
 
 
@@ -47,6 +49,6 @@ public class DragGestureListenerOneShot implements DragGestureListener {
         label.setVisible(false);
         ImageIcon image = (ImageIcon) ico;
         this.updatable.updateAfterDragBegin(image.getDescription());
-        event.startDrag(null, transferable);
+        event.startDrag(null, transferable);*/
     }
 }
