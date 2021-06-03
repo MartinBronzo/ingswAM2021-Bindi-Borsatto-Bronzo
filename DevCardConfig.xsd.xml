@@ -25,339 +25,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url1</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>PURPLE</Colour>
-        <VictoryPoints>3</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>3</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>BLUE</Colour>
-        <VictoryPoints>3</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>3</Quantity>
-            </Resource>
-        </Cost>
-        <url>url3</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>YELLOW</Colour>
-        <VictoryPoints>3</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>3</Quantity>
-            </Resource>
-        </Cost>
-        <url>url4</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>GREEN</Colour>
-        <VictoryPoints>4</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>PURPLE</Colour>
-        <VictoryPoints>4</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>BLUE</Colour>
-        <VictoryPoints>4</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>YELLOW</Colour>
-        <VictoryPoints>4</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>2</Level>
-        <Colour>GREEN</Colour>
-        <VictoryPoints>5</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>4</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>2</Level>
-        <Colour>PURPLE</Colour>
-        <VictoryPoints>5</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>4</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>2</Level>
-        <Colour>BLUE</Colour>
-        <VictoryPoints>5</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>4</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -383,7 +51,391 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-2-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>PURPLE</Colour>
+        <VictoryPoints>3</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>3</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-10-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>BLUE</Colour>
+        <VictoryPoints>1</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-3-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>YELLOW</Colour>
+        <VictoryPoints>1</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-4-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>BLUE</Colour>
+        <VictoryPoints>3</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>3</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-11-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>YELLOW</Colour>
+        <VictoryPoints>3</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>3</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-12-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>GREEN</Colour>
+        <VictoryPoints>4</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-13-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>PURPLE</Colour>
+        <VictoryPoints>4</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-14-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>BLUE</Colour>
+        <VictoryPoints>4</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-15-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>1</Level>
+        <Colour>YELLOW</Colour>
+        <VictoryPoints>4</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-16-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>2</Level>
+        <Colour>GREEN</Colour>
+        <VictoryPoints>5</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>STONE</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>SHIELD</Type>
+                <Quantity>4</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-17-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>2</Level>
+        <Colour>PURPLE</Colour>
+        <VictoryPoints>5</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>4</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-18-1.png</url>
+    </DevCard>
+
+    <!--DEVCARD-->
+    <DevCard>
+        <Level>2</Level>
+        <Colour>BLUE</Colour>
+        <VictoryPoints>5</VictoryPoints>
+        <ProductionInput>
+            <Resource>
+                <Type>SERVANT</Type>
+                <Quantity>1</Quantity>
+            </Resource>
+        </ProductionInput>
+        <ProductionOutput>
+            <Resource>
+                <Type>FAITHPOINT</Type>
+                <Quantity>2</Quantity>
+            </Resource>
+        </ProductionOutput>
+        <Cost>
+            <Resource>
+                <Type>COIN</Type>
+                <Quantity>4</Quantity>
+            </Resource>
+        </Cost>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-19-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -409,7 +461,7 @@
                 <Quantity>4</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-20-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -443,7 +495,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-21-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -477,7 +529,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-22-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -511,7 +563,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-23-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -545,7 +597,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-24-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -575,7 +627,7 @@
                 <Quantity>5</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-25-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -605,7 +657,7 @@
                 <Quantity>5</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-26-1.png </url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -635,7 +687,7 @@
                 <Quantity>5</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-27-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -665,7 +717,7 @@
                 <Quantity>5</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-28-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -699,33 +751,7 @@
                 <Quantity>3</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>BLUE</Colour>
-        <VictoryPoints>1</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>SHIELD</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>COIN</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-29-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -759,7 +785,7 @@
                 <Quantity>3</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-30-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -793,7 +819,7 @@
                 <Quantity>3</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-31-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -827,7 +853,7 @@
                 <Quantity>3</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-32-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -857,7 +883,7 @@
                 <Quantity>6</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-33-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -887,7 +913,7 @@
                 <Quantity>6</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-34-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -917,7 +943,7 @@
                 <Quantity>6</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-35-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -947,7 +973,7 @@
                 <Quantity>6</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-36-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -989,7 +1015,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-37-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1031,7 +1057,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-38-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1073,33 +1099,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
-    </DevCard>
-
-    <!--DEVCARD-->
-    <DevCard>
-        <Level>1</Level>
-        <Colour>YELLOW</Colour>
-        <VictoryPoints>1</VictoryPoints>
-        <ProductionInput>
-            <Resource>
-                <Type>SERVANT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionInput>
-        <ProductionOutput>
-            <Resource>
-                <Type>FAITHPOINT</Type>
-                <Quantity>1</Quantity>
-            </Resource>
-        </ProductionOutput>
-        <Cost>
-            <Resource>
-                <Type>STONE</Type>
-                <Quantity>2</Quantity>
-            </Resource>
-        </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-39-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1141,7 +1141,7 @@
                 <Quantity>2</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-40-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1171,7 +1171,7 @@
                 <Quantity>7</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-41-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1201,7 +1201,7 @@
                 <Quantity>7</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-42-1.png </url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1231,7 +1231,7 @@
                 <Quantity>7</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-43-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1261,7 +1261,7 @@
                 <Quantity>7</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-44-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1295,7 +1295,7 @@
                 <Quantity>4</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-45-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1329,7 +1329,7 @@
                 <Quantity>4</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-46-1.png </url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1363,7 +1363,7 @@
                 <Quantity>4</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-47-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1397,7 +1397,7 @@
                 <Quantity>4</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-48-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1431,7 +1431,7 @@
                 <Quantity>1</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-5-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1465,7 +1465,7 @@
                 <Quantity>1</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-6-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1499,7 +1499,7 @@
                 <Quantity>1</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-7-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1533,7 +1533,7 @@
                 <Quantity>1</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-8-1.png</url>
     </DevCard>
 
     <!--DEVCARD-->
@@ -1567,7 +1567,7 @@
                 <Quantity>3</Quantity>
             </Resource>
         </Cost>
-        <url>url2</url>
+        <url>Masters of Renaissance_Cards_FRONT_3mmBleed_1-9-1.png</url>
     </DevCard>
 
 </DevCardConfig>

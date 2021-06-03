@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.panels;
 
+import it.polimi.ingsw.view.readOnlyModel.Board;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,13 +14,14 @@ import java.util.List;
  * This panel shows the panel of the playerBoard of the selected player in the JComboBox
  */
 public class MainPanel extends JPanel {
+    ActualPlayerBoardPanel actualPlayerBoardPanel;
 
     /**
      * shows dynamically the playerboard of the selected player
      * @param playersNicks list of names of all the players in the game
-     * @param guisPlayerName the name of the player that controls the GUI
+     * @param actualPlayerName the name of the player that controls the GUI
      */
-    public MainPanel(List<String> playersNicks, String guisPlayerName) {
+    public MainPanel(List<String> playersNicks, String actualPlayerName, Board mainBoard) {
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -27,8 +30,8 @@ public class MainPanel extends JPanel {
 
         //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
         //adds first the actual player because this is the default value of the component
-        /*ActualPlayerBoardPanel actualPlayerBoardPanel = new ActualPlayerBoardPanel();
-        playerBoardPanel.add(actualPlayerBoardPanel, playerName);*/
+        actualPlayerBoardPanel = new ActualPlayerBoardPanel(mainBoard);
+        playerBoardPanel.add(actualPlayerBoardPanel, actualPlayerName);
 
         //TODO: questa è una prova, cancellabile
         /*JPanel prova2 = new JPanel();
@@ -45,14 +48,14 @@ public class MainPanel extends JPanel {
 
         for (String playerName : playersNicks) {
             //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
-            if (!playerName.equals(guisPlayerName)) {
+            if (!playerName.equals(actualPlayerName)) {
                 /*OthersPlayerBoardPanel othersPlayerBoardPanel = new OthersPlayerBoardPanel();
                 playerBoardPanel.add(othersPlayerBoardPanel, playerName);*/
 
                 //TODO: questa è una prova, cancellabile
-                /*JPanel prova1 = new JPanel();
+                JPanel prova1 = new JPanel();
                 prova1.add(new JLabel("prova panel 1"));
-                playerBoardPanel.add(prova1, playerName);*/
+                playerBoardPanel.add(prova1, playerName);
             }
         }
 
@@ -71,5 +74,8 @@ public class MainPanel extends JPanel {
         this.add(comboBox);
     }
 
+    public void updateGridView(int width, int height){
+        actualPlayerBoardPanel.updateGridView(width, height);
+    }
 
 }

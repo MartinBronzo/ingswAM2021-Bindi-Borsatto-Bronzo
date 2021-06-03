@@ -55,8 +55,7 @@ public class CollectBeginningChoices implements ActionListener {
         leaderChoices.addAll(cardCheckbox2.getSelectedLeaderIndexes().stream().map(x -> x + 2).collect(Collectors.toList()));
         if (leaderChoices.size() == numLeaders) {
             Message message = new DiscardLeaderAndExtraResBeginningMessage(leaderChoices, depotInfo);
-            //TODO: da rimettere
-            //PanelManager.getInstance().writeMessage(new Command("discardLeaderAndExtraResBeginning", message));
+            PanelManager.getInstance().writeMessage(new Command("discardLeaderAndExtraResBeginning", message));
 
             //Resets the inner state
             this.depotDrop.resetState();

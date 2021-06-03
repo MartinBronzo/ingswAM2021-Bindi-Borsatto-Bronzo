@@ -4,10 +4,7 @@ import it.polimi.ingsw.view.gui.ViewComponents.BackButton;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.CheckBaseProd;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.DragAndDropBaseProd;
-import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
-import it.polimi.ingsw.view.gui.panels.CardCheckbox;
-import it.polimi.ingsw.view.gui.panels.MoveResourceChoice;
-import it.polimi.ingsw.view.gui.panels.MainPanel;
+import it.polimi.ingsw.view.gui.panels.*;
 import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
 import it.polimi.ingsw.view.gui.ViewComponents.UndoButton;
 
@@ -27,8 +24,8 @@ public class GuiTest {
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setResizable(true);
 
-        gameFrame.setSize(600,600);
-        gameFrame.setLocation(400,20);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        gameFrame.setSize(screenSize.width, screenSize.height - 100);
         gameFrame.validate();
 
         //addInstructionPanel();
@@ -45,8 +42,14 @@ public class GuiTest {
         //test for base production
         //baseProduction();
 
+        //test change of player view
+        //seeOthersPlayers();
+
         //test for setBeginning resources
-        setBeginningResources();
+        //setBeginningResources();
+
+        //test main panel
+        //showPlayerBoard();
 
         //printButtons(gameFrame);
         gameFrame.setVisible(true);
@@ -56,10 +59,15 @@ public class GuiTest {
         System.out.println(check.getSelectedLeaderIndexes());*/
 
         //test for base production choices
-        Thread.sleep(5000);
-        System.out.println("input: " + dragAndDropBaseProd.getInputs() + " output: " + dragAndDropBaseProd.getOutput());
+        /*Thread.sleep(5000);
+        System.out.println("input: " + dragAndDropBaseProd.getInputs() + " output: " + dragAndDropBaseProd.getOutput());*/
 
     }
+
+    /*private static void showPlayerBoard() {
+        ActualPlayerBoardPanel actualPlayerBoardPanel = new ActualPlayerBoardPanel();
+        gameFrame.add(actualPlayerBoardPanel);
+    }*/
 
     private static void setBeginningResources() {
         ArrayList<String> leaderList = new ArrayList<>();
@@ -120,7 +128,7 @@ public class GuiTest {
         gameFrame.add(panel);
     }
 
-    private static void seeOthersPlayers(){
+    /*private static void seeOthersPlayers(){
         List<String> playersNames = new ArrayList<>();
         playersNames.add("satto");
         playersNames.add("ludo");
@@ -128,7 +136,7 @@ public class GuiTest {
 
         MainPanel mainPanel = new MainPanel(playersNames, "satto");
         gameFrame.add(mainPanel);
-    }
+    }*/
 
     private static void baseProduction(){
         dragAndDropBaseProd = new DragAndDropBaseProd();

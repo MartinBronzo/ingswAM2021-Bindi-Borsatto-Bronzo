@@ -1,29 +1,39 @@
 package it.polimi.ingsw.view.GUI.panels;
 
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
+import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
+import it.polimi.ingsw.view.gui.panels.ActualPlayerBoardPanel;
 import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
+import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
+import org.xml.sax.SAXException;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * THIS IS A TEST FOR THE BEGINNING DECISIONS DEPOT DRAG & DROP
  */
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
         //createAndShowJFrame();
         //createAndShowJFrameWithChecksAdded();
         //createAndShowJFrameWithResourcesInside();
@@ -31,7 +41,8 @@ public class Test {
         //checkStrongBoxCanDrop();
         //checkDepotDrag();
         //checkLimitedResDrag();
-        showSetBeginningDecisionsPanel();
+        //showSetBeginningDecisionsPanel();
+        showPlayerBoards();
     }
 
     public static void showSetBeginningDecisionsPanel(){
@@ -55,10 +66,10 @@ public class Test {
             frame.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             ArrayList<String> leaderList = new ArrayList<>();
-            leaderList.add("src/main/resources/PUNCHBOARD/cerchio1.png");
-            leaderList.add("src/main/resources/PUNCHBOARD/cerchio2.png");
-            leaderList.add("src/main/resources/PUNCHBOARD/cerchio3.png");
-            leaderList.add("src/main/resources/PUNCHBOARD/cerchio4.png");
+            leaderList.add("src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-61-1.png");
+            leaderList.add("src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-61-1.png");
+            leaderList.add("src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-61-1.png");
+            leaderList.add("src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-61-1.png");
 
             BeginningDecisionsPanel beginningDecisionsPanel = new BeginningDecisionsPanel(leaderList, resToTake, leaderToDiscard);
             frame.add(beginningDecisionsPanel, BorderLayout.CENTER);
@@ -117,6 +128,29 @@ public class Test {
             frame.setVisible(true);
         });
 
+    }
+
+    public static void showPlayerBoards() throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException, InterruptedException {
+        Board board;
+        DevGrid devGrid;
+        File xmlDevCardsConfig;
+
+        xmlDevCardsConfig = new File("DevCardConfig.xsd.xml");
+        devGrid = new DevGrid(xmlDevCardsConfig);
+        DevCard[][] devMatrix = devGrid.getDevMatrix();
+        board = new Board();
+        board.setDevMatrix(devMatrix);
+
+        JFrame frame = new JFrame();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize(screenSize.width, screenSize.height - 100);
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ActualPlayerBoardPanel actualPlayerBoardPanel = new ActualPlayerBoardPanel(board);
+        actualPlayerBoardPanel.setSize(100,100);
+        frame.add(actualPlayerBoardPanel);
+        frame.setVisible(true);
+        actualPlayerBoardPanel.updateGridView(50,100);
     }
 
     public static void createAndShowJFrameWithResourcesInside(){

@@ -30,10 +30,9 @@ public class CardCheckbox extends JPanel {
         imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.LINE_AXIS));
 
         for(String leader : cardList){
-            //TODO: CHECK THIS
             //adds the image of the leadercard to the panel
             JLabel label = new JLabel();
-            label.setPreferredSize(new Dimension(50,50));
+            label.setPreferredSize(new Dimension(200,300));
 
             //scale image
             BufferedImage img = null;
@@ -42,7 +41,7 @@ public class CardCheckbox extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Image dimg = img.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+            Image dimg = img.getScaledInstance(200, 300, Image.SCALE_SMOOTH);
             ImageIcon icon = new ImageIcon(dimg);
             //ImageIcon icon = new ImageIcon(leader);
             label.setIcon(icon);

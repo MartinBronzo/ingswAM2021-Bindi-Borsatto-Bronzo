@@ -23,6 +23,7 @@ import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public final class PanelManager {
     private EntryViewPanel entryPanel;
     private WaitingRoomPanel waitingRoomPanel;
     private BeginningDecisionsPanel beginningDecisionsPanel;
+    private MainPanel mainPanel;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -128,7 +130,6 @@ public final class PanelManager {
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setResizable(false);
         gameFrame.setSize(600, 600);
-        gameFrame.setLocation(400, 20);
         gameFrame.setVisible(false);
     }
 
@@ -136,9 +137,9 @@ public final class PanelManager {
         /*Initializing frame, panels....*/
         gameFrame = new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setResizable(true);
-        gameFrame.setSize(600, 600);
-        gameFrame.setLocation(400, 20);
+        //gameFrame.setResizable(false);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        gameFrame.setSize(screenSize.width, screenSize.height - 100);
 
         //TODO: add here dialog with gameframe owner
         loginDialog = new LoginDialog(gameFrame);
@@ -325,10 +326,12 @@ public final class PanelManager {
             leaderUrls.add(leader.getUrl());
         beginningDecisionsPanel = new BeginningDecisionsPanel(leaderUrls, resourcesToTake, nLeadersToDiscard);
 
-        gameFrame.add(beginningDecisionsPanel);
-        gameFrame.validate();
-        waitingRoomPanel.setVisible(false);
-        beginningDecisionsPanel.setVisible(true);
+        visualizer.submit(() -> {
+            gameFrame.add(beginningDecisionsPanel);
+            //gameFrame.validate();
+            waitingRoomPanel.setVisible(false);
+            beginningDecisionsPanel.setVisible(true);
+        });
     }
 
     private void managePostStart(String responseContent) {
@@ -338,6 +341,33 @@ public final class PanelManager {
         }
 
         //TODO: do things to remove manageStartView and setup new view
+        List<String> nicknameList = new ArrayList<>();
+
+        for(Player player : gameModel.getPlayers())
+            nicknameList.add(player.getNickName());
+        mainPanel = new MainPanel(nicknameList, nickname, gameModel.getMainBoard());
+        gameFrame.add(mainPanel);
+
+        visualizer.submit(() -> {
+            beginningDecisionsPanel.setVisible(false);
+            mainPanel.setVisible(true);
+            mainPanel.updateGridView(50,100);
+        });
+
+    }
+
+    public void printBuyCardDialog(int row, int col) throws IllegalArgumentException, IllegalStateException {
+        visualizer.submit(() -> {
+            //TODO
+        });
+    }
+
+
+    public void printInfo(String info) {
+        visualizer.submit(() -> {
+            infoDialog.setInfoMessage(info);
+            infoDialog.setVisible(true);
+        });
     }
 
     private void manageInfo(String responseContent) {
@@ -348,6 +378,13 @@ public final class PanelManager {
             infoDialog.setVisible(true);
         });
 
+    }
+
+    public void printError(String error) {
+        visualizer.submit(() -> {
+            errorDialog.setErrorMessage(error);
+            errorDialog.setVisible(true);
+        });
     }
 
     private void manageError(String responseContent) {
