@@ -146,7 +146,7 @@ public class Test {
         frame.setSize(screenSize.width, screenSize.height - 100);
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        ActualPlayerBoardPanel actualPlayerBoardPanel = new ActualPlayerBoardPanel(board);
+        ActualPlayerBoardPanel actualPlayerBoardPanel = new ActualPlayerBoardPanel(board, new ArrayList<>(), new ArrayList<>());
         actualPlayerBoardPanel.setSize(100,100);
         frame.add(actualPlayerBoardPanel);
         frame.setVisible(true);

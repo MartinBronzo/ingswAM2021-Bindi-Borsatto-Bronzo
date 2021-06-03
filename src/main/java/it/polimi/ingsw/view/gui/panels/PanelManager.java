@@ -342,10 +342,13 @@ public final class PanelManager {
 
         //TODO: do things to remove manageStartView and setup new view
         List<String> nicknameList = new ArrayList<>();
-
-        for(Player player : gameModel.getPlayers())
+        Player actualPlayer = null;
+        for(Player player : gameModel.getPlayers()) {
+            if(player.getNickName().equals(nickname))
+                actualPlayer = player;
             nicknameList.add(player.getNickName());
-        mainPanel = new MainPanel(nicknameList, nickname, gameModel.getMainBoard());
+        }
+        mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
         gameFrame.add(mainPanel);
 
         visualizer.submit(() -> {

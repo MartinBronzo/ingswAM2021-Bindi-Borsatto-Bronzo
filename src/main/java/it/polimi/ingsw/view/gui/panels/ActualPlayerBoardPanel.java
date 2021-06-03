@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.panels;
 
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.view.gui.ViewComponents.LeaderCardPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 
@@ -10,17 +12,22 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ActualPlayerBoardPanel extends JPanel {
     DevGridPanel devGrid;
 
-    public ActualPlayerBoardPanel(Board mainBoard) {
+    public ActualPlayerBoardPanel(Board mainBoard, ArrayList<LeaderCard> activeLeaders, ArrayList<LeaderCard> unusedLeaders) {
         super();
 
         final int heightMargin = 300;
         ImageIcon image;
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+        LeaderCardPanel leaderCardPanel = new LeaderCardPanel(activeLeaders, unusedLeaders);
+        this.add(leaderCardPanel);
+
         JLabel playerBoardLabel = new JLabel();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //playerBoardLabel.setSize(screenSize.width / 2, screenSize.height - heightMargin);
@@ -49,7 +56,7 @@ public class ActualPlayerBoardPanel extends JPanel {
         this.add(righSidePanel);
     }
 
-    public void updateGridView(int width, int height){
+    public void updateGridView(int width, int height) {
         devGrid.update(width, height);
     }
 
@@ -64,6 +71,6 @@ public class ActualPlayerBoardPanel extends JPanel {
         Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(dimg);
         //ImageIcon icon = new ImageIcon(leader);
-        }
+    }
 
 }

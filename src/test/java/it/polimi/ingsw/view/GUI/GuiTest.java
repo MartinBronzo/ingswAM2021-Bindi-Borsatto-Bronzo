@@ -1,12 +1,11 @@
 package it.polimi.ingsw.view.GUI;
 
-import it.polimi.ingsw.view.gui.ViewComponents.BackButton;
-import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.CheckBaseProd;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.DragAndDropBaseProd;
 import it.polimi.ingsw.view.gui.panels.*;
-import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
-import it.polimi.ingsw.view.gui.ViewComponents.UndoButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,6 +50,9 @@ public class GuiTest {
         //test main panel
         //showPlayerBoard();
 
+        //test leaderCardPanel
+        leaderCardPanel();
+
         //printButtons(gameFrame);
         gameFrame.setVisible(true);
 
@@ -62,6 +64,17 @@ public class GuiTest {
         /*Thread.sleep(5000);
         System.out.println("input: " + dragAndDropBaseProd.getInputs() + " output: " + dragAndDropBaseProd.getOutput());*/
 
+    }
+
+    private static void leaderCardPanel() {
+        ArrayList<LeaderCard>activeLeaderCards = new ArrayList<>();
+        ArrayList<LeaderCard>discardedLeaderCards = new ArrayList<>();
+        discardedLeaderCards.add(new LeaderCard(3, new ArrayList<>(), new Effect(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-64-1.png"));
+        discardedLeaderCards.add(new LeaderCard(3, new ArrayList<>(), new Effect(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-63-1.png"));
+
+        LeaderCardPanel leaderCardPanel = new LeaderCardPanel(activeLeaderCards, discardedLeaderCards);
+        gameFrame.add(leaderCardPanel);
+        //gameFrame.setVisible(true);
     }
 
     /*private static void showPlayerBoard() {
