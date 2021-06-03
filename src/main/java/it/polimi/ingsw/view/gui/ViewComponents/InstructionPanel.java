@@ -12,7 +12,7 @@ public class InstructionPanel extends JPanel{
     public InstructionPanel() {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        this.setBackground(Color.YELLOW);
+        //this.setBackground(Color.YELLOW);
 
         l = new JLabel();
         c.fill = GridBagConstraints.RELATIVE;

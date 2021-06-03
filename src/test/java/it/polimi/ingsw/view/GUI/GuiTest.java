@@ -4,6 +4,7 @@ import it.polimi.ingsw.view.gui.ViewComponents.BackButton;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.CheckBaseProd;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.DragAndDropBaseProd;
+import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
 import it.polimi.ingsw.view.gui.panels.CardCheckbox;
 import it.polimi.ingsw.view.gui.panels.MoveResourceChoice;
 import it.polimi.ingsw.view.gui.panels.MainPanel;
@@ -42,7 +43,10 @@ public class GuiTest {
         //seeOthersPlayers();
 
         //test for base production
-        baseProduction();
+        //baseProduction();
+
+        //test for setBeginning resources
+        setBeginningResources();
 
         //printButtons(gameFrame);
         gameFrame.setVisible(true);
@@ -55,6 +59,17 @@ public class GuiTest {
         Thread.sleep(5000);
         System.out.println("input: " + dragAndDropBaseProd.getInputs() + " output: " + dragAndDropBaseProd.getOutput());
 
+    }
+
+    private static void setBeginningResources() {
+        ArrayList<String> leaderList = new ArrayList<>();
+        leaderList.add("src/main/resources/PUNCHBOARD/cerchio1.png");
+        leaderList.add("src/main/resources/PUNCHBOARD/cerchio2.png");
+        leaderList.add("src/main/resources/PUNCHBOARD/cerchio3.png");
+        leaderList.add("src/main/resources/PUNCHBOARD/cerchio4.png");
+
+        BeginningDecisionsPanel beginningDecisionsPanel = new BeginningDecisionsPanel(gameFrame, leaderList);
+        gameFrame.add(beginningDecisionsPanel);
     }
 
 

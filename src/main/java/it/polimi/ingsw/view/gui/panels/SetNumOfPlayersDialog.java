@@ -37,8 +37,7 @@ public class SetNumOfPlayersDialog extends JDialog {
                 int numOfPlayers = Integer.parseInt(textField.getText());
                 PanelManager.getInstance().writeMessage(new Command("setNumPlayer", new SetNumPlayerMessage(numOfPlayers)));
             }catch (NumberFormatException e){
-                //TODO: not a number error display
-                System.out.println("configure Game Text Field is not a number");
+                PanelManager.getInstance().printError("You must choice a number");
             }
         });
 

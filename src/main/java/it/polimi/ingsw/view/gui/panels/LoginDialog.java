@@ -31,7 +31,12 @@ public class LoginDialog extends JDialog {
             }
         });
         button = new JButton("Login");
-        button.addActionListener(event -> PanelManager.getInstance().writeMessage(new Command("login", new LoginMessage(textField.getText()))));
+        button.addActionListener(event -> {
+            if (textField.getText().equals(""))
+                PanelManager.getInstance().printError("Nick can't be empty");
+            else
+                PanelManager.getInstance().writeMessage(new Command("login", new LoginMessage(textField.getText())));
+        });
 
         this.setLayout( new FlowLayout() );
 
