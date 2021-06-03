@@ -1,10 +1,11 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
 
 import javax.swing.*;
 import java.util.function.Consumer;
 
-public class RegisterDrop implements Consumer<Icon> {
+public class RegisterDrop implements RegisterDropInterface {
     private final Droppable dropTarget;
 
     public RegisterDrop(Droppable dropTarget){

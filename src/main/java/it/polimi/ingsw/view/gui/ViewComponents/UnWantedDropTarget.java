@@ -58,7 +58,7 @@ public class UnWantedDropTarget extends DropTargetAdapter {
 
                             break;
                     }*/
-                    depot.undoDrag(image.getDescription());
+                    //depot.undoDrag(image.getDescription());
                 }
             } else {
                 System.out.println("Drop rejected");
