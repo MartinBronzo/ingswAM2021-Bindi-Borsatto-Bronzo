@@ -32,6 +32,7 @@ public class Test {
         //checkPanelDropStrongBoxDrag();
         //checkPanelDepotDrag();
         checkDepotNStrongBoxDrag();
+        //checkLimitedResDragNicer();
     }
 
     public static void createAndShowJFrame() {
@@ -211,7 +212,7 @@ public class Test {
             HashMap<ResourceType, Integer> res = new HashMap<>();
             res.put(ResourceType.COIN, 2);
             res.put(ResourceType.STONE, 3);
-            limited.initLimitedResDrag(res);
+            //limited.init(res);
             frame.add(limited, BorderLayout.CENTER);
             StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
             strongBoxDrop.setTargetListenerAndCheckDropFunction(new DumbCheckDrop());
@@ -364,6 +365,43 @@ public class Test {
         frame.pack();
         frame.setVisible(true);
     }
+
+
+    //TODO: finire questo mettendo a posto secondo la nuova configurazione dei drag and drop il DepotDragDrop package
+    // WORK IN PROGRESS
+    public static void checkLimitedResDragNicer(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the strongBox drag
+        LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.STONE, 3);
+        res.put(ResourceType.SERVANT, 1);
+        limitedResourcesDrag.init(res, new MyDragGestureListener());
+        frame.add(limitedResourcesDrag, BorderLayout.CENTER);
+
+        /***********Sistemare da qui in poi*****************/
+        //Setting up the PanelDrop
+        PanelDrop pDrop = new PanelDrop();
+        HashMap<ResourceType, Integer> resToBeTaken = new HashMap<>(res);
+        resToBeTaken.put(ResourceType.COIN, 1);
+        resToBeTaken.remove(ResourceType.SERVANT);
+        CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
+        //RegisterDropInterface registerDrop = new RegisterLimitedDrop(checker, strongBox, new DepotDrag());
+        //MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
+        //pDrop.init(dListener);
+        frame.add(pDrop, BorderLayout.PAGE_END);
+
+        //Finishing it up
+        frame.setTitle("StrongBox drag & Panel Drop test");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
 }
 /*
 package it.polimi.ingsw.view.GUI.panels;
