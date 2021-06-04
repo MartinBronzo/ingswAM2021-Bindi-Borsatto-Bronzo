@@ -267,7 +267,7 @@ public class ClientHandler implements Runnable {
                         }
                     }
                 }
-            }, 0, 30000);
+            }, 0, 3000);
         }
 
         while (keepRunning) {

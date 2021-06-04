@@ -157,6 +157,7 @@ public final class PanelManager {
         gameFrame.add(waitingRoomPanel);
         devCardCostPanel = new DevCardPanel1();
         gameFrame.add(devCardCostPanel);
+        devCardCostPanel.setVisible(false);
 
         gameFrame.validate();
 

@@ -132,7 +132,7 @@ public class GuiTest {
     private static void printButtons(JFrame f){
         JButton submit = new SubmitButton("Confirm");
         JButton back = new BackButton("Back");
-        JButton undo = new UndoButton("Undo");
+        JButton undo = new CancelButton("Undo");
 
         f.add(submit);
         f.add(back);
