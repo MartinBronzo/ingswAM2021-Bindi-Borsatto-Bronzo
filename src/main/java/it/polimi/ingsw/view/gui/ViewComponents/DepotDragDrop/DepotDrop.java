@@ -14,43 +14,43 @@ import java.util.List;
  * This class represents a Depot where the player can drop resources.
  */
 public class DepotDrop extends JPanel {
-    private List<ShelfDrop> depots;
+    private List<ShelfDrop> shelves;
     private List<MyDropTargetListener> targetListeners;
 
     public DepotDrop(){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        this.depots = new ArrayList<>();
+        this.shelves = new ArrayList<>();
         this.targetListeners = new ArrayList<>();
 
         ShelfDrop panel1 = new ShelfDrop(1);
         //this.targetListeners.add(new MyDropTargetListener(panel1, new RegisterDropFromInfiniteRes(panel1)));//this must be done or we wont be able to drop any image onto the empty panel
         this.add(panel1);
-        depots.add(panel1);
+        shelves.add(panel1);
 
         ShelfDrop panel2 = new ShelfDrop(2);
         //this.targetListeners.add(new MyDropTargetListener(panel2, new RegisterDropFromInfiniteRes(panel2)));//this must be done or we wont be able to drop any image onto the empty panel
         this.add(panel2);
-        depots.add(panel2);
+        shelves.add(panel2);
 
         ShelfDrop panel3 = new ShelfDrop(3);
         //this.targetListeners.add(new MyDropTargetListener(panel3, new RegisterDropFromInfiniteRes(panel3)));//this must be done or we wont be able to drop any image onto the empty panel
         this.add(panel3);
-        depots.add(panel3);
+        shelves.add(panel3);
 
         fillDepot();
     }
 
     public List<ShelfDrop.Pair<Integer, ResourceType>> getDecisions(){
         List<ShelfDrop.Pair<Integer, ResourceType>> result = new ArrayList<>();
-        for(ShelfDrop e: this.depots)
+        for(ShelfDrop e: this.shelves)
             result.addAll(e.getResToDepot());
         return result;
     }
 
     public void resetState(){
-        for(ShelfDrop e: this.depots)
+        for(ShelfDrop e: this.shelves)
             e.resetState();
     }
 
@@ -59,7 +59,7 @@ public class DepotDrop extends JPanel {
      * @param checkDropFunction the function that checks whether the drop can be made in the depot
      */
     public void initFromInfiniteDrag(DropChecker checkDropFunction){
-        for(ShelfDrop sDrop : this.depots)
+        for(ShelfDrop sDrop : this.shelves)
             this.targetListeners.add(new MyDropTargetListener(sDrop, new RegisterDropFromInfiniteRes(sDrop)));//this must be done or we wont be able to drop any image onto the empty panel
         this.setCheckDropFunction(checkDropFunction);
     }
@@ -69,7 +69,7 @@ public class DepotDrop extends JPanel {
      * @param checkDropFunction the function that checks whether the drop can be made in the depot
      */
     public void initFromFiniteDrag(DropChecker checkDropFunction, LimitedResourcesDrag resourcesDrag){
-        for(ShelfDrop sDrop : this.depots)
+        for(ShelfDrop sDrop : this.shelves)
             this.targetListeners.add(new MyDropTargetListener(sDrop, new RegisterDropFromFiniteRes(sDrop, resourcesDrag)));//this must be done or we wont be able to drop any image onto the empty panel
         this.setCheckDropFunction(checkDropFunction);
     }
@@ -83,7 +83,7 @@ public class DepotDrop extends JPanel {
         List<DepotShelf> depotShelves = PanelManager.getInstance().getDepotShelves();
         int i = 0;
         for(DepotShelf dS: depotShelves) {
-            fillShelf(dS, this.depots.get(i));
+            fillShelf(dS, this.shelves.get(i));
             i++;
         }
     }

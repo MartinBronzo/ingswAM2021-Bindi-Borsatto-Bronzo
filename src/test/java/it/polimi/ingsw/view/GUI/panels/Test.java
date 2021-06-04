@@ -45,7 +45,8 @@ public class Test {
         //checkPanelDepotDrag();
         //checkDepotNStrongBoxDrag(); //NICE
         //checkLimitedResDragNicer();
-        checkLimitedResDragDepotDropTrashCanDrop();
+        //checkLimitedResDragDepotDropTrashCanDrop();
+        checkDepotOnlyView();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -523,6 +524,35 @@ public class Test {
         centralPanel.add(depot);
         centralPanel.add(trashCan);
         frame.add(centralPanel, BorderLayout.CENTER);
+
+        //Finishing it up
+        frame.setTitle("StrongBox drag & Panel Drop test");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkDepotOnlyView(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Crating the depot
+        DepotOnlyView depot = new DepotOnlyView();
+        frame.add(depot, BorderLayout.CENTER);
 
         //Finishing it up
         frame.setTitle("StrongBox drag & Panel Drop test");
