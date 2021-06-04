@@ -36,6 +36,7 @@ public class ErrorDialog extends JDialog {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                label.setText("");
                 setVisible(false);
             }
 
@@ -57,6 +58,6 @@ public class ErrorDialog extends JDialog {
 
 
     public void setErrorMessage(String error){
-        label.setText(error);
+        label.setText(label.getText()+" "+error);
     }
 }
