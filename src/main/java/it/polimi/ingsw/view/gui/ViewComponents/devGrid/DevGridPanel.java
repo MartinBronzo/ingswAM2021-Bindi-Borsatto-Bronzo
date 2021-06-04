@@ -42,10 +42,10 @@ public class DevGridPanel extends JPanel{
         JButton button;
         for (int i = 0; i < this.devGrid.length; i++) {
             for (int j = 0; j < this.devGrid[i].length; j++) {
-                c = (1 + j + 4 * i);
+                //c = (1 + j + 4 * i);
                 int row = i;
                 int col = j;
-                button = new JButton(Integer.toString(c));
+                button = new JButton(/*Integer.toString(c)*/);
                 button.addActionListener(event -> {
                     try {
                         PanelManager.getInstance().printBuyCardDialog(row, col);
@@ -86,6 +86,44 @@ public class DevGridPanel extends JPanel{
                 try {
                     img = ImageIO.read(new File(directoryPath+devCard.getUrl()));
                     dimg = img.getScaledInstance(component.getWidth(), component.getHeight(), Image.SCALE_SMOOTH);
+                    imageIcon = new ImageIcon(dimg);
+                    button.setIcon(imageIcon);
+                } catch (IOException e) {
+                    button.setIcon(null);
+                    button.setText(devCard.toString());
+                }
+            }
+
+            j++;
+            if (j == this.devGrid[i].length) {
+                i++;
+                j = 0;
+            }
+        }
+
+    }
+
+    public void update(int width, int height){
+        BufferedImage img = null;
+        Image dimg;
+        ImageIcon imageIcon;
+        JButton button;
+        DevCard devCard;
+        int i=0;
+        int j=0;
+        for (Component component:this.getComponents()){
+            //System.out.println(i+","+j);
+            devCard = devGrid[i][j];
+            button = (JButton)component;
+
+            if (devCard == null){
+                button.setIcon(null);
+                button.setText("Empty Deck");
+            }else {
+                try {
+                    //System.out.println(devCard.getUrl());
+                    img = ImageIO.read(new File(directoryPath+devCard.getUrl()));
+                    dimg = img.getScaledInstance(width,height, Image.SCALE_SMOOTH);
                     imageIcon = new ImageIcon(dimg);
                     button.setIcon(imageIcon);
                 } catch (IOException e) {

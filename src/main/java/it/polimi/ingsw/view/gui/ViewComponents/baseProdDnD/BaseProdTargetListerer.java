@@ -31,7 +31,7 @@ class BaseProdTargetListerer extends DropTargetAdapter {
     public BaseProdTargetListerer(BaseProdPanel panel) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
-        //makeCall = new RegisterDrop(panel);
+        //makeCall = new RegisterDropFromInfiniteRes(panel);
     }
 
     public BaseProdTargetListerer(BaseProdPanel panel, Consumer<Icon> actionListener) {

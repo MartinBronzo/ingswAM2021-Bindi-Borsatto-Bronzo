@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,22 +18,22 @@ public class MyDropTargetListener extends DropTargetAdapter {
 
     private DropTarget dropTarget;
     private JPanel p;
-    private Consumer<Icon> makeCall;
+    private RegisterDropInterface makeCall;
     private DropChecker checkDrop;
 
     public MyDropTargetListener(JPanel panel) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
-        //makeCall = new RegisterDrop(panel);
+        //makeCall = new RegisterDropFromInfiniteRes(panel);
     }
 
-    public MyDropTargetListener(JPanel panel, Consumer<Icon> actionListener) {
+    public MyDropTargetListener(JPanel panel, RegisterDropInterface actionListener) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         makeCall = actionListener;
     }
 
-    public MyDropTargetListener(JPanel panel, Consumer<Icon> actionListener, DropChecker checkDrop){
+    public MyDropTargetListener(JPanel panel, RegisterDropInterface actionListener, DropChecker checkDrop){
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         makeCall = actionListener;
@@ -53,11 +54,11 @@ public class MyDropTargetListener extends DropTargetAdapter {
                 if (ico != null) {
                     try {
                         if (checkDrop.test(p)) {
+                            this.makeCall.accept(ico);
                             p.add(new JLabel(ico));
                             p.revalidate();
                             p.repaint();
                             event.dropComplete(true);
-                            this.makeCall.accept(ico);
                         } else {
                             event.rejectDrop();
                             JOptionPane.showMessageDialog(null, "You can't do this!");
@@ -77,7 +78,7 @@ public class MyDropTargetListener extends DropTargetAdapter {
         }
     }
 
-    public void addActionListener(Consumer<Icon> function){
+    public void addActionListener(RegisterDropInterface function){
         this.makeCall = function;
     }
 

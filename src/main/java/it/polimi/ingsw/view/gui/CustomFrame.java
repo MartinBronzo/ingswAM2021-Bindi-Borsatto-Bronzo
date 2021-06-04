@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +14,7 @@ public class CustomFrame extends JFrame {
 
     private void myDrawImage(Graphics g){
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("PlayerBoard.jpeg");
+        InputStream url = cl.getResourceAsStream("PlayerBoardWithMarket.jpeg");
         BufferedImage img= null;
         try {
             img = ImageIO.read(url);

@@ -1,7 +1,11 @@
 package it.polimi.ingsw.view.gui.panels;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +28,26 @@ public class CardCheckbox extends JPanel {
         //Panel with the images of the cards (Horizontal orientation)
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.LINE_AXIS));
+
         for(String leader : cardList){
             //adds the image of the leadercard to the panel
-            ImageIcon icon = new ImageIcon(leader);
-            JLabel label = new JLabel(icon);
+            JLabel label = new JLabel();
+            label.setPreferredSize(new Dimension(200,300));
+
+            //scale image
+            BufferedImage img = null;
+            try {
+                img = ImageIO.read(new File(leader));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Image dimg = img.getScaledInstance(200, 300, Image.SCALE_SMOOTH);
+            ImageIcon icon = new ImageIcon(dimg);
+            //ImageIcon icon = new ImageIcon(leader);
+            label.setIcon(icon);
+
             imagePanel.add(label);
+
             imagePanel.add(Box.createRigidArea(new Dimension(25,0)));
         }
 

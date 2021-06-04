@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.gui.ViewComponents.LimitedResourcesDrag;
+import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropFromFiniteRes;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
@@ -23,17 +25,17 @@ public class DepotDrop extends JPanel {
         this.targetListeners = new ArrayList<>();
 
         ShelfDrop panel1 = new ShelfDrop(1);
-        this.targetListeners.add(new MyDropTargetListener(panel1, new RegisterDrop(panel1)));//this must be done or we wont be able to drop any image onto the empty panel
+        //this.targetListeners.add(new MyDropTargetListener(panel1, new RegisterDropFromInfiniteRes(panel1)));//this must be done or we wont be able to drop any image onto the empty panel
         this.add(panel1);
         depots.add(panel1);
 
         ShelfDrop panel2 = new ShelfDrop(2);
-        this.targetListeners.add(new MyDropTargetListener(panel2, new RegisterDrop(panel2)));//this must be done or we wont be able to drop any image onto the empty panel
+        //this.targetListeners.add(new MyDropTargetListener(panel2, new RegisterDropFromInfiniteRes(panel2)));//this must be done or we wont be able to drop any image onto the empty panel
         this.add(panel2);
         depots.add(panel2);
 
         ShelfDrop panel3 = new ShelfDrop(3);
-        this.targetListeners.add(new MyDropTargetListener(panel3, new RegisterDrop(panel3)));//this must be done or we wont be able to drop any image onto the empty panel
+        //this.targetListeners.add(new MyDropTargetListener(panel3, new RegisterDropFromInfiniteRes(panel3)));//this must be done or we wont be able to drop any image onto the empty panel
         this.add(panel3);
         depots.add(panel3);
 
@@ -50,6 +52,26 @@ public class DepotDrop extends JPanel {
     public void resetState(){
         for(ShelfDrop e: this.depots)
             e.resetState();
+    }
+
+    /**
+     * Initiates the depot when the drag panel has infinite resources available (as in the Beginning Decisions panel)
+     * @param checkDropFunction the function that checks whether the drop can be made in the depot
+     */
+    public void initFromInfiniteDrag(DropChecker checkDropFunction){
+        for(ShelfDrop sDrop : this.depots)
+            this.targetListeners.add(new MyDropTargetListener(sDrop, new RegisterDropFromInfiniteRes(sDrop)));//this must be done or we wont be able to drop any image onto the empty panel
+        this.setCheckDropFunction(checkDropFunction);
+    }
+
+    /**
+     * Initiates the depot when the drag panel has finite resources available
+     * @param checkDropFunction the function that checks whether the drop can be made in the depot
+     */
+    public void initFromFiniteDrag(DropChecker checkDropFunction, LimitedResourcesDrag resourcesDrag){
+        for(ShelfDrop sDrop : this.depots)
+            this.targetListeners.add(new MyDropTargetListener(sDrop, new RegisterDropFromFiniteRes(sDrop, resourcesDrag)));//this must be done or we wont be able to drop any image onto the empty panel
+        this.setCheckDropFunction(checkDropFunction);
     }
 
     public void setCheckDropFunction(DropChecker checkDropFunction){

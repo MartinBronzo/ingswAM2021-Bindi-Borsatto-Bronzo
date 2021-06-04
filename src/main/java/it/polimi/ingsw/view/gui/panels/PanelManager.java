@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
@@ -25,6 +26,8 @@ import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +52,8 @@ public final class PanelManager {
     //TODO: add here panels created for each view
     private EntryViewPanel entryPanel;
     private WaitingRoomPanel waitingRoomPanel;
+    private BeginningDecisionsPanel beginningDecisionsPanel;
+    private MainPanel mainPanel;
     private DevCardPanel1 devCardCostPanel;
 
     //TODO: add here attibutes used in panels
@@ -122,11 +127,11 @@ public final class PanelManager {
      * usedOnly for Test Purpose
      */
     @Deprecated
-    public void initTest(){
+    public void initTest() {
         gameFrame = new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setResizable(false);
-        gameFrame.setSize(600,600);
+        gameFrame.setSize(600, 600);
         gameFrame.setVisible(false);
     }
 
@@ -136,7 +141,7 @@ public final class PanelManager {
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //gameFrame.setResizable(false);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        gameFrame.setSize(screenSize.width,screenSize.height-100);
+        gameFrame.setSize(screenSize.width, screenSize.height - 100);
 
         //TODO: add here dialog with gameframe owner
         loginDialog = new LoginDialog(gameFrame);
@@ -147,6 +152,7 @@ public final class PanelManager {
         //TODO: add here panels to frame
         entryPanel = new EntryViewPanel();
         gameFrame.add(entryPanel);
+
         waitingRoomPanel = new WaitingRoomPanel();
         gameFrame.add(waitingRoomPanel);
         devCardCostPanel = new DevCardPanel1();
@@ -176,14 +182,14 @@ public final class PanelManager {
     }
 
     /*method to be called when in a panel is called the quitCommand*/
-    public void manageLogoutCommand(){
+    public void manageLogoutCommand() {
         writeMessage(new Command("quit"));
         gui.quitCommand();
     }
 
     public void readMessage(ResponseMessage responseMessage) {
         String responseContent = responseMessage.getResponseContent();
-        switch (responseMessage.getResponseType()){
+        switch (responseMessage.getResponseType()) {
             case UPDATE:
                 this.manageUpdate(responseContent);
                 break;
@@ -224,13 +230,13 @@ public final class PanelManager {
                 this.manageLorenzoAction(responseContent);
                 break;
             default:
-                System.out.println("unmanaged respone:\t"+responseMessage);
+                System.out.println("unmanaged respone:\t" + responseMessage);
                 System.exit(1);
         }
     }
 
     private void manageLorenzoAction(String responseContent) {
-        synchronized (this){
+        synchronized (this) {
             LorenzosActionMessage lorenzosActionMessage = gson.fromJson(responseContent, LorenzosActionMessage.class);
             lorenzoToken = lorenzosActionMessage.getSoloActionToken();
         }
@@ -240,7 +246,7 @@ public final class PanelManager {
 
 
     private void manageleaderboard(String responseContent) {
-        synchronized (this){
+        synchronized (this) {
             FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
             this.results = message.getResults();
         }
@@ -259,15 +265,15 @@ public final class PanelManager {
         }
 
         loginDialog.setVisible(false);
-        visualizer.submit(()->{
+        visualizer.submit(() -> {
             entryPanel.setVisible(false);
             waitingRoomPanel.setVisible(true);
-            });
+        });
 
     }
 
     private void manageGameConfiguration() {
-        visualizer.submit(()->{
+        visualizer.submit(() -> {
             configureGameDialog.setVisible(true);
             System.out.println("Ended GameConfiguration set visible true");
         });
@@ -314,7 +320,22 @@ public final class PanelManager {
         }
 
         //TODO: do things to setup view
+        List<LeaderCard> leaderList = new ArrayList<>();
+        for (Player player : gameModel.getPlayers())
+            if (player.getNickName().equals(nickname))
+                leaderList = player.getUnUsedLeaders();
 
+        ArrayList<String> leaderUrls = new ArrayList<>();
+        for (LeaderCard leader : leaderList)
+            leaderUrls.add(leader.getUrl());
+        beginningDecisionsPanel = new BeginningDecisionsPanel(leaderUrls, resourcesToTake, nLeadersToDiscard);
+
+        visualizer.submit(() -> {
+            gameFrame.add(beginningDecisionsPanel);
+            //gameFrame.validate();
+            waitingRoomPanel.setVisible(false);
+            beginningDecisionsPanel.setVisible(true);
+        });
     }
 
     private void managePostStart(String responseContent) {
@@ -324,24 +345,40 @@ public final class PanelManager {
         }
 
         //TODO: do things to remove manageStartView and setup new view
+        List<String> nicknameList = new ArrayList<>();
+        Player actualPlayer = null;
+        for(Player player : gameModel.getPlayers()) {
+            if(player.getNickName().equals(nickname))
+                actualPlayer = player;
+            nicknameList.add(player.getNickName());
+        }
+        mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
+        gameFrame.add(mainPanel);
+
+        visualizer.submit(() -> {
+            beginningDecisionsPanel.setVisible(false);
+            mainPanel.setVisible(true);
+            mainPanel.updateGridView(50,100);
+        });
+
     }
 
-    public void printBuyCardDialog(int row, int col) throws IllegalArgumentException, IllegalStateException{
-        visualizer.submit(()->{
+    public void printBuyCardDialog(int row, int col) throws IllegalArgumentException, IllegalStateException {
+        visualizer.submit(() -> {
             //TODO
         });
     }
 
 
-    public void printInfo(String info){
-        visualizer.submit(()->{
+    public void printInfo(String info) {
+        visualizer.submit(() -> {
             infoDialog.setInfoMessage(info);
             infoDialog.setVisible(true);
         });
     }
 
     private void manageInfo(String responseContent) {
-        visualizer.submit(()->{
+        visualizer.submit(() -> {
             GeneralInfoStringMessage errorMessage = gson.fromJson(responseContent, GeneralInfoStringMessage.class);
             String info = errorMessage.getMessage();
             infoDialog.setInfoMessage(info);
@@ -350,15 +387,15 @@ public final class PanelManager {
 
     }
 
-    public void printError(String error){
-        visualizer.submit(()->{
+    public void printError(String error) {
+        visualizer.submit(() -> {
             errorDialog.setErrorMessage(error);
             errorDialog.setVisible(true);
         });
     }
 
     private void manageError(String responseContent) {
-        visualizer.submit(()->{
+        visualizer.submit(() -> {
             ErrorMessage errorMessage = gson.fromJson(responseContent, ErrorMessage.class);
             String error = errorMessage.getErrorMessage();
             errorDialog.setErrorMessage(error);
@@ -376,7 +413,12 @@ public final class PanelManager {
                 gameModel.merge(update);
         }
 
-        //TODO: do things to setup view
+       /* //TODO: do things to setup view
+        visualizer.submit(() -> {
+            if(mainPanel!=null) {
+                updatePlayerBoard();
+            }
+        });*/
     }
 
     public Game getGameModel() {
@@ -398,6 +440,7 @@ public final class PanelManager {
     public int getnLeadersToDiscard() {
         return nLeadersToDiscard;
     }
+
     public Map<String, Integer> getResults() {
         return results;
     }
@@ -444,9 +487,10 @@ public final class PanelManager {
 
     /**
      * Returns the player's depot shelves
+     *
      * @return the player's depot shelves
      */
-    public List<DepotShelf> getDepotShelves(){
+    public List<DepotShelf> getDepotShelves() {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getDepotShelves();
     }
 
@@ -463,4 +507,20 @@ public final class PanelManager {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    /*public void updatePlayerBoard(){
+        List<String> nicknameList = new ArrayList<>();
+        Player actualPlayer = null;
+
+        gameFrame.remove(mainPanel);
+
+        for(Player player : gameModel.getPlayers()) {
+            if(player.getNickName().equals(nickname))
+                actualPlayer = player;
+            nicknameList.add(player.getNickName());
+        }
+        mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
+        gameFrame.add(mainPanel);
+        mainPanel.setVisible(true);
+    }*/
 }

@@ -2,6 +2,9 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
+import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.DragGestureListenerOneShot;
+import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.UnWantedDropTarget;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -14,17 +17,17 @@ import java.util.Map;
 
 public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
     List<JLabel> resources = new ArrayList<>();
-    DragGestureListenerOneShot dlistener;
+    MyDragGestureListener dlistener;
 
     public LimitedResourcesDrag(){
         super();
         this.setBorder(new TitledBorder("Drag Resources from here"));
     }
 
-    public void initLimitedResDrag(HashMap<ResourceType, Integer> resources) {
+    public void init(HashMap<ResourceType, Integer> resources, MyDragGestureListener dlistiner) {
         //TODO: set il drag listener e l'unwanted drop
-        this.dlistener = new DragGestureListenerOneShot(this);
-        new UnWantedDropTarget(this, this);
+        this.dlistener = dlistiner;
+        //new UnWantedDropTarget(this, this);
 
         for(Map.Entry<ResourceType, Integer> e : resources.entrySet())
             addResourceLabel(e.getKey(), e.getValue());
@@ -46,7 +49,7 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
         }
     }
 
-    public void setDlistener(DepotDrag depot) {
+    /*public void setDlistener(DepotDrag depot) {
         this.dlistener = new DragGestureListenerOneShot(depot);
     }
 
@@ -56,8 +59,14 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
         this.resources.stream().filter(x -> ((ImageIcon )x.getIcon()).getDescription().split(" ")[1].equals(rType)).filter(x -> !x.isVisible()).findAny().get().setVisible(true);
     }
 
-    @Override
+    //@Override
     public void updateAfterDragBegin(String info) {
         return;
+    }*/
+
+    @Override
+    public void updateAfterDrop(String info) {
+        JLabel draggedAway = this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get();
+        draggedAway.setVisible(false);
     }
 }
