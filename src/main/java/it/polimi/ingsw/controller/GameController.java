@@ -333,7 +333,8 @@ public class GameController {
             return false;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
-        player.send(new GeneralInfoStringMessage("You are in Game! You'll soon start play with others!"));
+        if(numberOfPlayers > 1)
+            player.send(new GeneralInfoStringMessage("You are in Game! You'll soon start play with others!"));
         //We added the last player: the game must begin
         player.setPlayerState(PlayerState.WAITING4GAMESTART);
         if (players.size() == this.numberOfPlayers)
