@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.RegisterDrop;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

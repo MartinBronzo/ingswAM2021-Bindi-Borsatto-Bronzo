@@ -5,10 +5,10 @@ import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
 import javax.swing.*;
 import java.util.function.Consumer;
 
-public class RegisterDrop implements RegisterDropInterface {
+public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
     private final Droppable dropTarget;
 
-    public RegisterDrop(Droppable dropTarget){
+    public RegisterDropFromInfiniteRes(Droppable dropTarget){
         this.dropTarget = dropTarget;
     }
     @Override

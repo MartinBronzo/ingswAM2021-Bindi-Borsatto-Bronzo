@@ -19,7 +19,7 @@ public class DiscardedResDrop extends JPanel implements Droppable {
         super();
         resToBeDiscarded = new HashMap<>();
 
-        this.setBorder(new TitledBorder("Drag here the resource you want to discard"));
+        this.setBorder(new TitledBorder("Drop here the resource you want to discard"));
 
         TransferHandler dnd = new TransferHandler() {
             @Override
@@ -59,8 +59,13 @@ public class DiscardedResDrop extends JPanel implements Droppable {
 
     }
 
-    public void setTargetListenerAndCheckDropFunction(DropChecker checkDropFunction){
-        this.targetListener = new MyDropTargetListener(this, new RegisterDrop(this));
+    public void initFromInfiniteRes(DropChecker checkDropFunction){
+        this.targetListener = new MyDropTargetListener(this, new RegisterDropFromInfiniteRes(this));
+        this.targetListener.setCheckDrop(checkDropFunction);
+    }
+
+    public void initFromFiniteRes(DropChecker checkDropFunction, LimitedResourcesDrag resDrag){
+        this.targetListener = new MyDropTargetListener(this, new RegisterDropFromFiniteRes(this, resDrag));
         this.targetListener.setCheckDrop(checkDropFunction);
     }
 

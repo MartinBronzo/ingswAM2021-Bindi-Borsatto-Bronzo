@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
+import it.polimi.ingsw.view.gui.ViewComponents.LimitedResourcesDrag;
+
 import javax.swing.*;
 
 /**
@@ -17,18 +19,31 @@ public class DnDDepot extends JPanel {
 
         this.add(depot);
 
-        try {
-            this.add(new InfiniteResourcesDrag());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+
     }
 
     public DepotDrop getDepot() {
         return depot;
     }
 
-    public void setCheckDropFunction(DropChecker checker){
-        this.depot.setCheckDropFunction(checker);
+    public void initFromInfiniteDrag(DropChecker checker){
+        //this.depot.setCheckDropFunction(checker);
+        try {
+            this.add(new InfiniteResourcesDrag());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        this.depot.initFromInfiniteDrag(checker);
+    }
+
+    public void initFromFiniteDrag(DropChecker checker){
+        //this.depot.setCheckDropFunction(checker);
+        LimitedResourcesDrag limitedRes = new LimitedResourcesDrag();
+        try {
+            this.add(limitedRes);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        this.depot.initFromFiniteDrag(checker, limitedRes);
     }
 }
