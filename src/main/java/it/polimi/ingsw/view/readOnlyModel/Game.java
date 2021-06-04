@@ -56,7 +56,7 @@ public class Game {
         this.lorenzosPosition = lorenzosPosition;
     }
 
-    private Player findByNick(String nick) throws NoSuchElementException {
+    public Player findByNick(String nick) throws NoSuchElementException {
         return players.stream().filter(player -> player.getNickName().equals(nick)).findAny().orElseThrow(NoSuchElementException::new);
     }
 

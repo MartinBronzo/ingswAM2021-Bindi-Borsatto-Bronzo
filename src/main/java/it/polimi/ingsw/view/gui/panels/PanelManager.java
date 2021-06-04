@@ -409,12 +409,12 @@ public final class PanelManager {
                 gameModel.merge(update);
         }
 
-       /* //TODO: do things to setup view
+        //TODO: do things to setup view
         visualizer.submit(() -> {
             if(mainPanel!=null) {
-                updatePlayerBoard();
+                mainPanel.updateMainPanel(gameModel);
             }
-        });*/
+        });
     }
 
     public Game getGameModel() {

@@ -16,6 +16,7 @@ public class LeaderCardPanel extends JPanel {
     public LeaderCardPanel(ArrayList<LeaderCard> activeLeaders, ArrayList<LeaderCard> unusedLeaders){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.setAlignmentX(LEFT_ALIGNMENT);
         this.setBorder(new TitledBorder("LeaderCards"));
 
         ArrayList<JPanel> panelList = new ArrayList<>();
