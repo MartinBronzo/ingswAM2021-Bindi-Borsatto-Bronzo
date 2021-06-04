@@ -409,7 +409,12 @@ public final class PanelManager {
                 gameModel.merge(update);
         }
 
-        //TODO: do things to setup view
+       /* //TODO: do things to setup view
+        visualizer.submit(() -> {
+            if(mainPanel!=null) {
+                updatePlayerBoard();
+            }
+        });*/
     }
 
     public Game getGameModel() {
@@ -494,4 +499,20 @@ public final class PanelManager {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    /*public void updatePlayerBoard(){
+        List<String> nicknameList = new ArrayList<>();
+        Player actualPlayer = null;
+
+        gameFrame.remove(mainPanel);
+
+        for(Player player : gameModel.getPlayers()) {
+            if(player.getNickName().equals(nickname))
+                actualPlayer = player;
+            nicknameList.add(player.getNickName());
+        }
+        mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
+        gameFrame.add(mainPanel);
+        mainPanel.setVisible(true);
+    }*/
 }

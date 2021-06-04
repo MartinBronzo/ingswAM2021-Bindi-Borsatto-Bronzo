@@ -26,6 +26,7 @@ public class ActualPlayerBoardPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         LeaderCardPanel leaderCardPanel = new LeaderCardPanel(activeLeaders, unusedLeaders);
+        leaderCardPanel.setAlignmentX(LEFT_ALIGNMENT);
         this.add(leaderCardPanel);
 
         JLabel playerBoardLabel = new JLabel();
@@ -43,7 +44,7 @@ public class ActualPlayerBoardPanel extends JPanel {
         //marketLabel.setSize(screenSize.width/3, screenSize.height - heightMargin*2);
         image = scaleImage("src/main/resources//PUNCHBOARD/plancia portabiglie.png", screenSize.width / 4, screenSize.height - 600);
         marketButton.setIcon(image);
-        marketButton.setBorder(new TitledBorder("market"));
+        marketButton.setAlignmentX(LEFT_ALIGNMENT);
         righSidePanel.add(marketButton);
 
         JPanel devGridPanel = new JPanel();
@@ -51,8 +52,11 @@ public class ActualPlayerBoardPanel extends JPanel {
         devGrid = new DevGridPanel(mainBoard);
         devGridPanel.add(devGrid);
         devGridPanel.setBorder(new TitledBorder("devGrid"));
+        devGridPanel.setAlignmentX(LEFT_ALIGNMENT);
+
         righSidePanel.add(devGridPanel);
         righSidePanel.setBorder(new TitledBorder("rightside"));
+        righSidePanel.setAlignmentX(RIGHT_ALIGNMENT);
         this.add(righSidePanel);
     }
 

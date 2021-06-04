@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +32,39 @@ public class MainPanel extends JPanel {
         String actualPlayerName = actualPlayer.getNickName();
         JPanel playerBoardPanel = new JPanel();
         playerBoardPanel.setLayout(new CardLayout());
+
+        JPanel controlPanel = new JPanel();
+        controlPanel.setBorder(new TitledBorder("ControlPanel"));
+        controlPanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        JLabel stateLabel = new JLabel();
+        stateLabel.setText(actualPlayer.getPlayerState().name());
+        stateLabel.setBorder(new TitledBorder("PlayerState"));
+        stateLabel.setAlignmentX(LEFT_ALIGNMENT);
+        controlPanel.add(stateLabel);
+
+        JButton actionButton = new JButton("Choose main action");
+        actionButton.setAlignmentX(LEFT_ALIGNMENT);
+        controlPanel.add(actionButton);
+
+        JButton endButton = new JButton("End turn");
+        endButton.setAlignmentX(RIGHT_ALIGNMENT);
+        controlPanel.add(endButton);
+
+        JComboBox<String> comboBox = new JComboBox<>(playersNicks.toArray(new String[0]));
+        comboBox.setEditable(false);
+        comboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                CardLayout cl = (CardLayout) (playerBoardPanel.getLayout());
+                cl.show(playerBoardPanel, (String) e.getItem());
+            }
+        });
+        comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxx");
+        comboBox.setAlignmentX(RIGHT_ALIGNMENT);
+        controlPanel.add(comboBox);
+
+        this.add(controlPanel);
 
         //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
         //adds first the actual player because this is the default value of the component
@@ -65,18 +99,10 @@ public class MainPanel extends JPanel {
         }
 
 
-        JComboBox<String> comboBox = new JComboBox<>(playersNicks.toArray(new String[0]));
-        comboBox.setEditable(false);
-        comboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                CardLayout cl = (CardLayout) (playerBoardPanel.getLayout());
-                cl.show(playerBoardPanel, (String) e.getItem());
-            }
-        });
+
 
         this.add(playerBoardPanel);
-        this.add(comboBox);
+
     }
 
     public void updateGridView(int width, int height){
