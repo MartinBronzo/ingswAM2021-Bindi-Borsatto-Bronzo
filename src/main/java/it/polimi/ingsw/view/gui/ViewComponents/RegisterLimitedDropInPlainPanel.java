@@ -6,12 +6,12 @@ import it.polimi.ingsw.model.ResourceType;
 import javax.swing.*;
 import java.util.function.Consumer;
 
-public class RegisterLimitedDrop implements RegisterDropInterface {
+public class RegisterLimitedDropInPlainPanel implements RegisterDropInterface {
     CheckLimitedDrop checkLimitedDrop;
     StrongBoxDrag strongBoxDrag;
     DepotDrag depotDrag;
 
-    public RegisterLimitedDrop(CheckLimitedDrop checkLimitedDrop, StrongBoxDrag strongBoxDrag, DepotDrag depotDrag) {
+    public RegisterLimitedDropInPlainPanel(CheckLimitedDrop checkLimitedDrop, StrongBoxDrag strongBoxDrag, DepotDrag depotDrag) {
         this.checkLimitedDrop = checkLimitedDrop;
         this.strongBoxDrag = strongBoxDrag;
         this.depotDrag = depotDrag;

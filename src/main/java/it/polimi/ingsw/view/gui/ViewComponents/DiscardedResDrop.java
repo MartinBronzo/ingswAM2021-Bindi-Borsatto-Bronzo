@@ -60,7 +60,7 @@ public class DiscardedResDrop extends JPanel implements Droppable {
     }
 
     public void setTargetListenerAndCheckDropFunction(DropChecker checkDropFunction){
-        this.targetListener = new MyDropTargetListener(this, new RegisterDrop(this));
+        this.targetListener = new MyDropTargetListener(this, new RegisterDropFromInfiniteRes(this));
         this.targetListener.setCheckDrop(checkDropFunction);
     }
 

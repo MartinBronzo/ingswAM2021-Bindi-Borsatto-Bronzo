@@ -24,7 +24,7 @@ public class MyDropTargetListener extends DropTargetAdapter {
     public MyDropTargetListener(JPanel panel) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
-        //makeCall = new RegisterDrop(panel);
+        //makeCall = new RegisterDropFromInfiniteRes(panel);
     }
 
     public MyDropTargetListener(JPanel panel, RegisterDropInterface actionListener) {

@@ -7,7 +7,6 @@ import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import java.awt.*;
 import java.util.ArrayList;
 
 //TODO: MAGARI CAMBIARE A DIALOG
@@ -34,7 +33,7 @@ public class BeginningDecisionsPanel extends JPanel {
         JPanel rightSidePanel = new JPanel();
         rightSidePanel.setLayout(new BoxLayout(rightSidePanel, BoxLayout.PAGE_AXIS));
         DnDDepot dnDDepot = new DnDDepot();
-        dnDDepot.setCheckDropFunction(new CheckDropAtBeginningDecisionsTime(dnDDepot.getDepot()));
+        dnDDepot.initFromInfiniteDrag(new CheckDropAtBeginningDecisionsTime(dnDDepot.getDepot()));
         rightSidePanel.add(dnDDepot);
         InstructionPanel instructionPanel = new InstructionPanel();
         instructionPanel.setLabelText("Select 2 Leader Cards to discard and place " + numRes + " resources, in the depot");

@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
-import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
 import it.polimi.ingsw.view.gui.panels.ActualPlayerBoardPanel;
 import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
@@ -22,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
@@ -44,10 +42,10 @@ public class Test {
         //checkStrongBoxDrag();
         //checkPanelDropStrongBoxDrag();
         //checkPanelDepotDrag();
-        checkDepotNStrongBoxDrag();
-        //checkLimitedResDragNicer();
+        //checkDepotNStrongBoxDrag(); //NICE
+        checkLimitedResDragNicer();
         //showSetBeginningDecisionsPanel();
-        showPlayerBoards();
+        //showPlayerBoards();
     }
 
     public static void showSetBeginningDecisionsPanel(){
@@ -179,7 +177,7 @@ public class Test {
             frame.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             DnDDepot depotPanels = new DnDDepot();
-            depotPanels.setCheckDropFunction(new CheckDropAtBeginningDecisionsTime(depotPanels.getDepot()));
+            depotPanels.initFromInfiniteDrag(new CheckDropAtBeginningDecisionsTime(depotPanels.getDepot()));
             frame.add(depotPanels, BorderLayout.CENTER);
             frame.setTitle("Depot test");
             frame.pack();
@@ -336,7 +334,7 @@ public class Test {
         resToBeTaken.put(ResourceType.COIN, 1);
         resToBeTaken.remove(ResourceType.SERVANT);
         CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
-        RegisterDropInterface registerDrop = new RegisterLimitedDrop(checker, strongBox, new DepotDrag());
+        RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBox, new DepotDrag());
         MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
         pDrop.init(dListener);
         frame.add(pDrop, BorderLayout.PAGE_END);
@@ -377,7 +375,7 @@ public class Test {
         resToBeTaken.put(ResourceType.COIN, 1);
         resToBeTaken.put(ResourceType.SERVANT, 1);
         CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
-        RegisterDropInterface registerDrop = new RegisterLimitedDrop(checker, new StrongBoxDrag(), depotDrag);
+        RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, new StrongBoxDrag(), depotDrag);
         MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
         pDrop.init(dListener);
         frame.add(pDrop, BorderLayout.PAGE_END);
@@ -427,7 +425,7 @@ public class Test {
         resToBeTaken.put(ResourceType.COIN, 1);
         resToBeTaken.put(ResourceType.SERVANT, 1);
         CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
-        RegisterDropInterface registerDrop = new RegisterLimitedDrop(checker, strongBox, depotDrag);
+        RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBox, depotDrag);
         MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
         pDrop.init(dListener);
         frame.add(pDrop, BorderLayout.PAGE_END);
@@ -438,35 +436,38 @@ public class Test {
         frame.setVisible(true);
     }
 
-
-    //TODO: finire questo mettendo a posto secondo la nuova configurazione dei drag and drop il DepotDragDrop package
-    // WORK IN PROGRESS
     public static void checkLimitedResDragNicer(){
         //Setting up the frame
         JFrame frame = new JFrame();
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        //Setting up the strongBox drag
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Setting up the LimitedRes drag
         LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
         HashMap<ResourceType, Integer> res = new HashMap<>();
         res.put(ResourceType.COIN, 2);
         res.put(ResourceType.STONE, 3);
         res.put(ResourceType.SERVANT, 1);
         limitedResourcesDrag.init(res, new MyDragGestureListener());
-        frame.add(limitedResourcesDrag, BorderLayout.CENTER);
+        frame.add(limitedResourcesDrag, BorderLayout.PAGE_END);
 
-        /***********Sistemare da qui in poi*****************/
-        //Setting up the PanelDrop
-        PanelDrop pDrop = new PanelDrop();
-        HashMap<ResourceType, Integer> resToBeTaken = new HashMap<>(res);
-        resToBeTaken.put(ResourceType.COIN, 1);
-        resToBeTaken.remove(ResourceType.SERVANT);
-        CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
-        //RegisterDropInterface registerDrop = new RegisterLimitedDrop(checker, strongBox, new DepotDrag());
-        //MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
-        //pDrop.init(dListener);
-        frame.add(pDrop, BorderLayout.PAGE_END);
+        //Setting up the DepotDrop
+        DepotDrop depot = new DepotDrop();
+        depot.initFromFiniteDrag(new CheckDropInDepot(depot), limitedResourcesDrag);
+        frame.add(depot, BorderLayout.CENTER);
 
         //Finishing it up
         frame.setTitle("StrongBox drag & Panel Drop test");
@@ -653,7 +654,7 @@ class MyDropTargetListener extends DropTargetAdapter {
     public MyDropTargetListener(ShelfDrop panel) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
-        makeCall = new RegisterDrop(panel);
+        makeCall = new RegisterDropFromInfiniteRes(panel);
     }
 
     @Override
@@ -795,10 +796,10 @@ class ShelfDrop extends JPanel{
     }
 }
 
-class RegisterDrop implements Consumer<Icon>{
+class RegisterDropFromInfiniteRes implements Consumer<Icon>{
     private final ShelfDrop panel;
 
-    public RegisterDrop(ShelfDrop panel){
+    public RegisterDropFromInfiniteRes(ShelfDrop panel){
         this.panel = panel;
     }
     @Override

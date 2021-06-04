@@ -6,5 +6,5 @@ import javax.swing.*;
 
 public interface DropChecker {
 
-    boolean test(JPanel panel) throws IllegalActionException;
+    boolean test(JPanel jPanel) throws IllegalActionException;
 }

@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.Droppable;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.RegisterDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.RegisterDropFromInfiniteRes;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -62,7 +62,7 @@ public class StrongBoxDrop extends JPanel implements Droppable {
     }
 
     public void setTargetListenerAndCheckDropFunction(DropChecker checkDropFunction){
-        this.targetListener = new MyDropTargetListener(this, new RegisterDrop(this));
+        this.targetListener = new MyDropTargetListener(this, new RegisterDropFromInfiniteRes(this));
         this.targetListener.setCheckDrop(checkDropFunction);
     }
 
