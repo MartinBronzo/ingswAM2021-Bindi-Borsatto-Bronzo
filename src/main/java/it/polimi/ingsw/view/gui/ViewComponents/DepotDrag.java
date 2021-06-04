@@ -18,7 +18,7 @@ public class DepotDrag extends JPanel implements DragUpdatable{
 
     public DepotDrag(){
         super();
-        this.setBorder(new TitledBorder("Drag Resources from here to the Depot above"));
+        this.setBorder(new TitledBorder("Drag Resources from your depot"));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.shelves = new ArrayList<>();

@@ -46,8 +46,8 @@ public class Test {
         //checkDepotNStrongBoxDrag(); //NICE
         //checkLimitedResDragNicer();
         //checkLimitedResDragDepotDropTrashCanDrop();
-
-        checkDepotOnlyView();
+        //checkDepotOnlyView();
+        checkStrongBoxOnlyView();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -556,7 +556,38 @@ public class Test {
         frame.add(depot, BorderLayout.CENTER);
 
         //Finishing it up
-        frame.setTitle("StrongBox drag & Panel Drop test");
+        frame.setTitle("Depot Only view");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkStrongBoxOnlyView(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.SERVANT, 3);
+        res.put(ResourceType.STONE, 5);
+        player.setStrongBox(res);
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Crating the depot
+        StrongBoxOnlyView strongBox = new StrongBoxOnlyView();
+        frame.add(strongBox, BorderLayout.CENTER);
+
+        //Finishing it up
+        frame.setTitle("StrongBox only view");
         frame.pack();
         frame.setVisible(true);
     }

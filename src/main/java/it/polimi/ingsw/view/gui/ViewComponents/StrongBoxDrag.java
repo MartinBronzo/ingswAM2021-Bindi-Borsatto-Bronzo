@@ -27,6 +27,7 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable{
     }
 
     public void init(HashMap<ResourceType, Integer> res, MyDragGestureListener dlistener){
+        //TODO: prendere dal panel manager le info dallo strongbox, anche per lo strongbox drop
         this.dlistener = dlistener;
         this.fillStrongBox(res);
     }
