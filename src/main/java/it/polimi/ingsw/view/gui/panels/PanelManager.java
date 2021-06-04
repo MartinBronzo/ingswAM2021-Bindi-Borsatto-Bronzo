@@ -411,6 +411,7 @@ public final class PanelManager {
                 gameModel = update;
             else
                 gameModel.merge(update);
+            //TODO: add turn info dialog
         }
 
        /* //TODO: do things to setup view
