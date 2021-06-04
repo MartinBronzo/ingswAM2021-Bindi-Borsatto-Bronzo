@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.view.gui.ViewComponents.LeaderCardPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
 import it.polimi.ingsw.view.readOnlyModel.Board;
+import it.polimi.ingsw.view.readOnlyModel.Game;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -62,6 +63,10 @@ public class ActualPlayerBoardPanel extends JPanel {
 
     public void updateGridView(int width, int height) {
         devGrid.update(width, height);
+    }
+
+    public void updatePlayerBoard(Game game){
+        
     }
 
     private ImageIcon scaleImage(String image, int width, int height) {

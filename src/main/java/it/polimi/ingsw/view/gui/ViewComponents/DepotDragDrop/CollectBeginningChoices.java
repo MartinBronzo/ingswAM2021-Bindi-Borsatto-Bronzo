@@ -60,7 +60,8 @@ public class CollectBeginningChoices implements ActionListener {
             //Resets the inner state
             this.depotDrop.resetState();
         } else
-            JOptionPane.showMessageDialog(null, "You must discard 2 Leader Cards");
+            PanelManager.getInstance().printError("You must discard 2 Leader Cards");
+            //JOptionPane.showMessageDialog(null, "You must discard 2 Leader Cards");
     }
 
     private List<DepotParams> getDepotInfoForModel(List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions) {

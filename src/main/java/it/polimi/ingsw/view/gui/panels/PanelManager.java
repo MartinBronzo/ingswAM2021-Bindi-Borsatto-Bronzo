@@ -157,6 +157,7 @@ public final class PanelManager {
         gameFrame.add(waitingRoomPanel);
         devCardCostPanel = new DevCardPanel1();
         gameFrame.add(devCardCostPanel);
+        devCardCostPanel.setVisible(false);
 
         gameFrame.validate();
 
@@ -413,12 +414,12 @@ public final class PanelManager {
                 gameModel.merge(update);
         }
 
-       /* //TODO: do things to setup view
+        //TODO: do things to setup view
         visualizer.submit(() -> {
             if(mainPanel!=null) {
-                updatePlayerBoard();
+                mainPanel.updateMainPanel(gameModel);
             }
-        });*/
+        });
     }
 
     public Game getGameModel() {

@@ -3,13 +3,13 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import javax.swing.*;
 import java.awt.*;
 
-public class UndoButton extends JButton {
-    public UndoButton(){
+public class CancelButton extends JButton {
+    public CancelButton(){
         super();
         this.setProperties();
     }
 
-    public UndoButton(String text){
+    public CancelButton(String text){
         super(text);
         this.setProperties();
     }
