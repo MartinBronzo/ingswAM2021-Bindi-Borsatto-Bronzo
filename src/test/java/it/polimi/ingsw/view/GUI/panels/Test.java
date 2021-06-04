@@ -46,6 +46,7 @@ public class Test {
         //checkDepotNStrongBoxDrag(); //NICE
         //checkLimitedResDragNicer();
         //checkLimitedResDragDepotDropTrashCanDrop();
+
         checkDepotOnlyView();
 
         //SATTO
