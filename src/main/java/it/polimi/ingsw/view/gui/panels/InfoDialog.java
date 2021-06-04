@@ -33,6 +33,7 @@ public class InfoDialog extends JDialog {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                label.setText("");
                 setVisible(false);
             }
 
@@ -54,6 +55,6 @@ public class InfoDialog extends JDialog {
 
 
     public void setInfoMessage(String info){
-        label.setText(info);
+        label.setText(label.getText()+" "+info);
     }
 }
