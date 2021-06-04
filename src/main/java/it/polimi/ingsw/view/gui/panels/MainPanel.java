@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class MainPanel extends JPanel {
     ActualPlayerBoardPanel actualPlayerBoardPanel;
+    JLabel stateLabel;
 
     /**
      * shows dynamically the playerboard of the selected player
@@ -37,7 +38,7 @@ public class MainPanel extends JPanel {
         controlPanel.setBorder(new TitledBorder("ControlPanel"));
         controlPanel.setAlignmentX(CENTER_ALIGNMENT);
 
-        JLabel stateLabel = new JLabel();
+        stateLabel = new JLabel();
         stateLabel.setText(actualPlayer.getPlayerState().name());
         stateLabel.setBorder(new TitledBorder("PlayerState"));
         stateLabel.setAlignmentX(LEFT_ALIGNMENT);
@@ -98,9 +99,6 @@ public class MainPanel extends JPanel {
             }
         }
 
-
-
-
         this.add(playerBoardPanel);
 
     }
@@ -109,4 +107,9 @@ public class MainPanel extends JPanel {
         actualPlayerBoardPanel.updateGridView(width, height);
     }
 
+    public void updateMainPanel(Game game){
+        String nickname;
+        nickname = PanelManager.getInstance().getNickname();
+        stateLabel.setText(game.findByNick(nickname).getPlayerState().name());
+    }
 }

@@ -32,7 +32,7 @@ public class CardCheckbox extends JPanel {
         for(String leader : cardList){
             //adds the image of the leadercard to the panel
             JLabel label = new JLabel();
-            label.setPreferredSize(new Dimension(200,300));
+            //label.setPreferredSize(new Dimension(200,300));
 
             //scale image
             BufferedImage img = null;

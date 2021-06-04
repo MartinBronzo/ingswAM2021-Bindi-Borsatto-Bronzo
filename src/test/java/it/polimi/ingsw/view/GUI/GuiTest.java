@@ -82,7 +82,7 @@ public class GuiTest {
     private static void leaderCardPanel() {
         ArrayList<LeaderCard>activeLeaderCards = new ArrayList<>();
         ArrayList<LeaderCard>discardedLeaderCards = new ArrayList<>();
-        activeLeaderCards.add(new LeaderCard(3, new ArrayList<>(), new Effect(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-64-1.png"));
+        discardedLeaderCards.add(new LeaderCard(3, new ArrayList<>(), new Effect(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-64-1.png"));
         discardedLeaderCards.add(new LeaderCard(3, new ArrayList<>(), new Effect(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-63-1.png"));
 
         LeaderCardPanel leaderCardPanel = new LeaderCardPanel(activeLeaderCards, discardedLeaderCards);
@@ -132,7 +132,7 @@ public class GuiTest {
     private static void printButtons(JFrame f){
         JButton submit = new SubmitButton("Confirm");
         JButton back = new BackButton("Back");
-        JButton undo = new UndoButton("Undo");
+        JButton undo = new CancelButton("Undo");
 
         f.add(submit);
         f.add(back);
