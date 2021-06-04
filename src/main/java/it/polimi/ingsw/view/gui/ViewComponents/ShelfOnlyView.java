@@ -33,7 +33,6 @@ public class ShelfOnlyView extends JPanel {
     public void filShelf(DepotShelf depotShelf){
         ImageIcon resource;
         JLabel label;
-        DragSource ds;
         for(int i = 0; i < depotShelf.getQuantity(); i++){
             resource = new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType()));
             label = new JLabel(resource);

@@ -495,6 +495,15 @@ public final class PanelManager {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getDepotShelves();
     }
 
+    /**
+     * Returns the player's StrongBox
+     *
+     * @return the player's StrongBox
+     */
+    public HashMap<ResourceType, Integer> getStrongBox(){
+        return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getStrongBox();
+    }
+
     //For testing purposes:
 
     public void setGameModel(Game gameModel) {
