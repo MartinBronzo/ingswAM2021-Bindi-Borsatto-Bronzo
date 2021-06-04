@@ -1,11 +1,14 @@
 package it.polimi.ingsw.view.gui.ViewComponents.devGrid;
 
 import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
 import it.polimi.ingsw.network.messages.fromClient.GetProductionCostMessage;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
+import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
+import it.polimi.ingsw.view.gui.panels.CardCheckbox;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 
@@ -21,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class DevCardPanel1 extends JPanel {
     private int row;
@@ -36,12 +40,47 @@ public class DevCardPanel1 extends JPanel {
     private final String directoryPath = "src/main/resources/front/";
     private LeaderCard[] leaderCards;
     private JLabel selectedCard;
+    private InstructionPanel instructionPanel;
+    private CardCheckbox cardCheckboxPanel;
     private JButton leader1;
     private JButton leader2;
     private JButton submit;
     private JButton cancel;
 
+    public DevCardPanel1() {
+        super();
+        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        this.setSize(panelWidth, panelHeight);
+        this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        this.selectedCard = new JLabel();
+        this.selectedCard.setSize(200, 300);
+        this.add(this.selectedCard);
 
+        this.add(Box.createHorizontalGlue());
+
+        JPanel rightSidePanel = new JPanel();
+        rightSidePanel.setLayout(new BoxLayout(rightSidePanel, BoxLayout.PAGE_AXIS));
+        cardCheckboxPanel = new CardCheckbox();
+        rightSidePanel.add(cardCheckboxPanel);
+
+        instructionPanel = new InstructionPanel(true);
+        instructionPanel.setConfirmActionListener(e -> {
+            System.out.println(row+" "+column+" "+cardCheckboxPanel.getSelectedLeaderIndexes());
+            PanelManager.getInstance().writeMessage(new Command("getCardCost", new GetFromMatrixMessage(row, column, cardCheckboxPanel.getSelectedLeaderIndexes())));
+            //TODO idk if there is the need to print something else
+        });
+        instructionPanel.setCancelActionListener(e -> {
+            //TODO: idk if there is the need to print something else
+            this.setVisible(false);
+        });
+        instructionPanel.setLabelText("Press submit to get the final CardCost after selecting the leader Cards");
+        rightSidePanel.add(instructionPanel);
+        this.add(rightSidePanel);
+
+
+    }
+
+    /*
     public DevCardPanel1() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -101,7 +140,7 @@ public class DevCardPanel1 extends JPanel {
         this.add(this.cancel);
 
     }
-
+*/
     public synchronized void selectCell(int row, int column) throws NullPointerException{
         this.row = row;
         this.column = column;
@@ -122,8 +161,6 @@ public class DevCardPanel1 extends JPanel {
         if (player == null || devMatrix == null) throw new NullPointerException("missing parameters to setup the panel");
         DevCard devCard = devMatrix[row][column];
         if (devCard == null) throw new NullPointerException("there is no card in the selected cell");
-        List<LeaderCard> leaderCards = player.getUsedLeaders();
-        LeaderCard leaderCard;
 
         try {
             img = ImageIO.read(new File(directoryPath+devCard.getUrl()));
@@ -135,6 +172,11 @@ public class DevCardPanel1 extends JPanel {
             selectedCard.setText(devCard.toString());
         }
 
+        List<String> leaderCardsPath = player.getUsedLeaders().stream().map(card -> card.getUrl()).collect(Collectors.toList());
+        this.cardCheckboxPanel.resetView(leaderCardsPath, "Do you want to use this card?");
+
+        this.setVisible(true);
+/*
         try {
             leaderCard = leaderCards.get(0);
             img = ImageIO.read(new File(directoryPath+leaderCard.getUrl()));
@@ -160,6 +202,8 @@ public class DevCardPanel1 extends JPanel {
         } catch (IndexOutOfBoundsException e){
             leader2.setVisible(false);
         }
+         */
 
     }
+
 }

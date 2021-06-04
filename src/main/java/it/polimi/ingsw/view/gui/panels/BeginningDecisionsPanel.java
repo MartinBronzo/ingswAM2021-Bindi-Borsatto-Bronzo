@@ -40,7 +40,7 @@ public class BeginningDecisionsPanel extends JPanel {
 
         CollectBeginningChoices collectBeginningChoices = new CollectBeginningChoices(dnDDepot.getDepot(), leaderCheckbox1, leaderCheckbox2, numLeaders);
 
-        instructionPanel.setButtonActionListener(collectBeginningChoices);
+        instructionPanel.setConfirmActionListener(collectBeginningChoices);
         rightSidePanel.add(instructionPanel);
         this.add(rightSidePanel);
 

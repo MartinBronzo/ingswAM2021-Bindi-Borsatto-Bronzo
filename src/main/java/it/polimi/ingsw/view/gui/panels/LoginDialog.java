@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.panels;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
+import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +31,7 @@ public class LoginDialog extends JDialog {
                 // nothing
             }
         });
-        button = new JButton("Login");
+        button = new SubmitButton("Login");
         button.addActionListener(event -> {
             if (textField.getText().equals(""))
                 PanelManager.getInstance().printError("Nick can't be empty");

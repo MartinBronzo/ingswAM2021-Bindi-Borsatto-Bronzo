@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.panels;
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
 import it.polimi.ingsw.network.messages.fromClient.SetNumPlayerMessage;
+import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +32,7 @@ public class SetNumOfPlayersDialog extends JDialog {
                 // nothing
             }
         });
-        button = new JButton("Configure Game");
+        button = new SubmitButton("Configure Game");
         button.addActionListener(event -> {
             try {
                 int numOfPlayers = Integer.parseInt(textField.getText());

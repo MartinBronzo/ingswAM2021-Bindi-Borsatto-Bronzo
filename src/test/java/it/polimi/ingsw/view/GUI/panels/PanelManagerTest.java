@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevGrid;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevCardPanel1;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
@@ -43,6 +44,7 @@ class PanelManagerTest {
         System.in.read();
     }
 
+
     @Test
     void PrintDevCardPanel1() throws IOException, InterruptedException, NegativeQuantityException, ParserConfigurationException, SAXException {
         Game gameModel = new Game();
@@ -54,16 +56,19 @@ class PanelManagerTest {
         gameModel.setMainBoard(this.board);
         PanelManager.getInstance().setGameModel(gameModel);
         Player player = new Player();
-        List<LeaderCard> leaderCards = new LinkedList<>();
+
+        LeaderCardDeck l1 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        List<LeaderCard> leaderCards = l1.getCopyLeaderCards().subList(0,2);
         player.setUsedLeaders(leaderCards);
 
         DevCardPanel1 panel =PanelManager.getInstance().getDevCardCostPanel();
         panel.setPlayer(player);
-        panel.selectCell(0,0);
+        panel.selectCell(0,2);
         panel.print();
         panel.setVisible(true);
 
         System.in.read();
     }
+
 
 }
