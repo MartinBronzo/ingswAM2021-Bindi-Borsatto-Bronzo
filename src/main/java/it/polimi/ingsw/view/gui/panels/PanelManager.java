@@ -18,6 +18,7 @@ import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.cli.CliView;
 import it.polimi.ingsw.view.gui.GuiClient;
+import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevCardPanel1;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -53,6 +54,7 @@ public final class PanelManager {
     private WaitingRoomPanel waitingRoomPanel;
     private BeginningDecisionsPanel beginningDecisionsPanel;
     private MainPanel mainPanel;
+    private DevCardPanel1 devCardCostPanel;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -153,6 +155,8 @@ public final class PanelManager {
 
         waitingRoomPanel = new WaitingRoomPanel();
         gameFrame.add(waitingRoomPanel);
+        devCardCostPanel = new DevCardPanel1();
+        gameFrame.add(devCardCostPanel);
 
         gameFrame.validate();
 
@@ -409,7 +413,12 @@ public final class PanelManager {
                 gameModel.merge(update);
         }
 
-        //TODO: do things to setup view
+       /* //TODO: do things to setup view
+        visualizer.submit(() -> {
+            if(mainPanel!=null) {
+                updatePlayerBoard();
+            }
+        });*/
     }
 
     public Game getGameModel() {
@@ -468,6 +477,10 @@ public final class PanelManager {
         return waitingRoomPanel;
     }
 
+    public DevCardPanel1 getDevCardCostPanel() { return devCardCostPanel; }
+
+
+
     public int getResourcesToTake() {
         return resourcesToTake;
     }
@@ -494,4 +507,20 @@ public final class PanelManager {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    /*public void updatePlayerBoard(){
+        List<String> nicknameList = new ArrayList<>();
+        Player actualPlayer = null;
+
+        gameFrame.remove(mainPanel);
+
+        for(Player player : gameModel.getPlayers()) {
+            if(player.getNickName().equals(nickname))
+                actualPlayer = player;
+            nicknameList.add(player.getNickName());
+        }
+        mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
+        gameFrame.add(mainPanel);
+        mainPanel.setVisible(true);
+    }*/
 }

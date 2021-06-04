@@ -53,6 +53,9 @@ public class GuiTest {
         //test leaderCardPanel
         leaderCardPanel();
 
+        //test for combobox
+        //comboTest();
+
         //printButtons(gameFrame);
         gameFrame.setVisible(true);
 
@@ -66,10 +69,20 @@ public class GuiTest {
 
     }
 
+    private static void comboTest() {
+        String[] nicks = {"a", "b"};
+        JPanel panel = new JPanel();
+        JComboBox<String> comboBox = new JComboBox<>(nicks);
+        comboBox.setPreferredSize(new Dimension(100,100));
+        comboBox.setPrototypeDisplayValue("text here");
+        panel.add(comboBox);
+        gameFrame.add(panel);
+    }
+
     private static void leaderCardPanel() {
         ArrayList<LeaderCard>activeLeaderCards = new ArrayList<>();
         ArrayList<LeaderCard>discardedLeaderCards = new ArrayList<>();
-        discardedLeaderCards.add(new LeaderCard(3, new ArrayList<>(), new Effect(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-64-1.png"));
+        activeLeaderCards.add(new LeaderCard(3, new ArrayList<>(), new Effect(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-64-1.png"));
         discardedLeaderCards.add(new LeaderCard(3, new ArrayList<>(), new Effect(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-63-1.png"));
 
         LeaderCardPanel leaderCardPanel = new LeaderCardPanel(activeLeaderCards, discardedLeaderCards);
