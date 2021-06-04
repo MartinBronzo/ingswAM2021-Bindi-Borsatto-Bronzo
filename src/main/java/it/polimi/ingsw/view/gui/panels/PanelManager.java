@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.cli.CliView;
 import it.polimi.ingsw.view.gui.GuiClient;
+import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevCardPanel1;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -48,6 +49,7 @@ public final class PanelManager {
     //TODO: add here panels created for each view
     private EntryViewPanel entryPanel;
     private WaitingRoomPanel waitingRoomPanel;
+    private DevCardPanel1 devCardCostPanel;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -147,6 +149,8 @@ public final class PanelManager {
         gameFrame.add(entryPanel);
         waitingRoomPanel = new WaitingRoomPanel();
         gameFrame.add(waitingRoomPanel);
+        devCardCostPanel = new DevCardPanel1();
+        gameFrame.add(devCardCostPanel);
 
         gameFrame.validate();
 
@@ -429,6 +433,10 @@ public final class PanelManager {
     public WaitingRoomPanel getWaitingRoomPanel() {
         return waitingRoomPanel;
     }
+
+    public DevCardPanel1 getDevCardCostPanel() { return devCardCostPanel; }
+
+
 
     public int getResourcesToTake() {
         return resourcesToTake;
