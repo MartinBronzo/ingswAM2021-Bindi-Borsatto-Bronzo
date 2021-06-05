@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;

@@ -1,10 +1,9 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.view.gui.DropResettable;
 import it.polimi.ingsw.view.gui.ViewComponents.LimitedResourcesDrag;
 import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropFromFiniteRes;
-import it.polimi.ingsw.view.gui.ViewComponents.Resettable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 

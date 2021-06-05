@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DragUpdatable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
@@ -12,7 +14,7 @@ import java.util.List;
 /**
  * This panel represents a depot where we can drag the resources from the shelves.
  */
-public class DepotDrag extends JPanel implements DragUpdatable, Resettable{
+public class DepotDrag extends JPanel implements DragUpdatable, Resettable {
     private List<ShelfDrag> shelves;
     private List<MyDragGestureListener> dragListeners;
 

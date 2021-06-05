@@ -1,22 +1,22 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.buttons;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SubmitButton extends JButton {
+public class BackButton extends JButton {
 
-    public SubmitButton(){
+    public BackButton(){
         super();
         this.setProperties();
     }
 
-    public SubmitButton(String text){
+    public BackButton(String text){
         super(text);
         this.setProperties();
     }
 
     private void setProperties(){
-        this.setBackground(Color.GREEN);
+        this.setBackground(Color.GRAY);
         this.setOpaque(true);
     }
 }

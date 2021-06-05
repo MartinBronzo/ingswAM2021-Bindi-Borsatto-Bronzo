@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
+import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.network.messages.fromClient.LeaderMessage;
+import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,11 +12,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.security.cert.PolicyNode;
 import java.util.ArrayList;
 
 public class LeaderCardPanel extends JPanel {
 
-    public LeaderCardPanel(ArrayList<LeaderCard> activeLeaders, ArrayList<LeaderCard> unusedLeaders){
+    public LeaderCardPanel(ArrayList<LeaderCard> activeLeaders, ArrayList<LeaderCard> unusedLeaders) {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setAlignmentX(LEFT_ALIGNMENT);
@@ -21,7 +25,7 @@ public class LeaderCardPanel extends JPanel {
 
         ArrayList<JPanel> panelList = new ArrayList<>();
         ImageIcon image;
-        for(LeaderCard leader : activeLeaders){
+        for (LeaderCard leader : activeLeaders) {
             JPanel activeCardPanel = new JPanel();
             activeCardPanel.setLayout(new BoxLayout(activeCardPanel, BoxLayout.PAGE_AXIS));
 
@@ -34,10 +38,11 @@ public class LeaderCardPanel extends JPanel {
             activeCardPanel.setAlignmentX(LEFT_ALIGNMENT);
             panelList.add(activeCardPanel);
             this.add(activeCardPanel);
-            this.add(Box.createRigidArea(new Dimension(0,20)));
+            this.add(Box.createRigidArea(new Dimension(0, 20)));
         }
 
-        for(LeaderCard leader : unusedLeaders){
+        int index = 0;
+        for (LeaderCard leader : unusedLeaders) {
             JPanel cardPanel = new JPanel();
             cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.PAGE_AXIS));
 
@@ -49,19 +54,28 @@ public class LeaderCardPanel extends JPanel {
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
             JButton activateButton = new JButton("Activate");
+            int i = index;
+            activateButton.addActionListener(event -> PanelManager.getInstance().writeMessage(
+                    new Command("ActivateLeader", new LeaderMessage(i))));
+
             JButton discardButton = new JButton("Discard");
+            discardButton.addActionListener(event -> PanelManager.getInstance().writeMessage(
+                    new Command("discardLeader", new LeaderMessage(i))));
+
             buttonPanel.add(activateButton);
-            buttonPanel.add(Box.createRigidArea(new Dimension(10,0)));
+            buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
             buttonPanel.add(discardButton);
             buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
 
             cardPanel.add(label);
-            cardPanel.add(Box.createRigidArea(new Dimension(0,5)));
+            cardPanel.add(Box.createRigidArea(new Dimension(0, 5)));
             cardPanel.add(buttonPanel);
-            cardPanel.add(Box.createRigidArea(new Dimension(0,10)));
+            cardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             cardPanel.setAlignmentX(LEFT_ALIGNMENT);
             panelList.add(cardPanel);
             this.add(cardPanel);
+
+            index++;
         }
     }
 

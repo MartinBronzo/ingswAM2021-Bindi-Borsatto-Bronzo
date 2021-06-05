@@ -3,8 +3,8 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
-import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.DragGestureListenerOneShot;
-import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.UnWantedDropTarget;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DragUpdatable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Resettable{
+public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Resettable {
     private List<JLabel> resources;
     /**
      * Contains a copy of the original resources put into the map to be used when we have to cancel the actions the player has done so far.

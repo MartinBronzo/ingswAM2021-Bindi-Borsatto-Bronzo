@@ -186,6 +186,8 @@ public class MainPanel extends JPanel {
         String nickname;
         nickname = PanelManager.getInstance().getNickname();
         stateLabel.setText(game.findByNick(nickname).getPlayerState().name());
+
+
     }
 
     public boolean getCreated(){

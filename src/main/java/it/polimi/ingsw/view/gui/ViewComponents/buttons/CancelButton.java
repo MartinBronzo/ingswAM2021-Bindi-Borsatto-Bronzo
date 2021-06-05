@@ -1,22 +1,21 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.buttons;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BackButton extends JButton {
-
-    public BackButton(){
+public class CancelButton extends JButton {
+    public CancelButton(){
         super();
         this.setProperties();
     }
 
-    public BackButton(String text){
+    public CancelButton(String text){
         super(text);
         this.setProperties();
     }
 
     private void setProperties(){
-        this.setBackground(Color.GRAY);
+        this.setBackground(Color.RED);
         this.setOpaque(true);
     }
 }

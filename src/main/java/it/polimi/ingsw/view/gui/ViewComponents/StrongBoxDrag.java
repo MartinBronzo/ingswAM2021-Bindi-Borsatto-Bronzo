@@ -3,7 +3,8 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ShelfDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DragUpdatable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable{
+public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
     private List<JLabel> resources;
     //DragGestureListenerOneShot dlistener;
     MyDragGestureListener dlistener;

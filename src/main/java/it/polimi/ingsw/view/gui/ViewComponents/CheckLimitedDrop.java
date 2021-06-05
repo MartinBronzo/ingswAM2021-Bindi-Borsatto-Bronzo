@@ -3,8 +3,8 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
-import javax.annotation.Resource;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -3,7 +3,8 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ShelfDrop;
-import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.DragGestureListenerOneShot;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DragUpdatable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.awt.dnd.DragSource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShelfDrag extends JPanel implements DragUpdatable, Resettable{
+public class ShelfDrag extends JPanel implements DragUpdatable, Resettable {
     private int shelfNumber;
     private List<JLabel> resources;
     private int resourceRemoved;

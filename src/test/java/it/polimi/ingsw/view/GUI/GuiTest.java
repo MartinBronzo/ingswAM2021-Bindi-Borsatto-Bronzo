@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.CheckBaseProd;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.DragAndDropBaseProd;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.BackButton;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.gui.panels.*;
 
 import javax.swing.*;

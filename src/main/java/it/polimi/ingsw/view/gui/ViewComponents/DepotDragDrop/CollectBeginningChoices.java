@@ -1,21 +1,17 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.controller.Command;
-import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.DepotParams;
 import it.polimi.ingsw.network.messages.fromClient.DiscardLeaderAndExtraResBeginningMessage;
 import it.polimi.ingsw.network.messages.fromClient.Message;
-import it.polimi.ingsw.view.gui.panels.CardCheckbox;
+import it.polimi.ingsw.view.gui.ViewComponents.CardCheckbox;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.stream.Collectors;
 
 /**

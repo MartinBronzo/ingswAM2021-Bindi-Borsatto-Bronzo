@@ -1,9 +1,8 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
 import javax.swing.*;
-import java.util.function.Consumer;
 
 public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
     private final Droppable dropTarget;

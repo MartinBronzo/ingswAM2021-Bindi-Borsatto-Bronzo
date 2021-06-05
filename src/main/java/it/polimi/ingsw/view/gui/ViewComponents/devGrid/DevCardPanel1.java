@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
-import it.polimi.ingsw.view.gui.panels.CardCheckbox;
+import it.polimi.ingsw.view.gui.ViewComponents.CardCheckbox;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 

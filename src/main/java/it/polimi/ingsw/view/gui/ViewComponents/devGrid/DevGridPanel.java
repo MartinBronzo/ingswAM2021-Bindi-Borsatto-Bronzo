@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.devGrid;
 
 import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.view.gui.ViewComponents.BackButton;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.BackButton;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 

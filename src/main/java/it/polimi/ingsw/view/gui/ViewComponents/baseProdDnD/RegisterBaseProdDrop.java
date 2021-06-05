@@ -1,10 +1,9 @@
 package it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD;
 
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
 import javax.swing.*;
-import java.util.function.Consumer;
 
 public class RegisterBaseProdDrop implements RegisterDropInterface {
     private final BaseProdPanel baseProdPanel;

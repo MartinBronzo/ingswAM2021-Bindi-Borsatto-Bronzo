@@ -2,12 +2,13 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckDropDropToLeader implements DropChecker, Resettable{
+public class CheckDropDropToLeader implements DropChecker, Resettable {
     private List<LeaderCardDrop> leaders;
     private LeaderCardDrop destination;
 

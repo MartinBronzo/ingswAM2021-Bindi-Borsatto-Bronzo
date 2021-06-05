@@ -3,8 +3,8 @@ package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.view.gui.DropResettable;
 import it.polimi.ingsw.view.gui.ViewComponents.CheckLimitedDrop;
-import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
-import it.polimi.ingsw.view.gui.ViewComponents.Resettable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,8 +14,6 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class MyDropTargetListener extends DropTargetAdapter {
 

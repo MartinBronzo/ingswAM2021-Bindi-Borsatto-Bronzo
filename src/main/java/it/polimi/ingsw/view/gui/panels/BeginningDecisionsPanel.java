@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.panels;
 
+import it.polimi.ingsw.view.gui.ViewComponents.CardCheckbox;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CheckDropAtBeginningDecisionsTime;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CollectBeginningChoices;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DnDDepot;

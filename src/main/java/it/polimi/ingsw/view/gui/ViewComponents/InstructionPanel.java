@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
-import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 
 import javax.swing.*;
 import java.awt.*;

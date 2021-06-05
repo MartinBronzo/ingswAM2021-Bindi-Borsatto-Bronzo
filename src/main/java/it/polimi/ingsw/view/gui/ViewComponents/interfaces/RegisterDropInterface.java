@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.interfaces;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
 

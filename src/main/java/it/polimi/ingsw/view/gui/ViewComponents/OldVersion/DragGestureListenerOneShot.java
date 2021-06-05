@@ -1,14 +1,9 @@
 package it.polimi.ingsw.view.gui.ViewComponents.OldVersion;
 
-import it.polimi.ingsw.view.gui.ViewComponents.DragUpdatable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DragUpdatable;
 
-import javax.swing.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
-import java.io.IOException;
 
 /**
  * This class makes the label being dragged invisible in its origin panel

@@ -3,17 +3,17 @@ package it.polimi.ingsw.view.GUI.panels;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.model.Market.Market;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
-import it.polimi.ingsw.view.gui.ViewComponents.market.MarketGridPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 import it.polimi.ingsw.view.gui.panels.ActualPlayerBoardPanel;
 import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
@@ -989,7 +989,7 @@ public class Test {
 package it.polimi.ingsw.view.GUI.panels;
 
         import it.polimi.ingsw.model.ResourceType;
-        import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
+        import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 
         import javax.swing.*;
         import javax.swing.border.TitledBorder;

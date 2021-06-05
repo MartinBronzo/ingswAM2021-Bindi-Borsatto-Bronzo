@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class ActualPlayerBoardPanel extends JPanel {
     DevGridPanel devGrid;
+    LeaderCardPanel leaderCardPanel;
 
     public ActualPlayerBoardPanel(Board mainBoard, ArrayList<LeaderCard> activeLeaders, ArrayList<LeaderCard> unusedLeaders) {
         super();
@@ -26,7 +27,7 @@ public class ActualPlayerBoardPanel extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-        LeaderCardPanel leaderCardPanel = new LeaderCardPanel(activeLeaders, unusedLeaders);
+        leaderCardPanel = new LeaderCardPanel(activeLeaders, unusedLeaders);
         leaderCardPanel.setAlignmentX(LEFT_ALIGNMENT);
         this.add(leaderCardPanel);
 
@@ -66,7 +67,7 @@ public class ActualPlayerBoardPanel extends JPanel {
     }
 
     public void updatePlayerBoard(Game game){
-        
+        //for()
     }
 
     private ImageIcon scaleImage(String image, int width, int height) {
