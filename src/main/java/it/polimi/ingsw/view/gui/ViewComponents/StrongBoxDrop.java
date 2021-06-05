@@ -93,4 +93,6 @@ public class StrongBoxDrop extends JPanel implements Droppable {
         return resToStrongBox;
     }
 
+    //TODO: ma questa classe serve? Se sì fare metodo init dove si riempe lo strongbox con le risorse già presenti, queste risorse sono prese dal PanelManager
+
 }

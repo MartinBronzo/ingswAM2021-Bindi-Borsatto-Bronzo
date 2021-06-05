@@ -45,4 +45,8 @@ public class CheckLimitedDrop implements DropChecker {
         resToBeTaken.put(type, oldNum);
         return true;
     }
+
+    public boolean hasPlayerSpecifiedEverything(){
+        return this.resToBeTaken.isEmpty();
+    }
 }

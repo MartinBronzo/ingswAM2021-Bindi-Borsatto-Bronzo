@@ -24,4 +24,8 @@ public class DepotParams {
     public int getShelf() {
         return shelf;
     }
+
+    public void setQt(int qt) {
+        this.qt = qt;
+    }
 }

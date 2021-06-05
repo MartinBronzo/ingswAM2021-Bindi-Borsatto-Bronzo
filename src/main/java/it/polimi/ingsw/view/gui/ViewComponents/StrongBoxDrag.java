@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ShelfDrop;
+import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -26,10 +27,15 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable{
         this.resources = new ArrayList<>();
     }
 
+    @Deprecated
     public void init(HashMap<ResourceType, Integer> res, MyDragGestureListener dlistener){
-        //TODO: prendere dal panel manager le info dallo strongbox, anche per lo strongbox drop
         this.dlistener = dlistener;
         this.fillStrongBox(res);
+    }
+
+    public void init(){
+        this.dlistener = new MyDragGestureListener();
+        this.fillStrongBox(PanelManager.getInstance().getStrongBox());
     }
 
     private void fillStrongBox(HashMap<ResourceType, Integer> res){

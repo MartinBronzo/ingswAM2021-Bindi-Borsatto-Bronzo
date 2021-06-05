@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.view.gui.ViewComponents.CheckLimitedDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
 
 import javax.swing.*;
@@ -84,5 +85,16 @@ public class MyDropTargetListener extends DropTargetAdapter {
 
     public void setCheckDrop(DropChecker checkDrop) {
         this.checkDrop = checkDrop;
+    }
+
+    /**
+     * Returns whether the player has specified all the resources they are supposed to in the case they are dropping limited resources in a PanelDrop
+     * (in this case the checkDrop function is a CheckLimitedDrop)
+     * @return true if the player has specified all the resources they are supposed to, false otherwise or if this MyDropTargetListener is used in another situation
+     */
+    public boolean hasPlayerSpecifiedEverything(){
+        if(!(checkDrop instanceof CheckLimitedDrop))
+            return false;
+        return ((CheckLimitedDrop) checkDrop).hasPlayerSpecifiedEverything();
     }
 }
