@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.gui.DropResettable;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
 
 import javax.swing.*;
@@ -8,16 +9,20 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
-public class DiscardedResDrop extends JPanel implements Droppable {
+public class DiscardedResDrop extends JPanel implements Droppable, DropResettable {
     private Map<ResourceType, Integer> resToBeDiscarded;
     private MyDropTargetListener targetListener;
+    private List<JLabel> labelResDropped;
 
     public DiscardedResDrop(){
         super();
         resToBeDiscarded = new HashMap<>();
+        labelResDropped = new ArrayList<>();
 
         this.setBorder(new TitledBorder("Drop here the resource you want to discard"));
 
@@ -90,9 +95,19 @@ public class DiscardedResDrop extends JPanel implements Droppable {
 
     public void resetState(){
         this.resToBeDiscarded = new HashMap<>();
+        for(JLabel label : this.labelResDropped)
+            this.remove(label);
+        this.revalidate();
+        this.repaint();
+        this.labelResDropped = new ArrayList<>();
     }
 
     public Map<ResourceType, Integer> getDecisions() {
         return resToBeDiscarded;
+    }
+
+    @Override
+    public void addDroppedLabel(JLabel label) {
+        this.labelResDropped.add(label);
     }
 }

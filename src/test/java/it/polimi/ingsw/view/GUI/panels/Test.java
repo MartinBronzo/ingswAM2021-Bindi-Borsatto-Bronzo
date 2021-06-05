@@ -50,7 +50,9 @@ public class Test {
         //checkStrongBoxOnlyView();
         //checkPlainPanelDropGettingInfo();
         //checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
-        checkResetDepotDrop();
+        //checkResetDepotDrop();
+        //checkResetTrashCanDrop();
+        checkResetDepotDropAndTrashCanDrop();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -736,6 +738,99 @@ public class Test {
         CancelButton button = new CancelButton("Cancel");
         button.addActionListener(new ResetState(depot.getDepot()));
         frame.add(button, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("Depot reset");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkResetTrashCanDrop(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the LimitedRes drag
+        LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.STONE, 3);
+        res.put(ResourceType.SERVANT, 1);
+        res.put(ResourceType.SHIELD, 1);
+        limitedResourcesDrag.init(res);
+        frame.add(limitedResourcesDrag, BorderLayout.PAGE_END);
+
+        //Setting up the TrashCan
+        DiscardedResDrop trashCan = new DiscardedResDrop();
+        trashCan.initFromFiniteRes(new DumbCheckDrop(), limitedResourcesDrag);
+        frame.add(trashCan, BorderLayout.CENTER);
+
+        //Setting up the CancelButton
+        CancelButton button = new CancelButton("Cancel");
+        button.addActionListener(new ResetState(trashCan));
+        frame.add(button, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("Depot reset");
+        frame.pack();
+        frame.setVisible(true);
+
+    }
+
+    public static void checkResetDepotDropAndTrashCanDrop(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Setting up the LimitedRes drag
+        LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.STONE, 3);
+        res.put(ResourceType.SERVANT, 1);
+        res.put(ResourceType.SHIELD, 1);
+        limitedResourcesDrag.init(res);
+        frame.add(limitedResourcesDrag, BorderLayout.PAGE_END);
+
+        //Setting up the DepotDrop
+        DepotDrop depot = new DepotDrop();
+        depot.initFromFiniteDrag(new CheckDropInDepot(depot), limitedResourcesDrag);
+        frame.add(depot, BorderLayout.CENTER);
+
+        //Setting up the TrashCan
+        DiscardedResDrop trashCan = new DiscardedResDrop();
+        trashCan.initFromFiniteRes(new DumbCheckDrop(), limitedResourcesDrag);
+        frame.add(trashCan, BorderLayout.PAGE_START);
+
+        //Setting up the CancelButton
+        CancelButton cancel = new CancelButton("Cancel");
+        cancel.addActionListener(new ResetState(depot, trashCan, limitedResourcesDrag));
+
+        //Setting up the Submit button
+        SubmitButton submit = new SubmitButton("Submit");
+        submit.addActionListener(new CollectPlacingResources(depot, trashCan));
+
+        //Placing the buttons
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(cancel);
+        panel.add(submit);
+        frame.add(panel, BorderLayout.LINE_END);
 
         //Finishing it up
         frame.setTitle("Depot reset");

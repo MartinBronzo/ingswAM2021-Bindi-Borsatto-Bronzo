@@ -15,19 +15,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
-    List<JLabel> resources = new ArrayList<>();
-    MyDragGestureListener dlistener;
+public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Resettable{
+    private List<JLabel> resources;
+    /**
+     * Contains a copy of the original resources put into the map to be used when we have to cancel the actions the player has done so far.
+     */
+    private HashMap<ResourceType, Integer> originalResources;
+    private MyDragGestureListener dlistener;
 
     public LimitedResourcesDrag(){
         super();
         this.setBorder(new TitledBorder("Drag Resources from here"));
+        resources = new ArrayList<>();
+        this.originalResources = null;
     }
 
     @Deprecated
     public void init(HashMap<ResourceType, Integer> resources, MyDragGestureListener dlistiner) {
         this.dlistener = dlistiner;
         //new UnWantedDropTarget(this, this);
+        this.originalResources = new HashMap<>(resources);
 
         for(Map.Entry<ResourceType, Integer> e : resources.entrySet())
             addResourceLabel(e.getKey(), e.getValue());
@@ -36,7 +43,12 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
     public void init(HashMap<ResourceType, Integer> resources){
         this.dlistener = new MyDragGestureListener();
         //new UnWantedDropTarget(this, this);
+        this.originalResources = new HashMap<>(resources);
 
+        this.addResourceLabels(resources);
+    }
+
+    private void addResourceLabels(HashMap<ResourceType, Integer> resources){
         for(Map.Entry<ResourceType, Integer> e : resources.entrySet())
             addResourceLabel(e.getKey(), e.getValue());
     }
@@ -76,5 +88,17 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
     public void updateAfterDrop(String info) {
         JLabel draggedAway = this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get();
         draggedAway.setVisible(false);
+        this.revalidate();
+        this.repaint();
+    }
+
+    @Override
+    public void resetState() {
+        for(JLabel label : this.resources)
+            this.remove(label);
+        this.resources = new ArrayList<>();
+        this.addResourceLabels(originalResources);
+        this.revalidate();
+        this.repaint();
     }
 }
