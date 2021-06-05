@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.gui.DropResettable;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -10,7 +12,7 @@ import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShelfDrop extends JPanel implements Droppable {
+public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     //TODO: ci sarà da stampare le risorse già presenti nel depot
     private int shelfNumber;
     /**
@@ -18,6 +20,13 @@ public class ShelfDrop extends JPanel implements Droppable {
      * button is clicked then all the list from all the three depot panels must be collected and sent to the model somehow
      */
     private List<Pair<Integer, ResourceType>> resToDepot;
+    private List<JLabel> resources;
+    /**
+     * This list stores the references of the label that have been dropped onto this panel in order to be able to properly delete them
+     * when we reset the state of the panel
+     */
+    private List<JLabel> droppedRes;
+
 
     class Pair<integer, resourceType> {
         private integer shelf;
@@ -48,7 +57,9 @@ public class ShelfDrop extends JPanel implements Droppable {
     public ShelfDrop(int shelfNumber){
         super();
         this.shelfNumber = shelfNumber;
-        resToDepot = new ArrayList<>();
+        this.resToDepot = new ArrayList<>();
+        this.resources = new ArrayList<>();
+        this.droppedRes = new ArrayList<>();
 
         this.setBorder(new TitledBorder("Drop Resources onto shelf number " + this.shelfNumber));
         TransferHandler dnd = new TransferHandler() {
@@ -125,8 +136,32 @@ public class ShelfDrop extends JPanel implements Droppable {
         return resToDepot;
     }
 
+
     public void resetState(){
         this.resToDepot = new ArrayList<>();
+        for(JLabel label : this.resources)
+            this.remove(label);
+        for(JLabel label : this.droppedRes)
+            this.remove(label);
+        this.revalidate();
+        this.repaint();
+        this.resources = new ArrayList<>();
+        this.droppedRes = new ArrayList<>();
+    }
+
+    @Override
+    public void addDroppedLabel(JLabel label) {
+        this.droppedRes.add(label);
+    }
+
+
+    public void fillShelf(DepotShelf depotShelf) {
+        JLabel resource;
+        for(int i = 0; i < depotShelf.getQuantity(); i++){
+            resource = new JLabel(new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType())));
+            this.add(resource);
+            this.resources.add(resource);
+        }
     }
 }
 

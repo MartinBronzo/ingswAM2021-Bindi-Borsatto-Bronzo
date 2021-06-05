@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.gui.DropResettable;
 import it.polimi.ingsw.view.gui.ViewComponents.LimitedResourcesDrag;
 import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropFromFiniteRes;
+import it.polimi.ingsw.view.gui.ViewComponents.Resettable;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 
@@ -13,7 +15,7 @@ import java.util.List;
 /**
  * This class represents a Depot where the player can drop resources.
  */
-public class DepotDrop extends JPanel {
+public class DepotDrop extends JPanel implements Resettable {
     private List<ShelfDrop> shelves;
     private List<MyDropTargetListener> targetListeners;
 
@@ -52,6 +54,7 @@ public class DepotDrop extends JPanel {
     public void resetState(){
         for(ShelfDrop e: this.shelves)
             e.resetState();
+        fillDepot();
     }
 
     /**
@@ -83,18 +86,19 @@ public class DepotDrop extends JPanel {
         List<DepotShelf> depotShelves = PanelManager.getInstance().getDepotShelves();
         int i = 0;
         for(DepotShelf dS: depotShelves) {
-            fillShelf(dS, this.shelves.get(i));
+            //fillShelf(dS, this.shelves.get(i));
+            this.shelves.get(i).fillShelf(dS);
             i++;
         }
     }
 
-    private void fillShelf(DepotShelf depotShelf, ShelfDrop panel) {
+    /*private void fillShelf(DepotShelf depotShelf, ShelfDrop panel) {
         JLabel resource;
         for(int i = 0; i < depotShelf.getQuantity(); i++){
             resource = new JLabel(new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType())));
             panel.add(resource);
         }
-    }
+    }*/
 
     public static String getImagePathFromResource(ResourceType resource){
         switch (resource){
@@ -112,4 +116,5 @@ public class DepotDrop extends JPanel {
                 return "";
         }
     }
+
 }

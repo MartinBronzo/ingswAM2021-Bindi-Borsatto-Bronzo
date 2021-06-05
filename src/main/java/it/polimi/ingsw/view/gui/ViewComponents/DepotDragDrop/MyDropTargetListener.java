@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.view.gui.DropResettable;
 import it.polimi.ingsw.view.gui.ViewComponents.CheckLimitedDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
 
@@ -56,7 +57,10 @@ public class MyDropTargetListener extends DropTargetAdapter {
                     try {
                         if (checkDrop.test(p)) {
                             this.makeCall.accept(ico);
-                            p.add(new JLabel(ico));
+                            JLabel icoLabel = new JLabel(ico);
+                            p.add(icoLabel);
+                            if(p instanceof DropResettable)
+                                ((DropResettable) p).addDroppedLabel(icoLabel);
                             p.revalidate();
                             p.repaint();
                             event.dropComplete(true);

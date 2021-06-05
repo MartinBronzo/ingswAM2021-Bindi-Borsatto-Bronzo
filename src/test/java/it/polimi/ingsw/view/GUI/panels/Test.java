@@ -49,7 +49,8 @@ public class Test {
         //checkDepotOnlyView();
         //checkStrongBoxOnlyView();
         //checkPlainPanelDropGettingInfo();
-        checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
+        //checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
+        checkResetDepotDrop();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -703,6 +704,51 @@ public class Test {
 
         //Finishing it up
         frame.setTitle("StrongBox drag & Panel Drop test");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkResetDepotDrop(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Setting up the LimitedRes drag
+        LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.STONE, 3);
+        res.put(ResourceType.SERVANT, 1);
+        res.put(ResourceType.SHIELD, 1);
+        limitedResourcesDrag.init(res);
+        frame.add(limitedResourcesDrag, BorderLayout.PAGE_END);
+
+        //Setting up the DepotDrop
+        DepotDrop depot = new DepotDrop();
+        depot.initFromFiniteDrag(new CheckDropInDepot(depot), limitedResourcesDrag);
+        frame.add(depot, BorderLayout.CENTER);
+
+        //Setting up the CancelButton
+        CancelButton button = new CancelButton("Cancel");
+        button.addActionListener(new ResetState(depot));
+        frame.add(button, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("Depot reset");
         frame.pack();
         frame.setVisible(true);
     }
