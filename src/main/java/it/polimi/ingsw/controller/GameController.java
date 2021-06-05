@@ -1365,7 +1365,7 @@ public class GameController {
             player.setPlayerState(playerInGame.getPlayerState());
             game.addPlayer(player);
         }
-        this.sendBroadcastUpdate(new ModelUpdate(game), disconnectedPlayer);
+        this.sendBroadcastUpdate(new PlayerConnectionsUpdate(game, disconnectedPlayer.getNickname()), disconnectedPlayer);
     }
 
     public synchronized void updatesPlayersStates() {

@@ -650,4 +650,14 @@ class CliViewTest {
         CliView.printHolpMessage();
     }
 
+    @Test
+    void printPlayerLeftGame(){
+        CliView.printDisconnectionUpdate("Jar-Jar", true);
+    }
+
+    @Test
+    void printPlayerBackInTheGame(){
+        CliView.printDisconnectionUpdate("Jar-Jar", false);
+    }
+
 }

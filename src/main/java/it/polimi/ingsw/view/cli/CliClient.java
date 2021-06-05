@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
@@ -599,6 +600,17 @@ public class CliClient extends Client implements Runnable {
                                 CliView.printInfo("My Master, what a quest for Glory lies in front of you: " + (numPlayers - 1) + " dreadful competitors will be ready to challenge you every step of the way!");
                         }
                         break;
+                    case PLAYERCONNECTIONUPDATE:
+                        synchronized (this) {
+                            PlayerConnectionsUpdate modelUpdate = gson.fromJson(responseContent, PlayerConnectionsUpdate.class);
+                            Game update = modelUpdate.getUpdate();
+                            if (this.gamemodel == null)
+                                gamemodel = update;
+                            else
+                                gamemodel.merge(update);
+                            CliView.printDisconnectionUpdate(modelUpdate.getChangedPlayer(), isPlayerDisconnected(gamemodel, modelUpdate.getChangedPlayer()));
+                        }
+                        break;
                 }
             } catch (NullPointerException e) {
                 CliView.printError(e.getMessage());
@@ -606,6 +618,9 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
+    private boolean isPlayerDisconnected(Game game, String player){
+        return game.getPlayers().stream().filter(x -> x.getNickName().equals(player)).findAny().get().getPlayerState() == PlayerState.DISCONNECTED;
+    }
 
     public static void main(String[] args) throws IOException {
         String hostName = "127.0.0.1";

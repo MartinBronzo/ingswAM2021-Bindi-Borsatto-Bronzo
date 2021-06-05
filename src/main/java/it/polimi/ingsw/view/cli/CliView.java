@@ -1405,6 +1405,35 @@ public class CliView implements view {
         System.out.print(line + "\n");
     }
 
+    public static void printDisconnectionUpdate(String changedPlayerName, boolean disconnected) {
+        System.out.print(AnsiCommands.clear());
+        System.out.print(AnsiCommands.RED.getTextColor());
+        System.out.print("\n   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |                            |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+
+        String message;
+        if(disconnected)
+            message = "My master, thy dreadful competitor " + changedPlayerName + " was so afraid of thy excellence that cowardly left the battle!";
+        else
+            message = "My master, thy dreadful competitor " + changedPlayerName + " found the courage to challenge thee and is back in the battle. Fear thou not because braver you are!";
+
+        String[] lines = CliView.splitInLinesBySize(message, 27);
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+        }
+        System.out.print("    |                            |.\n");
+
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
+
 
 
 
