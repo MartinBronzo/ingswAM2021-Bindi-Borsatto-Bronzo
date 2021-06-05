@@ -45,13 +45,13 @@ public class MarketGridPanel extends JPanel{
                  */
                 this.add(label);
             }
-            button = new SubmitButton(String.valueOf(i+1));
+            button = new SubmitButton("←"+ (i + 1));
             button.addActionListener(event -> PanelManager.getInstance().printBuyFromMarketPanel(true, row));
             this.add(button);
         }
         for (int j = 0; j < marketMatrix[0].length; j++) {
             int col = j;
-            button = new SubmitButton(String.valueOf(j+1));
+            button = new SubmitButton("↑" + (j + 1));
             button.addActionListener(event -> PanelManager.getInstance().printBuyFromMarketPanel(false, col));
             this.add(button);
         }

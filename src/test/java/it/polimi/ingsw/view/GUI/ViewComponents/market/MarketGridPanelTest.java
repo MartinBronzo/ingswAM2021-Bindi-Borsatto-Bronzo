@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI.ViewComponents.market;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevGrid;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.Market.Market;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.cli.CliView;
@@ -17,6 +18,8 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 class MarketGridPanelTest {
     Board board;
@@ -44,16 +47,27 @@ class MarketGridPanelTest {
         marketGridGui.setVisible(true);
         CliView.printMarket(board);
         marketGridGui.update();
-        Thread.sleep(3000);
-        /*
-        DevCard[][] devCards = this.board.getDevMatrix();
-        DevCard devCard;
-        devCard = devCards[0][0];
-        devCards[0][0] = devCards[2][2];
-        devCards[2][2] = devCard;
-        devGridGui.update();
+        Thread.sleep(5000);
 
-         */
+        List<Effect> effects = new LinkedList<>();
+        for (int i =0; i<market.getNumberOfWhiteMarbleInTheColumn(0); i++) effects.add(new Effect());
+        market.moveColumn(0, effects);
+        MarbleType[][] marbleMatrix = market.getMarketMatrixWithMarbleType();
+        MarbleType marbleOnSlide = market.getMarbleOnSlideWithMarbleType();
+        this.board.setMarketMatrix(marbleMatrix);
+        this.board.setMarbleOnSlide(marbleOnSlide);
+        marketGridGui.update();
+        Thread.sleep(3000);
+
+        effects = new LinkedList<>();
+        for (int i =0; i<market.getNumberOfWhiteMarbleInTheRow(1); i++) effects.add(new Effect());
+        market.moveRow(1, effects);
+        marbleMatrix = market.getMarketMatrixWithMarbleType();
+        marbleOnSlide = market.getMarbleOnSlideWithMarbleType();
+        this.board.setMarketMatrix(marbleMatrix);
+        this.board.setMarbleOnSlide(marbleOnSlide);
+        marketGridGui.update();
+
         System.in.read();
 
     }

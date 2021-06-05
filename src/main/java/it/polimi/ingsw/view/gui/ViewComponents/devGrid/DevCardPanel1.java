@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.ViewComponents.devGrid;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.DiscountLeaderEffect;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 import it.polimi.ingsw.view.gui.panels.CardCheckbox;
@@ -96,7 +97,8 @@ public class DevCardPanel1 extends JPanel {
             selectedCard.setText(devCard.toString());
         }
 
-        List<String> leaderCardsPath = player.getUsedLeaders().stream().map(card -> card.getUrl()).collect(Collectors.toList());
+        //TODO we can see only DiscountLeaderEffect adding a filter with instaceof but doing this lose the control of the getusedLeaers index to send to the controller, we should change cardCheckboxPanel
+        List<String> leaderCardsPath = player.getUsedLeaders().stream()./*filter(card -> card.getEffect() instanceof DiscountLeaderEffect).*/map(card -> card.getUrl()).collect(Collectors.toList());
         this.cardCheckboxPanel.resetView(leaderCardsPath, "Do you want to use this card?");
 
         this.setVisible(true);
