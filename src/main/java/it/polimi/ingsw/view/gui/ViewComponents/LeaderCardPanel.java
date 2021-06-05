@@ -65,7 +65,7 @@ public class LeaderCardPanel extends JPanel {
         }
     }
 
-    private ImageIcon scaleImage(String image, int width, int height) {
+    public static ImageIcon scaleImage(String image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {
