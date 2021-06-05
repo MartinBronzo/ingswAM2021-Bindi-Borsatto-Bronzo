@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.view.gui.DropResettable;
 import it.polimi.ingsw.view.gui.ViewComponents.CheckLimitedDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropInterface;
+import it.polimi.ingsw.view.gui.ViewComponents.Resettable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,5 +101,10 @@ public class MyDropTargetListener extends DropTargetAdapter {
         if(!(checkDrop instanceof CheckLimitedDrop))
             return false;
         return ((CheckLimitedDrop) checkDrop).hasPlayerSpecifiedEverything();
+    }
+
+    public void resetChecker(){
+        if(this.checkDrop instanceof Resettable)
+            ((Resettable) checkDrop).resetState();
     }
 }

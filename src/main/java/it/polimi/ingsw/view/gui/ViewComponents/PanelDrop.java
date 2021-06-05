@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.DepotParams;
+import it.polimi.ingsw.view.gui.DropResettable;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
 
 import javax.swing.*;
@@ -12,10 +14,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PanelDrop extends JPanel {
+public class PanelDrop extends JPanel implements DropResettable {
     private MyDropTargetListener targetListener;
     private HashMap<ResourceType, Integer> fromStrongBox;
     private List<DepotParams> fromDepot;
+    private List<JLabel> addedLabels;
 
     public PanelDrop(){
         super();
@@ -24,6 +27,7 @@ public class PanelDrop extends JPanel {
 
         this.fromStrongBox = new HashMap<>();
         this.fromDepot = new ArrayList<>();
+        this.addedLabels = new ArrayList<>();
 
         TransferHandler dnd = new TransferHandler() {
             @Override
@@ -102,5 +106,22 @@ public class PanelDrop extends JPanel {
 
     public boolean hasPlayerSpecifiedEverything(){
         return this.targetListener.hasPlayerSpecifiedEverything();
+    }
+
+    @Override
+    public void resetState() {
+        this.fromStrongBox = new HashMap<>();
+        this.fromDepot = new ArrayList<>();
+        for(JLabel label: this.addedLabels)
+            this.remove(label);
+        this.addedLabels = new ArrayList<>();
+        this.targetListener.resetChecker();
+        this.revalidate();
+        this.repaint();
+    }
+
+    @Override
+    public void addDroppedLabel(JLabel label) {
+        this.addedLabels.add(label);
     }
 }

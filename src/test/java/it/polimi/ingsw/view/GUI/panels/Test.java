@@ -885,8 +885,18 @@ public class Test {
 
         //Setting up the CancelButton
         CancelButton cancel = new CancelButton("Cancel");
-        cancel.addActionListener(new ResetState(depotDrag, strongBox));
-        frame.add(cancel, BorderLayout.LINE_END);
+        cancel.addActionListener(new ResetState(depotDrag, strongBox, pDrop));
+
+        //Setting up the Submit button
+        SubmitButton submit = new SubmitButton("Submit");
+        submit.addActionListener(new CollectCostsChoices(pDrop));
+
+        //Placing the buttons
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(cancel);
+        panel.add(submit);
+        frame.add(panel, BorderLayout.LINE_END);
 
         //Finishing it up
         frame.setTitle("Depot reset");
