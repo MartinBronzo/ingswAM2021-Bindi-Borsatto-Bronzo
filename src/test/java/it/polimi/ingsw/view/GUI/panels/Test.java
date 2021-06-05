@@ -3,6 +3,10 @@ package it.polimi.ingsw.view.GUI.panels;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevGrid;
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
@@ -22,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
@@ -53,14 +58,14 @@ public class Test {
         //checkResetDepotDrop();
         //checkResetTrashCanDrop();
         //checkResetDepotDropAndTrashCanDrop();
-        checkPlacingResourcesReset();
+        //checkPlacingResourcesReset();
+        checkLeaderCardDrop();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
         //showPlayerBoards();
 
     }
-
 
 
     public static void showSetBeginningDecisionsPanel(){
@@ -903,6 +908,76 @@ public class Test {
         frame.pack();
         frame.setVisible(true);
 
+    }
+
+    private static void checkLeaderCardDrop() {
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.STONE, 1));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Adding the DepotDrag
+        DepotDrag depotDrag = new DepotDrag();
+        depotDrag.init();
+        frame.add(depotDrag, BorderLayout.CENTER);
+
+        //Adding a LeaderCard
+        List<Requirement> req = new ArrayList<>();
+        req.add(new CardRequirementResource(ResourceType.COIN, 5));
+        LeaderCard leader = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.STONE, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png");
+        LeaderCardDrop leaderDrop = new LeaderCardDrop(leader, 1);
+
+        //Adding another LeaderCard
+        LeaderCard l2 = new LeaderCard(leader);
+        LeaderCardDrop leaderDrop2 = new LeaderCardDrop(leader, 0);
+
+        //Creating the listener
+        List<LeaderCardDrop> leaderCards = new ArrayList<>();
+        leaderCards.add(leaderDrop);
+        leaderCards.add(leaderDrop2);
+        CheckDropDropToLeader checker = new CheckDropDropToLeader(leaderCards);
+        RegisterDropToLeader registerDrop = new RegisterDropToLeader(leaderCards, depotDrag);
+        leaderDrop.init(checker, registerDrop);
+        leaderDrop2.init(checker, registerDrop);
+
+        //Adding the LeaderCards to the same panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(leaderDrop);
+        panel.add(leaderDrop2);
+        frame.add(panel, BorderLayout.PAGE_START);
+
+        //Adding the submit button
+        SubmitButton submit = new SubmitButton("Submit");
+        submit.addActionListener(new CollectMoveToLeader(leaderCards));
+
+        //Setting up the CancelButton
+        CancelButton cancel = new CancelButton("Cancel");
+        cancel.addActionListener(new ResetState(leaderDrop, leaderDrop2, depotDrag));
+
+        //Placing the buttons
+        JPanel buttons = new JPanel();
+        buttons.add(cancel);
+        buttons.add(submit);
+        frame.add(buttons, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("LeaderCard");
+        frame.pack();
+        frame.setVisible(true);
     }
 }
 /*
