@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.devGrid;
 
 import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.view.gui.ViewComponents.BackButton;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 
@@ -17,7 +18,7 @@ public class DevGridPanel extends JPanel{
     private final String directoryPath = "src/main/resources/front/";
 
     public DevGridPanel(Board mainBoard){
-        super(new GridLayout(3, 4, 10, 10));
+        super(new GridLayout(4, 4, 10, 10));
         this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         this.mainBoard = mainBoard;
         DevCard[][] devGrid = this.mainBoard.getDevMatrix();
@@ -58,6 +59,10 @@ public class DevGridPanel extends JPanel{
                  */
             }
         }
+        BackButton backButton = new BackButton("Back");
+        backButton.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
+        backButton.setSize(new Dimension(50,20));
+        this.add(backButton);
     }
 
     public void update(){

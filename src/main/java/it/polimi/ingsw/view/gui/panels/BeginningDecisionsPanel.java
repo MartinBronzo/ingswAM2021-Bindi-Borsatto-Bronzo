@@ -12,8 +12,7 @@ import java.util.ArrayList;
 //TODO: MAGARI CAMBIARE A DIALOG
 public class BeginningDecisionsPanel extends JPanel {
 
-    public BeginningDecisionsPanel(/*Frame owner*/ ArrayList<String> leaderList, int numRes, int numLeaders){
-       // super(owner, "Set Beginning Decisions", true);
+    public BeginningDecisionsPanel(ArrayList<String> leaderList, int numRes, int numLeaders){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 

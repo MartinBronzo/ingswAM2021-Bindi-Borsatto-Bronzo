@@ -17,9 +17,10 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
-import it.polimi.ingsw.view.cli.CliView;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevCardPanel1;
+import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.market.MarketGridPanel;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -27,7 +28,6 @@ import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +56,8 @@ public final class PanelManager {
     private BeginningDecisionsPanel beginningDecisionsPanel;
     private MainPanel mainPanel;
     private DevCardPanel1 devCardCostPanel;
+    private MarketGridPanel marketGridPanel;
+    private DevGridPanel devGridPanel;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -157,6 +159,10 @@ public final class PanelManager {
 
         waitingRoomPanel = new WaitingRoomPanel();
         gameFrame.add(waitingRoomPanel);
+
+        mainPanel = new MainPanel();
+        gameFrame.add(mainPanel);
+
         devCardCostPanel = new DevCardPanel1();
         gameFrame.add(devCardCostPanel);
         devCardCostPanel.setVisible(false);
@@ -335,7 +341,6 @@ public final class PanelManager {
 
         visualizer.submit(() -> {
             gameFrame.add(beginningDecisionsPanel);
-            //gameFrame.validate();
             waitingRoomPanel.setVisible(false);
             beginningDecisionsPanel.setVisible(true);
         });
@@ -350,8 +355,8 @@ public final class PanelManager {
         //TODO: do things to remove manageStartView and setup new view
         List<String> nicknameList = new ArrayList<>();
         Player actualPlayer = null;
-        for(Player player : gameModel.getPlayers()) {
-            if(player.getNickName().equals(nickname))
+        for (Player player : gameModel.getPlayers()) {
+            if (player.getNickName().equals(nickname))
                 actualPlayer = player;
             nicknameList.add(player.getNickName());
         }
@@ -361,9 +366,14 @@ public final class PanelManager {
         visualizer.submit(() -> {
             beginningDecisionsPanel.setVisible(false);
             mainPanel.setVisible(true);
-            mainPanel.updateGridView(50,100);
+            mainPanel.updateGridView(50, 100);
         });
 
+    }
+
+    public void showPlayerBoard(JPanel jPanel){
+        jPanel.setVisible(false);
+        mainPanel.setVisible(true);
     }
 
     public void printGetCardCostPanel(int row, int col) throws IllegalArgumentException, IllegalStateException {
@@ -373,13 +383,32 @@ public final class PanelManager {
         });
     }
 
-    public void printBuyFromMarketPanel(boolean isRow, int number){
+    public void displayDevGrid(){
+        visualizer.submit(() -> {
+            mainPanel.setVisible(false);
+            devGridPanel = new DevGridPanel(gameModel.getMainBoard());
+            gameFrame.add(devGridPanel);
+            devGridPanel.setVisible(true);
+            devGridPanel.update(150,200);
+        });
+    }
+
+    public void printBuyFromMarketPanel(boolean isRow, int number) {
         visualizer.submit(() -> {
             //TODO
         });
     }
 
-
+    public void displayMarket() {
+        visualizer.submit(() -> {
+            mainPanel.setVisible(false);
+            marketGridPanel = new MarketGridPanel(gameModel.getMainBoard());
+            gameFrame.add(marketGridPanel);
+            marketGridPanel.setVisible(true);
+            marketGridPanel.setSize(new Dimension(700,700));
+            marketGridPanel.update();
+        });
+    }
 
 
     public void printInfo(String info) {
@@ -415,7 +444,7 @@ public final class PanelManager {
         });
     }
 
-    private void setPlayerAndViews(Player player){
+    private void setPlayerAndViews(Player player) {
         this.player = player;
         this.getDevCardCostPanel().setPlayer(this.player);
     }
@@ -427,14 +456,16 @@ public final class PanelManager {
             if (this.gameModel == null) {
                 gameModel = update;
                 this.setPlayerAndViews(gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().get());
-            }else
+            } else
                 gameModel.merge(update);
             //TODO: add turn info dialog
         }
 
         //TODO: do things to setup view
+        //TODO: handle reconnection case: we have to set the main panel
         visualizer.submit(() -> {
-            if(mainPanel!=null) {
+            // if(mainPanel!=null) {
+            if (mainPanel.getCreated()) {
                 mainPanel.updateMainPanel(gameModel);
             }
         });
@@ -496,8 +527,9 @@ public final class PanelManager {
         return waitingRoomPanel;
     }
 
-    public DevCardPanel1 getDevCardCostPanel() { return devCardCostPanel; }
-
+    public DevCardPanel1 getDevCardCostPanel() {
+        return devCardCostPanel;
+    }
 
 
     public int getResourcesToTake() {
@@ -519,7 +551,7 @@ public final class PanelManager {
      *
      * @return the player's StrongBox
      */
-    public HashMap<ResourceType, Integer> getStrongBox(){
+    public HashMap<ResourceType, Integer> getStrongBox() {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getStrongBox();
     }
 

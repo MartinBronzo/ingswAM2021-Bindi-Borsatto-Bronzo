@@ -38,7 +38,7 @@ public class ActualPlayerBoardPanel extends JPanel {
         playerBoardLabel.setBorder(new TitledBorder("playerboard"));
         this.add(playerBoardLabel);
 
-        JPanel righSidePanel = new JPanel();
+       /* JPanel righSidePanel = new JPanel();
         righSidePanel.setLayout(new BoxLayout(righSidePanel, BoxLayout.PAGE_AXIS));
 
         JButton marketButton = new JButton();
@@ -58,7 +58,7 @@ public class ActualPlayerBoardPanel extends JPanel {
         righSidePanel.add(devGridPanel);
         righSidePanel.setBorder(new TitledBorder("rightside"));
         righSidePanel.setAlignmentX(RIGHT_ALIGNMENT);
-        this.add(righSidePanel);
+        this.add(righSidePanel);*/
     }
 
     public void updateGridView(int width, int height) {

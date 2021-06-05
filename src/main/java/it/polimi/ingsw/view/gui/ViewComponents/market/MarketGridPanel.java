@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.ViewComponents.market;
 
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.marble.MarbleType;
+import it.polimi.ingsw.view.gui.ViewComponents.BackButton;
 import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Board;
@@ -18,7 +19,7 @@ public class MarketGridPanel extends JPanel{
     private final String directoryPath = "src/main/resources/front/";
 
     public MarketGridPanel(Board mainBoard){
-        super(new GridLayout(4, 5, 5, 5));
+        super(new GridLayout(5, 5, 5, 5));
         this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         this.mainBoard = mainBoard;
         BufferedImage img = null;
@@ -69,6 +70,10 @@ public class MarketGridPanel extends JPanel{
 
          */
         this.add(label);
+        BackButton backButton = new BackButton("Back");
+        backButton.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
+        backButton.setSize(new Dimension(50,20));
+        this.add(backButton);
 
     }
 

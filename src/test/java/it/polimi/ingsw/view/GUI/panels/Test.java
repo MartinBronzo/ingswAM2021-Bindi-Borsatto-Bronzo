@@ -3,10 +3,13 @@ package it.polimi.ingsw.view.GUI.panels;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevGrid;
+import it.polimi.ingsw.model.Market.Market;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
+import it.polimi.ingsw.view.gui.ViewComponents.market.MarketGridPanel;
 import it.polimi.ingsw.view.gui.panels.ActualPlayerBoardPanel;
 import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
@@ -53,15 +56,13 @@ public class Test {
         //checkResetDepotDrop();
         //checkResetTrashCanDrop();
         //checkResetDepotDropAndTrashCanDrop();
-        checkPlacingResourcesReset();
+        //checkPlacingResourcesReset();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
         //showPlayerBoards();
 
     }
-
-
 
     public static void showSetBeginningDecisionsPanel(){
         SwingUtilities.invokeLater(() -> {
@@ -583,6 +584,7 @@ public class Test {
         res.put(ResourceType.COIN, 2);
         res.put(ResourceType.SERVANT, 3);
         res.put(ResourceType.STONE, 5);
+        res.put(ResourceType.SHIELD, 0);
         player.setStrongBox(res);
         Game game = new Game();
         game.addPlayer(player);
