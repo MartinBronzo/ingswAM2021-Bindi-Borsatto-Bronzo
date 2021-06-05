@@ -509,6 +509,7 @@ public final class PanelManager {
      *
      * @return the player's depot shelves
      */
+    //In order to have the DnD properly function, the DepotShelf must be present in the GameModel (at least they can be empty)
     public List<DepotShelf> getDepotShelves() {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getDepotShelves();
     }

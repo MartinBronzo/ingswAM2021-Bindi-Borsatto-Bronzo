@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents a Depot where the player can drop resources.
+ * This class represents a Depot where the player can drop resources. In order to use this class, the PanelManager needs to have the
+ * depot shelves stored, even if they are empty (that is resourceType == null and quantity == 0).
  */
 public class DepotDrop extends JPanel implements Resettable {
     private List<ShelfDrop> shelves;

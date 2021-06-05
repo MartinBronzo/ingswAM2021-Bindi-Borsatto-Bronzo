@@ -718,33 +718,23 @@ public class Test {
         PanelManager panelManager = PanelManager.createInstance(new GuiClient());
         Player player = new Player();
         player.setNickName("Obi-Wan");
-        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
-        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
-        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(null, 0));
         Game game = new Game();
         game.addPlayer(player);
         panelManager.setGameModel(game);
         panelManager.setResourcesToTake(2);
         panelManager.setNickname("Obi-Wan");
 
-        //Setting up the LimitedRes drag
-        LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
-        HashMap<ResourceType, Integer> res = new HashMap<>();
-        res.put(ResourceType.COIN, 2);
-        res.put(ResourceType.STONE, 3);
-        res.put(ResourceType.SERVANT, 1);
-        res.put(ResourceType.SHIELD, 1);
-        limitedResourcesDrag.init(res);
-        frame.add(limitedResourcesDrag, BorderLayout.PAGE_END);
-
         //Setting up the DepotDrop
-        DepotDrop depot = new DepotDrop();
-        depot.initFromFiniteDrag(new CheckDropInDepot(depot), limitedResourcesDrag);
+        DnDDepot depot = new DnDDepot();
+        depot.initFromInfiniteDrag(new CheckDropAtBeginningDecisionsTime(depot.getDepot()));
         frame.add(depot, BorderLayout.CENTER);
 
         //Setting up the CancelButton
         CancelButton button = new CancelButton("Cancel");
-        button.addActionListener(new ResetState(depot));
+        button.addActionListener(new ResetState(depot.getDepot()));
         frame.add(button, BorderLayout.LINE_END);
 
         //Finishing it up
