@@ -13,6 +13,9 @@ public enum MarbleType {
         public String toString() {
             return AnsiCommands.BLUE.getTextColor() + "Ⓑ" + AnsiCommands.resetStyle();
         }
+
+        @Override
+        public String getUrl() {return "src/main/resources/PUNCHBOARD/blueMarble.png";}
     },
     GREYMARBLE {
         @Override
@@ -24,6 +27,9 @@ public enum MarbleType {
         public String toString() {
             return AnsiCommands.WHITE.getTextColor() + "Ⓖ" + AnsiCommands.resetStyle();
         }
+
+        @Override
+        public String getUrl() {return "src/main/resources/PUNCHBOARD/greyMarble.png";}
     },
     PURPLEMARBLE {
         @Override
@@ -35,6 +41,9 @@ public enum MarbleType {
         public String toString() {
             return AnsiCommands.PURPLE.getTextColor() + "Ⓟ" + AnsiCommands.resetStyle();
         }
+
+        @Override
+        public String getUrl() {return "src/main/resources/PUNCHBOARD/purpleMarble.png";}
     },
     REDMARBLE {
         @Override
@@ -46,6 +55,9 @@ public enum MarbleType {
         public String toString() {
             return AnsiCommands.RED.getTextColor() + "Ⓡ" + AnsiCommands.resetStyle();
         }
+
+        @Override
+        public String getUrl() {return "src/main/resources/PUNCHBOARD/redMarble.png";}
     },
     WHITEMARBLE {
         @Override
@@ -62,6 +74,9 @@ public enum MarbleType {
         public String toString() {
             return AnsiCommands.resetStyle() + "ⓦ" + AnsiCommands.resetStyle();
         }
+
+        @Override
+        public String getUrl() {return "src/main/resources/PUNCHBOARD/whiteMarble.png";}
     },
     YELLOWMARBLE {
         @Override
@@ -73,6 +88,9 @@ public enum MarbleType {
         public String toString() {
             return AnsiCommands.YELLOW.getTextColor() + "Ⓨ" + AnsiCommands.resetStyle();
         }
+
+        @Override
+        public String getUrl() {return "src/main/resources/PUNCHBOARD/yellowMarble.png";}
     };
 
     private final static Marble blueMarble = new BlueMarble();
@@ -83,6 +101,10 @@ public enum MarbleType {
     private final static Marble yellowMarble = new YellowMarble();
 
     public Marble getMarble() {
+        return null;
+    }
+
+    public String getUrl() {
         return null;
     }
 

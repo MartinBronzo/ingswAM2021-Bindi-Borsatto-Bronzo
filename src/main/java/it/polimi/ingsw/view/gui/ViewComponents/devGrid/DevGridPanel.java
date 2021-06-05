@@ -1,32 +1,26 @@
 package it.polimi.ingsw.view.gui.ViewComponents.devGrid;
 
-import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DnDDepot;
-import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
-import it.polimi.ingsw.view.gui.panels.CardCheckbox;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DevGridPanel extends JPanel{
-    DevCard[][] devGrid;
+    //DevCard[][] devGrid;
+    private final Board mainBoard;
     private final String directoryPath = "src/main/resources/front/";
 
     public DevGridPanel(Board mainBoard){
         super(new GridLayout(3, 4, 10, 10));
         this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        this.devGrid = mainBoard.getDevMatrix();
+        this.mainBoard = mainBoard;
+        DevCard[][] devGrid = this.mainBoard.getDevMatrix();
         BufferedImage img = null;
         /*
         try {
@@ -40,19 +34,19 @@ public class DevGridPanel extends JPanel{
          */
         int c;
         JButton button;
-        for (int i = 0; i < this.devGrid.length; i++) {
-            for (int j = 0; j < this.devGrid[i].length; j++) {
+        for (int i = 0; i < devGrid.length; i++) {
+            for (int j = 0; j < devGrid[i].length; j++) {
                 //c = (1 + j + 4 * i);
                 int row = i;
                 int col = j;
                 button = new JButton(/*Integer.toString(c)*/);
                 button.addActionListener(event -> {
                     try {
-                        PanelManager.getInstance().printBuyCardDialog(row, col);
+                        PanelManager.getInstance().printGetCardCostPanel(row, col);
                     }catch (IllegalArgumentException ae){
-                        PanelManager.getInstance().printError("You can't by this card");
+                        PanelManager.getInstance().printError("You can't buy this card");
                     }catch (IllegalStateException se){
-                        PanelManager.getInstance().printError("You can't by a card now");
+                        PanelManager.getInstance().printError("You can't buy a card now");
                     }
                 });
                 this.add(button);
@@ -74,6 +68,7 @@ public class DevGridPanel extends JPanel{
         DevCard devCard;
         int i=0;
         int j=0;
+        DevCard[][] devGrid = this.mainBoard.getDevMatrix();
         for (Component component:this.getComponents()){
             System.out.println(i+","+j);
             devCard = devGrid[i][j];
@@ -95,7 +90,7 @@ public class DevGridPanel extends JPanel{
             }
 
             j++;
-            if (j == this.devGrid[i].length) {
+            if (j == devGrid[i].length) {
                 i++;
                 j = 0;
             }
@@ -111,6 +106,7 @@ public class DevGridPanel extends JPanel{
         DevCard devCard;
         int i=0;
         int j=0;
+        DevCard[][] devGrid = this.mainBoard.getDevMatrix();
         for (Component component:this.getComponents()){
             //System.out.println(i+","+j);
             devCard = devGrid[i][j];
@@ -133,7 +129,7 @@ public class DevGridPanel extends JPanel{
             }
 
             j++;
-            if (j == this.devGrid[i].length) {
+            if (j == devGrid[i].length) {
                 i++;
                 j = 0;
             }

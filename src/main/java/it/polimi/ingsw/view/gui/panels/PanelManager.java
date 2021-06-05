@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
@@ -59,6 +60,7 @@ public final class PanelManager {
     //TODO: add here attibutes used in panels
     private String nickname;
     private Game gameModel;
+    private Player player;
     private HashMap<ResourceType, Integer> resourcesMap;
     private String mapDescription;
     private int nLeadersToDiscard;
@@ -364,11 +366,20 @@ public final class PanelManager {
 
     }
 
-    public void printBuyCardDialog(int row, int col) throws IllegalArgumentException, IllegalStateException {
+    public void printGetCardCostPanel(int row, int col) throws IllegalArgumentException, IllegalStateException {
+        visualizer.submit(() -> {
+            this.getDevCardCostPanel().selectCell(row, col);
+            this.getDevCardCostPanel().print();
+        });
+    }
+
+    public void printBuyFromMarketPanel(boolean isRow, int number){
         visualizer.submit(() -> {
             //TODO
         });
     }
+
+
 
 
     public void printInfo(String info) {
@@ -404,14 +415,21 @@ public final class PanelManager {
         });
     }
 
+    private void setPlayerAndViews(Player player){
+        this.player = player;
+        this.getDevCardCostPanel().setPlayer(this.player);
+    }
+
     private void manageUpdate(String responseContent) {
         synchronized (this) {
             ModelUpdate modelUpdate = gson.fromJson(responseContent, ModelUpdate.class);
             Game update = modelUpdate.getGame();
-            if (this.gameModel == null)
+            if (this.gameModel == null) {
                 gameModel = update;
-            else
+                this.setPlayerAndViews(gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().get());
+            }else
                 gameModel.merge(update);
+            //TODO: add turn info dialog
         }
 
         //TODO: do things to setup view

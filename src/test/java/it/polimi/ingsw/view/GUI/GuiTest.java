@@ -27,7 +27,7 @@ public class GuiTest {
         gameFrame.setSize(screenSize.width, screenSize.height - 100);
         gameFrame.validate();
 
-        //addInstructionPanel();
+        addInstructionPanel();
 
         //test for the leaderCheckboxPanel display
         //addLeaderCheckBoxPanel();
@@ -113,7 +113,7 @@ public class GuiTest {
         p.setLabelText("This is a loooooooooooooooooooooooooooooooooooooooooooooooooong text");
         p.setVisible(true);
 
-        p.setButtonActionListener(event -> System.out.println("A click"));
+        p.setConfirmActionListener(event -> System.out.println("A click"));
 
         JPanel allPanel = new JPanel();
         allPanel.setLayout(new GridBagLayout());

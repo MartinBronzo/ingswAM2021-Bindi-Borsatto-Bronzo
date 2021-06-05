@@ -66,6 +66,66 @@ public class CardCheckbox extends JPanel {
         this.add(checkPanel);
     }
 
+    /**
+     * Creates a new <code>JPanel</code> with a double buffer
+     * and a flow layout.
+     * an empty CardCheckbox use reset view to see the cards
+     */
+    public CardCheckbox() {
+        super();
+        checkBoxList = new ArrayList<>(2);
+
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    }
+
+    public void resetView(List<String> cardList, String checkBoxText){
+        for (Component component: this.getComponents()) {
+            this.remove(component);
+        }
+
+        //Panel with the images of the cards (Horizontal orientation)
+        JPanel imagePanel = new JPanel();
+        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.LINE_AXIS));
+
+        for(String leader : cardList){
+            //adds the image of the leadercard to the panel
+            JLabel label = new JLabel();
+            //label.setPreferredSize(new Dimension(200,300));
+
+            //scale image
+            BufferedImage img = null;
+            try {
+                img = ImageIO.read(new File(leader));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Image dimg = img.getScaledInstance(200, 300, Image.SCALE_SMOOTH);
+            ImageIcon icon = new ImageIcon(dimg);
+            //ImageIcon icon = new ImageIcon(leader);
+            label.setIcon(icon);
+
+            imagePanel.add(label);
+
+            imagePanel.add(Box.createRigidArea(new Dimension(25,0)));
+        }
+
+        JPanel checkPanel = new JPanel();
+        for(String leader : cardList){
+            //adds the checkbox to the panel
+            JCheckBox checkBox = new JCheckBox(checkBoxText);
+            checkBoxList.add(checkBox);
+            checkPanel.add(checkBox);
+            checkPanel.add(Box.createRigidArea(new Dimension(60,0)));
+        }
+
+        this.add(imagePanel);
+        //White space between components
+        this.add(Box.createRigidArea(new Dimension(0,5)));
+        this.add(checkPanel);
+
+        this.validate();
+    }
+
     public List<Integer> getSelectedLeaderIndexes(){
         List<Integer> leaderList = new ArrayList<>();
 
@@ -76,6 +136,8 @@ public class CardCheckbox extends JPanel {
 
         return leaderList;
     }
+
+
 
 
 
