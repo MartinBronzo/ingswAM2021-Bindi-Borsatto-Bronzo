@@ -19,7 +19,6 @@ public class ShelfDrag extends JPanel implements DragUpdatable, Resettable{
     private List<JLabel> resources;
     private int resourceRemoved;
     MyDragGestureListener dlistener;
-    //TODO: mettere i listiner più semplici, complicare le checkDrop
 
     public ShelfDrag(int shelfNumber){
         super();

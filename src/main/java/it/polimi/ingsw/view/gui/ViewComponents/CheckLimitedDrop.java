@@ -14,7 +14,6 @@ import java.util.Map;
 public class CheckLimitedDrop implements DropChecker, Resettable {
     private HashMap<ResourceType, Integer> resToBeTaken;
     private List<ResourceType> typeList;
-    //TODO: quando ci sarà da fare il reset state di questa cosa bisognerà ricreare la mappa iniziale
     private HashMap<ResourceType, Integer> copyOriginalResToBeTaken;
 
     public CheckLimitedDrop(HashMap<ResourceType, Integer> resToBeTaken) {
