@@ -48,7 +48,8 @@ public class Test {
         //checkLimitedResDragDepotDropTrashCanDrop();
         //checkDepotOnlyView();
         //checkStrongBoxOnlyView();
-        checkPlainPanelDropGettingInfo();
+        //checkPlainPanelDropGettingInfo();
+        checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -644,6 +645,61 @@ public class Test {
         SubmitButton submitButton = new SubmitButton("Submit");
         submitButton.addActionListener(new CollectCostsChoices(pDrop));
         frame.add(submitButton, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("StrongBox drag & Panel Drop test");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Setting up the LimitedRes drag
+        LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.STONE, 3);
+        res.put(ResourceType.SERVANT, 1);
+        res.put(ResourceType.SHIELD, 1);
+        limitedResourcesDrag.init(res);
+        frame.add(limitedResourcesDrag, BorderLayout.PAGE_END);
+
+        //Setting up the DepotDrop
+        DepotDrop depot = new DepotDrop();
+        depot.initFromFiniteDrag(new CheckDropInDepot(depot), limitedResourcesDrag);
+
+        //Setting up the DiscardedDrop
+        DiscardedResDrop trashCan = new DiscardedResDrop();
+        trashCan.initFromFiniteRes(new DumbCheckDrop(), limitedResourcesDrag);
+
+        //Uniting the Depot and the Discarded in a JPanel
+        JLabel centralPanel = new JLabel();
+        centralPanel.setLayout(new BoxLayout(centralPanel, BoxLayout.X_AXIS));
+        centralPanel.add(depot);
+        centralPanel.add(trashCan);
+        frame.add(centralPanel, BorderLayout.CENTER);
+
+        //Adding the submit button
+        SubmitButton button = new SubmitButton("Submit");
+        button.addActionListener(new CollectPlacingResources(depot, trashCan));
+        frame.add(button, BorderLayout.LINE_END);
 
         //Finishing it up
         frame.setTitle("StrongBox drag & Panel Drop test");

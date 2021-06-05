@@ -24,9 +24,17 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable{
         this.setBorder(new TitledBorder("Drag Resources from here"));
     }
 
+    @Deprecated
     public void init(HashMap<ResourceType, Integer> resources, MyDragGestureListener dlistiner) {
-        //TODO: set il drag listener e l'unwanted drop
         this.dlistener = dlistiner;
+        //new UnWantedDropTarget(this, this);
+
+        for(Map.Entry<ResourceType, Integer> e : resources.entrySet())
+            addResourceLabel(e.getKey(), e.getValue());
+    }
+
+    public void init(HashMap<ResourceType, Integer> resources){
+        this.dlistener = new MyDragGestureListener();
         //new UnWantedDropTarget(this, this);
 
         for(Map.Entry<ResourceType, Integer> e : resources.entrySet())

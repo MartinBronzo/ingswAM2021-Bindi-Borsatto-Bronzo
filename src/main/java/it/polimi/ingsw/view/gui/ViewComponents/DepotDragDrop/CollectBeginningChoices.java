@@ -64,7 +64,7 @@ public class CollectBeginningChoices implements ActionListener {
             //JOptionPane.showMessageDialog(null, "You must discard 2 Leader Cards");
     }
 
-    private List<DepotParams> getDepotInfoForModel(List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions) {
+    public static List<DepotParams> getDepotInfoForModel(List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions) {
         List<ShelfDrop.Pair<Integer, ResourceType>> someChoices;
         int quantity;
         List<DepotParams> result = new ArrayList<>();

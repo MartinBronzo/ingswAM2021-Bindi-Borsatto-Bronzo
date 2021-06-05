@@ -17,7 +17,6 @@ public class ShelfDrop extends JPanel implements Droppable {
      * In each depot panel we have this resToDepot list which takes track of all the resources moved to this depot. When  the confirm
      * button is clicked then all the list from all the three depot panels must be collected and sent to the model somehow
      */
-    //TODO: on submit click fondere le varie liste in depot params
     private List<Pair<Integer, ResourceType>> resToDepot;
 
     class Pair<integer, resourceType> {
