@@ -182,12 +182,12 @@ public class MainPanel extends JPanel {
         actualPlayerBoardPanel.updateGridView(width, height);
     }
 
-    public void updateMainPanel(Game game){
+    public synchronized void updateMainPanel(Game game){
         String nickname;
         nickname = PanelManager.getInstance().getNickname();
         stateLabel.setText(game.findByNick(nickname).getPlayerState().name());
-
-
+        actualPlayerBoardPanel.updatePlayerBoard(game);
+        this.validate();
     }
 
     public boolean getCreated(){

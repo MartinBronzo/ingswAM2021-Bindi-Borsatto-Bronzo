@@ -1160,9 +1160,9 @@ public class ClientHandler implements Runnable {
             return;
         }
         if (numLeaderActionDone < MAX_LEADER_ACTION) {
-            numLeaderActionDone++;
             LeaderMessage discardLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
             game.discardLeader(discardLeader, this);
+            numLeaderActionDone++;
         } else {
             this.send(new ErrorMessage("You've already done all the possible leader actions"));
         }
@@ -1177,9 +1177,9 @@ public class ClientHandler implements Runnable {
             return;
         }
         if (numLeaderActionDone < MAX_LEADER_ACTION) {
-            numLeaderActionDone++;
             LeaderMessage activateLeader = gson.fromJson(command.getParameters(), LeaderMessage.class);
             game.activateLeader(activateLeader, this);
+            numLeaderActionDone++;
         } else {
             this.send(new ErrorMessage("You've already done all the possible leader actions"));
         }

@@ -67,7 +67,8 @@ public class ActualPlayerBoardPanel extends JPanel {
     }
 
     public void updatePlayerBoard(Game game){
-        //for()
+        leaderCardPanel.update();
+        this.validate();
     }
 
     private ImageIcon scaleImage(String image, int width, int height) {

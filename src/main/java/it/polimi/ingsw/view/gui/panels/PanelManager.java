@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
-import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
@@ -554,6 +553,8 @@ public final class PanelManager {
     public HashMap<ResourceType, Integer> getStrongBox() {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getStrongBox();
     }
+
+    public Player getPlayer(){return player;}
 
     //For testing purposes:
 
