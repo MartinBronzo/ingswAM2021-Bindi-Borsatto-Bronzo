@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StrongBoxDrag extends JPanel implements DragUpdatable{
+public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable{
     private List<JLabel> resources;
     //DragGestureListenerOneShot dlistener;
     MyDragGestureListener dlistener;
@@ -59,8 +59,14 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable{
         }
     }
 
+    @Override
     public void resetState(){
+        for(JLabel label: this.resources)
+            this.remove(label);
         this.resources = new ArrayList<>();
+        this.fillStrongBox(PanelManager.getInstance().getStrongBox());
+        this.revalidate();
+        this.repaint();
     }
 
     @Override
@@ -73,5 +79,7 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable{
     public void updateAfterDrop(String info) {
         JLabel draggedAway = this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get();
         draggedAway.setVisible(false);
+        this.revalidate();
+        this.repaint();
     }
 }

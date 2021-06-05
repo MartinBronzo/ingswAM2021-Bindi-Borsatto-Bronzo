@@ -14,7 +14,7 @@ import java.awt.dnd.DragSource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShelfDrag extends JPanel implements DragUpdatable{
+public class ShelfDrag extends JPanel implements DragUpdatable, Resettable{
     private int shelfNumber;
     private List<JLabel> resources;
     private int resourceRemoved;
@@ -66,6 +66,16 @@ public class ShelfDrag extends JPanel implements DragUpdatable{
     public void updateAfterDrop(String info) {
         JLabel draggedAway = this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get();
         draggedAway.setVisible(false);
+        this.revalidate();
+        this.repaint();
+    }
+
+    @Override
+    public void resetState() {
+        for(JLabel label : this.resources)
+            this.remove(label);
+        this.resources = new ArrayList<>();
+        this.resourceRemoved = 0;
     }
 
 

@@ -20,7 +20,7 @@ public class PanelDrop extends JPanel {
     public PanelDrop(){
         super();
 
-        this.setBorder(new TitledBorder("Drag here the resource you want to store in your StrongBox"));
+        this.setBorder(new TitledBorder("Drag here the resource you want to use"));
 
         this.fromStrongBox = new HashMap<>();
         this.fromDepot = new ArrayList<>();
@@ -62,10 +62,15 @@ public class PanelDrop extends JPanel {
 
     }
 
+    @Deprecated
     public void init(MyDropTargetListener targetListener){
         this.targetListener = targetListener;
     }
 
+    public void init(CheckLimitedDrop checker, StrongBoxDrag strongBoxDrag, DepotDrag depotDrag, PanelDrop panelTarget){
+        RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBoxDrag, depotDrag, panelTarget);
+        this.targetListener = new MyDropTargetListener(panelTarget, registerDrop, checker);
+    }
     public void updateDepot(String res, String shelf) {
         int shelfNum = Integer.parseInt(shelf);
         ResourceType resDropped = ResourceType.valueOf(res);

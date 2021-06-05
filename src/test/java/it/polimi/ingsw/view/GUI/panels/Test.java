@@ -52,7 +52,8 @@ public class Test {
         //checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
         //checkResetDepotDrop();
         //checkResetTrashCanDrop();
-        checkResetDepotDropAndTrashCanDrop();
+        //checkResetDepotDropAndTrashCanDrop();
+        checkPlacingResourcesReset();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -253,7 +254,7 @@ public class Test {
             frame.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             DepotDrag depot = new DepotDrag();
-            depot.initDepotDrag();
+            depot.init();
             frame.add(depot, BorderLayout.CENTER);
             StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
             strongBoxDrop.setTargetListenerAndCheckDropFunction(new DumbCheckDrop());
@@ -380,7 +381,7 @@ public class Test {
 
         //Setting up the depot drag
         DepotDrag depotDrag = new DepotDrag();
-        depotDrag.initDepotDrag();
+        depotDrag.init();
         frame.add(depotDrag, BorderLayout.CENTER);
 
         //Setting up the PanelDrop
@@ -421,7 +422,7 @@ public class Test {
 
         //Setting up the depot drag
         DepotDrag depotDrag = new DepotDrag();
-        depotDrag.initDepotDrag();
+        depotDrag.init();
         frame.add(depotDrag, BorderLayout.CENTER);
 
         //Setting up the strongBox drag
@@ -625,7 +626,7 @@ public class Test {
 
         //Setting up the depot drag
         DepotDrag depotDrag = new DepotDrag();
-        depotDrag.initDepotDrag();
+        depotDrag.init();
         frame.add(depotDrag, BorderLayout.CENTER);
 
         //Setting up the strongBox drag
@@ -836,6 +837,62 @@ public class Test {
         frame.setTitle("Depot reset");
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public static void checkPlacingResourcesReset(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.SERVANT, 3);
+        res.put(ResourceType.STONE, 5);
+        player.setStrongBox(res);
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Adding the DepotDrag
+        DepotDrag depotDrag = new DepotDrag();
+        depotDrag.init();
+        frame.add(depotDrag, BorderLayout.CENTER);
+
+        //Adding the StrongBoxDrag
+        StrongBoxDrag strongBox = new StrongBoxDrag();
+        strongBox.init();
+        frame.add(strongBox, BorderLayout.PAGE_START);
+
+        //Setting up the PanelDrop
+        PanelDrop pDrop = new PanelDrop();
+        HashMap<ResourceType, Integer> resToBeTaken = new HashMap<>();
+        resToBeTaken.put(ResourceType.COIN, 1);
+        resToBeTaken.put(ResourceType.SERVANT, 1);
+        resToBeTaken.put(ResourceType.STONE, 1);
+        CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
+        pDrop.init(checker, strongBox, depotDrag, pDrop);
+        frame.add(pDrop, BorderLayout.PAGE_END);
+
+        //Setting up the CancelButton
+        CancelButton cancel = new CancelButton("Cancel");
+        cancel.addActionListener(new ResetState(depotDrag, strongBox));
+        frame.add(cancel, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("Depot reset");
+        frame.pack();
+        frame.setVisible(true);
+
     }
 }
 /*

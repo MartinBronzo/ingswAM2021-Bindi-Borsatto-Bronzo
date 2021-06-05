@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * This panel represents a depot where we can drag the resources from the shelves.
  */
-public class DepotDrag extends JPanel implements DragUpdatable{
+public class DepotDrag extends JPanel implements DragUpdatable, Resettable{
     private List<ShelfDrag> shelves;
     private List<MyDragGestureListener> dragListeners;
 
@@ -43,7 +43,7 @@ public class DepotDrag extends JPanel implements DragUpdatable{
         this.add(shelf);
     }
 
-    public void initDepotDrag() {
+    public void init() {
        /* for (ShelfDrag s : this.shelves) {
             //new UnWantedDropTarget(s, this);
             //s.setDlistener(this);
@@ -74,6 +74,15 @@ public class DepotDrag extends JPanel implements DragUpdatable{
     public void printChoices(){
         for(ShelfDrag s: this.shelves)
             s.printChoices();
+    }
+
+    @Override
+    public void resetState() {
+        for(ShelfDrag sD: this.shelves)
+            sD.resetState();
+        fillDepot();
+        this.revalidate();
+        this.repaint();
     }
 
 
