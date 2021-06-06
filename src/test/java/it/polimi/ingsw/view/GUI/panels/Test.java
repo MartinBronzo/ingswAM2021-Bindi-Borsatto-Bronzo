@@ -65,13 +65,15 @@ public class Test {
         //checkPlacingResourcesReset();
         //checkMoveToLeaderCard();
         //checkMoveShelfToLeaderEasier();
-        checkMoveLeaderToDepotEasier();
+        //checkMoveLeaderToDepotEasier();
+        checkMoveBetweenShelves();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
         //showPlayerBoards();
 
     }
+
 
 
     public static void showSetBeginningDecisionsPanel(){
@@ -1065,6 +1067,48 @@ public class Test {
 
         //Adding the MoveShelfToLeader panel
         MoveLeaderToShelf move = new MoveLeaderToShelf();
+        frame.add(move);
+
+        //Finishing it up
+        frame.setTitle("LeaderCard");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkMoveBetweenShelves() {
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Creating the LeaderCards
+        List<Requirement> req = new ArrayList<>();
+        req.add(new CardRequirementResource(ResourceType.COIN, 5));
+        LeaderCard leader = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.STONE, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png");
+        LeaderCard l2 = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.SERVANT, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-54-1.png");
+        List<LeaderCard> active = new ArrayList<>();
+        active.add(leader);
+        active.add(l2);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.STONE, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 2));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        player.setUsedLeaders(active);
+        HashMap<ResourceType, Integer> leaderSlots = new HashMap<>();
+        leaderSlots.put(ResourceType.STONE, 1);
+        leaderSlots.put(ResourceType.SERVANT, 2);
+        player.setLeaderSlots(leaderSlots);
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Adding the MoveShelfToLeader panel
+        MoveBetweenShelves move = new MoveBetweenShelves();
         frame.add(move);
 
         //Finishing it up

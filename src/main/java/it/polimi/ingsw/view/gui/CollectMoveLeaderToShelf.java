@@ -51,7 +51,5 @@ public class CollectMoveLeaderToShelf implements ActionListener {
 
         Message message = new MoveLeaderToShelfMessage(resType, amount, shelfChosen);
         //PanelManager.getInstance().writeMessage(new Command("moveLeaderToShelf", message));
-
-
     }
 }
