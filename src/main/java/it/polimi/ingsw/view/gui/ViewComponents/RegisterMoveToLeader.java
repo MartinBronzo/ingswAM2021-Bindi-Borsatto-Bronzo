@@ -7,11 +7,11 @@ import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 import javax.swing.*;
 import java.util.List;
 
-public class RegisterDropToLeader implements RegisterDropInterface {
+public class RegisterMoveToLeader implements RegisterDropInterface {
     private List<LeaderCardDrop> leaders;
     private DepotDrag depotDrag;
 
-    public RegisterDropToLeader(List<LeaderCardDrop> leaders, DepotDrag depotDrag) {
+    public RegisterMoveToLeader(List<LeaderCardDrop> leaders, DepotDrag depotDrag) {
         this.leaders = leaders;
         this.depotDrag = depotDrag;
     }

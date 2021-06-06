@@ -8,11 +8,11 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckDropDropToLeader implements DropChecker, Resettable {
+public class CheckMoveToLeader implements DropChecker, Resettable {
     private List<LeaderCardDrop> leaders;
     private LeaderCardDrop destination;
 
-    public CheckDropDropToLeader() {
+    public CheckMoveToLeader() {
         this.leaders = new ArrayList<>();
         this.destination = null;
     }
@@ -25,7 +25,7 @@ public class CheckDropDropToLeader implements DropChecker, Resettable {
         this.leaders = leaders;
     }
 
-    public CheckDropDropToLeader(List<LeaderCardDrop> leaders) {
+    public CheckMoveToLeader(List<LeaderCardDrop> leaders) {
         this.leaders = leaders;
         this.destination = null;
     }
