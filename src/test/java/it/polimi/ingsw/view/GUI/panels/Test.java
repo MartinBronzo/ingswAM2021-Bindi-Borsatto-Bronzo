@@ -11,6 +11,11 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
+import it.polimi.ingsw.view.gui.ViewComponents.CheckMoveToLeader;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveBetweenShelves;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveLeaderToShelf;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveShelfToLeader;
+import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.CollectMoveToLeaderOld;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
@@ -972,7 +977,7 @@ public class Test {
 
         //Adding the submit button
         SubmitButton submit = new SubmitButton("Submit");
-        submit.addActionListener(new CollectMoveToLeader(leaderCards));
+        submit.addActionListener(new CollectMoveToLeaderOld(leaderCards));
 
         //Setting up the CancelButton
         CancelButton cancel = new CancelButton("Cancel");

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.network.messages.fromClient.Message;

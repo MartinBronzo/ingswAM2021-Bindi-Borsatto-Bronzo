@@ -1,9 +1,7 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements;
 
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.view.gui.CollectMoveLeaderToShelf;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.CollectMoveLeaderToShelf;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

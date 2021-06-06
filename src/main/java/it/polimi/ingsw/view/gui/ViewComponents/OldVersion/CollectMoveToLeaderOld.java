@@ -1,9 +1,10 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.OldVersion;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.network.messages.fromClient.DiscardLeaderAndExtraResBeginningMessage;
 import it.polimi.ingsw.network.messages.fromClient.Message;
 import it.polimi.ingsw.network.messages.fromClient.MoveShelfToLeaderMessage;
+import it.polimi.ingsw.view.gui.ViewComponents.LeaderCardDrop;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
@@ -11,10 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class CollectMoveToLeader implements ActionListener {
+public class CollectMoveToLeaderOld implements ActionListener {
     List<LeaderCardDrop> leaders;
 
-    public CollectMoveToLeader(List<LeaderCardDrop> leaders) {
+    public CollectMoveToLeaderOld(List<LeaderCardDrop> leaders) {
         this.leaders = leaders;
     }
 

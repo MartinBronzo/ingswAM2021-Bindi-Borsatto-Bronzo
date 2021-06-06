@@ -1,6 +1,8 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements;
 
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotOnlyView;
+import it.polimi.ingsw.view.gui.ViewComponents.LeaderCardOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -10,7 +12,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MoveShelfToLeader extends JPanel {
     private List<DepotShelf> shelves;
