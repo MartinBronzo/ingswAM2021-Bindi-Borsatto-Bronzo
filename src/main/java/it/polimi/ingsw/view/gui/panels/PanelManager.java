@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public final class PanelManager {
     private final GuiClient gui;
@@ -589,6 +590,26 @@ public final class PanelManager {
      */
     public HashMap<ResourceType, Integer> getStrongBox() {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getStrongBox();
+    }
+
+    /**
+     * Returns the list of active LeaderCards the player holds which have an ExtraSlot effect
+     * @return a list of the active LeaderCards with an ExtraSlot effect the player has
+     */
+    public List<LeaderCard> getExtraSlotActiveLeaderCards(){
+        return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getUsedLeaders().stream().filter(x -> x.getEffect() instanceof ExtraSlotLeaderEffect).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns how many resources are already stored in the LeaderCard with an ExtraSlot effect that can store the specified kind of resource
+     * @param type the kind of resource the desired LeaderCard can store
+     * @return how many resources are already stored in the desired LeaderCard
+     */
+    public int getAlreadyStoredInLeaderSlot(ResourceType type){
+        Integer result = gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getLeaderSlots().get(type);
+        if(result == null)
+            return 0;
+        return result;
     }
 
     public Player getPlayer(){return player;}

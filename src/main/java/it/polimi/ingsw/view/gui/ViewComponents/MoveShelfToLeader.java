@@ -1,0 +1,98 @@
+package it.polimi.ingsw.view.gui.ViewComponents;
+
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
+import it.polimi.ingsw.view.gui.panels.PanelManager;
+import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
+public class MoveShelfToLeader extends JPanel {
+    private List<DepotShelf> shelves;
+
+    public MoveShelfToLeader(){
+        super();
+        this.setBorder(new TitledBorder("Move from a Depot Shelf to a LeaderSlot"));
+        this.setLayout(new BorderLayout());
+
+        DepotOnlyView depot = new DepotOnlyView();
+        this.add(depot, BorderLayout.LINE_START);
+
+
+        List<LeaderCard> activeLeader = PanelManager.getInstance().getExtraSlotActiveLeaderCards();
+        this.shelves = PanelManager.getInstance().getDepotShelves();
+
+        //TODO: questo controllo non dovrebbe essere fatto prima di chiamare il pannello
+        if(!activeLeader.isEmpty()) {
+            JPanel cardPanel = new JPanel();
+            cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.X_AXIS));
+            for (LeaderCard leader : activeLeader) {
+
+                JPanel card = new LeaderCardOnlyView(leader, PanelManager.getInstance().getAlreadyStoredInLeaderSlot(leader.getEffect().extraSlotGetType()));
+
+                cardPanel.add(card);
+                cardPanel.setAlignmentX(LEFT_ALIGNMENT);
+            }
+            this.add(cardPanel, BorderLayout.CENTER);
+        }
+
+        //Creating the drop-down menu for the shelf choice (the one for the quantity will be displayed when the user chooses a shelf)
+        String [] shelfChoice = this.createShelfChoice();
+        JComboBox<String> shelf = new JComboBox<>(shelfChoice);
+
+        //Creating the submit button
+        SubmitButton submit = new SubmitButton("confirm");
+        CollectMoveShelfToLeader collector = new CollectMoveShelfToLeader(shelf);
+        submit.addActionListener(collector);
+
+        //Creating a panel for the drop-down menus
+        JPanel menus = new JPanel();
+        menus.setBorder(new TitledBorder("Choose the shelf where you want to move your resources from and how many resources you want to move"));
+        menus.setLayout(new BoxLayout(menus, BoxLayout.X_AXIS));
+        menus.add(shelf);
+
+        //Creating the listener for the ShelfChoice menu
+        HashMap<Integer, Integer> numResToShelf = new HashMap<>();
+        for(int i = 0; i < this.shelves.size(); i++)
+            numResToShelf.put(i, this.shelves.get(i).getQuantity());
+        shelf.addActionListener(new ShelfChoiceListener(menus, numResToShelf, collector));
+
+        //Creating a panel for the submit button & the menus
+        JPanel selectables = new JPanel();
+        selectables.setLayout(new BoxLayout(selectables, BoxLayout.X_AXIS));
+        selectables.add(menus);
+        selectables.add(submit);
+        this.add(selectables, BorderLayout.LINE_END);
+
+    }
+
+    private String[] createShelfChoice(){
+        int counter = 0;
+
+        for(DepotShelf dS: this.shelves)
+            if(dS.getQuantity() != 0)
+                counter++;
+
+        String [] result = new String[counter];
+
+        int i = 0;
+        int shelfNum;
+        for(DepotShelf dS: this.shelves)
+            if(dS.getQuantity() != 0){
+                shelfNum = this.shelves.indexOf(dS) + 1;
+                result[i] = "Shelf " + shelfNum;
+                i++;
+            }
+
+        return result;
+    }
+
+    //TODO: controllare che funzioni
+
+
+}

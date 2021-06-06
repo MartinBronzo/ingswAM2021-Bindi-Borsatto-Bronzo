@@ -64,7 +64,7 @@ public class Test {
         //checkPlacingResourcesReset();
         //checkPlacingResourcesReset();
         //checkMoveToLeaderCard();
-        checkMoveToDepot();
+        checkMoveToLeaderEasier();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -916,6 +916,7 @@ public class Test {
 
     }
 
+    @Deprecated
     private static void checkMoveToLeaderCard() {
         //Setting up the frame
         JFrame frame = new JFrame();
@@ -986,11 +987,19 @@ public class Test {
         frame.setVisible(true);
     }
 
-    private static void checkMoveToDepot() {
+    private static void checkMoveToLeaderEasier() {
         //Setting up the frame
         JFrame frame = new JFrame();
-        frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Creating the LeaderCards
+        List<Requirement> req = new ArrayList<>();
+        req.add(new CardRequirementResource(ResourceType.COIN, 5));
+        LeaderCard leader = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.STONE, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png");
+        LeaderCard l2 = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.SERVANT, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-54-1.png");
+        List<LeaderCard> active = new ArrayList<>();
+        active.add(leader);
+        active.add(l2);
 
         //Setting up the Player
         PanelManager panelManager = PanelManager.createInstance(new GuiClient());
@@ -999,54 +1008,21 @@ public class Test {
         player.addDepotShelf(new DepotShelf(ResourceType.STONE, 1));
         player.addDepotShelf(new DepotShelf(null, 0));
         player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        player.setUsedLeaders(active);
+        HashMap<ResourceType, Integer> leaderSlots = new HashMap<>();
+        //leaderSlots.put(ResourceType.STONE, 1);
+        leaderSlots.put(ResourceType.SERVANT, 2);
+        player.setLeaderSlots(leaderSlots);
         Game game = new Game();
         game.addPlayer(player);
         panelManager.setGameModel(game);
         panelManager.setResourcesToTake(2);
         panelManager.setNickname("Obi-Wan");
 
-        //Setting up the DepotDrop
-        DepotDrop depot = new DepotDrop();
-        //depot.initFromFiniteDrag(new CheckDropInDepot(depot), limitedResourcesDrag);
-        frame.add(depot, BorderLayout.CENTER);
+        //Adding the MoveShelfToLeader panel
+        MoveShelfToLeader move = new MoveShelfToLeader();
+        frame.add(move);
 
-        //Adding a LeaderCard
-        List<Requirement> req = new ArrayList<>();
-        req.add(new CardRequirementResource(ResourceType.COIN, 5));
-        LeaderCard leader = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.STONE, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png");
-        LeaderCardDrag leaderDrag = new LeaderCardDrag(leader, 1);
-
-        //Adding another LeaderCard
-        LeaderCard l2 = new LeaderCard(leader);
-        LeaderCardDrag leaderDrag2 = new LeaderCardDrag(leader, 0);
-
-        //Creating a list of LeaderCards
-        List<LeaderCardDrag> leaderCards = new ArrayList<>();
-        leaderCards.add(leaderDrag);
-        leaderCards.add(leaderDrag2);
-
-        //Creating the listener
-
-
-        //Adding the LeaderCards to the same panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.add(leaderDrag);
-        panel.add(leaderDrag2);
-        frame.add(panel, BorderLayout.PAGE_START);
-
-        //Adding the submit button
-        SubmitButton submit = new SubmitButton("Submit");
-
-        //Setting up the CancelButton
-        CancelButton cancel = new CancelButton("Cancel");
-        cancel.addActionListener(new ResetState(leaderDrag, leaderDrag2, depot));
-
-        //Placing the buttons
-        JPanel buttons = new JPanel();
-        buttons.add(cancel);
-        buttons.add(submit);
-        frame.add(buttons, BorderLayout.LINE_END);
 
         //Finishing it up
         frame.setTitle("LeaderCard");
