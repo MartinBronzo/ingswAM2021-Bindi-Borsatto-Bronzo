@@ -59,6 +59,7 @@ public final class PanelManager {
     private DevCardPanel1 devCardCostPanel;
     private DevGridContainer devGridContainer;
     private BuyFromMarketPanel buyFromMarketPanel;
+    private MoveResourceChoice moveResourceChoice;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -170,9 +171,13 @@ public final class PanelManager {
         devCardCostPanel = new DevCardPanel1();
         gameFrame.add(devCardCostPanel);
         devCardCostPanel.setVisible(false);
+
         buyFromMarketPanel = new BuyFromMarketPanel();
         gameFrame.add(buyFromMarketPanel);
         buyFromMarketPanel.setVisible(false);
+
+        /*moveResourceChoice = new MoveResourceChoice();
+        gameFrame.add(moveResourceChoice);*/
 
         gameFrame.validate();
 
@@ -384,8 +389,8 @@ public final class PanelManager {
     }
 
     public void showMoveResources(){
-        mainPanel.setVisible(false);
-
+        /*mainPanel.setVisible(false);
+        moveResourceChoice.setVisible(true);*/
     }
 
     public void printGetCardCostPanel(int row, int col) throws IllegalArgumentException, IllegalStateException {

@@ -38,28 +38,6 @@ public class ActualPlayerBoardPanel extends JPanel {
         playerBoardLabel.setIcon(image);
         playerBoardLabel.setBorder(new TitledBorder("playerboard"));
         this.add(playerBoardLabel);
-
-       /* JPanel righSidePanel = new JPanel();
-        righSidePanel.setLayout(new BoxLayout(righSidePanel, BoxLayout.PAGE_AXIS));
-
-        JButton marketButton = new JButton();
-        //marketLabel.setSize(screenSize.width/3, screenSize.height - heightMargin*2);
-        image = scaleImage("src/main/resources//PUNCHBOARD/plancia portabiglie.png", screenSize.width / 4, screenSize.height - 600);
-        marketButton.setIcon(image);
-        marketButton.setAlignmentX(LEFT_ALIGNMENT);
-        righSidePanel.add(marketButton);
-
-        JPanel devGridPanel = new JPanel();
-        //devGridPanel.setSize(screenSize.width / 4, screenSize.height - 600);
-        devGrid = new DevGridPanel(mainBoard);
-        devGridPanel.add(devGrid);
-        devGridPanel.setBorder(new TitledBorder("devGrid"));
-        devGridPanel.setAlignmentX(LEFT_ALIGNMENT);
-
-        righSidePanel.add(devGridPanel);
-        righSidePanel.setBorder(new TitledBorder("rightside"));
-        righSidePanel.setAlignmentX(RIGHT_ALIGNMENT);
-        this.add(righSidePanel);*/
     }
 
     public void updateGridView(int width, int height) {

@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view.gui.panels;
 
+import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.network.messages.fromClient.LeaderMessage;
+import it.polimi.ingsw.network.messages.fromClient.Message;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import javax.swing.*;
@@ -60,6 +63,8 @@ public class MainPanel extends JPanel {
         controlPanel.add(devGridButton);
 
         JButton endButton = new JButton("End turn");
+        endButton.addActionListener(event -> PanelManager.getInstance().writeMessage(
+                new Command("endTurn", new Message())));
         endButton.setAlignmentX(RIGHT_ALIGNMENT);
         controlPanel.add(endButton);
 
@@ -74,6 +79,8 @@ public class MainPanel extends JPanel {
         controlPanel.add(comboBox);
 
         JButton quitButton = new JButton("QUIT");
+        quitButton.addActionListener(event -> PanelManager.getInstance().writeMessage(
+                new Command("quit", new Message())));
         quitButton.setAlignmentX(LEFT_ALIGNMENT);
         //todo:
         //quitButton.addActionListener(event -> PanelManager.getInstance().quit());

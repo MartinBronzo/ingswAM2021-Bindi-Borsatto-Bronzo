@@ -36,7 +36,7 @@ public class GuiTest {
         //addLeaderCheckBoxPanel();
 
         //test for the moveResourceChoice display
-        //moveResourceChoice();
+        moveResourceChoice();
 
         //test
         //seeOthersPlayers();
@@ -54,7 +54,7 @@ public class GuiTest {
         //showPlayerBoard();
 
         //test leaderCardPanel
-        leaderCardPanel();
+        //leaderCardPanel();
 
         //test for combobox
         //comboTest();

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.view.gui.panels;
 
+import it.polimi.ingsw.view.gui.ViewComponents.MoveBetweenShelves;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveLeaderToShelf;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveShelfToLeader;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 public class MoveResourceChoice extends JPanel {
 
@@ -21,23 +23,19 @@ public class MoveResourceChoice extends JPanel {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new CardLayout());
 
-        //TODO: RIMETTERE QUESTA PARTE QUANDO LE CLASSI SONO COMPLETE
         //TODO: MANCANO I LISTENER
-        /*MoveBetweenShelvesPanel moveBetweenShelvesPanel = new MoveBetweenShelvesPanel();
-        MoveLeaderToShelfPanel moveLeaderToShelfPanel = new MoveLeaderToShelfPanel();
-        MoveShelfToLeaderPanel moveShelfToLeaderPanel = new MoveShelfToLeaderPanel();
+        MoveBetweenShelves moveBetweenShelvesPanel = new MoveBetweenShelves();
+        MoveLeaderToShelf moveLeaderToShelfPanel = new MoveLeaderToShelf();
+        MoveShelfToLeader moveShelfToLeaderPanel = new MoveShelfToLeader();
         resourcePanel.add(moveBetweenShelvesPanel, MOVEBTW);
         resourcePanel.add(moveLeaderToShelfPanel, MOVESHELFTOLEAD);
-        resourcePanel.add(moveShelfToLeaderPanel, MOVELEADTOSHELF);*/
+        resourcePanel.add(moveShelfToLeaderPanel, MOVELEADTOSHELF);
 
         JComboBox<String> comboBox = new JComboBox<>(comboBoxItems);
         comboBox.setEditable(false);
-        comboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                CardLayout cl = (CardLayout)(resourcePanel.getLayout());
-                cl.show(resourcePanel, (String)e.getItem());
-            }
+        comboBox.addItemListener(e -> {
+            CardLayout cl = (CardLayout)(resourcePanel.getLayout());
+            cl.show(resourcePanel, (String)e.getItem());
         });
         this.add(comboBox);
 
