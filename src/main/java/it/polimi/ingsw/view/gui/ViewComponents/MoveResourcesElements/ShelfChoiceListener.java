@@ -1,4 +1,6 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements;
+
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.CollectMoveShelfToLeader;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

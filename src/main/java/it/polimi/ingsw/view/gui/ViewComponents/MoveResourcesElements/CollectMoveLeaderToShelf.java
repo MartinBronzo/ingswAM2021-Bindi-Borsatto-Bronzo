@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.ResourceType;

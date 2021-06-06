@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
+import it.polimi.ingsw.view.gui.ViewComponents.LeaderCardDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
 import javax.swing.*;

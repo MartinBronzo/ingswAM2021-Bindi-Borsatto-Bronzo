@@ -1,6 +1,6 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements;
 
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.CollectMoveBetweenShelves;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
