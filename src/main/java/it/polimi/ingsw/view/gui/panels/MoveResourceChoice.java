@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.gui.panels;
 
-import it.polimi.ingsw.view.gui.ViewComponents.MoveBetweenShelves;
-import it.polimi.ingsw.view.gui.ViewComponents.MoveLeaderToShelf;
-import it.polimi.ingsw.view.gui.ViewComponents.MoveShelfToLeader;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveBetweenShelves;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveLeaderToShelf;
+import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveShelfToLeader;
 
 import javax.swing.*;
 import java.awt.*;

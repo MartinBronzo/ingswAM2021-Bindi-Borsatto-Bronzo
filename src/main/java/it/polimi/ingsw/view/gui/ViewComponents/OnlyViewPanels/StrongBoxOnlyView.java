@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;

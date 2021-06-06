@@ -16,6 +16,8 @@ import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveBetween
 import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveLeaderToShelf;
 import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveShelfToLeader;
 import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.CollectMoveToLeaderOld;
+import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DepotOnlyView;
+import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.StrongBoxOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
@@ -59,7 +61,7 @@ public class Test {
         //checkDepotNStrongBoxDrag(); //NICE
         //checkLimitedResDragNicer();
         //checkLimitedResDragDepotDropTrashCanDrop();
-        //checkDepotOnlyView();
+        checkDepotOnlyView();
         //checkStrongBoxOnlyView();
         //checkPlainPanelDropGettingInfo();
         //checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
@@ -71,7 +73,7 @@ public class Test {
         //checkMoveToLeaderCard();
         //checkMoveShelfToLeaderEasier();
         //checkMoveLeaderToDepotEasier();
-        checkMoveBetweenShelves();
+        //checkMoveBetweenShelves();
 
         //SATTO
         //showSetBeginningDecisionsPanel();

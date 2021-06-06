@@ -1,5 +1,6 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels;
 
+import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.ShelfOnlyView;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
 

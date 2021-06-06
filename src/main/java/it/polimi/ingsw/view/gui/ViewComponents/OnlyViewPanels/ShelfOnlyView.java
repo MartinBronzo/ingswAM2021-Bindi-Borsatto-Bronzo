@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.ViewComponents;
+package it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels;
 
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ShelfDrop;
