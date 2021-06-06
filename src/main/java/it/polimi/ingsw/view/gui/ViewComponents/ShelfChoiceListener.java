@@ -22,10 +22,12 @@ public class ShelfChoiceListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JComboBox box = (JComboBox) e.getSource();
         String selectedItem = box.getSelectedItem().toString();
+
         int present = this.numResToShelf.get(Integer.parseInt(selectedItem.split(" ")[1]) - 1);
         String [] res = new String[present];
         for(int i = 1; i <= present; i++)
             res[i - 1] = String.valueOf(i);
+
         if(quantity == null){
             quantity = new JComboBox<>(res);
             collector.setQuantity(quantity);
