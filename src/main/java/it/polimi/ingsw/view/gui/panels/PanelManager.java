@@ -16,10 +16,13 @@ import it.polimi.ingsw.model.soloGame.DiscardToken;
 import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
+import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
+import it.polimi.ingsw.network.messages.fromClient.Message;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.cli.CliView;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevCardPanel1;
+import it.polimi.ingsw.view.gui.ViewComponents.market.BuyFromMarketPanel;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -56,6 +59,7 @@ public final class PanelManager {
     private BeginningDecisionsPanel beginningDecisionsPanel;
     private MainPanel mainPanel;
     private DevCardPanel1 devCardCostPanel;
+    private BuyFromMarketPanel buyFromMarketPanel;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -67,6 +71,9 @@ public final class PanelManager {
     private int resourcesToTake;
     private Map<String, Integer> results;
     private SoloActionToken lorenzoToken;
+    private List<Integer> lastSelectedLeaderList;
+    private int lastSelectedRow;
+    private int lastSelectedCol;
     /*idk if can be useful selected cell, row, column attributes and relatives methods*/
 
 
@@ -160,6 +167,9 @@ public final class PanelManager {
         devCardCostPanel = new DevCardPanel1();
         gameFrame.add(devCardCostPanel);
         devCardCostPanel.setVisible(false);
+        buyFromMarketPanel = new BuyFromMarketPanel();
+        gameFrame.add(buyFromMarketPanel);
+        buyFromMarketPanel.setVisible(false);
 
         gameFrame.validate();
 
@@ -373,10 +383,32 @@ public final class PanelManager {
         });
     }
 
-    public void printBuyFromMarketPanel(boolean isRow, int number){
-        visualizer.submit(() -> {
-            //TODO
-        });
+    public synchronized void manageGetCardCost(int row, int col, List<Integer> leaderList){
+        this.lastSelectedRow = row;
+        this.lastSelectedCol = col;
+        this.lastSelectedLeaderList = leaderList;
+        System.out.println((lastSelectedRow+1) + " " + (lastSelectedCol+1) + " " + lastSelectedLeaderList);
+        writeMessage(new Command("getCardCost", new GetFromMatrixMessage(lastSelectedRow+1, lastSelectedCol+1, lastSelectedLeaderList)));
+    }
+
+    public synchronized void manageGetResourcesFromMarket(boolean isRow, int number){
+        this.lastSelectedLeaderList = buyFromMarketPanel.getLeaderList();
+        int row;
+        int col;
+        if (isRow==true){
+            this.lastSelectedRow = number;
+            this.lastSelectedCol = 0;
+            row = number + 1;
+            col = 0;
+        } else {
+            this.lastSelectedRow = 0;
+            this.lastSelectedCol = number;
+            col = number + 1;
+            row = 0;
+        }
+
+        System.out.println(row + " " + col + " " + lastSelectedLeaderList);
+        writeMessage(new Command("getResourcesFromMarket", new GetFromMatrixMessage(row, col, lastSelectedLeaderList)));
     }
 
 
@@ -498,7 +530,9 @@ public final class PanelManager {
 
     public DevCardPanel1 getDevCardCostPanel() { return devCardCostPanel; }
 
-
+    public BuyFromMarketPanel getBuyFromMarketPanel() {
+        return buyFromMarketPanel;
+    }
 
     public int getResourcesToTake() {
         return resourcesToTake;

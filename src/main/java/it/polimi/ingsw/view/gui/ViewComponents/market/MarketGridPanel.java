@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui.ViewComponents.market;
 
-import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
@@ -21,38 +20,23 @@ public class MarketGridPanel extends JPanel{
         super(new GridLayout(4, 5, 5, 5));
         this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         this.mainBoard = mainBoard;
-        BufferedImage img = null;
-        Image dimg;
-        ImageIcon imageIcon;
         MarbleType[][] marketMatrix = mainBoard.getMarketMatrix();
-        MarbleType marbleOnSlide = mainBoard.getMarbleOnSlide();
         JButton button;
         JLabel label;
         for (int i = 0; i < marketMatrix.length; i++) {
             int row = i;
             for (int j = 0; j < marketMatrix[i].length; j++) {
                 label = new JLabel();
-                /*
-                try {
-                    img = ImageIO.read(new File(marketMatrix[i][j].getUrl()));
-                    dimg = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-                    imageIcon = new ImageIcon(dimg);
-                    label.setIcon(imageIcon);
-                } catch (IOException e) {
-                    label.setIcon(null);
-                    label.setText(marketMatrix[i][j].toString());
-                }
-                 */
                 this.add(label);
             }
             button = new SubmitButton("←"+ (i + 1));
-            button.addActionListener(event -> PanelManager.getInstance().printBuyFromMarketPanel(true, row));
+            button.addActionListener(event -> PanelManager.getInstance().manageGetResourcesFromMarket(true, row));
             this.add(button);
         }
         for (int j = 0; j < marketMatrix[0].length; j++) {
             int col = j;
             button = new SubmitButton("↑" + (j + 1));
-            button.addActionListener(event -> PanelManager.getInstance().printBuyFromMarketPanel(false, col));
+            button.addActionListener(event -> PanelManager.getInstance().manageGetResourcesFromMarket(false, col));
             this.add(button);
         }
         label = new JLabel();

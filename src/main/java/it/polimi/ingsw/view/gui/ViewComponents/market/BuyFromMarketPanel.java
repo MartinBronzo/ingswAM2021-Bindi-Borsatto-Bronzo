@@ -1,12 +1,14 @@
-package it.polimi.ingsw.view.gui.ViewComponents.devGrid;
+package it.polimi.ingsw.view.gui.ViewComponents.market;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.DiscountLeaderEffect;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
+import it.polimi.ingsw.view.gui.ViewComponents.CancelButton;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 import it.polimi.ingsw.view.gui.panels.CardCheckbox;
+import it.polimi.ingsw.view.gui.panels.CardComboBox;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
+import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import javax.imageio.ImageIO;
@@ -15,61 +17,72 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DevCardPanel1 extends JPanel {
-    private int row;
-    private int column;
-    private DevCard[][] devMatrix;
+public class BuyFromMarketPanel extends JPanel {
     private Player player;
+    private Board board;
     private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
     private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
     private int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
     private int panelHeight = PanelManager.getInstance().getGameFrame().getHeight();
-    private final String directoryPath = "src/main/resources/front/";
-    private JLabel selectedCard;
-    private InstructionPanel instructionPanel;
-    private CardCheckbox cardCheckboxPanel;
+    private final String infoPath ="src/main/resources/PUNCHBOARD/infoBiglie.png";
+    private JPanel market;
+    private JLabel instructionLabel;
+    private JButton cancelButton;
+    private CardComboBox cardComboBoxPanel;
+    private MarketGridPanel marketGridPanel;
 
 
-    public DevCardPanel1() {
+    public BuyFromMarketPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.setSize(panelWidth, panelHeight);
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-        this.selectedCard = new JLabel();
-        this.selectedCard.setSize(200, 300);
-        this.add(this.selectedCard);
+        this.market = new JPanel();
+        this.market.setLayout(new BoxLayout(market, BoxLayout.PAGE_AXIS));
+        this.market.setSize(300, panelHeight-30);
+
+        JLabel info = new JLabel();
+        info.setSize(300, 200);
+        try {
+            Image img = ImageIO.read(new File(infoPath));
+            Image dimg = img.getScaledInstance(300, info.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon imageIcon = new ImageIcon(dimg);
+            info.setIcon(imageIcon);
+        } catch (IOException e) {
+            info.setIcon(null);
+            info.setText("Error printing infoPath");
+        }
+        this.market.add(info);
+        this.add(this.market);
 
         this.add(Box.createHorizontalGlue());
 
         JPanel rightSidePanel = new JPanel();
         rightSidePanel.setLayout(new BoxLayout(rightSidePanel, BoxLayout.PAGE_AXIS));
-        cardCheckboxPanel = new CardCheckbox();
-        rightSidePanel.add(cardCheckboxPanel);
+        this.cardComboBoxPanel = new CardComboBox();
+        rightSidePanel.add(cardComboBoxPanel);
 
-        instructionPanel = new InstructionPanel(true);
-        instructionPanel.setConfirmActionListener(e -> {
-            //System.out.println(row+1+" "+column+1+" "+cardCheckboxPanel.getSelectedLeaderIndexes());
-            PanelManager.getInstance().manageGetCardCost(row, column, cardCheckboxPanel.getSelectedLeaderIndexes());
-            this.setVisible(false);
-            //TODO idk if there is the need to print something else
-        });
-        instructionPanel.setCancelActionListener(e -> {
-            //TODO: idk if there is the need to print something else
-            this.setVisible(false);
-        });
-        instructionPanel.setLabelText("Press submit to get the final CardCost after selecting the leader Cards");
-        rightSidePanel.add(instructionPanel);
+        instructionLabel = new JLabel("Choice as many leader as the number of whiteMarbles");
+        //instructionLabel.setSize(rightSidePanel.getWidth(), rightSidePanel.getHeight() - cardComboBoxPanel.getHeight() - 100);
+        instructionLabel.setMinimumSize(new Dimension(400, 20));
+        instructionLabel.setPreferredSize(new Dimension(400, 20));
+        instructionLabel.setMaximumSize(new Dimension(400, 20));
+        rightSidePanel.add(instructionLabel);
+        instructionLabel = new JLabel("in the desired row or column and then press the desired button");
+        //instructionLabel.setSize(rightSidePanel.getWidth(), rightSidePanel.getHeight() - cardComboBoxPanel.getHeight() - 100);
+        instructionLabel.setMinimumSize(new Dimension(400, 20));
+        instructionLabel.setPreferredSize(new Dimension(400, 20));
+        instructionLabel.setMaximumSize(new Dimension(400, 20));
+        rightSidePanel.add(instructionLabel);
+        this.cancelButton = new CancelButton();
+        this.cancelButton.setText("cancel");
+        this.cancelButton.addActionListener(e -> setVisible(false));
+        rightSidePanel.add(cancelButton);
         this.add(rightSidePanel);
-    }
-
-    public synchronized void selectCell(int row, int column) throws NullPointerException{
-        this.row = row;
-        this.column = column;
-        this.devMatrix = PanelManager.getInstance().getGameModel().getMainBoard().getDevMatrix();
-        if (devMatrix == null) throw new NullPointerException("can't select cell if gamemodel has devgrid null");
     }
 
     public synchronized void setPlayer(Player player) throws NullPointerException{
@@ -77,31 +90,37 @@ public class DevCardPanel1 extends JPanel {
         this.player = player;
     }
 
+    public synchronized void setBoard(Board board) throws NullPointerException{
+        if (board==null) throw new NullPointerException("Player can't be null");
+        this.board = board;
+        this.marketGridPanel = new MarketGridPanel(board);
+        this.market.add(marketGridPanel);
+        marketGridPanel.setSize(this.market.getWidth(), this.market.getHeight()-250);
+
+        this.revalidate();
+    }
+
     public synchronized void print() throws NullPointerException {
         BufferedImage img = null;
         Image dimg;
         ImageIcon imageIcon;
 
-        if (player == null || devMatrix == null)
+        if (player == null || board == null)
             throw new NullPointerException("missing parameters to setup the panel");
-        DevCard devCard = devMatrix[row][column];
-        if (devCard == null) throw new NullPointerException("there is no card in the selected cell");
 
-        try {
-            img = ImageIO.read(new File(directoryPath + devCard.getUrl()));
-            dimg = img.getScaledInstance(333, 555, Image.SCALE_SMOOTH);
-            imageIcon = new ImageIcon(dimg);
-            selectedCard.setIcon(imageIcon);
-        } catch (IOException e) {
-            selectedCard.setIcon(null);
-            selectedCard.setText(devCard.toString());
-        }
-
-        //TODO we can see only DiscountLeaderEffect adding a filter with instaceof but doing this lose the control of the getusedLeaers index to send to the controller, we should change cardCheckboxPanel
+        //TODO we can see only DiscountLeaderEffect adding a filter with instaceof but doing this lose the control of the getusedLeaers index to send to the controller, we should change cardComboBoxPanel
         List<String> leaderCardsPath = player.getUsedLeaders().stream()./*filter(card -> card.getEffect() instanceof DiscountLeaderEffect).*/map(card -> card.getUrl()).collect(Collectors.toList());
-        this.cardCheckboxPanel.resetView(leaderCardsPath, "Do you want to use this card?");
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i <5; i++)
+            list.add(i);
+        this.cardComboBoxPanel.resetView(leaderCardsPath, list);
+        this.marketGridPanel.update();
 
         this.setVisible(true);
+    }
+
+    public List<Integer> getLeaderList(){
+        return this.cardComboBoxPanel.getSelectedLeaderIndexes();
     }
     
     /*
