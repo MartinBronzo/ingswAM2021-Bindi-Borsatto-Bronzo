@@ -80,7 +80,8 @@ public class BuyFromMarketPanel extends JPanel {
         rightSidePanel.add(instructionLabel);
         this.cancelButton = new CancelButton();
         this.cancelButton.setText("cancel");
-        this.cancelButton.addActionListener(e -> setVisible(false));
+        //this.cancelButton.addActionListener(e -> setVisible(false));
+        this.cancelButton.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
         rightSidePanel.add(cancelButton);
         this.add(rightSidePanel);
     }

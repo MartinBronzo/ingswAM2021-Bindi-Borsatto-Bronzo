@@ -58,6 +58,7 @@ public class DevCardPanel1 extends JPanel {
         });
         instructionPanel.setCancelActionListener(e -> {
             //TODO: idk if there is the need to print something else
+            PanelManager.getInstance().displayDevGrid();
             this.setVisible(false);
         });
         instructionPanel.setLabelText("Press submit to get the final CardCost after selecting the leader Cards");

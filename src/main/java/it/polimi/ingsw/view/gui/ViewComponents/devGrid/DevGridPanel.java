@@ -17,8 +17,8 @@ public class DevGridPanel extends JPanel{
     private final Board mainBoard;
     private final String directoryPath = "src/main/resources/front/";
 
-    public DevGridPanel(Board mainBoard){
-        super(new GridLayout(4, 4, 10, 10));
+    public DevGridPanel(Board mainBoard, JPanel container){
+        super(new GridLayout(3, 4, 10, 10));
         this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         this.mainBoard = mainBoard;
         DevCard[][] devGrid = this.mainBoard.getDevMatrix();
@@ -43,6 +43,8 @@ public class DevGridPanel extends JPanel{
                 button = new JButton(/*Integer.toString(c)*/);
                 button.addActionListener(event -> {
                     try {
+                        this.setVisible(false);
+                        container.setVisible(false);
                         PanelManager.getInstance().printGetCardCostPanel(row, col);
                     }catch (IllegalArgumentException ae){
                         PanelManager.getInstance().printError("You can't buy this card");
@@ -59,10 +61,10 @@ public class DevGridPanel extends JPanel{
                  */
             }
         }
-        BackButton backButton = new BackButton("Back");
+        /*BackButton backButton = new BackButton("Back");
         backButton.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
         backButton.setSize(new Dimension(50,20));
-        this.add(backButton);
+        this.add(backButton);*/
     }
 
     public void update(){

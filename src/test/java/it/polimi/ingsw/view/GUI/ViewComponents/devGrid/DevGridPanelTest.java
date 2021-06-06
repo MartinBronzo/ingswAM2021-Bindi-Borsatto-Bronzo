@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevDeck;
 import it.polimi.ingsw.model.DevCards.DevGrid;
+import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridContainer;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,7 @@ class DevGridPanelTest {
     @Test
     void PrintWaitingRoom() throws IOException, InterruptedException {
         JFrame jFrame = new JFrame();
-        DevGridPanel devGridGui = new DevGridPanel(board);
+        DevGridContainer devGridGui = new DevGridContainer(board);
         jFrame.add(devGridGui);
         jFrame.setSize(700, 700);
         jFrame.setVisible(true);

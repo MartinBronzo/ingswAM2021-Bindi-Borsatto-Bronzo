@@ -16,12 +16,10 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
-import it.polimi.ingsw.network.messages.fromClient.Message;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevCardPanel1;
-import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
-import it.polimi.ingsw.view.gui.ViewComponents.market.MarketGridPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridContainer;
 import it.polimi.ingsw.view.gui.ViewComponents.market.BuyFromMarketPanel;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -59,8 +57,7 @@ public final class PanelManager {
     private BeginningDecisionsPanel beginningDecisionsPanel;
     private MainPanel mainPanel;
     private DevCardPanel1 devCardCostPanel;
-    private MarketGridPanel marketGridPanel;
-    private DevGridPanel devGridPanel;
+    private DevGridContainer devGridContainer;
     private BuyFromMarketPanel buyFromMarketPanel;
 
     //TODO: add here attibutes used in panels
@@ -422,28 +419,24 @@ public final class PanelManager {
     }
 
     public void displayDevGrid(){
-        visualizer.submit(() -> {
+        //visualizer.submit(() -> {
             mainPanel.setVisible(false);
-            devGridPanel = new DevGridPanel(gameModel.getMainBoard());
-            gameFrame.add(devGridPanel);
-            devGridPanel.setVisible(true);
-            devGridPanel.update(150,200);
-        });
+            devGridContainer = new DevGridContainer(gameModel.getMainBoard());
+            gameFrame.add(devGridContainer);
+            devGridContainer.setVisible(true);
+            devGridContainer.update(150,200);
+       // });
     }
 
     //TODO: this must be changed we shound't print just the market but the action view
 
     public void displayMarket() {
-        visualizer.submit(() -> {
             mainPanel.setVisible(false);
-            marketGridPanel = new MarketGridPanel(gameModel.getMainBoard());
-            gameFrame.add(marketGridPanel);
-            marketGridPanel.setVisible(true);
-            marketGridPanel.setSize(new Dimension(700,700));
-            marketGridPanel.update();
-        });
+            buyFromMarketPanel.setPlayer(getPlayer());
+            buyFromMarketPanel.setBoard(gameModel.getMainBoard());
+            buyFromMarketPanel.setVisible(true);
+            buyFromMarketPanel.print();
     }
-
 
     public void printInfo(String info) {
         visualizer.submit(() -> {

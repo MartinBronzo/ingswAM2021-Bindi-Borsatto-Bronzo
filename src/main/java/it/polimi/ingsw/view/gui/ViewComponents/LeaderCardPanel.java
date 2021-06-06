@@ -29,61 +29,7 @@ public class LeaderCardPanel extends JPanel {
         this.setAlignmentX(LEFT_ALIGNMENT);
         this.setBorder(new TitledBorder("LeaderCards"));
 
-        //ArrayList<JPanel> panelList = new ArrayList<>();
-       // ImageIcon image;
         addLeaderCards();
-        /*for (LeaderCard leader : activeLeaders) {
-            JPanel activeCardPanel = new JPanel();
-            activeCardPanel.setLayout(new BoxLayout(activeCardPanel, BoxLayout.PAGE_AXIS));
-
-            JLabel label = new JLabel();
-            image = scaleImage(leader.getUrl(), 180, 250);
-            label.setIcon(image);
-            label.setAlignmentX(LEFT_ALIGNMENT);
-
-            activeCardPanel.add(label);
-            activeCardPanel.setAlignmentX(LEFT_ALIGNMENT);
-            panelList.add(activeCardPanel);
-            this.add(activeCardPanel);
-            this.add(Box.createRigidArea(new Dimension(0, 20)));
-        }
-
-        int index = 0;
-        for (LeaderCard leader : unusedLeaders) {
-            JPanel cardPanel = new JPanel();
-            cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.PAGE_AXIS));
-
-            JLabel label = new JLabel();
-            image = scaleImage(leader.getUrl(), 180, 250);
-            label.setIcon(image);
-            label.setAlignmentX(LEFT_ALIGNMENT);
-
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
-            JButton activateButton = new JButton("Activate");
-            int i = index;
-            activateButton.addActionListener(event -> PanelManager.getInstance().writeMessage(
-                    new Command("ActivateLeader", new LeaderMessage(i))));
-
-            JButton discardButton = new JButton("Discard");
-            discardButton.addActionListener(event -> PanelManager.getInstance().writeMessage(
-                    new Command("discardLeader", new LeaderMessage(i))));
-
-            buttonPanel.add(activateButton);
-            buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-            buttonPanel.add(discardButton);
-            buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
-
-            cardPanel.add(label);
-            cardPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-            cardPanel.add(buttonPanel);
-            cardPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-            cardPanel.setAlignmentX(LEFT_ALIGNMENT);
-            panelList.add(cardPanel);
-            this.add(cardPanel);
-
-            index++;
-        }*/
     }
 
     public static ImageIcon scaleImage(String image, int width, int height) {

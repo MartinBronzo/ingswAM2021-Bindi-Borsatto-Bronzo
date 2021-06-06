@@ -62,7 +62,7 @@ public class InstructionPanel extends JPanel{
 
     public void setCancelActionListener(ActionListener actionListener) {
         if (cancelButton!=null)
-            this.confirmButton.addActionListener(actionListener);
+            this.cancelButton.addActionListener(actionListener);
     }
 
     public void setLabelText(String text){

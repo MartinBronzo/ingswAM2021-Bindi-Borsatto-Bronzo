@@ -70,7 +70,7 @@ class PanelManagerTest {
     }
 
     @Test
-    void PrintgetMarketCost() throws IOException, InterruptedException, NegativeQuantityException, ParserConfigurationException, SAXException {
+    void PrintGetMarketCost() throws IOException, InterruptedException, NegativeQuantityException, ParserConfigurationException, SAXException {
         Game gameModel = new Game();
         xmlConfig = new File("MarketConfig.xsd.xml");
         Market market = new Market(xmlConfig);

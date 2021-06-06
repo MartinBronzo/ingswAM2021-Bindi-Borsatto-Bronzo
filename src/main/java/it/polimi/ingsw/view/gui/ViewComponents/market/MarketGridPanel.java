@@ -18,7 +18,7 @@ public class MarketGridPanel extends JPanel{
     private final String directoryPath = "src/main/resources/front/";
 
     public MarketGridPanel(Board mainBoard){
-        super(new GridLayout(5, 5, 5, 5));
+        super(new GridLayout(4, 5, 5, 5));
         this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         this.mainBoard = mainBoard;
         MarbleType[][] marketMatrix = mainBoard.getMarketMatrix();
@@ -54,10 +54,11 @@ public class MarketGridPanel extends JPanel{
 
          */
         this.add(label);
+        /*
         BackButton backButton = new BackButton("Back");
         backButton.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
         backButton.setSize(new Dimension(50,20));
-        this.add(backButton);
+        this.add(backButton);*/
 
     }
 
