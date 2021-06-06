@@ -383,6 +383,11 @@ public final class PanelManager {
         mainPanel.setVisible(true);
     }
 
+    public void showMoveResources(){
+        mainPanel.setVisible(false);
+
+    }
+
     public void printGetCardCostPanel(int row, int col) throws IllegalArgumentException, IllegalStateException {
         visualizer.submit(() -> {
             this.getDevCardCostPanel().selectCell(row, col);

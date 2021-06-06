@@ -40,6 +40,11 @@ public class MainPanel extends JPanel {
         stateLabel.setAlignmentX(LEFT_ALIGNMENT);
         controlPanel.add(stateLabel);
 
+        JButton moveButton = new JButton("Move Resources");
+        moveButton.setAlignmentX(LEFT_ALIGNMENT);
+        moveButton.addActionListener(event -> PanelManager.getInstance().showMoveResources());
+        controlPanel.add(moveButton);
+
         JButton productionButton = new JButton("Activavte Production");
         productionButton.setAlignmentX(LEFT_ALIGNMENT);
         controlPanel.add(productionButton);
@@ -81,19 +86,6 @@ public class MainPanel extends JPanel {
 
         actualPlayerBoardPanel = new ActualPlayerBoardPanel(game.getMainBoard(), (ArrayList<LeaderCard>) actualPlayer.getUsedLeaders(), (ArrayList<LeaderCard>) actualPlayer.getUnUsedLeaders() );
         playerBoardPanel.add(actualPlayerBoardPanel, actualPlayerName);
-
-        //TODO: questa è una prova, cancellabile
-        /*JPanel prova2 = new JPanel();
-        InstructionPanel instructionPanel = new InstructionPanel();
-        instructionPanel.setLabelText("aaaaaaa");
-        instructionPanel.setButtonActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                instructionPanel.setLabelText("seeeee");
-            }
-        });
-        prova2.add(instructionPanel);
-        playerBoardPanel.add(prova2, guisPlayerName);*/
 
         for (String playerName : playersNicks) {
             //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
