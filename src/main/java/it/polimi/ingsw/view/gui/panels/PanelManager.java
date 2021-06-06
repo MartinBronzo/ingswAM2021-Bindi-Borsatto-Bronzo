@@ -612,6 +612,14 @@ public final class PanelManager {
         return result;
     }
 
+    /**
+     * Returns the player's LeaderSlots
+     * @return the player's LeaderSlots
+     */
+    public HashMap<ResourceType, Integer> getLeaderSlots(){
+        return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getLeaderSlots();
+    }
+
     public Player getPlayer(){return player;}
 
     //For testing purposes:
