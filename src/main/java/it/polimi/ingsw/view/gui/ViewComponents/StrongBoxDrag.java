@@ -3,7 +3,8 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDragGestureListener;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.ShelfDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DragUpdatable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StrongBoxDrag extends JPanel implements DragUpdatable{
+public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
     private List<JLabel> resources;
     //DragGestureListenerOneShot dlistener;
     MyDragGestureListener dlistener;
@@ -59,8 +60,14 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable{
         }
     }
 
+    @Override
     public void resetState(){
+        for(JLabel label: this.resources)
+            this.remove(label);
         this.resources = new ArrayList<>();
+        this.fillStrongBox(PanelManager.getInstance().getStrongBox());
+        this.revalidate();
+        this.repaint();
     }
 
     @Override
@@ -73,5 +80,7 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable{
     public void updateAfterDrop(String info) {
         JLabel draggedAway = this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get();
         draggedAway.setVisible(false);
+        this.revalidate();
+        this.repaint();
     }
 }

@@ -3,17 +3,18 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
-import javax.annotation.Resource;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CheckLimitedDrop implements DropChecker {
-    HashMap<ResourceType, Integer> resToBeTaken;
-    List<ResourceType> typeList;
+public class CheckLimitedDrop implements DropChecker, Resettable {
+    private HashMap<ResourceType, Integer> resToBeTaken;
+    private List<ResourceType> typeList;
+    private HashMap<ResourceType, Integer> copyOriginalResToBeTaken;
 
     public CheckLimitedDrop(HashMap<ResourceType, Integer> resToBeTaken) {
         this.resToBeTaken = resToBeTaken;
@@ -21,6 +22,7 @@ public class CheckLimitedDrop implements DropChecker {
         for(Map.Entry<ResourceType, Integer> e : resToBeTaken.entrySet()){
             typeList.add(e.getKey());
         }
+        this.copyOriginalResToBeTaken = new HashMap<>(resToBeTaken);
     }
 
     @Override
@@ -48,5 +50,10 @@ public class CheckLimitedDrop implements DropChecker {
 
     public boolean hasPlayerSpecifiedEverything(){
         return this.resToBeTaken.isEmpty();
+    }
+
+    @Override
+    public void resetState() {
+        this.resToBeTaken = new HashMap<>(copyOriginalResToBeTaken);
     }
 }

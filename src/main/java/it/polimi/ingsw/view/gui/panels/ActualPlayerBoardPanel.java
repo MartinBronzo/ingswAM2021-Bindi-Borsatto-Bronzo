@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class ActualPlayerBoardPanel extends JPanel {
     DevGridPanel devGrid;
+    LeaderCardPanel leaderCardPanel;
 
     public ActualPlayerBoardPanel(Board mainBoard, ArrayList<LeaderCard> activeLeaders, ArrayList<LeaderCard> unusedLeaders) {
         super();
@@ -26,7 +27,7 @@ public class ActualPlayerBoardPanel extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-        LeaderCardPanel leaderCardPanel = new LeaderCardPanel(activeLeaders, unusedLeaders);
+        leaderCardPanel = new LeaderCardPanel(activeLeaders, unusedLeaders);
         leaderCardPanel.setAlignmentX(LEFT_ALIGNMENT);
         this.add(leaderCardPanel);
 
@@ -38,7 +39,7 @@ public class ActualPlayerBoardPanel extends JPanel {
         playerBoardLabel.setBorder(new TitledBorder("playerboard"));
         this.add(playerBoardLabel);
 
-        JPanel righSidePanel = new JPanel();
+       /* JPanel righSidePanel = new JPanel();
         righSidePanel.setLayout(new BoxLayout(righSidePanel, BoxLayout.PAGE_AXIS));
 
         JButton marketButton = new JButton();
@@ -58,7 +59,7 @@ public class ActualPlayerBoardPanel extends JPanel {
         righSidePanel.add(devGridPanel);
         righSidePanel.setBorder(new TitledBorder("rightside"));
         righSidePanel.setAlignmentX(RIGHT_ALIGNMENT);
-        this.add(righSidePanel);
+        this.add(righSidePanel);*/
     }
 
     public void updateGridView(int width, int height) {
@@ -66,7 +67,8 @@ public class ActualPlayerBoardPanel extends JPanel {
     }
 
     public void updatePlayerBoard(Game game){
-        
+        leaderCardPanel.update();
+        this.validate();
     }
 
     private ImageIcon scaleImage(String image, int width, int height) {

@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.gui.panels;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
-import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 
 import javax.swing.*;
 import java.awt.*;

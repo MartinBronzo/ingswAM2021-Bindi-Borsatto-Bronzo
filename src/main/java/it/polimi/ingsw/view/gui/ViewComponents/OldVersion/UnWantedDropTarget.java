@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui.ViewComponents.OldVersion;
 
-import it.polimi.ingsw.view.gui.ViewComponents.DragUpdatable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DragUpdatable;
 
 import javax.swing.*;
 import java.awt.*;

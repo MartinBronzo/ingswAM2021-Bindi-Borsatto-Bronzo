@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.panels;
 
+import it.polimi.ingsw.view.gui.ViewComponents.CardCheckbox;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CheckDropAtBeginningDecisionsTime;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CollectBeginningChoices;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DnDDepot;
@@ -12,8 +13,7 @@ import java.util.ArrayList;
 //TODO: MAGARI CAMBIARE A DIALOG
 public class BeginningDecisionsPanel extends JPanel {
 
-    public BeginningDecisionsPanel(/*Frame owner*/ ArrayList<String> leaderList, int numRes, int numLeaders){
-       // super(owner, "Set Beginning Decisions", true);
+    public BeginningDecisionsPanel(ArrayList<String> leaderList, int numRes, int numLeaders){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 

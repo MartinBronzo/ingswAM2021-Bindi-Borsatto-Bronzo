@@ -141,6 +141,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         this.resToDepot = new ArrayList<>();
         for(JLabel label : this.resources)
             this.remove(label);
+        //TODO: non è necessario togliere questi label!
         for(JLabel label : this.droppedRes)
             this.remove(label);
         this.revalidate();

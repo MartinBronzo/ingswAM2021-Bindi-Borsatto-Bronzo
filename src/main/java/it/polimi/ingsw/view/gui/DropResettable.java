@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.view.gui.ViewComponents.Resettable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
 import javax.swing.*;
 

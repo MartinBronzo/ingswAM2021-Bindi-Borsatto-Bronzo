@@ -3,10 +3,11 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.Droppable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
 import javax.swing.*;
 
-public class RegisterDropFromFiniteRes implements RegisterDropInterface{
+public class RegisterDropFromFiniteRes implements RegisterDropInterface {
     public LimitedResourcesDrag start;
     private final Droppable dropTarget;
 

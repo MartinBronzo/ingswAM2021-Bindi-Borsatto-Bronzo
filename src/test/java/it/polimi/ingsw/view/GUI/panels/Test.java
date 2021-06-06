@@ -3,10 +3,17 @@ package it.polimi.ingsw.view.GUI.panels;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevGrid;
+import it.polimi.ingsw.model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 import it.polimi.ingsw.view.gui.panels.ActualPlayerBoardPanel;
 import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
@@ -22,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
@@ -50,14 +58,18 @@ public class Test {
         //checkStrongBoxOnlyView();
         //checkPlainPanelDropGettingInfo();
         //checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
-        checkResetDepotDrop();
+        //checkResetDepotDrop();
+        //checkResetTrashCanDrop();
+        //checkResetDepotDropAndTrashCanDrop();
+        //checkPlacingResourcesReset();
+        //checkPlacingResourcesReset();
+        checkLeaderCardDrop();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
         //showPlayerBoards();
 
     }
-
 
 
     public static void showSetBeginningDecisionsPanel(){
@@ -251,7 +263,7 @@ public class Test {
             frame.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             DepotDrag depot = new DepotDrag();
-            depot.initDepotDrag();
+            depot.init();
             frame.add(depot, BorderLayout.CENTER);
             StrongBoxDrop strongBoxDrop = new StrongBoxDrop();
             strongBoxDrop.setTargetListenerAndCheckDropFunction(new DumbCheckDrop());
@@ -378,7 +390,7 @@ public class Test {
 
         //Setting up the depot drag
         DepotDrag depotDrag = new DepotDrag();
-        depotDrag.initDepotDrag();
+        depotDrag.init();
         frame.add(depotDrag, BorderLayout.CENTER);
 
         //Setting up the PanelDrop
@@ -419,7 +431,7 @@ public class Test {
 
         //Setting up the depot drag
         DepotDrag depotDrag = new DepotDrag();
-        depotDrag.initDepotDrag();
+        depotDrag.init();
         frame.add(depotDrag, BorderLayout.CENTER);
 
         //Setting up the strongBox drag
@@ -580,6 +592,7 @@ public class Test {
         res.put(ResourceType.COIN, 2);
         res.put(ResourceType.SERVANT, 3);
         res.put(ResourceType.STONE, 5);
+        res.put(ResourceType.SHIELD, 0);
         player.setStrongBox(res);
         Game game = new Game();
         game.addPlayer(player);
@@ -623,7 +636,7 @@ public class Test {
 
         //Setting up the depot drag
         DepotDrag depotDrag = new DepotDrag();
-        depotDrag.initDepotDrag();
+        depotDrag.init();
         frame.add(depotDrag, BorderLayout.CENTER);
 
         //Setting up the strongBox drag
@@ -718,8 +731,76 @@ public class Test {
         PanelManager panelManager = PanelManager.createInstance(new GuiClient());
         Player player = new Player();
         player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Setting up the DepotDrop
+        DnDDepot depot = new DnDDepot();
+        depot.initFromInfiniteDrag(new CheckDropAtBeginningDecisionsTime(depot.getDepot()));
+        frame.add(depot, BorderLayout.CENTER);
+
+        //Setting up the CancelButton
+        CancelButton button = new CancelButton("Cancel");
+        button.addActionListener(new ResetState(depot.getDepot()));
+        frame.add(button, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("Depot reset");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkResetTrashCanDrop(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the LimitedRes drag
+        LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.STONE, 3);
+        res.put(ResourceType.SERVANT, 1);
+        res.put(ResourceType.SHIELD, 1);
+        limitedResourcesDrag.init(res);
+        frame.add(limitedResourcesDrag, BorderLayout.PAGE_END);
+
+        //Setting up the TrashCan
+        DiscardedResDrop trashCan = new DiscardedResDrop();
+        trashCan.initFromFiniteRes(new DumbCheckDrop(), limitedResourcesDrag);
+        frame.add(trashCan, BorderLayout.CENTER);
+
+        //Setting up the CancelButton
+        CancelButton button = new CancelButton("Cancel");
+        button.addActionListener(new ResetState(trashCan));
+        frame.add(button, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("Depot reset");
+        frame.pack();
+        frame.setVisible(true);
+
+    }
+
+    public static void checkResetDepotDropAndTrashCanDrop(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
         player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
-        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+        player.addDepotShelf(new DepotShelf(null, 0));
         player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
         Game game = new Game();
         game.addPlayer(player);
@@ -742,13 +823,164 @@ public class Test {
         depot.initFromFiniteDrag(new CheckDropInDepot(depot), limitedResourcesDrag);
         frame.add(depot, BorderLayout.CENTER);
 
+        //Setting up the TrashCan
+        DiscardedResDrop trashCan = new DiscardedResDrop();
+        trashCan.initFromFiniteRes(new DumbCheckDrop(), limitedResourcesDrag);
+        frame.add(trashCan, BorderLayout.PAGE_START);
+
         //Setting up the CancelButton
-        CancelButton button = new CancelButton("Cancel");
-        button.addActionListener(new ResetState(depot));
-        frame.add(button, BorderLayout.LINE_END);
+        CancelButton cancel = new CancelButton("Cancel");
+        cancel.addActionListener(new ResetState(depot, trashCan, limitedResourcesDrag));
+
+        //Setting up the Submit button
+        SubmitButton submit = new SubmitButton("Submit");
+        submit.addActionListener(new CollectPlacingResources(depot, trashCan));
+
+        //Placing the buttons
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(cancel);
+        panel.add(submit);
+        frame.add(panel, BorderLayout.LINE_END);
 
         //Finishing it up
         frame.setTitle("Depot reset");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkPlacingResourcesReset(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.SERVANT, 3);
+        res.put(ResourceType.STONE, 5);
+        player.setStrongBox(res);
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Adding the DepotDrag
+        DepotDrag depotDrag = new DepotDrag();
+        depotDrag.init();
+        frame.add(depotDrag, BorderLayout.CENTER);
+
+        //Adding the StrongBoxDrag
+        StrongBoxDrag strongBox = new StrongBoxDrag();
+        strongBox.init();
+        frame.add(strongBox, BorderLayout.PAGE_START);
+
+        //Setting up the PanelDrop
+        PanelDrop pDrop = new PanelDrop();
+        HashMap<ResourceType, Integer> resToBeTaken = new HashMap<>();
+        resToBeTaken.put(ResourceType.COIN, 1);
+        resToBeTaken.put(ResourceType.SERVANT, 1);
+        resToBeTaken.put(ResourceType.STONE, 1);
+        CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
+        pDrop.init(checker, strongBox, depotDrag, pDrop);
+        frame.add(pDrop, BorderLayout.PAGE_END);
+
+        //Setting up the CancelButton
+        CancelButton cancel = new CancelButton("Cancel");
+        cancel.addActionListener(new ResetState(depotDrag, strongBox, pDrop));
+
+        //Setting up the Submit button
+        SubmitButton submit = new SubmitButton("Submit");
+        submit.addActionListener(new CollectCostsChoices(pDrop));
+
+        //Placing the buttons
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(cancel);
+        panel.add(submit);
+        frame.add(panel, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("Depot reset");
+        frame.pack();
+        frame.setVisible(true);
+
+    }
+
+    private static void checkLeaderCardDrop() {
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.STONE, 1));
+        player.addDepotShelf(new DepotShelf(null, 0));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Adding the DepotDrag
+        DepotDrag depotDrag = new DepotDrag();
+        depotDrag.init();
+        frame.add(depotDrag, BorderLayout.CENTER);
+
+        //Adding a LeaderCard
+        List<Requirement> req = new ArrayList<>();
+        req.add(new CardRequirementResource(ResourceType.COIN, 5));
+        LeaderCard leader = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.STONE, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png");
+        LeaderCardDrop leaderDrop = new LeaderCardDrop(leader, 1);
+
+        //Adding another LeaderCard
+        LeaderCard l2 = new LeaderCard(leader);
+        LeaderCardDrop leaderDrop2 = new LeaderCardDrop(leader, 0);
+
+        //Creating the listener
+        List<LeaderCardDrop> leaderCards = new ArrayList<>();
+        leaderCards.add(leaderDrop);
+        leaderCards.add(leaderDrop2);
+        CheckDropDropToLeader checker = new CheckDropDropToLeader(leaderCards);
+        RegisterDropToLeader registerDrop = new RegisterDropToLeader(leaderCards, depotDrag);
+        leaderDrop.init(checker, registerDrop);
+        leaderDrop2.init(checker, registerDrop);
+
+        //Adding the LeaderCards to the same panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(leaderDrop);
+        panel.add(leaderDrop2);
+        frame.add(panel, BorderLayout.PAGE_START);
+
+        //Adding the submit button
+        SubmitButton submit = new SubmitButton("Submit");
+        submit.addActionListener(new CollectMoveToLeader(leaderCards));
+
+        //Setting up the CancelButton
+        CancelButton cancel = new CancelButton("Cancel");
+        cancel.addActionListener(new ResetState(leaderDrop, leaderDrop2, depotDrag));
+
+        //Placing the buttons
+        JPanel buttons = new JPanel();
+        buttons.add(cancel);
+        buttons.add(submit);
+        frame.add(buttons, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("LeaderCard");
         frame.pack();
         frame.setVisible(true);
     }
@@ -757,7 +989,7 @@ public class Test {
 package it.polimi.ingsw.view.GUI.panels;
 
         import it.polimi.ingsw.model.ResourceType;
-        import it.polimi.ingsw.view.gui.ViewComponents.SubmitButton;
+        import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 
         import javax.swing.*;
         import javax.swing.border.TitledBorder;

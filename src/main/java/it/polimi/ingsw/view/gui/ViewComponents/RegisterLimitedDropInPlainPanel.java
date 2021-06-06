@@ -2,14 +2,9 @@ package it.polimi.ingsw.view.gui.ViewComponents;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.network.messages.fromClient.DepotParams;
-import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class RegisterLimitedDropInPlainPanel implements RegisterDropInterface {
     private CheckLimitedDrop checkLimitedDrop;

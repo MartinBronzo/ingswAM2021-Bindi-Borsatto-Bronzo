@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,6 +33,10 @@ public class ResetState implements ActionListener {
         this.resettables.add(resettable1);
         this.resettables.add(resettable2);
         this.resettables.add(resettable3);
+    }
+
+    public ResetState(List<Resettable> resettables) {
+        this.resettables = resettables;
     }
 
     public void addResettable(Resettable resettable){

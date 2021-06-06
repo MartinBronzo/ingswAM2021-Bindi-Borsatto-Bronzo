@@ -27,7 +27,7 @@ public class CollectCostsChoices implements ActionListener {
             System.out.println(panelDrop.hasPlayerSpecifiedEverything());
             //PanelManager.getInstance().printError("You must select all the resources you are supposed to!");
             //TODO: perché non va con il printError?
-            JOptionPane.showMessageDialog(null, "You must discard 2 Leader Cards");
+            JOptionPane.showMessageDialog(null, "You must select all the resources you are supposed to!");
             return;
         }
 
