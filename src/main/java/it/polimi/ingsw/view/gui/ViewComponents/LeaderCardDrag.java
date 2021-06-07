@@ -16,6 +16,7 @@ import java.util.List;
 public class LeaderCardDrag extends JPanel implements DragUpdatable, Resettable {
     private MyDragGestureListener dlistener;
     private List<JLabel> resources; //The resources already present
+    private ResourceType resStored;
 
     public LeaderCardDrag(LeaderCard leader, int alreadyStoredRes){
         super();
@@ -34,18 +35,18 @@ public class LeaderCardDrag extends JPanel implements DragUpdatable, Resettable 
         this.setAlignmentX(LEFT_ALIGNMENT);
 
         this.dlistener = new MyDragGestureListener();
-
-        this.fillLeaderCard(leader.getEffect().extraSlotGetType(), alreadyStoredRes);
+        this.resStored = leader.getEffect().extraSlotGetType();
+        this.fillLeaderCard(alreadyStoredRes);
 
     }
 
-    private void fillLeaderCard(ResourceType resourceType, int alreadyStoredRes) {
+    private void fillLeaderCard(int alreadyStoredRes) {
         ImageIcon resource;
         JLabel label;
         DragSource ds;
         for(int i = 0; i < alreadyStoredRes; i++){
-            resource = new ImageIcon(DepotDrop.getImagePathFromResource(resourceType));
-            resource.setDescription("leaderCard " + resourceType);
+            resource = new ImageIcon(DepotDrop.getImagePathFromResource(this.resStored));
+            resource.setDescription("leaderCard " + this.resStored);
             label = new JLabel(resource);
             this.resources.add(label);
             ds = new DragSource();
@@ -67,5 +68,9 @@ public class LeaderCardDrag extends JPanel implements DragUpdatable, Resettable 
     public void resetState() {
         for(JLabel label : this.resources)
             label.setVisible(true);
+    }
+
+    public ResourceType getResStored() {
+        return resStored;
     }
 }

@@ -37,12 +37,19 @@ public class CollectCostsChoices implements ActionListener {
         //Collects the resources drawn from the StrongBox
         HashMap<ResourceType, Integer> fromStrongBox = panelDrop.getFromStrongBox();
 
+        //Collects the resources drawn from the LeaderCards
+        HashMap<ResourceType, Integer> fromLeaderCards = panelDrop.getFromLeaders();
+
         System.out.println("FROM DEPOT: ");
         for(DepotParams d: fromDepot)
             System.out.println("From " + d.getShelf() + ",  " + d.getQt() + " " + d.getResourceType());
 
         System.out.println("FROM STRONGBOX: ");
         for(Map.Entry<ResourceType, Integer> el: fromStrongBox.entrySet())
+            System.out.println(el.getValue() + " " + el.getKey());
+
+        System.out.println("FROM LEADERS: ");
+        for(Map.Entry<ResourceType, Integer> el: fromLeaderCards.entrySet())
             System.out.println(el.getValue() + " " + el.getKey());
 
         //TODO: ci sarà da creare messaggio ad hoc per i vari casi: magari fare un collect cost per card e per prod oppure fare diventare
