@@ -1,4 +1,5 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
@@ -11,7 +12,7 @@ public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
         this.dropTarget = dropTarget;
     }
     @Override
-    public void accept(Icon icon) {
+    public void accept(Icon icon) throws IllegalActionException {
         //TODO: controllare che non si possano aggiungere più risorse di quanto sia lo spazio libero (le risorse presenti saranno visualizzate da - e forse salvate nel - ShelfDrop: guardare lì per capire quante risorse l'utente può mettere)
         switch (icon.toString()){
             case "src/main/resources/coins small.png":

@@ -1,20 +1,24 @@
 package it.polimi.ingsw.view.gui.ViewComponents;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.DropResettable;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
+import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.Droppable;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DragUpdatable;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
 import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class LeaderCardDrop extends JPanel implements DropResettable {
+public class LeaderCardDrop extends JPanel implements DropResettable, Droppable {
     private MyDropTargetListener targetListener;
     private List<JLabel> resources; //The already present resources
     private int shelf;
@@ -22,6 +26,7 @@ public class LeaderCardDrop extends JPanel implements DropResettable {
     private List<JLabel> droppedRes; //The resources so far dropped
     private boolean droppedHere; //It's needed in order to understand in which LeaderCard the resource was dropped (useful when there are two LeaderCards which can store the same kind of Resource)
     private ResourceType resStored;
+    private int dropInfo;
 
     public LeaderCardDrop(LeaderCard leader, int alreadyStoredRes){
         super();
@@ -32,6 +37,7 @@ public class LeaderCardDrop extends JPanel implements DropResettable {
         this.droppedRes = new ArrayList<>();
         this.maximumCapacity = leader.getEffect().extraSlotGetResourceNumber();
         this.droppedHere = false;
+        this.dropInfo = 0;
 
         JLabel label = new JLabel();
         ImageIcon image = LeaderCardPanel.scaleImage(leader.getUrl(), 100, 150);
@@ -94,6 +100,7 @@ public class LeaderCardDrop extends JPanel implements DropResettable {
         this.targetListener = new MyDropTargetListener(this, registerDrop, checker);
     }
 
+    @Deprecated
     public void addDecision(String shelf){
         this.shelf = Integer.parseInt(shelf);
     }
@@ -105,6 +112,7 @@ public class LeaderCardDrop extends JPanel implements DropResettable {
             this.remove(label);
         this.droppedRes = new ArrayList<>();
         this.droppedHere = false;
+        this.dropInfo = 0;
         this.targetListener.resetChecker();
         this.revalidate();
         this.repaint();
@@ -141,5 +149,26 @@ public class LeaderCardDrop extends JPanel implements DropResettable {
 
     public ResourceType getResStored() {
         return resStored;
+    }
+
+    @Override
+    public void addDecision(Integer shelf, ResourceType res) throws IllegalActionException{
+        if(!res.equals(this.resStored))
+            throw new IllegalActionException("You can only store " + this.resStored + "s here!");
+        this.dropInfo++;
+    }
+
+    @Override
+    public int getShelfNumber() {
+        return 0;
+    }
+
+    public void initFromFiniteRes(DropChecker checkDropFunction, LimitedResourcesDrag resDrag){
+        this.targetListener = new MyDropTargetListener(this, new RegisterDropFromFiniteRes(this, resDrag));
+        this.targetListener.setCheckDrop(checkDropFunction);
+    }
+
+    public int getDroppedHereAmount(){
+        return this.dropInfo;
     }
 }

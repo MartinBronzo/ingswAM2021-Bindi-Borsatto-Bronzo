@@ -61,7 +61,7 @@ public class Test {
         //checkDepotNStrongBoxDrag(); //NICE
         //checkLimitedResDragNicer();
         //checkLimitedResDragDepotDropTrashCanDrop();
-        checkDepotOnlyView();
+        //checkDepotOnlyView();
         //checkStrongBoxOnlyView();
         //checkPlainPanelDropGettingInfo();
         //checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
@@ -74,6 +74,7 @@ public class Test {
         //checkMoveShelfToLeaderEasier();
         //checkMoveLeaderToDepotEasier();
         //checkMoveBetweenShelves();
+        checkPlacingResourceFull();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -1120,6 +1121,91 @@ public class Test {
 
         //Finishing it up
         frame.setTitle("LeaderCard");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    //TODO: test
+    public static void checkPlacingResourceFull(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Creating the LeaderCards
+        List<Requirement> req = new ArrayList<>();
+        req.add(new CardRequirementResource(ResourceType.COIN, 5));
+        LeaderCard leader = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.STONE, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png");
+        LeaderCard l2 = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.SERVANT, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-54-1.png");
+        List<LeaderCard> active = new ArrayList<>();
+        active.add(leader);
+        active.add(l2);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        player.setUsedLeaders(active);
+        HashMap<ResourceType, Integer> lSlot = new HashMap<>();
+        lSlot.put(ResourceType.STONE, 1);
+        player.setLeaderSlots(lSlot);
+        panelManager.setPlayer(player);
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+
+        //Setting up the LimitedRes drag
+        LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
+        HashMap<ResourceType, Integer> res = new HashMap<>();
+        res.put(ResourceType.COIN, 2);
+        res.put(ResourceType.STONE, 3);
+        res.put(ResourceType.SERVANT, 1);
+        res.put(ResourceType.SHIELD, 1);
+        limitedResourcesDrag.init(res);
+        frame.add(limitedResourcesDrag, BorderLayout.PAGE_END);
+
+        //Setting up the DepotDrop
+        DepotDrop depot = new DepotDrop();
+        depot.initFromFiniteDrag(new CheckDropInDepot(depot), limitedResourcesDrag);
+
+        //Setting up the LeaderCards
+        DropLeaderCards leaders = new DropLeaderCards();
+        leaders.initFromFiniteRes(new CheckDropInLeader(), limitedResourcesDrag);
+
+        //Setting up the DiscardedDrop
+        DiscardedResDrop trashCan = new DiscardedResDrop();
+        trashCan.initFromFiniteRes(new DumbCheckDrop(), limitedResourcesDrag);
+
+        //Uniting the Depot, LeaderDrop and the Discarded in a JPanel
+        JLabel centralPanel = new JLabel();
+        centralPanel.setLayout(new BoxLayout(centralPanel, BoxLayout.X_AXIS));
+        centralPanel.add(depot);
+        centralPanel.add(trashCan);
+        centralPanel.add(leaders);
+        frame.add(centralPanel, BorderLayout.CENTER);
+
+        //Adding the submit button
+        SubmitButton submit = new SubmitButton("Submit");
+        submit.addActionListener(new CollectPlacingResources(depot, trashCan, leaders.getCards()));
+
+        //Adding the Cancel button
+        CancelButton cancel = new CancelButton("cancel");
+        cancel.addActionListener(new ResetState(depot, leaders, trashCan, limitedResourcesDrag));
+
+        //Uniting the buttons altogether
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
+        buttons.add(submit);
+        buttons.add(cancel);
+        frame.add(buttons, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("StrongBox drag & Panel Drop test");
         frame.pack();
         frame.setVisible(true);
     }

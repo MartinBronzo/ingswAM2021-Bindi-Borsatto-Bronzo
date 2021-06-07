@@ -625,6 +625,10 @@ public final class PanelManager {
 
     public Player getPlayer(){return player;}
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     //For testing purposes:
 
     public void setGameModel(Game gameModel) {

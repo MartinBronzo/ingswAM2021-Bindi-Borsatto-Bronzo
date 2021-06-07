@@ -35,6 +35,14 @@ public class ResetState implements ActionListener {
         this.resettables.add(resettable3);
     }
 
+    public ResetState(Resettable resettable1, Resettable resettable2, Resettable resettable3, Resettable resettable4){
+        this.resettables = new ArrayList<>();
+        this.resettables.add(resettable1);
+        this.resettables.add(resettable2);
+        this.resettables.add(resettable3);
+        this.resettables.add(resettable4);
+    }
+
     public ResetState(List<Resettable> resettables) {
         this.resettables = resettables;
     }
