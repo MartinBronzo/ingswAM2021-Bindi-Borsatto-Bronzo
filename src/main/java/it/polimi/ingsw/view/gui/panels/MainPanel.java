@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.panels;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.network.messages.fromClient.LeaderMessage;
 import it.polimi.ingsw.network.messages.fromClient.Message;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;

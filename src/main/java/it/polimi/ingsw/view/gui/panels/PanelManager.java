@@ -176,8 +176,8 @@ public final class PanelManager {
         gameFrame.add(buyFromMarketPanel);
         buyFromMarketPanel.setVisible(false);
 
-        /*moveResourceChoice = new MoveResourceChoice();
-        gameFrame.add(moveResourceChoice);*/
+        //moveResourceChoice = new MoveResourceChoice();
+        //gameFrame.add(moveResourceChoice);
 
         gameFrame.validate();
 
@@ -389,8 +389,10 @@ public final class PanelManager {
     }
 
     public void showMoveResources(){
-        /*mainPanel.setVisible(false);
-        moveResourceChoice.setVisible(true);*/
+        mainPanel.setVisible(false);
+        moveResourceChoice = new MoveResourceChoice();
+        gameFrame.add(moveResourceChoice);
+        moveResourceChoice.setVisible(true);
     }
 
     public void printGetCardCostPanel(int row, int col) throws IllegalArgumentException, IllegalStateException {

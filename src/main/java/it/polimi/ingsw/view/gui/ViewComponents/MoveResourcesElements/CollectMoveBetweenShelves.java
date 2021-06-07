@@ -38,7 +38,7 @@ public class CollectMoveBetweenShelves implements ActionListener {
         System.out.println("FROM " + source + " " + dest);
 
         Message message = new MoveBetweenShelvesMessage(source, dest);
-        //PanelManager.getInstance().writeMessage(new Command("moveBetweenShelves", message));
+        PanelManager.getInstance().writeMessage(new Command("moveBetweenShelves", message));
 
     }
 }

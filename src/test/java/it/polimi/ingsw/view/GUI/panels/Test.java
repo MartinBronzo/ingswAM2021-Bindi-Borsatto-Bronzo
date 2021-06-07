@@ -72,9 +72,9 @@ public class Test {
         //checkPlacingResourcesReset();
         //checkMoveToLeaderCard();
         //checkMoveShelfToLeaderEasier();
-        //checkMoveLeaderToDepotEasier();
+        checkMoveLeaderToDepotEasier();
         //checkMoveBetweenShelves();
-        checkPlacingResourceFull();
+        //checkPlacingResourceFull();
 
         //SATTO
         //showSetBeginningDecisionsPanel();

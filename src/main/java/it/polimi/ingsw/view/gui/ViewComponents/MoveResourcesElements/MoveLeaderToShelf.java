@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements;
 
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DepotOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.LeaderCardOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
@@ -43,30 +44,52 @@ public class MoveLeaderToShelf extends JPanel {
             }
             this.add(cardPanel, BorderLayout.CENTER);
         }
+        //TODO: DECIDERE SE METTERLO
+        /*else{
+            JLabel errorMessage = new JLabel("You don't have any Extra Slot Leader Card activated");
+            this.add(errorMessage);
+        }*/
 
         //Creating the drop-down menu for the res choice
         String [] resChoice = this.createResChoice(PanelManager.getInstance().getLeaderSlots());
         JComboBox<String> res = new JComboBox<>(resChoice);
 
-        //Creating the submit button
+        JPanel container = new JPanel();
+        InstructionPanel instructionPanel = new InstructionPanel(true);
+        instructionPanel.setLabelText("Choose the shelf where you want to move your resources from\nand how many resources you want to move");
+        CollectMoveLeaderToShelf collector = new CollectMoveLeaderToShelf(res);
+        instructionPanel.setConfirmActionListener(collector);
+        instructionPanel.setCancelActionListener(event -> PanelManager.getInstance().showPlayerBoard((JPanel) this.getParent().getParent()));
+        container.add(instructionPanel);
+
+        /*//Creating the submit button
         SubmitButton submit = new SubmitButton("confirm");
         CollectMoveLeaderToShelf collector = new CollectMoveLeaderToShelf(res);
-        submit.addActionListener(collector);
+        submit.addActionListener(collector);*/
 
         //Creating a panel for the drop-down menus
         JPanel menus = new JPanel();
-        menus.setBorder(new TitledBorder("Choose the shelf where you want to move your resources from and how many resources you want to move"));
+        //menus.setBorder(new TitledBorder("Choose the shelf where you want to move your resources from and how many resources you want to move"));
         menus.setLayout(new BoxLayout(menus, BoxLayout.X_AXIS));
         menus.add(res);
 
         //Creating the listener for the ShelfChoice menu
         res.addActionListener(new ResChoiceListener(PanelManager.getInstance().getLeaderSlots(), collector, menus, this.getAddableShelf(shelves)));
+        res.setPrototypeDisplayValue("xxxxxxxxxxxxxxx");
 
         //Creating a panel for the submit button & the menus
         JPanel selectables = new JPanel();
-        selectables.setLayout(new BoxLayout(selectables, BoxLayout.X_AXIS));
+        selectables.setLayout(new BoxLayout(selectables, BoxLayout.Y_AXIS));
         selectables.add(menus);
-        selectables.add(submit);
+
+        JPanel comboPanel = new JPanel();
+        comboPanel.add(menus);
+
+        selectables.add(comboPanel);
+        selectables.add(Box.createRigidArea(new Dimension(0,10)));
+        selectables.add(container);
+
+        //selectables.add(submit);
         this.add(selectables, BorderLayout.LINE_END);
 
 
