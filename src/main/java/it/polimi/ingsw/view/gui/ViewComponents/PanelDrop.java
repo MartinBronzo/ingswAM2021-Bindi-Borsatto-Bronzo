@@ -18,6 +18,7 @@ public class PanelDrop extends JPanel implements DropResettable {
     private MyDropTargetListener targetListener;
     private HashMap<ResourceType, Integer> fromStrongBox;
     private List<DepotParams> fromDepot;
+    private HashMap<ResourceType, Integer> fromLeaders;
     private List<JLabel> addedLabels;
 
     public PanelDrop(){
@@ -27,6 +28,7 @@ public class PanelDrop extends JPanel implements DropResettable {
 
         this.fromStrongBox = new HashMap<>();
         this.fromDepot = new ArrayList<>();
+        this.fromLeaders = new HashMap<>();
         this.addedLabels = new ArrayList<>();
 
         TransferHandler dnd = new TransferHandler() {
@@ -75,7 +77,7 @@ public class PanelDrop extends JPanel implements DropResettable {
         RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBoxDrag, depotDrag, panelTarget);
         this.targetListener = new MyDropTargetListener(panelTarget, registerDrop, checker);
     }
-    public void updateDepot(String res, String shelf) {
+    public void updateDepotCounter(String res, String shelf) {
         int shelfNum = Integer.parseInt(shelf);
         ResourceType resDropped = ResourceType.valueOf(res);
         DepotParams originShelf = this.fromDepot.stream().filter(x -> x.getShelf() == shelfNum).findAny().orElse(null);
@@ -88,12 +90,20 @@ public class PanelDrop extends JPanel implements DropResettable {
 
     }
 
-    public void updateStrongBox(String res) {
+    public void updateStrongBoxCounter(String res) {
         ResourceType resDropped = ResourceType.valueOf(res);
         if(fromStrongBox.get(resDropped) == null)
             fromStrongBox.put(resDropped, 1);
         else
             fromStrongBox.put(resDropped, fromStrongBox.get(resDropped) + 1);
+    }
+
+    public void updateLeaderCardsCounter(String res){
+        ResourceType resDropped = ResourceType.valueOf(res);
+        if(fromLeaders.get(resDropped) == null)
+            fromLeaders.put(resDropped, 1);
+        else
+            fromLeaders.put(resDropped, fromLeaders.get(resDropped) + 1);
     }
 
     public HashMap<ResourceType, Integer> getFromStrongBox() {
@@ -104,6 +114,10 @@ public class PanelDrop extends JPanel implements DropResettable {
         return fromDepot;
     }
 
+    public HashMap<ResourceType, Integer> getFromLeaders() {
+        return fromLeaders;
+    }
+
     public boolean hasPlayerSpecifiedEverything(){
         return this.targetListener.hasPlayerSpecifiedEverything();
     }
@@ -112,6 +126,7 @@ public class PanelDrop extends JPanel implements DropResettable {
     public void resetState() {
         this.fromStrongBox = new HashMap<>();
         this.fromDepot = new ArrayList<>();
+        this.fromLeaders = new HashMap<>();
         for(JLabel label: this.addedLabels)
             this.remove(label);
         this.addedLabels = new ArrayList<>();

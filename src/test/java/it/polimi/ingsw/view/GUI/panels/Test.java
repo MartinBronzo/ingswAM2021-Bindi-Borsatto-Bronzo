@@ -74,7 +74,10 @@ public class Test {
         //checkMoveShelfToLeaderEasier();
         //checkMoveLeaderToDepotEasier();
         //checkMoveBetweenShelves();
-        checkPlacingResourceFull();
+
+        //Già dei prototipi di panel completi
+        //checkPlacingResourceFull();
+        checkPayingTheCostFull();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
@@ -1150,7 +1153,7 @@ public class Test {
         player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
         player.setUsedLeaders(active);
         HashMap<ResourceType, Integer> lSlot = new HashMap<>();
-        lSlot.put(ResourceType.STONE, 1);
+        lSlot.put(ResourceType.STONE, 2);
         player.setLeaderSlots(lSlot);
         panelManager.setPlayer(player);
         Game game = new Game();
@@ -1198,6 +1201,96 @@ public class Test {
         cancel.addActionListener(new ResetState(depot, leaders, trashCan, limitedResourcesDrag));
 
         //Uniting the buttons altogether
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
+        buttons.add(submit);
+        buttons.add(cancel);
+        frame.add(buttons, BorderLayout.LINE_END);
+
+        //Finishing it up
+        frame.setTitle("StrongBox drag & Panel Drop test");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void checkPayingTheCostFull(){
+        //Setting up the frame
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Creating the LeaderCards
+        List<Requirement> req = new ArrayList<>();
+        req.add(new CardRequirementResource(ResourceType.COIN, 5));
+        LeaderCard leader = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.STONE, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png");
+        LeaderCard l2 = new LeaderCard(3, req, new ExtraSlotLeaderEffect(ResourceType.SERVANT, 2), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-54-1.png");
+        List<LeaderCard> active = new ArrayList<>();
+        active.add(leader);
+        active.add(l2);
+
+        //Setting up the Player
+        PanelManager panelManager = PanelManager.createInstance(new GuiClient());
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
+        player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+        player.setUsedLeaders(active);
+        HashMap<ResourceType, Integer> resToStrongBox = new HashMap<>();
+        resToStrongBox.put(ResourceType.COIN, 2);
+        resToStrongBox.put(ResourceType.STONE, 3);
+        resToStrongBox.put(ResourceType.SERVANT, 1);
+        player.setStrongBox(resToStrongBox);
+        HashMap<ResourceType, Integer> lSlot = new HashMap<>();
+        lSlot.put(ResourceType.STONE, 1);
+        lSlot.put(ResourceType.SERVANT, 2);
+        player.setLeaderSlots(lSlot);
+        Game game = new Game();
+        game.addPlayer(player);
+        panelManager.setGameModel(game);
+        panelManager.setResourcesToTake(2);
+        panelManager.setNickname("Obi-Wan");
+        panelManager.setPlayer(player);
+
+        //Setting up the depot drag
+        DepotDrag depotDrag = new DepotDrag();
+        depotDrag.init();
+
+        //Setting up the strongBox drag
+        StrongBoxDrag strongBox = new StrongBoxDrag();
+        strongBox.init();
+
+        //Setting up the LeaderCards
+        DragLeaderCards leaders = new DragLeaderCards();
+
+        //Creating a panel that can hold the three DragSource
+        JPanel dragSources = new JPanel();
+        dragSources.setLayout(new BoxLayout(dragSources, BoxLayout.X_AXIS));
+        dragSources.add(depotDrag);
+        dragSources.add(strongBox);
+        dragSources.add(leaders);
+        frame.add(dragSources, BorderLayout.CENTER);
+
+        //Setting up the PanelDrop
+        PanelDrop pDrop = new PanelDrop();
+        HashMap<ResourceType, Integer> resToBeTaken = new HashMap<>();
+        resToBeTaken.put(ResourceType.SERVANT, 1);
+        resToBeTaken.put(ResourceType.STONE, 1);
+        CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
+        RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBox, depotDrag, leaders, pDrop);
+        MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
+        pDrop.init(dListener);
+        frame.add(pDrop, BorderLayout.PAGE_END);
+
+        //Creating the Submit button
+        SubmitButton submit = new SubmitButton("submit");
+        submit.addActionListener(new CollectCostsChoices(pDrop));
+
+        //Creating the cancel button
+        CancelButton cancel = new CancelButton("cancel");
+        cancel.addActionListener(new ResetState(depotDrag, strongBox, leaders, pDrop));
+
+        //Creating a panel for the buttons
         JPanel buttons = new JPanel();
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
         buttons.add(submit);
