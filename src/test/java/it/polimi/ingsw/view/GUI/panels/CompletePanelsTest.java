@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
+import it.polimi.ingsw.view.gui.panels.DevGridPayingCost;
 import it.polimi.ingsw.view.gui.panels.MarketPlacingResources;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Game;
@@ -23,6 +24,7 @@ public class CompletePanelsTest {
     Player player;
     Game game;
     HashMap<ResourceType, Integer> resToBePlaced;
+    HashMap<ResourceType, Integer> resToBeTaken;
     List<Integer> aLeaderList;
 
     private void init(){
@@ -42,10 +44,19 @@ public class CompletePanelsTest {
         player.addDepotShelf(new DepotShelf(ResourceType.COIN, 1));
         player.addDepotShelf(new DepotShelf(ResourceType.SHIELD, 1));
         player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
+
         player.setUsedLeaders(active);
+
         HashMap<ResourceType, Integer> lSlot = new HashMap<>();
         lSlot.put(ResourceType.STONE, 2);
         player.setLeaderSlots(lSlot);
+
+        HashMap<ResourceType, Integer> resToStrongBox = new HashMap<>();
+        resToStrongBox.put(ResourceType.COIN, 2);
+        resToStrongBox.put(ResourceType.STONE, 3);
+        resToStrongBox.put(ResourceType.SERVANT, 1);
+        player.setStrongBox(resToStrongBox);
+
         panelManager.setPlayer(player);
         game = new Game();
         game.addPlayer(player);
@@ -62,6 +73,10 @@ public class CompletePanelsTest {
         aLeaderList = new ArrayList<>();
         aLeaderList.add(1);
 
+        resToBeTaken = new HashMap<>();
+        resToBeTaken.put(ResourceType.SERVANT, 1);
+        resToBeTaken.put(ResourceType.STONE, 1);
+
 
     }
 
@@ -70,7 +85,8 @@ public class CompletePanelsTest {
         test.init();
 
         //These following methods create the panels
-        test.checkMarketPlacingResources();
+        //test.checkMarketPlacingResources();
+        test.checkDevGridPayingCost();
     }
 
     private void checkMarketPlacingResources() {
@@ -78,6 +94,16 @@ public class CompletePanelsTest {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         MarketPlacingResources market = new MarketPlacingResources(resToBePlaced, 0, 1, aLeaderList);
+
+        frame.add(market);
+        frame.setVisible(true);
+    }
+
+    private void checkDevGridPayingCost() {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        DevGridPayingCost market = new DevGridPayingCost(resToBeTaken);
 
         frame.add(market);
         frame.setVisible(true);

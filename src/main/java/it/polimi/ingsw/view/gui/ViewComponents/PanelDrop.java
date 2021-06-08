@@ -73,9 +73,15 @@ public class PanelDrop extends JPanel implements DropResettable {
         this.targetListener = targetListener;
     }
 
+    @Deprecated
     public void init(CheckLimitedDrop checker, StrongBoxDrag strongBoxDrag, DepotDrag depotDrag, PanelDrop panelTarget){
         RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBoxDrag, depotDrag, panelTarget);
         this.targetListener = new MyDropTargetListener(panelTarget, registerDrop, checker);
+    }
+
+    public void init(CheckLimitedDrop checker, DepotDrag depot, StrongBoxDrag strongBox, DragLeaderCards leaders){
+        RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBox, depot, leaders, this);
+        this.targetListener = new MyDropTargetListener(this, registerDrop, checker);
     }
     public void updateDepotCounter(String res, String shelf) {
         int shelfNum = Integer.parseInt(shelf);

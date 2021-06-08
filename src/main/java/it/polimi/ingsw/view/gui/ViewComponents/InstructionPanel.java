@@ -39,11 +39,11 @@ public class InstructionPanel extends JPanel{
         this.add(confirmButton, c);
     }
 
-    public InstructionPanel(boolean cancelButtom) {
+    public InstructionPanel(boolean cancelButton) {
         this();
-        if (cancelButtom) {
+        if (cancelButton) {
             GridBagConstraints c = new GridBagConstraints();
-            cancelButton = new CancelButton("Cancel");
+            this.cancelButton = new CancelButton("Cancel");
             c.fill = GridBagConstraints.RELATIVE;
             c.ipady = 0;       //reset to default
             c.weighty = 1.0;   //request any extra vertical space
@@ -52,7 +52,7 @@ public class InstructionPanel extends JPanel{
             c.gridx = 2;       //aligned with button 2
             c.gridwidth = 1;   //2 columns wide
             c.gridy = 2;       //third row
-            this.add(cancelButton, c);
+            this.add(this.cancelButton, c);
         }
     }
 

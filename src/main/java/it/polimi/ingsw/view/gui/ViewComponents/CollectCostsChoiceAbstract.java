@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class CollectCostsChoiceAbstract implements ActionListener {
-    private PanelDrop panelDrop;
+    protected PanelDrop panelDrop;
     
     @Override
     public void actionPerformed(ActionEvent e) {
