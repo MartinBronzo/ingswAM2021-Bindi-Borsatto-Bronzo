@@ -382,7 +382,6 @@ public final class PanelManager {
         visualizer.submit(() -> {
             beginningDecisionsPanel.setVisible(false);
             mainPanel.setVisible(true);
-            mainPanel.updateGridView(50, 100);
         });
 
     }

@@ -60,7 +60,7 @@ public class SoloActionDeck implements Deck {
         DevCardColour color;
         int numCards, numPoints;
         boolean shuffle;
-        String name ="";
+        String name;
 
 
         //Prepare the reading of the file
@@ -83,6 +83,7 @@ public class SoloActionDeck implements Deck {
                     tokenElement = (Element) node;
                     color = DevCardColour.valueOf(tokenElement.getElementsByTagName("Color").item(0).getTextContent());
                     numCards = Integer.parseInt(tokenElement.getElementsByTagName("NumCards").item(0).getTextContent());
+                    name = tokenElement.getElementsByTagName("Url").item(0).getTextContent();
 
                     discardToken = new DiscardToken(color, numCards, name);
                     discardToken.attach(discardTokenObserver);
@@ -99,6 +100,7 @@ public class SoloActionDeck implements Deck {
                     tokenElement = (Element) node;
                     numPoints = Integer.parseInt(tokenElement.getElementsByTagName("NumPoints").item(0).getTextContent());
                     shuffle = Boolean.parseBoolean(tokenElement.getElementsByTagName("Shuffle").item(0).getTextContent());
+                    name = tokenElement.getElementsByTagName("Url").item(0).getTextContent();
 
                     if (!shuffle)
                         faithPointToken = new FaithPointToken(numPoints, name);

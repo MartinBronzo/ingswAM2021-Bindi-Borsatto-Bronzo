@@ -61,7 +61,7 @@ public class Test {
         //checkDepotNStrongBoxDrag(); //NICE
         //checkLimitedResDragNicer();
         //checkLimitedResDragDepotDropTrashCanDrop();
-        //checkDepotOnlyView();
+        checkDepotOnlyView();
         //checkStrongBoxOnlyView();
         //checkPlainPanelDropGettingInfo();
         //checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();
@@ -76,15 +76,13 @@ public class Test {
         //checkMoveBetweenShelves();
 
         //Già dei prototipi di panel completi
-        checkPlacingResourceFull();
+        //checkPlacingResourceFull();
         //checkPayingTheCostFull();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
         //showPlayerBoards();
-
     }
-
 
 
     public static void showSetBeginningDecisionsPanel(){
@@ -172,7 +170,7 @@ public class Test {
 
     }
 
-    public static void showPlayerBoards() throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException, InterruptedException {
+    /*public static void showPlayerBoards() throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException, InterruptedException {
         Board board;
         DevGrid devGrid;
         File xmlDevCardsConfig;
@@ -192,8 +190,7 @@ public class Test {
         actualPlayerBoardPanel.setSize(100,100);
         frame.add(actualPlayerBoardPanel);
         frame.setVisible(true);
-        actualPlayerBoardPanel.updateGridView(50,100);
-    }
+    }*/
 
     public static void createAndShowJFrameWithResourcesInside(){
         SwingUtilities.invokeLater(() -> {
