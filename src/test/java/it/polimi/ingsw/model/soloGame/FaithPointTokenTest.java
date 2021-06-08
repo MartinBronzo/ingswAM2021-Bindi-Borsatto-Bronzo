@@ -14,14 +14,14 @@ class FaithPointTokenTest {
 
     @Test
     public void init1() {
-        FaithPointToken faithPointToken = new FaithPointToken(2);
+        FaithPointToken faithPointToken = new FaithPointToken(2, "name");
         assertEquals(faithPointToken.getFaithPoints(), 2);
         assertFalse(faithPointToken.isShuffleToken());
     }
 
     @Test
     public void init2() {
-        FaithPointToken faithPointToken = new FaithPointToken(0);
+        FaithPointToken faithPointToken = new FaithPointToken(0, "name");
         assertEquals(faithPointToken.getFaithPoints(), 0);
         assertFalse(faithPointToken.isShuffleToken());
     }
@@ -29,7 +29,7 @@ class FaithPointTokenTest {
     @Test
     public void initNegativePoints() {
         Exception exception;
-        exception = assertThrows(IllegalArgumentException.class, () -> new FaithPointToken(-1));
+        exception = assertThrows(IllegalArgumentException.class, () -> new FaithPointToken(-1, "name"));
         assertEquals(exception.getMessage(), "Can't have negative faith points");
     }
 
@@ -42,7 +42,7 @@ class FaithPointTokenTest {
         SoloBoard soloBoard = new SoloBoard();
 
         FaithPointTokenObserver observer = new FaithPointTokenObserver(soloBoard);
-        FaithPointToken faithPointToken = new FaithPointToken(2);
+        FaithPointToken faithPointToken = new FaithPointToken(2, "name");
 
         assertTrue(faithPointToken.attach(observer));
         assertTrue(faithPointToken.playEffect());

@@ -8,4 +8,6 @@ import it.polimi.ingsw.exceptions.LastVaticanReportException;
  */
 public abstract class SoloActionToken {
     public abstract boolean playEffect() throws LastVaticanReportException, EmptyDevColumnException;
+
+    public abstract String getName();
 }

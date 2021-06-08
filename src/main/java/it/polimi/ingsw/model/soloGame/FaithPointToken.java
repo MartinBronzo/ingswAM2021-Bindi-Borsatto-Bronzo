@@ -14,8 +14,10 @@ public class FaithPointToken extends SoloActionToken {
     private transient final List<FaithPointTokenObserver> observersList;
     private final int faithPoints;
     protected boolean shuffleToken;
+    private final String name;
 
-    public FaithPointToken(int faithPoints) {
+    public FaithPointToken(int faithPoints, String name) {
+        this.name = name;
         if (faithPoints < 0)
             throw new IllegalArgumentException("Can't have negative faith points");
         observersList = new ArrayList<>();
@@ -33,6 +35,11 @@ public class FaithPointToken extends SoloActionToken {
     public boolean playEffect() throws LastVaticanReportException {
         notifyObservers();
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**
