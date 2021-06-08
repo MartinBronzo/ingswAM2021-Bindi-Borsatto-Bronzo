@@ -60,6 +60,7 @@ public final class PanelManager {
     private DevGridContainer devGridContainer;
     private BuyFromMarketPanel buyFromMarketPanel;
     private MoveResourceChoice moveResourceChoice;
+    private MarketPlacingResources marketPlacingResources;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -318,7 +319,10 @@ public final class PanelManager {
             this.mapDescription = "MarketResource";
         }
 
-        //TODO: do things to setup view
+
+        marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
+
+        //TODO: add this panel to the frame
 
     }
 

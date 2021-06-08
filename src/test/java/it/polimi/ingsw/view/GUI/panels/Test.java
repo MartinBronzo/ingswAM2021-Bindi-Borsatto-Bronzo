@@ -76,8 +76,8 @@ public class Test {
         //checkMoveBetweenShelves();
 
         //Già dei prototipi di panel completi
-        //checkPlacingResourceFull();
-        checkPayingTheCostFull();
+        checkPlacingResourceFull();
+        //checkPayingTheCostFull();
 
         //SATTO
         //showSetBeginningDecisionsPanel();
