@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.DevCards.DevSlot;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,20 +15,19 @@ import java.util.List;
 
 public class DevSlotOnlyView extends JPanel {
     private List<JLabel> labelList;
-    private final int spaceBtwCards = 35;
-    private final int width = 180;
-    private final int height = 330;
+    private final int spaceBtwCards = 40;
+    private final int width = 200;
+    private final int height = 400;
 
     public DevSlotOnlyView(DevSlot devSlot) {
         labelList = new ArrayList<>();
 
         DevCard devCard;
 
-        this.setPreferredSize(new Dimension( width, height));
+        //this.setPreferredSize(new Dimension( width, height));
 
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(width, height));
-        layeredPane.setAlignmentX(LEFT_ALIGNMENT);
 
         JLabel background = new JLabel();
         background.setIcon(scaleImage("src/main/resources/board/devSlot.png", width, height));
@@ -40,16 +38,16 @@ public class DevSlotOnlyView extends JPanel {
             devCard = devSlot.getDevCard(i + 1);
             if (devCard != null) {
                 JLabel cardLabel = new JLabel();
-                cardLabel.setIcon(scaleImage(devCard.getUrl(), width - 20, 180));
+                cardLabel.setIcon(scaleImage(devCard.getUrl(), width - 20, 230));
                 //cardLabel.setPreferredSize(new Dimension(200,200));
-                cardLabel.setBounds(10, (3 - i) * spaceBtwCards, width - 20, 180);
+                cardLabel.setBounds(10, (3 - i) * spaceBtwCards, width - 20, 230);
                 layeredPane.add(cardLabel, new Integer(i));
             }
         }
         this.add(layeredPane);
     }
 
-    public static ImageIcon scaleImage(String image, int width, int height) {
+    private ImageIcon scaleImage(String image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {

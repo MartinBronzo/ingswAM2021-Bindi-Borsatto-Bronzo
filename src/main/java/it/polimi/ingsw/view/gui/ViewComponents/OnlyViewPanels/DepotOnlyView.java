@@ -16,7 +16,8 @@ public class DepotOnlyView extends JPanel {
         super();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBorder(new TitledBorder("Your Depot"));
+        //this.setBorder(new TitledBorder("Your Depot"));
+        //this.setAlignmentX(LEFT_ALIGNMENT);
 
         this.shelves = new ArrayList<>();
 
@@ -45,4 +46,5 @@ public class DepotOnlyView extends JPanel {
             i++;
         }
     }
+
 }

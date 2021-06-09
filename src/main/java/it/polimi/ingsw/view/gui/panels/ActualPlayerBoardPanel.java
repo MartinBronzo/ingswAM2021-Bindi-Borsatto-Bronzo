@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.view.gui.ViewComponents.LeaderCardPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DepotOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DevSlotOnlyView;
+import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.FaithTrackOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.StrongBoxOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
 import it.polimi.ingsw.view.readOnlyModel.Board;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 
 public class ActualPlayerBoardPanel extends JPanel {
     LeaderCardPanel leaderCardPanel;
+    FaithTrackOnlyView faithTrackOnlyView;
+    DepotOnlyView depotOnlyView;
 
     public ActualPlayerBoardPanel(Player player) {
         super();
@@ -35,24 +38,15 @@ public class ActualPlayerBoardPanel extends JPanel {
         leaderCardPanel.setAlignmentX(LEFT_ALIGNMENT);
         this.add(leaderCardPanel);
 
-        /*JLabel playerBoardLabel = new JLabel();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //playerBoardLabel.setSize(screenSize.width / 2, screenSize.height - heightMargin);
-        image = scaleImage("src/main/resources/board/Masters of Renaissance_PlayerBoard (11_2020)-1.png", screenSize.width / 2, screenSize.height - 300);
-        playerBoardLabel.setIcon(image);
-        playerBoardLabel.setBorder(new TitledBorder("playerboard"));*/
-
         JPanel playerboardPanel = new JPanel();
         //playerboardPanel.setBorder(new TitledBorder("Playerboard"));
         playerboardPanel.setLayout(new BoxLayout(playerboardPanel, BoxLayout.PAGE_AXIS));
+        playerboardPanel.setAlignmentX(LEFT_ALIGNMENT);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         playerboardPanel.setPreferredSize(new Dimension(screenSize.width-200, screenSize.height -heightMargin));
 
-        JLabel faithtrack = new JLabel();
-        //faithtrack.setBorder(new TitledBorder("faithtrack"));
-        faithtrack.setIcon(scaleImage("src/main/resources/faithTrack.png", 1000,150));
-        faithtrack.setAlignmentX(LEFT_ALIGNMENT);
-        playerboardPanel.add(faithtrack);
+        faithTrackOnlyView = new FaithTrackOnlyView(player);
+        playerboardPanel.add(faithTrackOnlyView);
 
         JPanel bottomPanel = new JPanel();
         //bottomPanel.setBorder(new TitledBorder("bottomPanel"));
@@ -61,25 +55,29 @@ public class ActualPlayerBoardPanel extends JPanel {
         JPanel resourcePanel = new JPanel();
         //resourcePanel.setBorder(new TitledBorder("resourcePanel"));
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.PAGE_AXIS));
-        DepotOnlyView depotOnlyView = new DepotOnlyView();
+        depotOnlyView = new DepotOnlyView();
         depotOnlyView.setPreferredSize(new Dimension(300,300));
         resourcePanel.add(depotOnlyView);
-        resourcePanel.add(new StrongBoxOnlyView());
+        StrongBoxOnlyView strongBoxOnlyView = new StrongBoxOnlyView();
+        resourcePanel.add(strongBoxOnlyView);
         resourcePanel.setAlignmentX(LEFT_ALIGNMENT);
         bottomPanel.add(resourcePanel);
 
         JLabel baseProdLabel = new JLabel();
         //baseProdLabel.setBorder(new TitledBorder("baseProdLabel"));
-        baseProdLabel.setIcon(scaleImage("src/main/resources/baseProd.png", 110, 330));
+        baseProdLabel.setIcon(scaleImage("src/main/resources/baseProd.png", 150, 400));
         baseProdLabel.setAlignmentX(LEFT_ALIGNMENT);
-        bottomPanel.add(baseProdLabel);
+        baseProdLabel.setAlignmentY(TOP_ALIGNMENT);
 
         JPanel devSlotsPanel = new JPanel();
+        devSlotsPanel.add(baseProdLabel);
         //devSlotsPanel.setBorder(new TitledBorder("devSlotsPanel"));
         devSlotsPanel.setLayout(new BoxLayout(devSlotsPanel, BoxLayout.LINE_AXIS));
+        devSlotsPanel.setAlignmentX(LEFT_ALIGNMENT);
         for(int i = 0; i < 3; i++) {
             devSlotOnlyView = new DevSlotOnlyView(player.getDevSlots().getDevSlot(i));
             devSlotOnlyView.setAlignmentX(LEFT_ALIGNMENT);
+            //devSlotOnlyView.setBorder(new TitledBorder("aaa"));
             devSlotsPanel.add(devSlotOnlyView);
         }
         devSlotsPanel.setAlignmentX(LEFT_ALIGNMENT);
@@ -90,10 +88,12 @@ public class ActualPlayerBoardPanel extends JPanel {
         this.add(playerboardPanel);
     }
 
-    public void updatePlayerBoard(Game game){
+    /*public synchronized void updatePlayerBoard(Game game){
         leaderCardPanel.update();
+        //faithTrackOnlyView.update();
+        depotOnlyView.update();
         this.validate();
-    }
+    }*/
 
     private ImageIcon scaleImage(String image, int width, int height) {
         //scale image

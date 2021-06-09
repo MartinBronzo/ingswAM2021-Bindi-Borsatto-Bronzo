@@ -61,7 +61,7 @@ public class Test {
         //checkDepotNStrongBoxDrag(); //NICE
         //checkLimitedResDragNicer();
         //checkLimitedResDragDepotDropTrashCanDrop();
-        checkDepotOnlyView();
+        //checkDepotOnlyView();
         //checkStrongBoxOnlyView();
         //checkPlainPanelDropGettingInfo();
         //checkCollectorFunctionInLimitedResDragDepotDropTrashCanDrop();

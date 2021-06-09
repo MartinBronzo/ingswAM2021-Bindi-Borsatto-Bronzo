@@ -20,8 +20,8 @@ import java.util.Map;
 
 public class StrongBoxOnlyView extends JPanel {
     private List<JLabel> resources;
-    private final int width = 250;
-    private final int height = 250;
+    private final int width = 180;
+    private final int height = 180;
 
     /*public StrongBoxOnlyView(){
         super();
@@ -64,7 +64,7 @@ public class StrongBoxOnlyView extends JPanel {
 
     }
 
-    public static ImageIcon scaleImage(String image, int width, int height) {
+    private ImageIcon scaleImage(String image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {

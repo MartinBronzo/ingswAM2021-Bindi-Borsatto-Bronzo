@@ -4,12 +4,16 @@ import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevSlots;
+import it.polimi.ingsw.model.FaithTrack.FaithTrack;
+import it.polimi.ingsw.model.FaithTrack.PopeTile;
+import it.polimi.ingsw.model.FaithTrack.ReportNum;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DevSlotOnlyView;
+import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.FaithTrackOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.CheckBaseProd;
 import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.DragAndDropBaseProd;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.BackButton;
@@ -73,7 +77,9 @@ public class GuiTest {
         //test for devslots only view
         //devSlotOnlyView();
 
-        devSlotOnlyViewInPlayerboard();
+        onlyViewsInPlayerboard();
+
+        //faithTrackOnlyView();
 
         //printButtons(gameFrame);
         gameFrame.setVisible(true);
@@ -88,7 +94,23 @@ public class GuiTest {
 
     }
 
-    private static void devSlotOnlyViewInPlayerboard() throws NegativeQuantityException {
+    private static void faithTrackOnlyView() {
+        List<PopeTile> popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(3, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(5, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(7, ReportNum.REPORT3));
+
+        Player player = new Player();
+        player.setNickName("Obi-Wan");
+        player.setPopeTiles(popeTiles);
+        player.setFaithPosition(5);
+
+        FaithTrackOnlyView faithTrackOnlyView = new FaithTrackOnlyView(player);
+        gameFrame.add(faithTrackOnlyView);
+
+    }
+
+    private static void onlyViewsInPlayerboard() throws NegativeQuantityException {
         DevCard devCard = new DevCard(1, DevCardColour.BLUE, 3, new HashMap<>(), new HashMap<>(), new HashMap<>(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png");
         DevCard devCard2 = new DevCard(2, DevCardColour.BLUE, 3, new HashMap<>(), new HashMap<>(), new HashMap<>(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-19-1.png");
         DevCard devCard3 = new DevCard(3, DevCardColour.BLUE, 3, new HashMap<>(), new HashMap<>(), new HashMap<>(), "src/main/resources/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-19-1.png");
@@ -98,9 +120,16 @@ public class GuiTest {
         devSlots.addDevCard(0, devCard2);
         devSlots.addDevCard(0, devCard3);
 
+        List<PopeTile> popeTiles = new ArrayList<>();
+        popeTiles.add(new PopeTile(3, ReportNum.REPORT1));
+        popeTiles.add(new PopeTile(5, ReportNum.REPORT2));
+        popeTiles.add(new PopeTile(7, ReportNum.REPORT3));
+
         PanelManager panelManager = PanelManager.createInstance(new GuiClient());
         Player player = new Player();
         player.setNickName("Obi-Wan");
+        player.setPopeTiles(popeTiles);
+        player.setFaithPosition(5);
         HashMap<ResourceType, Integer> res = new HashMap<>();
         res.put(ResourceType.COIN, 2);
         res.put(ResourceType.SERVANT, 3);

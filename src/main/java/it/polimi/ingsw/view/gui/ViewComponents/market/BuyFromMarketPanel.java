@@ -13,6 +13,8 @@ import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -43,13 +45,15 @@ public class BuyFromMarketPanel extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         this.market = new JPanel();
         this.market.setLayout(new BoxLayout(market, BoxLayout.PAGE_AXIS));
-        this.market.setSize(300, panelHeight-30);
+        this.market.setPreferredSize(new Dimension(300, panelHeight-30));
 
         JLabel info = new JLabel();
-        info.setSize(300, 200);
+        //info.setSize(400, 200);
         try {
             Image img = ImageIO.read(new File(infoPath));
-            Image dimg = img.getScaledInstance(300, info.getHeight(), Image.SCALE_SMOOTH);
+            Image dimg = img.getScaledInstance(400, 200, Image.SCALE_SMOOTH);
+            //Image dimg = img.getScaledInstance(400, info.getHeight(), Image.SCALE_SMOOTH);
+
             ImageIcon imageIcon = new ImageIcon(dimg);
             info.setIcon(imageIcon);
         } catch (IOException e) {
@@ -71,18 +75,22 @@ public class BuyFromMarketPanel extends JPanel {
         instructionLabel.setMinimumSize(new Dimension(400, 20));
         instructionLabel.setPreferredSize(new Dimension(400, 20));
         instructionLabel.setMaximumSize(new Dimension(400, 20));
+        instructionLabel.setAlignmentY(CENTER_ALIGNMENT);
         rightSidePanel.add(instructionLabel);
         instructionLabel = new JLabel("in the desired row or column and then press the desired button");
         //instructionLabel.setSize(rightSidePanel.getWidth(), rightSidePanel.getHeight() - cardComboBoxPanel.getHeight() - 100);
         instructionLabel.setMinimumSize(new Dimension(400, 20));
         instructionLabel.setPreferredSize(new Dimension(400, 20));
         instructionLabel.setMaximumSize(new Dimension(400, 20));
+        instructionLabel.setAlignmentY(CENTER_ALIGNMENT);
         rightSidePanel.add(instructionLabel);
         this.cancelButton = new CancelButton();
         this.cancelButton.setText("cancel");
+        cancelButton.setAlignmentY(CENTER_ALIGNMENT);
         //this.cancelButton.addActionListener(e -> setVisible(false));
         this.cancelButton.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
         rightSidePanel.add(cancelButton);
+        rightSidePanel.setBorder(new EmptyBorder(0,0,10,0));
         this.add(rightSidePanel);
     }
 
@@ -96,7 +104,7 @@ public class BuyFromMarketPanel extends JPanel {
         this.board = board;
         this.marketGridPanel = new MarketGridPanel(board);
         this.market.add(marketGridPanel);
-        marketGridPanel.setSize(this.market.getWidth(), this.market.getHeight()-250);
+        marketGridPanel.setPreferredSize(new Dimension(this.market.getWidth(), this.market.getHeight()-250));
 
         this.revalidate();
     }

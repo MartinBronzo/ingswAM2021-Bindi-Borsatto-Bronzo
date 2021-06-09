@@ -176,13 +176,13 @@ public class MainPanel extends JPanel {
         this.validate();
     }*/
 
-    public synchronized void updateMainPanel(Game game){
+    /*public synchronized void updateMainPanel(Game game){
         String nickname;
         nickname = PanelManager.getInstance().getNickname();
         stateLabel.setText(game.findByNick(nickname).getPlayerState().name());
         actualPlayerBoardPanel.updatePlayerBoard(game);
         this.validate();
-    }
+    }*/
 
     public boolean getCreated(){
         return created;

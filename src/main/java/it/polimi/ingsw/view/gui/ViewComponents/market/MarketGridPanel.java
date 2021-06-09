@@ -70,6 +70,9 @@ public class MarketGridPanel extends JPanel{
         Component component;
         MarbleType[][] marketMatrix = mainBoard.getMarketMatrix();
         MarbleType marbleOnSlide = mainBoard.getMarbleOnSlide();
+        final int marble_height = 80;
+        final int marble_width = 80;
+
 
         int c;
         for (int i = 0; i < marketMatrix.length; i++) {
@@ -80,7 +83,8 @@ public class MarketGridPanel extends JPanel{
 
                 try {
                     img = ImageIO.read(new File(marketMatrix[i][j].getUrl()));
-                    dimg = img.getScaledInstance(component.getWidth()-30, component.getHeight()-30, Image.SCALE_SMOOTH);
+                    dimg = img.getScaledInstance(marble_width, marble_height, Image.SCALE_SMOOTH);
+                    //dimg = img.getScaledInstance(component.getWidth()-30, component.getHeight()-30, Image.SCALE_SMOOTH);
                     imageIcon = new ImageIcon(dimg);
                     label.setIcon(imageIcon);
                 } catch (IOException e) {
@@ -94,7 +98,9 @@ public class MarketGridPanel extends JPanel{
 
         try {
             img = ImageIO.read(new File(marbleOnSlide.getUrl()));
-            dimg = img.getScaledInstance(component.getWidth()-30, component.getHeight()-30, Image.SCALE_SMOOTH);
+            dimg = img.getScaledInstance(marble_width, marble_height, Image.SCALE_SMOOTH);
+            //dimg = img.getScaledInstance(component.getWidth()-30, component.getHeight()-30, Image.SCALE_SMOOTH);
+
             imageIcon = new ImageIcon(dimg);
             label.setIcon(imageIcon);
         } catch (IOException e) {
