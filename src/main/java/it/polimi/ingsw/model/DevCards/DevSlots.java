@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.DevCards;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
+
+import java.util.*;
 
 /**
  * Groups more DevSlot in a SingleObject
@@ -109,5 +109,27 @@ public class DevSlots {
             }
         }
         return devCards;
+    }
+
+    /**
+     * Returns the DevCards that are on top of the DevSlots matched with their corresponding DevSlot number. If there is no such card,
+     * then a null value is put into the result.
+     * @return a map containing the DevSlot number and the corresponding DevCard if present or null otherwise
+     */
+    public HashMap<Integer, DevCard> getTopCards(){
+        HashMap<Integer, DevCard> result = new HashMap<>();
+        for(int i = 0; i < 3; i++){
+            try {
+                result.put(i + 1, this.devSlots[i].getLastDevCard());
+            }catch (NoSuchElementException e){
+                result.put(i + 1, null);
+            }
+        }
+        return result;
+    }
+
+    //ONLY FOR TESTING PURPOSES
+    public DevSlots(DevSlot[] devSlots) {
+        this.devSlots = devSlots;
     }
 }

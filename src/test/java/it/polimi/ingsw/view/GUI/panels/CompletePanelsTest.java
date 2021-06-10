@@ -1,5 +1,10 @@
 package it.polimi.ingsw.view.GUI.panels;
 
+import it.polimi.ingsw.exceptions.NegativeQuantityException;
+import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.DevCards.DevSlot;
+import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
@@ -27,7 +32,7 @@ public class CompletePanelsTest {
     HashMap<ResourceType, Integer> resToBeTaken;
     List<Integer> aLeaderList;
 
-    private void init(){
+    private void init() throws NegativeQuantityException {
         //Creating the LeaderCards
         List<Requirement> req = new ArrayList<>();
         req.add(new CardRequirementResource(ResourceType.COIN, 5));
@@ -76,11 +81,32 @@ public class CompletePanelsTest {
         resToBeTaken = new HashMap<>();
         resToBeTaken.put(ResourceType.SERVANT, 1);
         resToBeTaken.put(ResourceType.STONE, 1);
+        resToBeTaken.put(ResourceType.COIN, 1);
+        DevSlot[] slots = new DevSlot[3];
 
+        DevSlot devSlot = new DevSlot();
+        HashMap<ResourceType, Integer> prodInput = new HashMap<>();
+        prodInput.put(ResourceType.COIN, 1);
+        HashMap<ResourceType, Integer> prodOut = new HashMap<>();
+        prodOut.put(ResourceType.FAITHPOINT, 1);
+        HashMap<ResourceType, Integer> cost = new HashMap<>();
+        cost.put(ResourceType.SHIELD, 2);
+        devSlot.addDevCard(new DevCard(1, DevCardColour.GREEN, 1, prodInput, prodOut, cost, "Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
+        slots[0] = devSlot;
 
+        devSlot = new DevSlot();
+        slots[1] = devSlot;
+
+        devSlot = new DevSlot();
+        devSlot.addDevCard(new DevCard(1, DevCardColour.GREEN, 1, prodInput, prodOut, cost, "Masters of Renaissance_Cards_FRONT_3mmBleed_1-10-1.png"));
+        slots[2] = devSlot;
+
+        DevSlots fullSlot = new DevSlots(slots);
+
+        player.setDevSlots(fullSlot);
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws NegativeQuantityException {
         CompletePanelsTest test = new CompletePanelsTest();
         test.init();
 
@@ -103,7 +129,9 @@ public class CompletePanelsTest {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        DevGridPayingCost market = new DevGridPayingCost(resToBeTaken);
+        List<Integer> leaders = new ArrayList<>();
+        leaders.add(1);
+        DevGridPayingCost market = new DevGridPayingCost(resToBeTaken, 1, 1, leaders);
 
         frame.add(market);
         frame.setVisible(true);

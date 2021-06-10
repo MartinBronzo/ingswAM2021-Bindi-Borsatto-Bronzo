@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
@@ -61,6 +62,7 @@ public final class PanelManager {
     private BuyFromMarketPanel buyFromMarketPanel;
     private MoveResourceChoice moveResourceChoice;
     private MarketPlacingResources marketPlacingResources;
+    private DevGridPayingCost devGridPayingCost;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -333,8 +335,9 @@ public final class PanelManager {
             this.mapDescription = "DevCardCost";
         }
 
-        //TODO: do things to setup view
+        devGridPayingCost = new DevGridPayingCost(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
 
+        //TODO: add this panel to the frame
     }
 
     private void manageStart(String responseContent) {
@@ -627,6 +630,14 @@ public final class PanelManager {
      */
     public HashMap<ResourceType, Integer> getLeaderSlots(){
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getLeaderSlots();
+    }
+
+    /**
+     * Returns the DevCard of the player that are visible in the DevSlots (and therefore the user can use)
+     * @return the visible DevCards of the player
+     */
+    public HashMap<Integer, DevCard> getTopDevCardInDevSlot(){
+        return this.player.getDevSlots().getTopCards();
     }
 
     public Player getPlayer(){return player;}
