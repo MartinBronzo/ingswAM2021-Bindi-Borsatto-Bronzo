@@ -14,14 +14,14 @@ class ShuffleTokenTest {
 
     @Test
     public void init1() {
-        ShuffleToken shuffleToken = new ShuffleToken(2);
+        ShuffleToken shuffleToken = new ShuffleToken(2, "name");
         assertEquals(shuffleToken.getFaithPoints(), 2);
         assertTrue(shuffleToken.isShuffleToken());
     }
 
     @Test
     public void init2() {
-        ShuffleToken shuffleToken = new ShuffleToken(0);
+        ShuffleToken shuffleToken = new ShuffleToken(0, "name");
         assertEquals(shuffleToken.getFaithPoints(), 0);
         assertTrue(shuffleToken.isShuffleToken());
     }
@@ -29,7 +29,7 @@ class ShuffleTokenTest {
     @Test
     public void initNegativePoints() {
         Exception exception;
-        exception = assertThrows(IllegalArgumentException.class, () -> new ShuffleToken(-5));
+        exception = assertThrows(IllegalArgumentException.class, () -> new ShuffleToken(-5, "name"));
         assertEquals(exception.getMessage(), "Can't have negative faith points");
     }
 
@@ -43,7 +43,7 @@ class ShuffleTokenTest {
 
         FaithPointTokenObserver observer = new FaithPointTokenObserver(soloBoard);
 
-        ShuffleToken shuffleToken = new ShuffleToken(2);
+        ShuffleToken shuffleToken = new ShuffleToken(2, "name");
 
         assertTrue(shuffleToken.attach(observer));
         assertTrue(shuffleToken.playEffect());

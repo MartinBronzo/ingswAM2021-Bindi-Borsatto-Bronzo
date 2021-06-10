@@ -16,8 +16,10 @@ public class DiscardToken extends SoloActionToken {
     private transient final List<DiscardTokenObserver> observersList;
     private final DevCardColour cardColour;
     private final int numCards;
+    private final String name;
 
-    public DiscardToken(DevCardColour devCardColour, int numCards) {
+    public DiscardToken(DevCardColour devCardColour, int numCards, String name) {
+        this.name = name;
         if (numCards < 0)
             throw new IllegalArgumentException("Can't discard negative cards");
         observersList = new ArrayList<>();
@@ -35,6 +37,11 @@ public class DiscardToken extends SoloActionToken {
     public boolean playEffect() throws EmptyDevColumnException {
         notifyObservers();
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**

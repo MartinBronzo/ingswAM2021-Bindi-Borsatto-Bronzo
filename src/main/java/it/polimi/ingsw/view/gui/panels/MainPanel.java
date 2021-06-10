@@ -90,7 +90,7 @@ public class MainPanel extends JPanel {
         //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
         //adds first the actual player because this is the default value of the component
 
-        actualPlayerBoardPanel = new ActualPlayerBoardPanel(game.getMainBoard(), (ArrayList<LeaderCard>) actualPlayer.getUsedLeaders(), (ArrayList<LeaderCard>) actualPlayer.getUnUsedLeaders() );
+        actualPlayerBoardPanel = new ActualPlayerBoardPanel(actualPlayer);
         playerBoardPanel.add(actualPlayerBoardPanel, actualPlayerName);
 
         for (String playerName : playersNicks) {
@@ -176,17 +176,13 @@ public class MainPanel extends JPanel {
         this.validate();
     }*/
 
-    public void updateGridView(int width, int height){
-        actualPlayerBoardPanel.updateGridView(width, height);
-    }
-
-    public synchronized void updateMainPanel(Game game){
+    /*public synchronized void updateMainPanel(Game game){
         String nickname;
         nickname = PanelManager.getInstance().getNickname();
         stateLabel.setText(game.findByNick(nickname).getPlayerState().name());
         actualPlayerBoardPanel.updatePlayerBoard(game);
         this.validate();
-    }
+    }*/
 
     public boolean getCreated(){
         return created;

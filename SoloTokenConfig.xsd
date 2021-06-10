@@ -1,39 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="SoloTokenConfig" type="SoloTokenConfigType"/>
-    <xs:complexType name="DiscardTokenType">
-        <xs:sequence>
-            <xs:element name="Color">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="GREEN"/>
-                        <xs:enumeration value="YELLOW"/>
-                        <xs:enumeration value="PURPLE"/>
-                        <xs:enumeration value="BLUE"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element type="xs:nonNegativeInteger" name="NumCards"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="FaithPointTokenType">
-        <xs:sequence>
-            <xs:element type="xs:nonNegativeInteger" name="NumPoints"/>
-            <xs:element type="xs:boolean" name="Shuffle"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="SoloTokenConfigType">
-        <xs:sequence>
-            <xs:element type="DiscardTokenType" name="DiscardToken" maxOccurs="unbounded" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>DiscardTokenOfForTheDeck</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element type="FaithPointTokenType" name="FaithPointToken" maxOccurs="unbounded" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>FaithPointTokenForTheDeck</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="SoloTokenConfig" type="SoloTokenConfigType"/>
+  <xs:complexType name="DiscardTokenType">
+    <xs:sequence>
+      <xs:element name="Color">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="GREEN"/>
+            <xs:enumeration value="YELLOW"/>
+            <xs:enumeration value="PURPLE"/>
+            <xs:enumeration value="BLUE"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="xs:string" name="NumCards"/>
+      <xs:element type="xs:string" name="Url"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="FaithPointTokenType">
+    <xs:sequence>
+      <xs:element name="NumPoints">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Shuffle">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="false"/>
+            <xs:enumeration value="true"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="xs:string" name="Url"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SoloTokenConfigType">
+    <xs:sequence>
+      <xs:element type="DiscardTokenType" name="DiscardToken" maxOccurs="unbounded" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>TOKENTOKENTOKENTOKEN</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element type="FaithPointTokenType" name="FaithPointToken" maxOccurs="unbounded" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>TOKENTOKEN</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
 </xs:schema>

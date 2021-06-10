@@ -26,7 +26,7 @@ class DiscardTokenObserverTest {
     @Test
     public void init() throws EmptyDevColumnException {
         DiscardTokenObserver observer = new DiscardTokenObserver(soloBoard);
-        DiscardToken discardToken = new DiscardToken(DevCardColour.GREEN, 1);
+        DiscardToken discardToken = new DiscardToken(DevCardColour.GREEN, 1, "name");
 
         assertTrue(discardToken.attach(observer));
         assertTrue(discardToken.playEffect());

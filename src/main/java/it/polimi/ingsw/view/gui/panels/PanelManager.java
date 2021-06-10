@@ -321,8 +321,12 @@ public final class PanelManager {
             this.mapDescription = "MarketResource";
         }
 
-
+        //TODO: STOPS HERE BECAUSE IN CHECKDROPINLEADER, CARD IS NULL
         marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
+        gameFrame.add(marketPlacingResources);
+
+        //buyFromMarketPanel.setVisible(false);
+        marketPlacingResources.setVisible(true);
 
         //TODO: add this panel to the frame
 
@@ -365,7 +369,7 @@ public final class PanelManager {
         });
     }
 
-    private void managePostStart(String responseContent) {
+    private synchronized void managePostStart(String responseContent) {
         synchronized (this) {
             nLeadersToDiscard = 0;
             resourcesToTake = 0;
@@ -379,23 +383,25 @@ public final class PanelManager {
                 actualPlayer = player;
             nicknameList.add(player.getNickName());
         }
+        gameFrame.remove(mainPanel);
         mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
         gameFrame.add(mainPanel);
+        gameFrame.revalidate();
+
 
         visualizer.submit(() -> {
             beginningDecisionsPanel.setVisible(false);
             mainPanel.setVisible(true);
-            mainPanel.updateGridView(50, 100);
         });
 
     }
 
-    public void showPlayerBoard(JPanel jPanel){
+    public void showPlayerBoard(JPanel jPanel) {
         jPanel.setVisible(false);
         mainPanel.setVisible(true);
     }
 
-    public void showMoveResources(){
+    public void showMoveResources() {
         mainPanel.setVisible(false);
         moveResourceChoice = new MoveResourceChoice();
         gameFrame.add(moveResourceChoice);
@@ -409,12 +415,12 @@ public final class PanelManager {
         });
     }
 
-    public synchronized void manageGetCardCost(int row, int col, List<Integer> leaderList){
+    public synchronized void manageGetCardCost(int row, int col, List<Integer> leaderList) {
         this.lastSelectedRow = row;
         this.lastSelectedCol = col;
         this.lastSelectedLeaderList = leaderList;
-        System.out.println((lastSelectedRow+1) + " " + (lastSelectedCol+1) + " " + lastSelectedLeaderList);
-        writeMessage(new Command("getCardCost", new GetFromMatrixMessage(lastSelectedRow+1, lastSelectedCol+1, lastSelectedLeaderList)));
+        System.out.println((lastSelectedRow + 1) + " " + (lastSelectedCol + 1) + " " + lastSelectedLeaderList);
+        writeMessage(new Command("getCardCost", new GetFromMatrixMessage(lastSelectedRow + 1, lastSelectedCol + 1, lastSelectedLeaderList)));
     }
 
     public synchronized void manageGetResourcesFromMarket(boolean isRow, int number) {
@@ -435,26 +441,27 @@ public final class PanelManager {
 
         System.out.println(row + " " + col + " " + lastSelectedLeaderList);
         writeMessage(new Command("getResourcesFromMarket", new GetFromMatrixMessage(row, col, lastSelectedLeaderList)));
+        //buyFromMarketPanel.setVisible(false);
     }
 
-    public void displayDevGrid(){
+    public void displayDevGrid() {
         //visualizer.submit(() -> {
-            mainPanel.setVisible(false);
-            devGridContainer = new DevGridContainer(gameModel.getMainBoard());
-            gameFrame.add(devGridContainer);
-            devGridContainer.setVisible(true);
-            devGridContainer.update(150,200);
-       // });
+        mainPanel.setVisible(false);
+        devGridContainer = new DevGridContainer(gameModel.getMainBoard());
+        gameFrame.add(devGridContainer);
+        devGridContainer.setVisible(true);
+        devGridContainer.update(150, 200);
+        // });
     }
 
     //TODO: this must be changed we shound't print just the market but the action view
 
     public void displayMarket() {
-            mainPanel.setVisible(false);
-            buyFromMarketPanel.setPlayer(getPlayer());
-            buyFromMarketPanel.setBoard(gameModel.getMainBoard());
-            buyFromMarketPanel.setVisible(true);
-            buyFromMarketPanel.print();
+        mainPanel.setVisible(false);
+        buyFromMarketPanel.setPlayer(getPlayer());
+        buyFromMarketPanel.setBoard(gameModel.getMainBoard());
+        buyFromMarketPanel.setVisible(true);
+        buyFromMarketPanel.print();
     }
 
     public void printInfo(String info) {
@@ -495,7 +502,7 @@ public final class PanelManager {
         this.getDevCardCostPanel().setPlayer(this.player);
     }
 
-    private void manageUpdate(String responseContent) {
+    private synchronized void manageUpdate(String responseContent) {
         synchronized (this) {
             ModelUpdate modelUpdate = gson.fromJson(responseContent, ModelUpdate.class);
             Game update = modelUpdate.getGame();
@@ -509,12 +516,26 @@ public final class PanelManager {
 
         //TODO: do things to setup view
         //TODO: handle reconnection case: we have to set the main panel
-        visualizer.submit(() -> {
+        if (mainPanel.getCreated()) {
+            gameFrame.remove(mainPanel);
+            List<String> nicknameList = new ArrayList<>();
+            Player actualPlayer = null;
+            for (Player player : gameModel.getPlayers()) {
+                if (player.getNickName().equals(nickname))
+                    actualPlayer = player;
+                nicknameList.add(player.getNickName());
+            }
+            mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
+            gameFrame.add(mainPanel);
+            gameFrame.revalidate();
+        }
+
+        /*visualizer.submit(() -> {
             // if(mainPanel!=null) {
             if (mainPanel.getCreated()) {
                 mainPanel.updateMainPanel(gameModel);
             }
-        });
+        });*/
     }
 
     public Game getGameModel() {
@@ -606,30 +627,37 @@ public final class PanelManager {
 
     /**
      * Returns the list of active LeaderCards the player holds which have an ExtraSlot effect
+     *
      * @return a list of the active LeaderCards with an ExtraSlot effect the player has
      */
-    public List<LeaderCard> getExtraSlotActiveLeaderCards(){
+    public List<LeaderCard> getExtraSlotActiveLeaderCards() {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getUsedLeaders().stream().filter(x -> x.getEffect() instanceof ExtraSlotLeaderEffect).collect(Collectors.toList());
     }
 
     /**
      * Returns how many resources are already stored in the LeaderCard with an ExtraSlot effect that can store the specified kind of resource
+     *
      * @param type the kind of resource the desired LeaderCard can store
      * @return how many resources are already stored in the desired LeaderCard
      */
-    public int getAlreadyStoredInLeaderSlot(ResourceType type){
+    public int getAlreadyStoredInLeaderSlot(ResourceType type) {
         Integer result = gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getLeaderSlots().get(type);
-        if(result == null)
+        if (result == null)
             return 0;
         return result;
     }
 
     /**
      * Returns the player's LeaderSlots
+     *
      * @return the player's LeaderSlots
      */
-    public HashMap<ResourceType, Integer> getLeaderSlots(){
+    public HashMap<ResourceType, Integer> getLeaderSlots() {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getLeaderSlots();
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     /**
@@ -640,7 +668,7 @@ public final class PanelManager {
         return this.player.getDevSlots().getTopCards();
     }
 
-    public Player getPlayer(){return player;}
+    //public Player getPlayer(){return player;}
 
     public void setPlayer(Player player) {
         this.player = player;

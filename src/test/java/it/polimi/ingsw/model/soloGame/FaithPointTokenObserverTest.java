@@ -26,8 +26,8 @@ class FaithPointTokenObserverTest {
     @Test
     public void init() throws LastVaticanReportException {
         FaithPointTokenObserver observer = new FaithPointTokenObserver(soloBoard);
-        FaithPointToken faithPointToken = new FaithPointToken(2);
-        ShuffleToken shuffleToken = new ShuffleToken(1);
+        FaithPointToken faithPointToken = new FaithPointToken(2, "name");
+        ShuffleToken shuffleToken = new ShuffleToken(1, "name");
 
         assertTrue(faithPointToken.attach(observer));
         assertTrue(faithPointToken.playEffect());

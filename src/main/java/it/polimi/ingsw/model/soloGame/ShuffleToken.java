@@ -8,8 +8,8 @@ package it.polimi.ingsw.model.soloGame;
 
 public class ShuffleToken extends FaithPointToken {
 
-    public ShuffleToken(int faithPoints) {
-        super(faithPoints);
+    public ShuffleToken(int faithPoints, String name) {
+        super(faithPoints, name);
         shuffleToken = true;
     }
 }

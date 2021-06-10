@@ -556,77 +556,77 @@ class CliViewTest {
 
     @Test
     void printDiscardTokenGreen(){
-        DiscardToken token = new DiscardToken(DevCardColour.GREEN, 1);
+        DiscardToken token = new DiscardToken(DevCardColour.GREEN, 1, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printDiscardTokenBlue(){
-        DiscardToken token = new DiscardToken(DevCardColour.BLUE, 1);
+        DiscardToken token = new DiscardToken(DevCardColour.BLUE, 1, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printDiscardTokenYellow(){
-        DiscardToken token = new DiscardToken(DevCardColour.YELLOW, 1);
+        DiscardToken token = new DiscardToken(DevCardColour.YELLOW, 1, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printDiscardTokenPurple(){
-        DiscardToken token = new DiscardToken(DevCardColour.PURPLE, 1);
+        DiscardToken token = new DiscardToken(DevCardColour.PURPLE, 1, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printDiscardTokenGreenCards(){
-        DiscardToken token = new DiscardToken(DevCardColour.GREEN, 2);
+        DiscardToken token = new DiscardToken(DevCardColour.GREEN, 2, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printDiscardTokenBlueCards(){
-        DiscardToken token = new DiscardToken(DevCardColour.BLUE, 2);
+        DiscardToken token = new DiscardToken(DevCardColour.BLUE, 2, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printDiscardTokenYellowCards(){
-        DiscardToken token = new DiscardToken(DevCardColour.YELLOW, 2);
+        DiscardToken token = new DiscardToken(DevCardColour.YELLOW, 2, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printDiscardTokenPurpleCards(){
-        DiscardToken token = new DiscardToken(DevCardColour.PURPLE, 2);
+        DiscardToken token = new DiscardToken(DevCardColour.PURPLE, 2, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printFaithPointTokenOnePoint(){
-        FaithPointToken token = new FaithPointToken(1);
+        FaithPointToken token = new FaithPointToken(1, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printFaithPointTokenTwoPoints() {
-        FaithPointToken token = new FaithPointToken(2);
+        FaithPointToken token = new FaithPointToken(2, "name");
 
         CliView.printLorenzosAction(token);
     }
 
     @Test
     void printShuffleToken(){
-        ShuffleToken token = new ShuffleToken(1);
+        ShuffleToken token = new ShuffleToken(1, "name");
 
         CliView.printLorenzosAction(token);
     }
