@@ -6,26 +6,23 @@ import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DepotOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DevSlotOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.FaithTrackOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.StrongBoxOnlyView;
-import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
-import it.polimi.ingsw.view.readOnlyModel.Board;
-import it.polimi.ingsw.view.readOnlyModel.Game;
+import it.polimi.ingsw.view.gui.ViewComponents.OthersPlayerLeaderCards;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ActualPlayerBoardPanel extends JPanel {
-    LeaderCardPanel leaderCardPanel;
+public class OthersPlayerPlayerBoardPanel extends JPanel {
+    OthersPlayerLeaderCards leaderCardPanel;
     FaithTrackOnlyView faithTrackOnlyView;
     DepotOnlyView depotOnlyView;
 
-    public ActualPlayerBoardPanel(Player player) {
+    public OthersPlayerPlayerBoardPanel(Player player) {
         super();
 
         final int heightMargin = 300;
@@ -34,7 +31,7 @@ public class ActualPlayerBoardPanel extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-        leaderCardPanel = new LeaderCardPanel((ArrayList<LeaderCard>)player.getUsedLeaders(), (ArrayList<LeaderCard>)player.getUnUsedLeaders());
+        leaderCardPanel = new OthersPlayerLeaderCards((ArrayList<LeaderCard>)player.getUsedLeaders(), (ArrayList<LeaderCard>)player.getUnUsedLeaders());
         leaderCardPanel.setAlignmentX(LEFT_ALIGNMENT);
         this.add(leaderCardPanel);
 

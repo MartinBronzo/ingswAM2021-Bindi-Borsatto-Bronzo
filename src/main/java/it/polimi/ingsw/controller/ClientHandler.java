@@ -233,28 +233,7 @@ public class ClientHandler implements Runnable {
                         send(new PingMessage("Ping"));
                         pingAnswered = false;
                     } else {
-                    /*if(game.getNumberOfPlayers() == 1){
-                        setPlayerState(PlayerState.DISCONNECTED);
-                        GamesManagerSingleton.getInstance().deleteGame(game);
-                    }*/
                         updatePlayerState();
-
-                        /*if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART) {
-                            //if(gameState == WAIT4BEGINNINGDECISIONS && il tuo turno non è ancora passato) (non dovrebbe servire)
-                            game.registerPlayerDisconnectionBeforeStarting(ClientHandler.this);
-                        }
-
-                        PlayerState tmp = playerState;
-
-                        if (playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
-                            setPlayerState(PlayerState.DISCONNECTED);
-                            game.updatesAfterDisconnection(ClientHandler.this);
-                        } else
-                            setPlayerState(PlayerState.DISCONNECTED);
-
-                        if (tmp == PlayerState.PLAYING)
-                            game.specifyNextPlayer(ClientHandler.this);
-                        */
 
                         try {
                             socket.close();
@@ -267,7 +246,7 @@ public class ClientHandler implements Runnable {
                         }
                     }
                 }
-            }, 0, 3000);
+            }, 0, 10000);
         }
 
         while (keepRunning) {
@@ -360,7 +339,7 @@ public class ClientHandler implements Runnable {
         //Set the player's state to disconnected
         if (playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
             setPlayerState(PlayerState.DISCONNECTED);
-            if(tmp != PlayerState.PLAYING && tmp != PlayerState.PLAYINGBEGINNINGDECISIONS)
+            if (tmp != PlayerState.PLAYING && tmp != PlayerState.PLAYINGBEGINNINGDECISIONS)
                 game.updatesAfterDisconnection(ClientHandler.this);
         } else
             setPlayerState(PlayerState.DISCONNECTED);
@@ -422,7 +401,7 @@ public class ClientHandler implements Runnable {
     }
 
     //used only for testing purpose
-    public GameController getGame(){
+    public GameController getGame() {
         return game;
     }
 

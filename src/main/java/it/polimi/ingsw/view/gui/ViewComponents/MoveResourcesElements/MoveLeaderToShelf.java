@@ -25,7 +25,7 @@ public class MoveLeaderToShelf extends JPanel {
         this.setBorder(new TitledBorder("Move from a LeaderSlot to a Depot Shelf"));
         this.setLayout(new BorderLayout());
 
-        DepotOnlyView depot = new DepotOnlyView();
+        DepotOnlyView depot = new DepotOnlyView(PanelManager.getInstance().getNickname());
         this.add(depot, BorderLayout.LINE_START);
 
         this.activeLeader = PanelManager.getInstance().getExtraSlotActiveLeaderCards();

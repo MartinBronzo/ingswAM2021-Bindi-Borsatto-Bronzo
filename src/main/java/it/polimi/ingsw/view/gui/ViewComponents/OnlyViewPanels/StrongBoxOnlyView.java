@@ -6,10 +6,7 @@ import it.polimi.ingsw.view.gui.panels.PanelManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragSource;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +19,7 @@ public class StrongBoxOnlyView extends JPanel {
     private List<JLabel> resources;
     private final int width = 180;
     private final int height = 180;
+    private String nickname;
 
     /*public StrongBoxOnlyView(){
         super();
@@ -31,11 +29,11 @@ public class StrongBoxOnlyView extends JPanel {
         this.fillStrongBox();
     }*/
 
-    public StrongBoxOnlyView(){
+    public StrongBoxOnlyView(String nickname){
         super();
         //this.setBorder(new TitledBorder("Your StrongBox"));
         this.resources = new ArrayList<>();
-
+        this.nickname = nickname;
         JLayeredPane backgroundPane = new JLayeredPane();
         backgroundPane.setPreferredSize(new Dimension(width, height));
 
@@ -49,7 +47,7 @@ public class StrongBoxOnlyView extends JPanel {
         layeredPane.setBounds(0, 0, width,height);
         layeredPane.setLayout(new GridLayout(2,2, 5, 5));
 
-        HashMap<ResourceType, Integer> resources = PanelManager.getInstance().getStrongBox();
+        HashMap<ResourceType, Integer> resources = PanelManager.getInstance().getStrongBox(nickname);
         for(Map.Entry<ResourceType, Integer> e: resources.entrySet()){
             ImageIcon resource = new ImageIcon(DepotDrop.getImagePathFromResource(e.getKey()));;
             JLabel label = new JLabel(resource);

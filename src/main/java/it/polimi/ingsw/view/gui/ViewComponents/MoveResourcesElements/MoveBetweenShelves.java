@@ -21,7 +21,7 @@ public class MoveBetweenShelves extends JPanel {
         this.setBorder(new TitledBorder("Move from a Shelf to another Shelf"));
         this.setLayout(new BorderLayout());
 
-        DepotOnlyView depot = new DepotOnlyView();
+        DepotOnlyView depot = new DepotOnlyView(PanelManager.getInstance().getNickname());
         this.add(depot, BorderLayout.CENTER);
 
         List<DepotShelf> shelves = PanelManager.getInstance().getDepotShelves();

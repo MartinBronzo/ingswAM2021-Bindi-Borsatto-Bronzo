@@ -102,6 +102,7 @@ public class BuyFromMarketPanel extends JPanel {
     public synchronized void setBoard(Board board) throws NullPointerException{
         if (board==null) throw new NullPointerException("Player can't be null");
         this.board = board;
+        //this.market.remove(marketGridPanel);
         this.marketGridPanel = new MarketGridPanel(board);
         this.market.add(marketGridPanel);
         marketGridPanel.setPreferredSize(new Dimension(this.market.getWidth(), this.market.getHeight()-250));

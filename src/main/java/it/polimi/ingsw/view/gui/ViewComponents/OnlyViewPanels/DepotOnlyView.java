@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels;
 
+import it.polimi.ingsw.exceptions.NotAvailableNicknameException;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.ShelfOnlyView;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -11,14 +12,16 @@ import java.util.List;
 
 public class DepotOnlyView extends JPanel {
     private List<ShelfOnlyView> shelves;
+    private String nickname;
 
-    public DepotOnlyView(){
+    public DepotOnlyView(String nickname) {
         super();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         //this.setBorder(new TitledBorder("Your Depot"));
         //this.setAlignmentX(LEFT_ALIGNMENT);
 
+        this.nickname = nickname;
         this.shelves = new ArrayList<>();
 
         ShelfOnlyView shelf;
@@ -38,10 +41,10 @@ public class DepotOnlyView extends JPanel {
         fillDepot();
     }
 
-    private void fillDepot(){
-        List<DepotShelf> depotShelves = PanelManager.getInstance().getDepotShelves();
+    private void fillDepot() {
+        List<DepotShelf> depotShelves = PanelManager.getInstance().getDepotShelves(nickname);
         int i = 0;
-        for(ShelfOnlyView sView : this.shelves){
+        for (ShelfOnlyView sView : this.shelves) {
             sView.filShelf(depotShelves.get(i));
             i++;
         }

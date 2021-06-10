@@ -581,7 +581,7 @@ public class Test {
         panelManager.setNickname("Obi-Wan");
 
         //Crating the depot
-        DepotOnlyView depot = new DepotOnlyView();
+        DepotOnlyView depot = new DepotOnlyView(player.getNickName());
         frame.add(depot, BorderLayout.CENTER);
 
         //Finishing it up
@@ -613,7 +613,7 @@ public class Test {
         panelManager.setNickname("Obi-Wan");
 
         //Crating the depot
-        StrongBoxOnlyView strongBox = new StrongBoxOnlyView();
+        StrongBoxOnlyView strongBox = new StrongBoxOnlyView(player.getNickName());
         frame.add(strongBox, BorderLayout.CENTER);
 
         //Finishing it up

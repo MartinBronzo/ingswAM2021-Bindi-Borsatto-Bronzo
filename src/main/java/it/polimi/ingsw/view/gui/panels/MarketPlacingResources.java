@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CollectPlacingResources;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DepotDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.BackButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 
@@ -51,14 +52,21 @@ public class MarketPlacingResources extends JPanel {
         submit.addActionListener(new CollectPlacingResources(depot, trashCan, leaders.getCards(), row, col, leaderList));
 
         //Adding the Cancel button
-        CancelButton cancel = new CancelButton("cancel");
+        CancelButton cancel = new CancelButton("Reset");
         cancel.addActionListener(new ResetState(depot, leaders, trashCan, limitedResourcesDrag));
+
+        //Adding Back button
+        BackButton back = new BackButton("Back");
+        back.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
 
         //Uniting the buttons altogether
         JPanel buttons = new JPanel();
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
         buttons.add(submit);
+        buttons.add(Box.createRigidArea(new Dimension(0,10)));
         buttons.add(cancel);
+        buttons.add(Box.createRigidArea(new Dimension(0,10)));
+        buttons.add(back);
         this.add(buttons, BorderLayout.LINE_END);
 
         //Finishing it up

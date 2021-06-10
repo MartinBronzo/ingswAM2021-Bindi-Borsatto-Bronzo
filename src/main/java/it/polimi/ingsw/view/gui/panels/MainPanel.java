@@ -75,6 +75,7 @@ public class MainPanel extends JPanel {
         });
         comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxx");
         comboBox.setAlignmentX(RIGHT_ALIGNMENT);
+        comboBox.setSelectedItem(actualPlayer.getNickName());
         controlPanel.add(comboBox);
 
         JButton quitButton = new JButton("QUIT");
@@ -87,22 +88,15 @@ public class MainPanel extends JPanel {
 
         this.add(controlPanel);
 
-        //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
         //adds first the actual player because this is the default value of the component
 
         actualPlayerBoardPanel = new ActualPlayerBoardPanel(actualPlayer);
         playerBoardPanel.add(actualPlayerBoardPanel, actualPlayerName);
 
         for (String playerName : playersNicks) {
-            //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
             if (!playerName.equals(actualPlayerName)) {
-                /*OthersPlayerBoardPanel othersPlayerBoardPanel = new OthersPlayerBoardPanel();
-                playerBoardPanel.add(othersPlayerBoardPanel, playerName);*/
-
-                //TODO: questa è una prova, cancellabile
-                JPanel prova1 = new JPanel();
-                prova1.add(new JLabel("prova panel 1"));
-                playerBoardPanel.add(prova1, playerName);
+                OthersPlayerPlayerBoardPanel othersPlayerBoardPanel = new OthersPlayerPlayerBoardPanel(game.findByNick(playerName));
+                playerBoardPanel.add(othersPlayerBoardPanel, playerName);
             }
         }
 

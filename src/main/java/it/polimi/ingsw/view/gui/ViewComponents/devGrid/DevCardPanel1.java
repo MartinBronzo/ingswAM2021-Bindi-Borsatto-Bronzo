@@ -53,7 +53,7 @@ public class DevCardPanel1 extends JPanel {
         instructionPanel.setConfirmActionListener(e -> {
             //System.out.println(row+1+" "+column+1+" "+cardCheckboxPanel.getSelectedLeaderIndexes());
             PanelManager.getInstance().manageGetCardCost(row, column, cardCheckboxPanel.getSelectedLeaderIndexes());
-            this.setVisible(false);
+            //this.setVisible(false);
             //TODO idk if there is the need to print something else
         });
         instructionPanel.setCancelActionListener(e -> {

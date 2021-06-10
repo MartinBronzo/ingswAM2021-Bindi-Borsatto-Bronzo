@@ -269,7 +269,6 @@ public final class PanelManager {
 
     }
 
-
     private void manageleaderboard(String responseContent) {
         synchronized (this) {
             FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
@@ -325,9 +324,9 @@ public final class PanelManager {
             this.mapDescription = "MarketResource";
         }
 
-        //TODO: STOPS HERE BECAUSE IN CHECKDROPINLEADER, CARD IS NULL
         marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
         gameFrame.add(marketPlacingResources);
+        gameFrame.revalidate();
 
         buyFromMarketPanel.setVisible(false);
         marketPlacingResources.setVisible(true);
@@ -343,9 +342,15 @@ public final class PanelManager {
             this.mapDescription = "DevCardCost";
         }
 
-        devGridPayingCost = new DevGridPayingCost(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
 
+        devGridPayingCost = new DevGridPayingCost(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
+        gameFrame.add(devGridPayingCost);
+        gameFrame.revalidate();
+
+        devCardCostPanel.setVisible(false);
+        devGridPayingCost.setVisible(true);
         //TODO: add this panel to the frame
+
     }
 
     private void manageStart(String responseContent) {
@@ -445,7 +450,6 @@ public final class PanelManager {
 
         System.out.println(row + " " + col + " " + lastSelectedLeaderList);
         writeMessage(new Command("getResourcesFromMarket", new GetFromMatrixMessage(row, col, lastSelectedLeaderList)));
-        buyFromMarketPanel.setVisible(false);
     }
 
     public void displayDevGrid() {
@@ -621,12 +625,32 @@ public final class PanelManager {
     }
 
     /**
+     * Returns the player's depot shelves of the selected player
+     *
+     * @param playerNick the nickname of the player from which you want retrieve the depot shelves
+     * @return the player's depot shelves of the selected player
+     */
+    public List<DepotShelf> getDepotShelves(String playerNick) {
+        return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(playerNick)).findAny().get().getDepotShelves();
+    }
+
+    /**
      * Returns the player's StrongBox
      *
      * @return the player's StrongBox
      */
     public HashMap<ResourceType, Integer> getStrongBox() {
         return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(this.nickname)).findAny().get().getStrongBox();
+    }
+
+    /**
+     * Returns the player's StrongBox
+     *
+     * @param playerNick the nickname of the player from which you want retrieve the strongbox
+     * @return the player's StrongBox
+     */
+    public HashMap<ResourceType, Integer> getStrongBox(String playerNick) {
+        return gameModel.getPlayers().stream().filter(x -> x.getNickName().equals(playerNick)).findAny().get().getStrongBox();
     }
 
     /**
@@ -666,9 +690,10 @@ public final class PanelManager {
 
     /**
      * Returns the DevCard of the player that are visible in the DevSlots (and therefore the user can use)
+     *
      * @return the visible DevCards of the player
      */
-    public HashMap<Integer, DevCard> getTopDevCardInDevSlot(){
+    public HashMap<Integer, DevCard> getTopDevCardInDevSlot() {
         return this.player.getDevSlots().getTopCards();
     }
 
