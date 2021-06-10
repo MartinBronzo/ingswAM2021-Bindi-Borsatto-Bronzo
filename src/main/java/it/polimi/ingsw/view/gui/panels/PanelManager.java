@@ -329,7 +329,7 @@ public final class PanelManager {
         marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
         gameFrame.add(marketPlacingResources);
 
-        //buyFromMarketPanel.setVisible(false);
+        buyFromMarketPanel.setVisible(false);
         marketPlacingResources.setVisible(true);
 
         //TODO: add this panel to the frame
@@ -445,7 +445,7 @@ public final class PanelManager {
 
         System.out.println(row + " " + col + " " + lastSelectedLeaderList);
         writeMessage(new Command("getResourcesFromMarket", new GetFromMatrixMessage(row, col, lastSelectedLeaderList)));
-        //buyFromMarketPanel.setVisible(false);
+        buyFromMarketPanel.setVisible(false);
     }
 
     public void displayDevGrid() {
