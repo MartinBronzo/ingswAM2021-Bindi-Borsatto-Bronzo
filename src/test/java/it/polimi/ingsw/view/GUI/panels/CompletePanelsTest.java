@@ -10,10 +10,12 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementRe
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.network.messages.fromClient.BaseProductionParams;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.panels.DevGridPayingCost;
 import it.polimi.ingsw.view.gui.panels.MarketPlacingResources;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
+import it.polimi.ingsw.view.gui.panels.ProductionGetResources;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -51,6 +53,7 @@ public class CompletePanelsTest {
         player.addDepotShelf(new DepotShelf(ResourceType.SERVANT, 2));
 
         player.setUsedLeaders(active);
+        //player.setUsedLeaders(new ArrayList<>());
 
         HashMap<ResourceType, Integer> lSlot = new HashMap<>();
         lSlot.put(ResourceType.STONE, 2);
@@ -112,7 +115,8 @@ public class CompletePanelsTest {
 
         //These following methods create the panels
         //test.checkMarketPlacingResources();
-        test.checkDevGridPayingCost();
+        //test.checkDevGridPayingCost();
+        test.checkGetProductionCost();
     }
 
     private void checkMarketPlacingResources() {
@@ -135,5 +139,28 @@ public class CompletePanelsTest {
 
         frame.add(market);
         frame.setVisible(true);
+    }
+
+    private void checkGetProductionCost(){
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        List<Integer> leaders = new ArrayList<>();
+        leaders.add(1);
+        leaders.add(2);
+        List<Integer> devCards = new ArrayList<>();
+        devCards.add(2);
+        List<ResourceType> input = new ArrayList<>();
+        input.add(ResourceType.COIN);
+        input.add(ResourceType.SERVANT);
+        List<ResourceType> output = new ArrayList<>();
+        output.add(ResourceType.STONE);
+        BaseProductionParams productionParams = new BaseProductionParams(true, input, output);
+
+        ProductionGetResources prod = new ProductionGetResources(resToBeTaken, new ArrayList<>(), devCards, productionParams);
+
+        frame.add(prod);
+        frame.setVisible(true);
+
     }
 }

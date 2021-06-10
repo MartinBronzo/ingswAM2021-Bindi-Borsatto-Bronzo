@@ -1,24 +1,23 @@
 package it.polimi.ingsw.view.gui.panels;
 
-import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.network.messages.fromClient.BaseProductionParams;
+import it.polimi.ingsw.network.messages.fromClient.DepotParams;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
-import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DevGridPayingCost extends JPanel {
+public class ProductionGetResources extends JPanel {
 
-    public DevGridPayingCost(HashMap<ResourceType, Integer> resToBeTaken, int row, int col, List<Integer> leaderList){
+    public ProductionGetResources(HashMap<ResourceType, Integer> resToBeTaken, List<Integer> prodLeaders, List<Integer> devCards, BaseProductionParams baseProduction){
         super();
         this.setLayout(new BorderLayout());
 
@@ -41,14 +40,21 @@ public class DevGridPayingCost extends JPanel {
         pDrop.init(checker, depotDrag, strongBox, leaders);
         this.add(pDrop, BorderLayout.PAGE_END);
 
-        //Creating the drop-down menu for choosing the DevSlot
-        //JComboBox devSlotMenu = new JComboBox(this.createMenuList(PanelManager.getInstance().getTopDevCardInDevSlot()));
-        JComboBox devSlotMenu = new JComboBox(this.createMenuListString(PanelManager.getInstance().getTopDevCardInDevSlot()));
-
+        //Creating the drop-down menu for picking the extra prod info
+        JPanel comboPanel = null;
+        HashMap<Integer, JComboBox> leaderOutMenuList = new HashMap<>();
+        if(prodLeaders != null && !prodLeaders.isEmpty()) {
+            leaderOutMenuList = this.createAllMenus(prodLeaders);
+            comboPanel = new JPanel();
+            comboPanel.setLayout(new BoxLayout(comboPanel, BoxLayout.X_AXIS));
+            comboPanel.setBorder(new TitledBorder("Choose the extra output for the LeaderCards you picked!"));
+            for(Map.Entry<Integer, JComboBox> e : leaderOutMenuList.entrySet())
+                comboPanel.add(e.getValue());
+        }
 
         //Creating the Submit button
         SubmitButton submit = new SubmitButton("submit");
-        submit.addActionListener(new CollectCostsChoiceForDevCard(pDrop, row, col, leaderList, devSlotMenu));
+        submit.addActionListener(new CollectCostsChoiceForProduction(pDrop, devCards, leaderOutMenuList, baseProduction));
 
         //Creating the cancel button
         CancelButton cancel = new CancelButton("cancel");
@@ -60,11 +66,12 @@ public class DevGridPayingCost extends JPanel {
 
         //Adding all the elements to the panel
 
-        //Creating the central panel which holds the strongbox, the drop-down menu, and the Info box
+        //Creating the central panel which holds the strongbox, the drop-down menus, and the Info box
         JPanel centralPanel = new JPanel();
         centralPanel.setLayout(new BoxLayout(centralPanel, BoxLayout.Y_AXIS));
         centralPanel.add(strongBox);
-        centralPanel.add(devSlotMenu);
+        if(!prodLeaders.isEmpty())
+            centralPanel.add(comboPanel);
         centralPanel.add(infoBox);
 
         //Creating a panel that can hold the Depot and the Central Panel
@@ -76,13 +83,6 @@ public class DevGridPayingCost extends JPanel {
             dragSources.add(leaders);
         this.add(dragSources, BorderLayout.CENTER);
 
-        //Creating a panel for the buttons
-/*        JPanel buttons = new JPanel();
-        buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
-        //buttons.add(devSlotMenu);
-        buttons.add(submit);
-        buttons.add(cancel);
-        this.add(buttons, BorderLayout.LINE_END);*/
 
         //Finishing it up
         String border = "Get the resources from the Depot, ";
@@ -95,60 +95,33 @@ public class DevGridPayingCost extends JPanel {
 
     }
 
+    private HashMap<Integer, JComboBox> createAllMenus(List<Integer> prodLeaders) {
+        HashMap<Integer, JComboBox> result = new HashMap<>();
+
+        String[] resources = new String[]{ResourceType.COIN.toString(), ResourceType.STONE.toString(), ResourceType.SERVANT.toString(), ResourceType.SHIELD.toString()};
+
+        for(Integer i : prodLeaders)
+            result.put(i, new JComboBox(resources));
+
+        return result;
+
+    }
+
     private String createDescription(HashMap<ResourceType, Integer> resToBeTaken) {
         //Describing what resources must be picked
-        String result = "<html>Drag the resources you want to use to buy the DevCard! You must pick the following resources:<br/>";
+        String result = "<html>Drag the resources you want to use as input for your Production! You must pick the following resources:<br/>";
 
         for(Map.Entry<ResourceType, Integer> e : resToBeTaken.entrySet()){
             result = result + e.getKey() +  " " + e.getValue() + "<br/>";
         }
 
         //Describing that the player must select a DevSlot to put the card
-        result += "<br/>Pick a DevSlot where you want to put the DevCard!";
+        result += "<br/>For each LeaderCard you picked, choose a Resource you want to have as your extra output!";
 
         result = result + "</html>";
 
         return result;
     }
 
-    private ImageIcon[] createMenuList(HashMap<Integer, DevCard> topCards){
-        ImageIcon[] result = new ImageIcon[topCards.size()];
-        ImageIcon image;
-
-        int i = 0;
-        for(Map.Entry<Integer, DevCard> dCSlot : topCards.entrySet()){
-            if(dCSlot.getValue() == null)
-                image = new ImageIcon("empty dev Slot.jpg");
-            else
-                image = new ImageIcon(dCSlot.getValue().getUrl());
-            image.setDescription("DevSlot " + dCSlot.getKey());
-            result[i] = image;
-            i++;
-        }
-
-        //TODO: perché non stampa le immagini? Se riesco,
-
-        return result;
-    }
-
-    private String[] createMenuListString(HashMap<Integer, DevCard> topCards){
-        String [] result = new String[3];
-        String slotDescription;
-        int i = 0;
-        int number;
-        for(Map.Entry<Integer, DevCard> dCSlot : topCards.entrySet()){
-            number = i + 1;
-            if(dCSlot.getValue() == null)
-                slotDescription = "DevSlot " + number + " (empty)";
-            else
-                slotDescription = "DevSlot " + number + " (Card color " + dCSlot.getValue().getColour() + ", level " + dCSlot.getValue().getLevel() + ")";
-            result[i] = slotDescription;
-            i++;
-        }
-
-
-
-        return result;
-
-    }
+    //TODO: per le carte che leader fare combo box per scegliere il resource type, mappare il risultato del combo box con l'indice della carta
 }

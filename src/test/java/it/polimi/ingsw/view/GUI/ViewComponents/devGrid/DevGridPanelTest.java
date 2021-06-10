@@ -46,7 +46,7 @@ class DevGridPanelTest {
         devCards[0][0] = devCards[2][2];
         devCards[2][2] = devCard;
         devGridGui.update();
-        System.in.read();
+        //System.in.read();
 
     }
 

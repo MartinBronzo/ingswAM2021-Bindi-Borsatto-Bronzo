@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ActivateProductionMessage extends Message {
     private List<Integer> devCards;
-    private Map<Integer, ResourceType> leaders;
+    private Map<Integer, ResourceType> leaders; //Map<Index of the LeaderCard, ExtraResource to be produced>
     private BaseProductionParams baseProduction;
     private List<DepotParams> depotInputRes;
     private Map<ResourceType, Integer> leaderSlotRes;

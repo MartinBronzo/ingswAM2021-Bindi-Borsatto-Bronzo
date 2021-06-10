@@ -63,6 +63,7 @@ public final class PanelManager {
     private MoveResourceChoice moveResourceChoice;
     private MarketPlacingResources marketPlacingResources;
     private DevGridPayingCost devGridPayingCost;
+    private ProductionGetResources productionGetResources;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -310,7 +311,10 @@ public final class PanelManager {
             this.resourcesMap = message.getResources();
             this.mapDescription = "resourcesProduced";
         }
-        //TODO: do things to setup view
+        //TODO: salvare i dati dalla view precedente e passarli al costruttore
+        //productionGetResources = new ProductionGetResources(resourcesMap, lastSelectedLeaderList, lastSelectedDevCard, lastProductionParams);
+
+        //TODO: aggiungere al panel
 
     }
 

@@ -30,7 +30,8 @@ public class MarketPlacingResources extends JPanel {
 
         //Setting up the LeaderCards
         DropLeaderCards leaders = new DropLeaderCards();
-        leaders.initFromFiniteRes(new CheckDropInLeader(), limitedResourcesDrag);
+        if(!leaders.isEmpty())
+            leaders.initFromFiniteRes(new CheckDropInLeader(), limitedResourcesDrag);
 
         //Setting up the DiscardedDrop
         DiscardedResDrop trashCan = new DiscardedResDrop();

@@ -37,7 +37,7 @@ class MarketGridPanelTest {
         this.board.setMarbleOnSlide(marbleOnSlide);
     }
 
-    @Test
+  /*  @Test
     void PrintWaitingRoom() throws IOException, InterruptedException {
         JFrame jFrame = new JFrame();
         MarketGridPanel marketGridGui = new MarketGridPanel(board);
@@ -68,8 +68,8 @@ class MarketGridPanelTest {
         this.board.setMarbleOnSlide(marbleOnSlide);
         marketGridGui.update();
 
-        System.in.read();
+       // System.in.read();
 
     }
-
+*/
 }

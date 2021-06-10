@@ -40,7 +40,7 @@ class PanelManagerTest {
     @Test
     void PrintWaitingRoom() throws IOException, InterruptedException {
         PanelManager.getInstance().getWaitingRoomPanel().setVisible(true);
-        System.in.read();
+        //System.in.read();
     }
 
 
@@ -66,7 +66,7 @@ class PanelManagerTest {
         panel.print();
         panel.setVisible(true);
 
-        System.in.read();
+        //System.in.read();
     }
 
     @Test
@@ -93,7 +93,7 @@ class PanelManagerTest {
         panel.print();
         panel.setVisible(true);
 
-        System.in.read();
+        //System.in.read();
     }
 
 
