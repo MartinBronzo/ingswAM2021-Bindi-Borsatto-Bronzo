@@ -955,6 +955,14 @@ public class GameController {
                 if (e.getKey() != ResourceType.FAITHPOINT && e.getValue() != 0)
                     throw new IllegalArgumentException("The given input parameters don't match the result: you are missing out some resources!");
 
+            //If we are here, then everything went fine and the player can get their extra FaithPoints
+            try {
+                playerBoard.moveForwardOnFaithTrack(res.get(ResourceType.FAITHPOINT));
+            } catch (LastVaticanReportException e) {
+                this.setLastTurn();
+            }
+
+
         } catch (IllegalActionException e) {
             this.rollbackState();
             throw new IllegalActionException(e.getMessage());
@@ -975,6 +983,7 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         //We get the PopeTiles of all players because a Vatican Report may have occurred
         player.setPopeTiles(playerBoard.getPopeTile());
+        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         //int vp = e.getValue().calculateVictoryPoints();
         game.addPlayer(player);
         setOthersPlayersFaithInClientModel(game, clientHandler);

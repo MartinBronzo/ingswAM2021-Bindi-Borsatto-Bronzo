@@ -58,7 +58,10 @@ public class ProductionGetResources extends JPanel {
 
         //Creating the cancel button
         CancelButton cancel = new CancelButton("cancel");
-        cancel.addActionListener(new ResetState(depotDrag, strongBox, leaders, pDrop));
+        if(!leaders.isEmpty())
+            cancel.addActionListener(new ResetState(depotDrag, strongBox, leaders, pDrop));
+        else
+            cancel.addActionListener(new ResetState(depotDrag, strongBox, pDrop));
 
         //Creating the InfoBox
         //InstructionPanelFree infoBox = new InstructionPanelFree(this.createDescription(resToBeTaken), submit, cancel);

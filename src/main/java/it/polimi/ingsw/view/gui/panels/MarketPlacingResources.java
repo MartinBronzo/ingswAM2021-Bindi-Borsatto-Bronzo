@@ -53,7 +53,10 @@ public class MarketPlacingResources extends JPanel {
 
         //Adding the Cancel button
         CancelButton cancel = new CancelButton("Reset");
-        cancel.addActionListener(new ResetState(depot, leaders, trashCan, limitedResourcesDrag));
+        if(!leaders.isEmpty())
+            cancel.addActionListener(new ResetState(depot, leaders, trashCan, limitedResourcesDrag));
+        else
+            cancel.addActionListener(new ResetState(depot, trashCan, limitedResourcesDrag));
 
         //Adding Back button
         BackButton back = new BackButton("Back");

@@ -324,7 +324,15 @@ public final class PanelManager {
             this.mapDescription = "MarketResource";
         }
 
-        marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
+        //gameFrame.remove(marketPlacingResources);
+
+        //TODO: sistemare il fatto che gli indici del market devono partire da 1
+        if(lastSelectedCol != 0)
+            marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol + 1, lastSelectedLeaderList);
+        else
+            marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow + 1, lastSelectedCol, lastSelectedLeaderList);
+
+
         gameFrame.add(marketPlacingResources);
         gameFrame.revalidate();
 
@@ -350,6 +358,8 @@ public final class PanelManager {
         devCardCostPanel.setVisible(false);
         devGridPayingCost.setVisible(true);
         //TODO: add this panel to the frame
+
+        //TODO: aggiungere bottone back sulla schermata!
 
     }
 

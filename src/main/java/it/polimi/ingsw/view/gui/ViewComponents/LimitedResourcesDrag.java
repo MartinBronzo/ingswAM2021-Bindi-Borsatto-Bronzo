@@ -22,6 +22,7 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Reset
      */
     private HashMap<ResourceType, Integer> originalResources;
     private MyDragGestureListener dlistener;
+    private JLabel faithPointReceivedInfo;
 
     public LimitedResourcesDrag(){
         super();
@@ -49,8 +50,26 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Reset
     }
 
     private void addResourceLabels(HashMap<ResourceType, Integer> resources){
+        int faithCount = 0;
+        String info = "You have ";
         for(Map.Entry<ResourceType, Integer> e : resources.entrySet())
-            addResourceLabel(e.getKey(), e.getValue());
+            if(!e.getKey().equals(ResourceType.FAITHPOINT))
+                addResourceLabel(e.getKey(), e.getValue());
+            else{
+                faithCount++;
+                if(this.faithPointReceivedInfo == null){
+                    this.faithPointReceivedInfo = new JLabel();
+                    this.add(faithPointReceivedInfo);
+                }
+                if(faithCount == 1)
+                    this.faithPointReceivedInfo.setText(info + faithCount + " FAITHPOINT!");
+                else
+                    this.faithPointReceivedInfo.setText(info + faithCount + " FAITHPOINTS!");
+
+
+            }
+
+
     }
 
     public void addResourceLabel(ResourceType type, int quantity){

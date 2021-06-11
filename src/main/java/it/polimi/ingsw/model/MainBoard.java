@@ -19,6 +19,7 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.Market.Market;
 import it.polimi.ingsw.model.marble.Marble;
 import it.polimi.ingsw.model.marble.MarbleType;
+import it.polimi.ingsw.model.soloGame.SoloBoard;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -129,9 +130,12 @@ public class MainBoard {
      */
     public void discardResources(Map<ResourceType, Integer> resToDiscard, PlayerBoard notToBeGiven) throws LastVaticanReportException {
         int numDiscardedRes = resToDiscard.size();
-        for (PlayerBoard pB : playerBoardsList)
-            if (pB != notToBeGiven)
-                pB.moveForwardOnFaithTrack(numDiscardedRes * this.stepForEachDiscardedRes);
+        if(this.numberOfPlayers > 1)
+            for (PlayerBoard pB : playerBoardsList)
+                if (pB != notToBeGiven)
+                    pB.moveForwardOnFaithTrack(numDiscardedRes * this.stepForEachDiscardedRes);
+        else //The game is in solo mode and therefore we must update Lorenzo's position
+            ((SoloBoard) this).moveLorenzosFaith(numDiscardedRes * this.stepForEachDiscardedRes);
     }
 
     /**
