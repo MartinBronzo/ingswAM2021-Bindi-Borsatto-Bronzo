@@ -180,6 +180,9 @@ public final class PanelManager {
         gameFrame.add(buyFromMarketPanel);
         buyFromMarketPanel.setVisible(false);
 
+        moveResourceChoice = new MoveResourceChoice(true);
+        gameFrame.add(moveResourceChoice);
+
         //moveResourceChoice = new MoveResourceChoice();
         //gameFrame.add(moveResourceChoice);
 
@@ -476,10 +479,14 @@ public final class PanelManager {
 
     public void displayMarket() {
         mainPanel.setVisible(false);
+        gameFrame.remove(buyFromMarketPanel);
+        buyFromMarketPanel = new BuyFromMarketPanel();
         buyFromMarketPanel.setPlayer(getPlayer());
         buyFromMarketPanel.setBoard(gameModel.getMainBoard());
+        gameFrame.add(buyFromMarketPanel);
         buyFromMarketPanel.setVisible(true);
         buyFromMarketPanel.print();
+        gameFrame.revalidate();
     }
 
     public void printInfo(String info) {
@@ -532,6 +539,16 @@ public final class PanelManager {
             //TODO: add turn info dialog
         }
 
+        if(moveResourceChoice.isCreated()){
+            gameFrame.remove(moveResourceChoice);
+            gameFrame.revalidate();
+        }
+
+        if(marketPlacingResources.isCreated()) {
+            marketPlacingResources.setVisible(false);
+            gameFrame.remove(marketPlacingResources);
+            gameFrame.revalidate();
+        }
         //TODO: do things to setup view
         //TODO: handle reconnection case: we have to set the main panel
         if (mainPanel.getCreated()) {
@@ -554,6 +571,13 @@ public final class PanelManager {
                 mainPanel.updateMainPanel(gameModel);
             }
         });*/
+    }
+
+    public void closeBuyFromMarket(){
+        buyFromMarketPanel.setVisible(false);
+        marketPlacingResources.setVisible(false);
+        gameFrame.remove(marketPlacingResources);
+        gameFrame.revalidate();
     }
 
     public Game getGameModel() {

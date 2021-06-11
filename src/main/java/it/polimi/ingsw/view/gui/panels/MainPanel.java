@@ -1,14 +1,13 @@
 package it.polimi.ingsw.view.gui.panels;
 
 import it.polimi.ingsw.controller.Command;
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.network.messages.fromClient.Message;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +20,7 @@ public class MainPanel extends JPanel {
 
     /**
      * shows dynamically the playerboard of the selected player
+     *
      * @param playersNicks list of names of all the players in the game
      * @param actualPlayer the player that controls the GUI
      */
@@ -89,14 +89,18 @@ public class MainPanel extends JPanel {
         this.add(controlPanel);
 
         //adds first the actual player because this is the default value of the component
+        if (playersNicks.size() == 1) {
+            SoloPLayerBoardPanel soloPLayerBoardPanel = new SoloPLayerBoardPanel(actualPlayer);
+            playerBoardPanel.add(soloPLayerBoardPanel, actualPlayerName);
+        } else {
+            actualPlayerBoardPanel = new ActualPlayerBoardPanel(actualPlayer);
+            playerBoardPanel.add(actualPlayerBoardPanel, actualPlayerName);
 
-        actualPlayerBoardPanel = new ActualPlayerBoardPanel(actualPlayer);
-        playerBoardPanel.add(actualPlayerBoardPanel, actualPlayerName);
-
-        for (String playerName : playersNicks) {
-            if (!playerName.equals(actualPlayerName)) {
-                OthersPlayerPlayerBoardPanel othersPlayerBoardPanel = new OthersPlayerPlayerBoardPanel(game.findByNick(playerName));
-                playerBoardPanel.add(othersPlayerBoardPanel, playerName);
+            for (String playerName : playersNicks) {
+                if (!playerName.equals(actualPlayerName)) {
+                    OthersPlayerPlayerBoardPanel othersPlayerBoardPanel = new OthersPlayerPlayerBoardPanel(game.findByNick(playerName));
+                    playerBoardPanel.add(othersPlayerBoardPanel, playerName);
+                }
             }
         }
 
@@ -104,7 +108,7 @@ public class MainPanel extends JPanel {
 
     }
 
-    public MainPanel(){
+    public MainPanel() {
         this.created = false;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     }
@@ -178,7 +182,7 @@ public class MainPanel extends JPanel {
         this.validate();
     }*/
 
-    public boolean getCreated(){
+    public boolean getCreated() {
         return created;
     }
 }

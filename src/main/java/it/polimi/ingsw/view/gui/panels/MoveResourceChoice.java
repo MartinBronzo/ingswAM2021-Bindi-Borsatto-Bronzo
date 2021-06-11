@@ -9,6 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MoveResourceChoice extends JPanel {
+    private boolean created = false;
+
+    public MoveResourceChoice(boolean created){
+        this.created = created;
+    }
 
     public MoveResourceChoice(){
         final String MOVEBTW = "Move between shelves";
@@ -19,6 +24,7 @@ public class MoveResourceChoice extends JPanel {
 
         //orientation of the outside panel
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.created = true;
 
         //creates the layouts to display with the configurations of the JComboBox
         JPanel resourcePanel = new JPanel();
@@ -52,10 +58,8 @@ public class MoveResourceChoice extends JPanel {
         selectionPanel.add(comboPanel);
         this.add(selectionPanel);
         this.add(resourcePanel);
-
-
-
-
     }
+
+    public boolean isCreated(){return created;}
 
 }

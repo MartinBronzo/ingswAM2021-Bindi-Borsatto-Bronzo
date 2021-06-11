@@ -15,10 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MarketPlacingResources extends JPanel {
+    private boolean created = false;
 
     public MarketPlacingResources(HashMap<ResourceType, Integer> resourcesToBePlaced, int row, int col, List<Integer> leaderList){
         super();
         this.setLayout(new BorderLayout());
+        this.created = true;
 
         //Setting up the LimitedRes drag
         LimitedResourcesDrag limitedResourcesDrag = new LimitedResourcesDrag();
@@ -81,4 +83,6 @@ public class MarketPlacingResources extends JPanel {
         }
         this.setBorder(new TitledBorder(border));
     }
+
+    public boolean isCreated(){return created;}
 }

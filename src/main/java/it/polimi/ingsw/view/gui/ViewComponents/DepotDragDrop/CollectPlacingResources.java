@@ -77,8 +77,6 @@ public class CollectPlacingResources implements ActionListener {
         //Sends the message to the server
         Message message = new BuyFromMarketMessage(this.row, this.col, this.leaderList, depotInfo, leaderRes, discardedRes);
         PanelManager.getInstance().writeMessage(new Command("buyFromMarket", message));
-
-
     }
 
     private void printDecisions(List<DepotParams> dec, Map<ResourceType, Integer> discardedRes, HashMap<ResourceType, Integer> leaderRes ) {

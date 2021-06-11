@@ -333,7 +333,7 @@ public class GameController {
             return false;
         PlayerBoard playerBoard = this.mainBoard.getPlayerBoard(this.players.size());
         players.add(new Pair<>(player, playerBoard));
-        if(numberOfPlayers > 1)
+        if (numberOfPlayers > 1)
             player.send(new GeneralInfoStringMessage("You are in Game! You'll soon start play with others!"));
         //We added the last player: the game must begin
         player.setPlayerState(PlayerState.WAITING4GAMESTART);
@@ -626,8 +626,8 @@ public class GameController {
 
         //TODO: controllare se va bene
         synchronized (this) {
-        for (Pair<ClientHandler, PlayerBoard> e : players)
-            if (e.getKey().getPlayerState() == PlayerState.DISCONNECTED)
+            for (Pair<ClientHandler, PlayerBoard> e : players)
+                if (e.getKey().getPlayerState() == PlayerState.DISCONNECTED)
                     this.disconnectedBeforeStarting.add(e.getKey());
         }
 
@@ -735,6 +735,8 @@ public class GameController {
         //Adds the three depots with what's inside for all the three elements
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(0);
         this.sendBroadcastUpdate(new ModelUpdate(game));
         synchronized (this) {
             if (this.disconnectedBeforeStarting.contains(clientHandler))
@@ -776,6 +778,8 @@ public class GameController {
         //int vp = e.getValue().calculateVictoryPoints();
         player.setVictoryPoints(vp);
         game.addPlayer(player);
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         setOthersPlayersFaithInClientModel(game, clientHandler);
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
@@ -808,6 +812,8 @@ public class GameController {
         //int vp = e.getValue().calculateVictoryPoints();
         player.setVictoryPoints(vp);
         game.addPlayer(player);
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
     }
@@ -936,7 +942,7 @@ public class GameController {
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity which in this case
             //means that the need to equal to the remaining resources because all resources coming from the market must be dealt with)!
             for (Map.Entry<ResourceType, Integer> e : buyFromMarket.getDiscardRes().entrySet())
-                if (e.getKey() != ResourceType.FAITHPOINT && ( res.get(e.getKey()) == null || !res.get(e.getKey()).equals(e.getValue())))
+                if (e.getKey() != ResourceType.FAITHPOINT && (res.get(e.getKey()) == null || !res.get(e.getKey()).equals(e.getValue())))
                     throw new IllegalArgumentException("The given input parameters for the discarded resources don't match the result!");
                 else
                     res.put(e.getKey(), res.get(e.getKey()) - e.getValue()); //Updates the res map
@@ -957,7 +963,8 @@ public class GameController {
 
             //If we are here, then everything went fine and the player can get their extra FaithPoints
             try {
-                playerBoard.moveForwardOnFaithTrack(res.get(ResourceType.FAITHPOINT));
+                if(res.get(ResourceType.FAITHPOINT) != null)
+                    playerBoard.moveForwardOnFaithTrack(res.get(ResourceType.FAITHPOINT));
             } catch (LastVaticanReportException e) {
                 this.setLastTurn();
             }
@@ -986,6 +993,8 @@ public class GameController {
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         //int vp = e.getValue().calculateVictoryPoints();
         game.addPlayer(player);
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         setOthersPlayersFaithInClientModel(game, clientHandler);
 
         /*for (Pair<ClientHandler, PlayerBoard> e : players)
@@ -1069,6 +1078,8 @@ public class GameController {
         //int vp = e.getValue().calculateVictoryPoints();
         player.setVictoryPoints(vp);
         game.addPlayer(player);
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
 
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
@@ -1084,6 +1095,8 @@ public class GameController {
         player.setPlayerState(clientHandler.getPlayerState());
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
 
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
@@ -1099,6 +1112,8 @@ public class GameController {
         player.setPlayerState(clientHandler.getPlayerState());
         setDepotInClientModel(player, playerBoard);
         game.addPlayer(player);
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
 
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
@@ -1212,6 +1227,8 @@ public class GameController {
         int vp = playerBoard.partialVictoryPoints();
         //int vp = e.getValue().calculateVictoryPoints();
         game.addPlayer(player);
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         setOthersPlayersFaithInClientModel(game, clientHandler);
         this.sendBroadcastUpdate(new ModelUpdate(game));
         return true;
@@ -1368,7 +1385,7 @@ public class GameController {
 
         List<ClientHandler> playerList = getPlayersList();
         Game game = new Game();
-        for(ClientHandler playerInGame : playerList){
+        for (ClientHandler playerInGame : playerList) {
             Player player = new Player();
             player.setNickName(playerInGame.getNickname());
             player.setPlayerState(playerInGame.getPlayerState());
@@ -1380,12 +1397,14 @@ public class GameController {
     public synchronized void updatesPlayersStates() {
         List<ClientHandler> playerList = getPlayersList();
         Game game = new Game();
-        for(ClientHandler playerInGame : playerList){
+        for (ClientHandler playerInGame : playerList) {
             Player player = new Player();
             player.setNickName(playerInGame.getNickname());
             player.setPlayerState(playerInGame.getPlayerState());
             game.addPlayer(player);
         }
+        if (numberOfPlayers == 1)
+        game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         this.sendBroadcastUpdate(new ModelUpdate(game));
     }
 
@@ -1426,6 +1445,8 @@ public class GameController {
             player.setNickName(this.players.get(i).getKey().getNickname());
             player.setPlayerState(this.players.get(i).getKey().getPlayerState());
             game.addPlayer(player);
+            if (numberOfPlayers == 1)
+                game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         }
 
         if (numOfTurn == numberOfPlayers)
@@ -1442,12 +1463,13 @@ public class GameController {
             this.endGame();
     }
 
-    public void sendUpdateSolo(ClientHandler soloPlayer){
+    public void sendUpdateSolo(ClientHandler soloPlayer) {
         Game game = new Game();
         Player player = new Player();
         player.setNickName(soloPlayer.getNickname());
         player.setPlayerState(soloPlayer.getPlayerState());
         game.addPlayer(player);
+        game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
 
         soloPlayer.send(new ModelUpdate(game));
 
@@ -1507,8 +1529,8 @@ public class GameController {
             player.setPopeTiles(playerBoard.getPopeTile());
             game.addPlayer(player);
         }
-
-        game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
+        if (numberOfPlayers == 1)
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
 
         return new ModelUpdate(game);
     }
