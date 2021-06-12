@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.*;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.BackButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
@@ -57,9 +58,15 @@ public class DevGridPayingCost extends JPanel {
         else
             cancel.addActionListener(new ResetState(depotDrag, strongBox, pDrop));
 
+        //Creating the Back button
+        BackButton back = new BackButton("Back");
+        back.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
+
         //Creating the InfoBox
         //InstructionPanelFree infoBox = new InstructionPanelFree(this.createDescription(resToBeTaken), submit, cancel);
-        InstructionPanel infoBox = new InstructionPanel(this.createDescription(resToBeTaken), submit, cancel);
+        //InstructionPanel infoBox = new InstructionPanel(this.createDescription(resToBeTaken), submit, cancel, back);
+        InstructionPanelFree infoBox = new InstructionPanelFree(this.createDescription(resToBeTaken), submit, cancel, back);
+
 
         //Adding all the elements to the panel
 

@@ -259,10 +259,34 @@ public final class PanelManager {
             case LORENZOSACTION:
                 this.manageLorenzoAction(responseContent);
                 break;
+            case PLAYERCONNECTIONUPDATE:
+                this.manageConnectionUpdate(responseContent);
+                break;
             default:
                 System.out.println("unmanaged respone:\t" + responseMessage);
                 System.exit(1);
         }
+    }
+
+    private void manageConnectionUpdate(String responseContent) {
+        synchronized (this){
+            PlayerConnectionsUpdate playerConnectionsUpdate = gson.fromJson(responseContent, PlayerConnectionsUpdate.class);
+            Game update = playerConnectionsUpdate.getUpdate();
+            if (this.gameModel == null) {
+                gameModel = update;
+                this.setPlayerAndViews(gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().get());
+            } else
+                gameModel.merge(update);
+
+            if(playerConnectionsUpdate.getChangedPlayer().equals(this.nickname)) {
+                //TODO: aggiungere cosa far rivedere a chi si riconnette, questo sotto NON funziona
+                this.showPlayerBoard(this.waitingRoomPanel);
+            }
+
+
+        }
+
+
     }
 
     private void manageLorenzoAction(String responseContent) {
