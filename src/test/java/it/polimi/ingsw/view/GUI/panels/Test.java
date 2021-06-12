@@ -80,7 +80,7 @@ public class Test {
         //checkPayingTheCostFull();
 
         //SATTO
-        //showSetBeginningDecisionsPanel();
+        showSetBeginningDecisionsPanel();
         //showPlayerBoards();
     }
 
@@ -113,6 +113,7 @@ public class Test {
 
             BeginningDecisionsPanel beginningDecisionsPanel = new BeginningDecisionsPanel(leaderList, resToTake, leaderToDiscard);
             frame.add(beginningDecisionsPanel, BorderLayout.CENTER);
+
             frame.setTitle("Depot test");
             frame.pack();
             frame.setVisible(true);

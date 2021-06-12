@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CheckDropAtBeginnin
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.CollectBeginningChoices;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DnDDepot;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.ResetState;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -35,12 +36,15 @@ public class BeginningDecisionsPanel extends JPanel {
         DnDDepot dnDDepot = new DnDDepot();
         dnDDepot.initFromInfiniteDrag(new CheckDropAtBeginningDecisionsTime(dnDDepot.getDepot()));
         rightSidePanel.add(dnDDepot);
-        InstructionPanel instructionPanel = new InstructionPanel();
+        InstructionPanel instructionPanel = new InstructionPanel(true);
         instructionPanel.setLabelText("Select 2 Leader Cards to discard and place " + numRes + " resources, in the depot");
 
         CollectBeginningChoices collectBeginningChoices = new CollectBeginningChoices(dnDDepot.getDepot(), leaderCheckbox1, leaderCheckbox2, numLeaders);
+        ResetState resetFunction = new ResetState(dnDDepot);
 
         instructionPanel.setConfirmActionListener(collectBeginningChoices);
+        instructionPanel.setCancelActionListener(resetFunction);
+
         rightSidePanel.add(instructionPanel);
         this.add(rightSidePanel);
 

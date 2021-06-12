@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
+import it.polimi.ingsw.model.ResourceType;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.dnd.DnDConstants;
@@ -15,10 +17,27 @@ public class InfiniteResourcesDrag extends JPanel {
         super();
         this.setBorder(new TitledBorder("Drag Resources from here to the Depot above"));
 
-        this.label1 = new JLabel(new ImageIcon("src/main/resources/coins small.png"));
-        this.label2 = new JLabel(new ImageIcon("src/main/resources/servant small.png"));
-        this.label3 = new JLabel(new ImageIcon("src/main/resources/shield small.png"));
-        this.label4 = new JLabel(new ImageIcon("src/main/resources/stone small.png"));
+        ImageIcon image;
+
+        //COIN
+        image = new ImageIcon("src/main/resources/coins small.png");
+        image.setDescription("InfiniteRes " + ResourceType.COIN);
+        this.label1 = new JLabel(image);
+
+        //SERVANT
+        image = new ImageIcon("src/main/resources/servant small.png");
+        image.setDescription("InfiniteRes " + ResourceType.SERVANT);
+        this.label2 = new JLabel(image);
+
+        //SHIELD
+        image = new ImageIcon("src/main/resources/shield small.png");
+        image.setDescription("InfiniteRes " + ResourceType.SHIELD);
+        this.label3 = new JLabel(image);
+
+        //STONE
+        image = new ImageIcon("src/main/resources/stone small.png");
+        image.setDescription("InfiniteRes " + ResourceType.STONE);
+        this.label4 = new JLabel(image);
 
         MyDragGestureListener dlistener = new MyDragGestureListener();
         DragSource ds1 = new DragSource();

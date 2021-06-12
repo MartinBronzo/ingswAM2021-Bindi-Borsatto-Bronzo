@@ -54,8 +54,9 @@ public class CollectPlacingResources implements ActionListener {
         System.out.println("Clicked");
 
         //Collects the DepotChoices
-        List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions = this.depot.getDecisions();
-        List<DepotParams> depotInfo = CollectBeginningChoices.getDepotInfoForModel(depotDecisions);
+        //List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions = this.depot.getDecisions();
+        //List<DepotParams> depotInfo = CollectBeginningChoices.getDepotInfoForModel(depotDecisions);
+        List<DepotParams> depotInfo = this.depot.getDecisions();
 
         //Collects the resources dropped onto the LeaderCards
         HashMap<ResourceType, Integer> leaderRes = new HashMap<>();

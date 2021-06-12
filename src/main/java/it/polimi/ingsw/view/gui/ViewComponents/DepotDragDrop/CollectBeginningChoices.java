@@ -40,9 +40,10 @@ public class CollectBeginningChoices implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         System.out.println("Clicked!");
         //Collects the DepotChoices
-        List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions = this.depotDrop.getDecisions();
+        //List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions = this.depotDrop.getDecisions();
 
-        List<DepotParams> depotInfo = this.getDepotInfoForModel(depotDecisions);
+        //List<DepotParams> depotInfo = this.getDepotInfoForModel(depotDecisions);
+        List<DepotParams> depotInfo = this.depotDrop.getDecisions();
 
         this.printDecisions(depotInfo);
 
@@ -60,7 +61,12 @@ public class CollectBeginningChoices implements ActionListener {
             //JOptionPane.showMessageDialog(null, "You must discard 2 Leader Cards");
     }
 
-    public static List<DepotParams> getDepotInfoForModel(List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions) {
+    private void printDecisions(List<DepotParams> dec) {
+        for (DepotParams d : dec)
+            System.out.println("In " + d.getShelf() + " put " + d.getQt() + " of " + d.getResourceType());
+    }
+
+  /*  public static List<DepotParams> getDepotInfoForModel(List<ShelfDrop.Pair<Integer, ResourceType>> depotDecisions) {
         List<ShelfDrop.Pair<Integer, ResourceType>> someChoices;
         int quantity;
         List<DepotParams> result = new ArrayList<>();
@@ -80,9 +86,6 @@ public class CollectBeginningChoices implements ActionListener {
 
         return result;
     }
+*/
 
-    private void printDecisions(List<DepotParams> dec) {
-        for (DepotParams d : dec)
-            System.out.println("In " + d.getShelf() + " put " + d.getQt() + " of " + d.getResourceType());
-    }
 }

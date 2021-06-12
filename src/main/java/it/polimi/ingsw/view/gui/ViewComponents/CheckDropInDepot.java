@@ -25,7 +25,8 @@ public class CheckDropInDepot implements DropChecker {
         ShelfDrop depotPanel = (ShelfDrop) jPanel;
 
         //Checks whether there is still room onto the shelf
-        if(depotPanel.getResToDepot().size() + manager.getDepotShelves().get(depotPanel.getShelfNumber() - 1).getQuantity() == getMaxShelfCapacity(depotPanel.getShelfNumber()))
+       // if(depotPanel.getResToDepot().size() + manager.getDepotShelves().get(depotPanel.getShelfNumber() - 1).getQuantity() == getMaxShelfCapacity(depotPanel.getShelfNumber()))
+        if(depotPanel.getQuantityDropped() + manager.getDepotShelves().get(depotPanel.getShelfNumber() - 1).getQuantity() == getMaxShelfCapacity(depotPanel.getShelfNumber()))
             throw new IllegalActionException("There is no room on this shelf!");
         return true;
     }

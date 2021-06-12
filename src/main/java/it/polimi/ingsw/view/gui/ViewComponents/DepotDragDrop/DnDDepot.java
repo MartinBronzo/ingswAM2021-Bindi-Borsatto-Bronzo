@@ -1,13 +1,14 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.view.gui.ViewComponents.LimitedResourcesDrag;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
 import javax.swing.*;
 
 /**
  * This panel is made of a DepotDrop and a panel of draggable resources.
  */
-public class DnDDepot extends JPanel {
+public class DnDDepot extends JPanel implements Resettable {
     DepotDrop depot;
     InfiniteResourcesDrag resources;
 
@@ -45,5 +46,10 @@ public class DnDDepot extends JPanel {
             ex.printStackTrace();
         }
         this.depot.initFromFiniteDrag(checker, limitedRes);
+    }
+
+    @Override
+    public void resetState() {
+        this.depot.resetState();
     }
 }

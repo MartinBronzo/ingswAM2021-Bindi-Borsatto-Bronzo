@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.network.messages.fromClient.DepotParams;
 import it.polimi.ingsw.view.gui.ViewComponents.LimitedResourcesDrag;
 import it.polimi.ingsw.view.gui.ViewComponents.RegisterDropFromFiniteRes;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
@@ -44,10 +45,20 @@ public class DepotDrop extends JPanel implements Resettable {
         fillDepot();
     }
 
-    public List<ShelfDrop.Pair<Integer, ResourceType>> getDecisions(){
+    /*public List<ShelfDrop.Pair<Integer, ResourceType>> getDecisions(){
         List<ShelfDrop.Pair<Integer, ResourceType>> result = new ArrayList<>();
         for(ShelfDrop e: this.shelves)
             result.addAll(e.getResToDepot());
+        return result;
+    }*/
+    public List<DepotParams> getDecisions(){
+        List<DepotParams> result = new ArrayList<>();
+        DepotParams tmp;
+        for(ShelfDrop sD : this.shelves)
+            if(sD.getTypeDropped() != null) {
+                tmp = new DepotParams(sD.getTypeDropped(), sD.getQuantityDropped(), sD.getShelfNumber());
+                result.add(tmp);
+            }
         return result;
     }
 

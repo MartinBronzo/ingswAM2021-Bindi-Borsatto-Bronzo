@@ -13,8 +13,17 @@ public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
     }
     @Override
     public void accept(Icon icon) throws IllegalActionException {
-        //TODO: controllare che non si possano aggiungere più risorse di quanto sia lo spazio libero (le risorse presenti saranno visualizzate da - e forse salvate nel - ShelfDrop: guardare lì per capire quante risorse l'utente può mettere)
-        switch (icon.toString()){
+        ResourceType imageType = ResourceType.valueOf(((ImageIcon) icon).getDescription().split(" ")[1]);
+
+        //Checks whether the drop can be made into the Shelf
+        ShelfDrop shelf = (ShelfDrop) dropTarget;
+        if(shelf.getTypeDropped() != null && !shelf.getTypeDropped().equals(imageType))
+            throw new IllegalActionException("You cannot drop different type of resources onto the same shelf!");
+
+        //Updates the DropTarget about what drop has been made
+        dropTarget.addDecision(dropTarget.getShelfNumber(), imageType);
+
+        /*switch (icon.toString()){
             case "src/main/resources/coins small.png":
                 dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.COIN);
                 break;
@@ -27,6 +36,6 @@ public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
             case "src/main/resources/stone small.png":
                 dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.STONE);
                 break;
-        }
+        }*/
     }
 }

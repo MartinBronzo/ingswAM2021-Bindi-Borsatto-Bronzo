@@ -19,7 +19,9 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
      * In each depot panel we have this resToDepot list which takes track of all the resources moved to this depot. When  the confirm
      * button is clicked then all the list from all the three depot panels must be collected and sent to the model somehow
      */
-    private List<Pair<Integer, ResourceType>> resToDepot;
+    //private List<Pair<Integer, ResourceType>> resToDepot;
+    private ResourceType typeDropped;
+    private int quantityDropped;
     private List<JLabel> resources;
     /**
      * This list stores the references of the label that have been dropped onto this panel in order to be able to properly delete them
@@ -28,7 +30,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     private List<JLabel> droppedRes;
 
 
-    class Pair<integer, resourceType> {
+    /*class Pair<integer, resourceType> {
         private integer shelf;
         private resourceType res;
 
@@ -52,12 +54,14 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         public void setValue(resourceType res) {
             this.res = res;
         }
-    }
+    }*/
 
     public ShelfDrop(int shelfNumber){
         super();
         this.shelfNumber = shelfNumber;
-        this.resToDepot = new ArrayList<>();
+        //this.resToDepot = new ArrayList<>();
+        this.typeDropped = null;
+        this.quantityDropped = 0;
         this.resources = new ArrayList<>();
         this.droppedRes = new ArrayList<>();
 
@@ -105,8 +109,12 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
 
     @Override
     public void addDecision(Integer shelf, ResourceType res){
-        Pair<Integer, ResourceType> decision = new Pair<>(shelf, res);
-        this.resToDepot.add(decision);
+        //Pair<Integer, ResourceType> decision = new Pair<>(shelf, res);
+        //this.resToDepot.add(decision);
+        //If we arrive at this point, we are sure that the drop can be made
+        if(typeDropped == null)
+            this.typeDropped = res;
+        this.quantityDropped++;
     }
 
     @Override
@@ -132,16 +140,26 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         return "";
     }
 
-    public List<Pair<Integer, ResourceType>> getResToDepot() {
+    /*public List<Pair<Integer, ResourceType>> getResToDepot() {
         return resToDepot;
+    }*/
+
+    public ResourceType getTypeDropped() {
+        return typeDropped;
     }
 
+    public int getQuantityDropped() {
+        return quantityDropped;
+    }
 
     public void resetState(){
-        this.resToDepot = new ArrayList<>();
+        //this.resToDepot = new ArrayList<>();
+        this.typeDropped = null;
+        this.quantityDropped = 0;
+        /*
         for(JLabel label : this.resources)
-            this.remove(label);
-        //TODO: non è necessario togliere questi label!
+            this.remove(label);*/
+
         for(JLabel label : this.droppedRes)
             this.remove(label);
         this.revalidate();
@@ -159,7 +177,9 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     public void fillShelf(DepotShelf depotShelf) {
         JLabel resource;
         for(int i = 0; i < depotShelf.getQuantity(); i++){
-            resource = new JLabel(new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType())));
+            ImageIcon image = new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType()));
+            image.setDescription("Shelf " + depotShelf.getResourceType() + " " + this.shelfNumber);
+            resource = new JLabel(image);
             this.add(resource);
             this.resources.add(resource);
         }
