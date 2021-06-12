@@ -28,8 +28,8 @@ public class CollectCostsChoiceForDevCard extends CollectCostsChoiceAbstract{
     @Override
     protected void sendMessage(List<DepotParams> fromDepot, HashMap<ResourceType, Integer> fromStrongBox, HashMap<ResourceType, Integer> fromLeaderCards) {
         //Sends the message to the server
-        System.out.println("HOLA");
-        Message message = new BuyDevCardMessage(this.row, this.col, this.leaderList, fromDepot, fromLeaderCards, fromStrongBox, Integer.parseInt(this.devSlotMenu.getSelectedItem().toString().split(" ")[1]));
+        //System.out.println("HOLA");
+        Message message = new BuyDevCardMessage(this.row + 1, this.col + 1, this.leaderList, fromDepot, fromLeaderCards, fromStrongBox, Integer.parseInt(this.devSlotMenu.getSelectedItem().toString().split(" ")[1]));
 
         this.printExtraInfo(row, col, leaderList, Integer.parseInt(this.devSlotMenu.getSelectedItem().toString().split(" ")[1]));
         

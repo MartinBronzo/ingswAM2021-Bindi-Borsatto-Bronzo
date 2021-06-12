@@ -20,6 +20,7 @@ public class DevSlotOnlyView extends JPanel {
     private final int height = 400;
 
     public DevSlotOnlyView(DevSlot devSlot) {
+        String path = "src/main/resources/Masters of Renaissance_Cards_FRONT/";
         labelList = new ArrayList<>();
 
         DevCard devCard;
@@ -38,7 +39,7 @@ public class DevSlotOnlyView extends JPanel {
             devCard = devSlot.getDevCard(i + 1);
             if (devCard != null) {
                 JLabel cardLabel = new JLabel();
-                cardLabel.setIcon(scaleImage(devCard.getUrl(), width - 20, 230));
+                cardLabel.setIcon(scaleImage(path + devCard.getUrl(), width - 20, 230));
                 //cardLabel.setPreferredSize(new Dimension(200,200));
                 cardLabel.setBounds(10, (3 - i) * spaceBtwCards, width - 20, 230);
                 layeredPane.add(cardLabel, new Integer(i));

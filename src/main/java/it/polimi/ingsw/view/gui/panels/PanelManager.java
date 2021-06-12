@@ -64,6 +64,7 @@ public final class PanelManager {
     private MarketPlacingResources marketPlacingResources;
     private DevGridPayingCost devGridPayingCost;
     private ProductionGetResources productionGetResources;
+    private ProductionGetInfo productionGetInfo;
 
     //TODO: add here attibutes used in panels
     private String nickname;
@@ -185,8 +186,7 @@ public final class PanelManager {
 
         marketPlacingResources = new MarketPlacingResources(true);
 
-        //moveResourceChoice = new MoveResourceChoice();
-        //gameFrame.add(moveResourceChoice);
+        productionGetInfo = new ProductionGetInfo();
 
         gameFrame.validate();
 
@@ -318,6 +318,7 @@ public final class PanelManager {
         //TODO: salvare i dati dalla view precedente e passarli al costruttore
         //productionGetResources = new ProductionGetResources(resourcesMap, lastSelectedLeaderList, lastSelectedDevCard, lastProductionParams);
 
+        //TODO: aggiungere al panel
         //TODO: aggiungere al panel
 
     }
@@ -481,6 +482,11 @@ public final class PanelManager {
         devGridContainer.setVisible(true);
         devGridContainer.update(150, 200);
         // });
+    }
+
+    public void displayProduction(){
+        mainPanel.setVisible(false);
+        //productionGetInfo
     }
 
     //TODO: this must be changed we shound't print just the market but the action view

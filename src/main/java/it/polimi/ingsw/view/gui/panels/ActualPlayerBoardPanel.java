@@ -6,14 +6,10 @@ import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DepotOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DevSlotOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.FaithTrackOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.StrongBoxOnlyView;
-import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
-import it.polimi.ingsw.view.readOnlyModel.Board;
-import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -29,7 +25,6 @@ public class ActualPlayerBoardPanel extends JPanel {
         super();
 
         final int heightMargin = 300;
-        ImageIcon image;
         DevSlotOnlyView devSlotOnlyView = null;
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));

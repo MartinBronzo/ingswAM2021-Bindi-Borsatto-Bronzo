@@ -49,6 +49,7 @@ public class MainPanel extends JPanel {
 
         JButton productionButton = new JButton("Activavte Production");
         productionButton.setAlignmentX(LEFT_ALIGNMENT);
+       // productionButton.addActionListener(event -> PanelManager.getInstance().displayProduction());
         controlPanel.add(productionButton);
 
         JButton marketButton = new JButton("Show Market");
