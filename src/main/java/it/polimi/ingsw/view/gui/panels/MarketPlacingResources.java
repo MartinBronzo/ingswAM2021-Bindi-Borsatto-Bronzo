@@ -15,7 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MarketPlacingResources extends JPanel {
-    private boolean created = false;
+    private boolean created;
+
+    public MarketPlacingResources(boolean created){
+        this.created = created;
+    }
 
     public MarketPlacingResources(HashMap<ResourceType, Integer> resourcesToBePlaced, int row, int col, List<Integer> leaderList){
         super();

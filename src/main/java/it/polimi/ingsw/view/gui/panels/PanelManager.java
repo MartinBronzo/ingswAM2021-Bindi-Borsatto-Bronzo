@@ -183,6 +183,8 @@ public final class PanelManager {
         moveResourceChoice = new MoveResourceChoice(true);
         gameFrame.add(moveResourceChoice);
 
+        marketPlacingResources = new MarketPlacingResources(true);
+
         //moveResourceChoice = new MoveResourceChoice();
         //gameFrame.add(moveResourceChoice);
 
