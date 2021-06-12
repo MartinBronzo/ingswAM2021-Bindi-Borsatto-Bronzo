@@ -67,6 +67,7 @@ public class DevGridPayingCost extends JPanel {
         //InstructionPanel infoBox = new InstructionPanel(this.createDescription(resToBeTaken), submit, cancel, back);
         InstructionPanelFree infoBox = new InstructionPanelFree(this.createDescription(resToBeTaken), submit, cancel, back);
 
+
         //Adding all the elements to the panel
 
         //Creating the central panel which holds the strongbox, the drop-down menu, and the Info box
