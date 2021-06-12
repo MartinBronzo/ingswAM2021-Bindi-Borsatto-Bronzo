@@ -119,7 +119,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         if(parentDepot != null)
             if(this.parentDepot.getStoredResources(this.shelfNumber).contains(res)) {
                 System.out.println("YES");
-                throw new IllegalActionException("This kind of resource is already in another shelf!");
+                throw new IllegalActionException("This kind of resource is already stored in another shelf!");
             }
         if(typeForShelf == null)
             this.typeForShelf = res;

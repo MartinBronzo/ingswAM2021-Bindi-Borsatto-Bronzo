@@ -55,7 +55,7 @@ public class DepotDrop extends JPanel implements Resettable {
         List<DepotParams> result = new ArrayList<>();
         DepotParams tmp;
         for(ShelfDrop sD : this.shelves)
-            if(sD.getTypeForShelf() != null) {
+            if(sD.getQuantityDropped() > 0) {
                 tmp = new DepotParams(sD.getTypeForShelf(), sD.getQuantityDropped(), sD.getShelfNumber());
                 result.add(tmp);
             }
