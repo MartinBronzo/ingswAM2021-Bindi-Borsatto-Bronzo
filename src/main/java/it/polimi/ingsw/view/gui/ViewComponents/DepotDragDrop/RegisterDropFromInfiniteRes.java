@@ -17,7 +17,7 @@ public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
 
         //Checks whether the drop can be made into the Shelf
         ShelfDrop shelf = (ShelfDrop) dropTarget;
-        if(shelf.getTypeDropped() != null && !shelf.getTypeDropped().equals(imageType))
+        if(shelf.getTypeForShelf() != null && !shelf.getTypeForShelf().equals(imageType))
             throw new IllegalActionException("You cannot drop different type of resources onto the same shelf!");
 
         //Updates the DropTarget about what drop has been made

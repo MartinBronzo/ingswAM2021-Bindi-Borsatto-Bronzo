@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.DropResettable;
 import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
@@ -20,7 +21,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
      * button is clicked then all the list from all the three depot panels must be collected and sent to the model somehow
      */
     //private List<Pair<Integer, ResourceType>> resToDepot;
-    private ResourceType typeDropped;
+    private ResourceType typeForShelf;
     private int quantityDropped;
     private List<JLabel> resources;
     /**
@@ -28,6 +29,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
      * when we reset the state of the panel
      */
     private List<JLabel> droppedRes;
+    private DepotDrop parentDepot;
 
 
     /*class Pair<integer, resourceType> {
@@ -60,10 +62,11 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         super();
         this.shelfNumber = shelfNumber;
         //this.resToDepot = new ArrayList<>();
-        this.typeDropped = null;
+        this.typeForShelf = null;
         this.quantityDropped = 0;
         this.resources = new ArrayList<>();
         this.droppedRes = new ArrayList<>();
+        this.parentDepot = null;
 
         this.setBorder(new TitledBorder("Drop Resources onto shelf number " + this.shelfNumber));
         TransferHandler dnd = new TransferHandler() {
@@ -108,12 +111,21 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     }
 
     @Override
-    public void addDecision(Integer shelf, ResourceType res){
+    public void addDecision(Integer shelf, ResourceType res) throws IllegalActionException{
         //Pair<Integer, ResourceType> decision = new Pair<>(shelf, res);
         //this.resToDepot.add(decision);
-        //If we arrive at this point, we are sure that the drop can be made
-        if(typeDropped == null)
-            this.typeDropped = res;
+        if(parentDepot != null)
+            System.out.println(this.parentDepot.getStoredResources(this.shelfNumber));
+        if(parentDepot != null)
+            if(this.parentDepot.getStoredResources(this.shelfNumber).contains(res)) {
+                System.out.println("YES");
+                throw new IllegalActionException("This kind of resource is already in another shelf!");
+            }
+        if(typeForShelf == null)
+            this.typeForShelf = res;
+        else if(!res.equals(this.typeForShelf))
+            throw new IllegalActionException("Only " + this.typeForShelf + "s can be dropped here!");
+
         this.quantityDropped++;
     }
 
@@ -144,8 +156,8 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         return resToDepot;
     }*/
 
-    public ResourceType getTypeDropped() {
-        return typeDropped;
+    public ResourceType getTypeForShelf() {
+        return typeForShelf;
     }
 
     public int getQuantityDropped() {
@@ -154,12 +166,10 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
 
     public void resetState(){
         //this.resToDepot = new ArrayList<>();
-        this.typeDropped = null;
+        this.typeForShelf = null;
         this.quantityDropped = 0;
-        /*
         for(JLabel label : this.resources)
-            this.remove(label);*/
-
+            this.remove(label);
         for(JLabel label : this.droppedRes)
             this.remove(label);
         this.revalidate();
@@ -183,6 +193,12 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
             this.add(resource);
             this.resources.add(resource);
         }
+        if(depotShelf.getQuantity() > 0)
+            this.typeForShelf = depotShelf.getResourceType();
+    }
+
+    public void setParentDepot(DepotDrop parentDepot) {
+        this.parentDepot = parentDepot;
     }
 }
 

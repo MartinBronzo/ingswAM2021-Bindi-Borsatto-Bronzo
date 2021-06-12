@@ -329,12 +329,18 @@ public final class PanelManager {
 
         //gameFrame.remove(marketPlacingResources);
 
-        //TODO: sistemare il fatto che gli indici del market devono partire da 1
-        if(lastSelectedCol != 0)
-            marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol + 1, lastSelectedLeaderList);
-        else
-            marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow + 1, lastSelectedCol, lastSelectedLeaderList);
+        System.out.println("MESSAGE FROM SERVER: ");
+        for(Map.Entry<ResourceType, Integer> e : this.resourcesMap.entrySet())
+            System.out.println(e.getKey() + " " + e.getValue());
 
+        //TODO: sistemare il fatto che gli indici del market devono partire da 1
+        if(lastSelectedCol != 0) {
+            System.out.println("\n\n**************************+\nCOL\n*******************************\n\n");
+            marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol + 1, lastSelectedLeaderList);
+        }else {
+            System.out.println("\n\n*****************************\nROW\n*******************************\n\n");
+            marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow + 1, lastSelectedCol, lastSelectedLeaderList);
+        }
 
         gameFrame.add(marketPlacingResources);
         gameFrame.revalidate();

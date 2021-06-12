@@ -55,8 +55,8 @@ public class DepotDrop extends JPanel implements Resettable {
         List<DepotParams> result = new ArrayList<>();
         DepotParams tmp;
         for(ShelfDrop sD : this.shelves)
-            if(sD.getTypeDropped() != null) {
-                tmp = new DepotParams(sD.getTypeDropped(), sD.getQuantityDropped(), sD.getShelfNumber());
+            if(sD.getTypeForShelf() != null) {
+                tmp = new DepotParams(sD.getTypeForShelf(), sD.getQuantityDropped(), sD.getShelfNumber());
                 result.add(tmp);
             }
         return result;
@@ -83,8 +83,10 @@ public class DepotDrop extends JPanel implements Resettable {
      * @param checkDropFunction the function that checks whether the drop can be made in the depot
      */
     public void initFromFiniteDrag(DropChecker checkDropFunction, LimitedResourcesDrag resourcesDrag){
-        for(ShelfDrop sDrop : this.shelves)
+        for(ShelfDrop sDrop : this.shelves) {
             this.targetListeners.add(new MyDropTargetListener(sDrop, new RegisterDropFromFiniteRes(sDrop, resourcesDrag)));//this must be done or we wont be able to drop any image onto the empty panel
+            sDrop.setParentDepot(this);
+        }
         this.setCheckDropFunction(checkDropFunction);
     }
 
@@ -126,6 +128,14 @@ public class DepotDrop extends JPanel implements Resettable {
             default:
                 return "";
         }
+    }
+
+    public List<ResourceType> getStoredResources(int currentDrop){
+        List<ResourceType> result = new ArrayList<>();
+        for(int i = 0; i < this.shelves.size(); i++)
+            if(i + 1 != currentDrop)
+            result.add(this.shelves.get(i).getTypeForShelf());
+        return result;
     }
 
 }

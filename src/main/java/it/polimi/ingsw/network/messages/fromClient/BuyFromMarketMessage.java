@@ -46,4 +46,23 @@ public class BuyFromMarketMessage extends Message {
     public Map<ResourceType, Integer> getDiscardRes() {
         return new HashMap<>(discardRes);
     }
+
+    @Override
+    public String toString() {
+        String result = "BFM Message:\nr:" + row + " c: " + col + "\nLEADER LIST: ";
+        for(Integer i : this.leaderList)
+            result = result + i + ", ";
+        result += "\nDEPOT PARAMS:\n";
+        for(DepotParams d : this.depotRes)
+            result += "res: "+d.getResourceType() + ", qt: " + d.getQt() + ", shelf: " + d.getShelf() + "\n";
+        result += "LEADER RES\n";
+        for(Map.Entry<ResourceType, Integer> e : this.leaderRes.entrySet())
+            result += e.getKey() + " " + e.getValue() + "\n";
+        result += "DISCARD RES\n";
+        for(Map.Entry<ResourceType, Integer> e : this.discardRes.entrySet())
+            result += e.getKey() + " " + e.getValue() + "\n";
+
+        return result;
+
+    }
 }

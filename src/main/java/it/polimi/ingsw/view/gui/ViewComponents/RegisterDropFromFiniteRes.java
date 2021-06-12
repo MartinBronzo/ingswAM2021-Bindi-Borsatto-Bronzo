@@ -18,9 +18,6 @@ public class RegisterDropFromFiniteRes implements RegisterDropInterface {
 
     @Override
     public void accept(Icon icon) throws IllegalActionException {
-        //We update the LimitedResourceDrag by removing the resource that has been dragged
-        this.start.updateAfterDrop(((ImageIcon) icon).getDescription().split(" ")[1]);
-
         //We update our decision counters
         /*switch (icon.toString()){
             case "src/main/resources/coins small.png":
@@ -38,6 +35,8 @@ public class RegisterDropFromFiniteRes implements RegisterDropInterface {
         }*/
         dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.valueOf(((ImageIcon) icon).getDescription().split(" ")[1]));
 
-
+        //If we arrive here then the drop can be made
+        //We update the LimitedResourceDrag by removing the resource that has been dragged
+        this.start.updateAfterDrop(((ImageIcon) icon).getDescription().split(" ")[1]);
     }
 }

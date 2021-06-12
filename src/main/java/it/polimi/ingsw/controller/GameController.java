@@ -861,6 +861,10 @@ public class GameController {
         else //if(resFromMkt.getRow() != 0)
             result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow() - 1, effects);
 
+        System.out.println("MESSAGE FOR CLIENT: ");
+        for(Map.Entry<ResourceType, Integer> e : result.entrySet())
+            System.out.println(e.getKey() + " " + e.getValue());
+
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
         clientHandler.send(new HashMapResFromMarketMessage(result));
         return true;
@@ -868,6 +872,11 @@ public class GameController {
 
     //Tested
     public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
+        System.out.println(buyFromMarket.toString());
+
+
+        System.out.println("MARKET BEFORE\n" + mainBoard.getMarket().toString());
+
         if (buyFromMarket.getRow() != 0 && buyFromMarket.getCol() != 0)
             throw new IllegalArgumentException("Specify only a column or row!");
 
@@ -911,10 +920,15 @@ public class GameController {
 
             List<DepotParams> depotRes = buyFromMarket.getDepotRes();
 
+            String result = "FROM MARKET\n";
+            for(Map.Entry<ResourceType, Integer> e : res.entrySet())
+                result += e.getKey() + " " + e.getValue() + "\n";
+            System.out.println(result);
+
             //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
             for (DepotParams e : depotRes) {
-                if (e.getResourceType() != ResourceType.FAITHPOINT && (res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt())) {
+                if (e.getResourceType() != ResourceType.FAITHPOINT &&  ( res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt() ) ) {
                     //this.rollbackState();
                     throw new IllegalArgumentException("The given input parameters for the Depot don't match the result!");
                 }
@@ -972,11 +986,15 @@ public class GameController {
 
         } catch (IllegalActionException e) {
             this.rollbackState();
+            System.out.println("MARKET AFTER ROLLBACK\n" + mainBoard.getMarket().toString());
             throw new IllegalActionException(e.getMessage());
         } catch (IllegalArgumentException e) {
             this.rollbackState();
+            System.out.println("MARKET AFTER ROLLBACK\n" + mainBoard.getMarket().toString());
             throw new IllegalArgumentException(e.getMessage());
         }
+
+        System.out.println("MARKET AFTER\n" + mainBoard.getMarket().toString());
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
         Game game = new Game();
@@ -984,6 +1002,7 @@ public class GameController {
         board.setMarketMatrix(mainBoard.getMarket().getMarketMatrixWithMarbleType());
         board.setMarbleOnSlide(mainBoard.getMarket().getMarbleOnSlideWithMarbleType());
         game.setMainBoard(board);
+        game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         Player player = new Player();
         player.setNickName(clientHandler.getNickname());
         player.setPlayerState(clientHandler.getPlayerState());
