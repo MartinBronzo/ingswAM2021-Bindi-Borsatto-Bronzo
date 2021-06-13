@@ -14,7 +14,7 @@ public class InfoDialog extends JDialog {
     public InfoDialog(Frame owner) {
         super(owner, "INFO :D ", true);
 
-        label = new JLabel("info message");
+        label = new JLabel();
 
 
         this.setLayout( new FlowLayout() );

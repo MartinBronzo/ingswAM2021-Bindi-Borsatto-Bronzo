@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.controller.Command;
+import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
@@ -50,6 +51,7 @@ public final class PanelManager {
     private LoginDialog loginDialog;
     private ErrorDialog errorDialog;
     private InfoDialog infoDialog;
+    private LorenzoDialog lorenzoDialog;
     private SetNumOfPlayersDialog configureGameDialog;
 
     //TODO: add here panels created for each view
@@ -162,6 +164,7 @@ public final class PanelManager {
         configureGameDialog = new SetNumOfPlayersDialog(gameFrame);
         infoDialog = new InfoDialog(gameFrame);
         errorDialog = new ErrorDialog(gameFrame);
+        lorenzoDialog = new LorenzoDialog(gameFrame);
 
         //TODO: add here panels to frame
         entryPanel = new EntryViewPanel();
@@ -185,6 +188,8 @@ public final class PanelManager {
         gameFrame.add(moveResourceChoice);
 
         marketPlacingResources = new MarketPlacingResources(true);
+
+        devGridPayingCost = new DevGridPayingCost();
 
         productionGetInfo = new ProductionGetInfo();
 
@@ -269,7 +274,7 @@ public final class PanelManager {
     }
 
     private void manageConnectionUpdate(String responseContent) {
-        synchronized (this){
+        synchronized (this) {
             PlayerConnectionsUpdate playerConnectionsUpdate = gson.fromJson(responseContent, PlayerConnectionsUpdate.class);
             Game update = playerConnectionsUpdate.getUpdate();
             if (this.gameModel == null) {
@@ -278,15 +283,11 @@ public final class PanelManager {
             } else
                 gameModel.merge(update);
 
-            if(playerConnectionsUpdate.getChangedPlayer().equals(this.nickname)) {
+            if (playerConnectionsUpdate.getChangedPlayer().equals(this.nickname)) {
                 //TODO: aggiungere cosa far rivedere a chi si riconnette, questo sotto NON funziona
                 this.showPlayerBoard(this.waitingRoomPanel);
             }
-
-
         }
-
-
     }
 
     private void manageLorenzoAction(String responseContent) {
@@ -294,8 +295,15 @@ public final class PanelManager {
             LorenzosActionMessage lorenzosActionMessage = gson.fromJson(responseContent, LorenzosActionMessage.class);
             lorenzoToken = lorenzosActionMessage.getSoloActionToken();
         }
-        //TODO: do things to print Lorenzo Action
+        printLorenzosAction(lorenzoToken.getName());
+    }
 
+    private void printLorenzosAction(String path){
+        visualizer.submit(() -> {
+            lorenzoDialog.setInfoMessage("Lorenzo's action");
+            lorenzoDialog.setTokenImage(path);
+            lorenzoDialog.setVisible(true);
+        });
     }
 
     private void manageleaderboard(String responseContent) {
@@ -357,14 +365,14 @@ public final class PanelManager {
         //gameFrame.remove(marketPlacingResources);
 
         System.out.println("MESSAGE FROM SERVER: ");
-        for(Map.Entry<ResourceType, Integer> e : this.resourcesMap.entrySet())
+        for (Map.Entry<ResourceType, Integer> e : this.resourcesMap.entrySet())
             System.out.println(e.getKey() + " " + e.getValue());
 
         //TODO: sistemare il fatto che gli indici del market devono partire da 1
-        if(lastSelectedCol != 0) {
+        if (lastSelectedCol != 0) {
             System.out.println("\n\n**************************+\nCOL\n*******************************\n\n");
             marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol + 1, lastSelectedLeaderList);
-        }else {
+        } else {
             System.out.println("\n\n*****************************\nROW\n*******************************\n\n");
             marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow + 1, lastSelectedCol, lastSelectedLeaderList);
         }
@@ -508,7 +516,7 @@ public final class PanelManager {
         // });
     }
 
-    public void displayProduction(){
+    public void displayProduction() {
         mainPanel.setVisible(false);
         //productionGetInfo
     }
@@ -527,7 +535,7 @@ public final class PanelManager {
         gameFrame.revalidate();
     }
 
-    public void printInfo(String info) {
+    public synchronized void printInfo(String info) {
         visualizer.submit(() -> {
             infoDialog.setInfoMessage(info);
             infoDialog.setVisible(true);
@@ -566,7 +574,13 @@ public final class PanelManager {
     }
 
     private synchronized void manageUpdate(String responseContent) {
+        PlayerState oldPlayerState = null;
+        PlayerState newPlayerState;
+
+        //TODO: questo sync interno è ridondante
         synchronized (this) {
+            if (player != null)
+                oldPlayerState = player.getPlayerState();
             ModelUpdate modelUpdate = gson.fromJson(responseContent, ModelUpdate.class);
             Game update = modelUpdate.getGame();
             if (this.gameModel == null) {
@@ -574,19 +588,25 @@ public final class PanelManager {
                 this.setPlayerAndViews(gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().get());
             } else
                 gameModel.merge(update);
+
+            newPlayerState = gameModel.findByNick(nickname).getPlayerState();
+            if (player == null && (newPlayerState == PlayerState.PLAYING || newPlayerState == PlayerState.PLAYINGBEGINNINGDECISIONS))
+                printInfo("Now it's your turn, Master " + nickname + "!");
+            else if (player != null) {
+                if ((oldPlayerState != PlayerState.PLAYING && oldPlayerState != PlayerState.PLAYINGBEGINNINGDECISIONS) && (newPlayerState == PlayerState.PLAYING || newPlayerState == PlayerState.PLAYINGBEGINNINGDECISIONS))
+                    printInfo("Now it's your turn, Master " + nickname + "!");
+            }
             //TODO: add turn info dialog
         }
 
-        if(moveResourceChoice.isCreated()){
-            gameFrame.remove(moveResourceChoice);
-            gameFrame.revalidate();
-        }
+        //This remove are needed because we have to close these panels if they're open.
+        gameFrame.remove(moveResourceChoice);
+        gameFrame.remove(marketPlacingResources);
+        gameFrame.remove(devGridPayingCost);
 
-        if(marketPlacingResources.isCreated()) {
-            marketPlacingResources.setVisible(false);
-            gameFrame.remove(marketPlacingResources);
-            gameFrame.revalidate();
-        }
+        gameFrame.revalidate();
+
+
         //TODO: do things to setup view
         //TODO: handle reconnection case: we have to set the main panel
         if (mainPanel.getCreated()) {
@@ -611,12 +631,12 @@ public final class PanelManager {
         });*/
     }
 
-    public void closeBuyFromMarket(){
+    /*public void closeBuyFromMarket() {
         buyFromMarketPanel.setVisible(false);
         marketPlacingResources.setVisible(false);
         gameFrame.remove(marketPlacingResources);
         gameFrame.revalidate();
-    }
+    }*/
 
     public Game getGameModel() {
         return gameModel;

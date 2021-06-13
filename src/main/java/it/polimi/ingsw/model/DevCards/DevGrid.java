@@ -308,7 +308,7 @@ public class DevGrid {
      * @return the size of the devDeck containing devCards of the specified color and max level
      */
     public int getDevDeckSize(DevCardColour colour) {
-        return devDecksGrid[2][colour.ordinal()].size();
+        return devDecksGrid[0][colour.ordinal()].size();
     }
 
     @Override

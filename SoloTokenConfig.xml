@@ -34,7 +34,7 @@
     <FaithPointToken>
         <NumPoints>2</NumPoints>
         <Shuffle>false</Shuffle>
-        <Url>src/main/resources/PUNCHBOARD/cerchio6png</Url>
+        <Url>src/main/resources/PUNCHBOARD/cerchio6.png</Url>
     </FaithPointToken>
 
     <!--TOKEN-->

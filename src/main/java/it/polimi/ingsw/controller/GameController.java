@@ -1332,7 +1332,7 @@ public class GameController {
             SoloActionToken token = soloBoard.drawSoloToken();
             clientHandler.send(new LorenzosActionMessage(token));
         } catch (LastVaticanReportException | EmptyDevColumnException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             this.setLastTurn();
         }
 

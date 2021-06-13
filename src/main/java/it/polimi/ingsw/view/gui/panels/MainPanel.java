@@ -16,6 +16,7 @@ import java.util.List;
 public class MainPanel extends JPanel {
     private ActualPlayerBoardPanel actualPlayerBoardPanel;
     private JLabel stateLabel;
+    private JLabel vpLabel;
     private boolean created;
 
     /**
@@ -38,9 +39,17 @@ public class MainPanel extends JPanel {
 
         stateLabel = new JLabel();
         stateLabel.setText(actualPlayer.getPlayerState().name());
-        stateLabel.setBorder(new TitledBorder("PlayerState"));
+        stateLabel.setBorder(new TitledBorder("Player State"));
+        stateLabel.setPreferredSize(new Dimension(100, 45));
         stateLabel.setAlignmentX(LEFT_ALIGNMENT);
         controlPanel.add(stateLabel);
+
+        vpLabel = new JLabel();
+        vpLabel.setText(actualPlayer.getVictoryPoints().toString());
+        vpLabel.setBorder(new TitledBorder("Victory Points"));
+        vpLabel.setPreferredSize(new Dimension(80, 45));
+        vpLabel.setAlignmentX(LEFT_ALIGNMENT);
+        controlPanel.add(vpLabel);
 
         JButton moveButton = new JButton("Move Resources");
         moveButton.setAlignmentX(LEFT_ALIGNMENT);

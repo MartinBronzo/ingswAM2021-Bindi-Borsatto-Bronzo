@@ -18,10 +18,16 @@ import java.util.List;
 import java.util.Map;
 
 public class DevGridPayingCost extends JPanel {
+    boolean created;
+
+    public DevGridPayingCost(){
+        this.created = true;
+    }
 
     public DevGridPayingCost(HashMap<ResourceType, Integer> resToBeTaken, int row, int col, List<Integer> leaderList){
         super();
         this.setLayout(new BorderLayout());
+        this.created = true;
 
         //Creating all the elements
 
@@ -66,7 +72,6 @@ public class DevGridPayingCost extends JPanel {
         //InstructionPanelFree infoBox = new InstructionPanelFree(this.createDescription(resToBeTaken), submit, cancel);
         //InstructionPanel infoBox = new InstructionPanel(this.createDescription(resToBeTaken), submit, cancel, back);
         InstructionPanelFree infoBox = new InstructionPanelFree(this.createDescription(resToBeTaken), submit, cancel, back);
-
 
         //Adding all the elements to the panel
 
@@ -155,10 +160,8 @@ public class DevGridPayingCost extends JPanel {
             result[i] = slotDescription;
             i++;
         }
-
-
-
         return result;
-
     }
+
+    public boolean isCreated(){return created;}
 }
