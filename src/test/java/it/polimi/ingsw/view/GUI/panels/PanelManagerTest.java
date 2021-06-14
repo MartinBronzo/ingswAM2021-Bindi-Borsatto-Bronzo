@@ -93,7 +93,7 @@ class PanelManagerTest {
         panel.print();
         panel.setVisible(true);
 
-        //System.in.read();
+        System.in.read();
     }
 
 

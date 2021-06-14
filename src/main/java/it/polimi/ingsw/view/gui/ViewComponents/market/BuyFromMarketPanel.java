@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.ViewComponents.market;
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.DevCards.DevCard;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
+import it.polimi.ingsw.view.gui.ViewComponents.Utils;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.*;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 //import it.polimi.ingsw.view.gui.panels.CardCheckbox;
@@ -41,17 +42,23 @@ public class BuyFromMarketPanel extends JPanel {
     public BuyFromMarketPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-        this.setSize(panelWidth, panelHeight);
+        this.setSize(panelWidth, panelHeight-100);
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         this.market = new JPanel();
         this.market.setLayout(new BoxLayout(market, BoxLayout.PAGE_AXIS));
-        this.market.setPreferredSize(new Dimension(300, panelHeight-30));
+        this.market.setPreferredSize(new Dimension(400, panelHeight-30));
+        this.add(this.market);
+
+        //this.add(Box.createHorizontalGlue());
+
+        JPanel rightSidePanel = new JPanel();
+        rightSidePanel.setLayout(new BoxLayout(rightSidePanel, BoxLayout.PAGE_AXIS));
 
         JLabel info = new JLabel();
         //info.setSize(400, 200);
         try {
             Image img = ImageIO.read(new File(infoPath));
-            Image dimg = img.getScaledInstance(400, 200, Image.SCALE_SMOOTH);
+            Image dimg = img.getScaledInstance(600, 200, Image.SCALE_SMOOTH);
             //Image dimg = img.getScaledInstance(400, info.getHeight(), Image.SCALE_SMOOTH);
 
             ImageIcon imageIcon = new ImageIcon(dimg);
@@ -60,28 +67,19 @@ public class BuyFromMarketPanel extends JPanel {
             info.setIcon(null);
             info.setText("Error printing infoPath");
         }
-        this.market.add(info);
-        this.add(this.market);
+        rightSidePanel.add(info);
 
-        this.add(Box.createHorizontalGlue());
+        rightSidePanel.add(Box.createVerticalGlue());
 
-        JPanel rightSidePanel = new JPanel();
-        rightSidePanel.setLayout(new BoxLayout(rightSidePanel, BoxLayout.PAGE_AXIS));
         this.cardComboBoxPanel = new CardComboBox();
         rightSidePanel.add(cardComboBoxPanel);
 
-        instructionLabel = new JLabel("Choice as many leader as the number of whiteMarbles");
+        instructionLabel = new JLabel();
+        Utils.multilineJLabelSetText(instructionLabel,"Choice as many leader as the number of whiteMarbles\nin the desired row or column and then press the desired button\n");
         //instructionLabel.setSize(rightSidePanel.getWidth(), rightSidePanel.getHeight() - cardComboBoxPanel.getHeight() - 100);
-        instructionLabel.setMinimumSize(new Dimension(400, 20));
-        instructionLabel.setPreferredSize(new Dimension(400, 20));
-        instructionLabel.setMaximumSize(new Dimension(400, 20));
-        instructionLabel.setAlignmentY(CENTER_ALIGNMENT);
-        rightSidePanel.add(instructionLabel);
-        instructionLabel = new JLabel("in the desired row or column and then press the desired button");
-        //instructionLabel.setSize(rightSidePanel.getWidth(), rightSidePanel.getHeight() - cardComboBoxPanel.getHeight() - 100);
-        instructionLabel.setMinimumSize(new Dimension(400, 20));
-        instructionLabel.setPreferredSize(new Dimension(400, 20));
-        instructionLabel.setMaximumSize(new Dimension(400, 20));
+        instructionLabel.setMinimumSize(new Dimension(400, 50));
+        instructionLabel.setPreferredSize(new Dimension(400, 50));
+        instructionLabel.setMaximumSize(new Dimension(400, 50));
         instructionLabel.setAlignmentY(CENTER_ALIGNMENT);
         rightSidePanel.add(instructionLabel);
         this.cancelButton = new CancelButton();
