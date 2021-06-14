@@ -368,14 +368,7 @@ public final class PanelManager {
         for (Map.Entry<ResourceType, Integer> e : this.resourcesMap.entrySet())
             System.out.println(e.getKey() + " " + e.getValue());
 
-        //TODO: sistemare il fatto che gli indici del market devono partire da 1
-        if (lastSelectedCol != 0) {
-            System.out.println("\n\n**************************+\nCOL\n*******************************\n\n");
-            marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow, lastSelectedCol + 1, lastSelectedLeaderList);
-        } else {
-            System.out.println("\n\n*****************************\nROW\n*******************************\n\n");
-            marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow + 1, lastSelectedCol, lastSelectedLeaderList);
-        }
+        marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow + 1, lastSelectedCol + 1, lastSelectedLeaderList);
 
         gameFrame.add(marketPlacingResources);
         gameFrame.revalidate();
@@ -492,11 +485,11 @@ public final class PanelManager {
         int col;
         if (isRow == true) {
             this.lastSelectedRow = number;
-            this.lastSelectedCol = 0;
+            this.lastSelectedCol = -1;
             row = number + 1;
             col = 0;
         } else {
-            this.lastSelectedRow = 0;
+            this.lastSelectedRow = -1;
             this.lastSelectedCol = number;
             col = number + 1;
             row = 0;
