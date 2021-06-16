@@ -143,4 +143,21 @@ public class SoloBoard extends MainBoard {
         return devGrid.getDevDeckSize(colour) == 0;
     }
 
+    /**
+     * Returns if the column of the specified color in devGrid is empty
+     *
+     * @param colour: the color of the column
+     * @return true if the column of the specified color in devGrid is empty
+     */
+    public boolean isDevCardColumnEmpty(DevCardColour colour) {
+        int level = 1;
+
+        while (level <= 3){
+            if(devGrid.getDevDeckSize(colour) != 0)
+                return false;
+            level ++;
+        }
+        return true;
+    }
+
 }

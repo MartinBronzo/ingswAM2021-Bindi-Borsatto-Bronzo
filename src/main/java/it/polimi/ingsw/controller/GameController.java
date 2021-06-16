@@ -862,7 +862,7 @@ public class GameController {
             result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow() - 1, effects);
 
         System.out.println("MESSAGE FOR CLIENT: ");
-        for(Map.Entry<ResourceType, Integer> e : result.entrySet())
+        for (Map.Entry<ResourceType, Integer> e : result.entrySet())
             System.out.println(e.getKey() + " " + e.getValue());
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
@@ -921,14 +921,14 @@ public class GameController {
             List<DepotParams> depotRes = buyFromMarket.getDepotRes();
 
             String result = "FROM MARKET\n";
-            for(Map.Entry<ResourceType, Integer> e : res.entrySet())
+            for (Map.Entry<ResourceType, Integer> e : res.entrySet())
                 result += e.getKey() + " " + e.getValue() + "\n";
             System.out.println(result);
 
             //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
             for (DepotParams e : depotRes) {
-                if (e.getResourceType() != ResourceType.FAITHPOINT &&  ( res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt() ) ) {
+                if (e.getResourceType() != ResourceType.FAITHPOINT && (res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt())) {
                     //this.rollbackState();
                     throw new IllegalArgumentException("The given input parameters for the Depot don't match the result!");
                 }
@@ -977,7 +977,7 @@ public class GameController {
 
             //If we are here, then everything went fine and the player can get their extra FaithPoints
             try {
-                if(res.get(ResourceType.FAITHPOINT) != null)
+                if (res.get(ResourceType.FAITHPOINT) != null)
                     playerBoard.moveForwardOnFaithTrack(res.get(ResourceType.FAITHPOINT));
             } catch (LastVaticanReportException e) {
                 this.setLastTurn();
@@ -1334,23 +1334,22 @@ public class GameController {
         } catch (LastVaticanReportException | EmptyDevColumnException e) {
             e.printStackTrace();
             this.setLastTurn();
+        } finally {
+            Game game = new Game();
+            Board board = new Board();
+            Player player = new Player();
+
+            board.setDevMatrix(mainBoard.getDevMatrix());
+            game.setMainBoard(board);
+            player.setNickName(clientHandler.getNickname());
+            player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+            player.setPopeTiles(playerBoard.getPopeTile());
+            player.setPlayerState(PlayerState.PLAYING);
+            game.addPlayer(player);
+            game.setLorenzosPosition(soloBoard.getLorenzoFaithTrackPosition());
+
+            clientHandler.send(new ModelUpdate(game));
         }
-
-        Game game = new Game();
-        Board board = new Board();
-        Player player = new Player();
-
-        board.setDevMatrix(mainBoard.getDevMatrix());
-        game.setMainBoard(board);
-        player.setNickName(clientHandler.getNickname());
-        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
-        player.setPopeTiles(playerBoard.getPopeTile());
-        player.setPlayerState(PlayerState.PLAYING);
-        game.addPlayer(player);
-        game.setLorenzosPosition(soloBoard.getLorenzoFaithTrackPosition());
-
-        clientHandler.send(new ModelUpdate(game));
-        //this.sendBroadcastUpdate(game);
     }
 
 
@@ -1423,7 +1422,7 @@ public class GameController {
             game.addPlayer(player);
         }
         if (numberOfPlayers == 1)
-        game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         this.sendBroadcastUpdate(new ModelUpdate(game));
     }
 
@@ -1559,13 +1558,17 @@ public class GameController {
         //TODO: se è stato attivato l'ultimo turno e il giocatore ha già giocato, va in WAITEND, se non ha ancora giocato va in WAITLAST
         this.state = GameState.LASTTURN;
 
-        for (Pair<ClientHandler, PlayerBoard> e : players) {
-            if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED && e.getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS && e.getKey().getPlayerState() != PlayerState.PLAYING && e.getKey().getPlayerState() != PlayerState.PLAYINGBEGINNINGDECISIONS) {
-                if (willPlayInThisTurn(e.getKey()))
-                    e.getKey().setPlayerState(PlayerState.WAITING4LASTTURN);
-                else
-                    e.getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
+        if (numberOfPlayers == 1) {
+            //TODO: TERMINARE IL GIOCO E MOSTRARE I PUNTEGGI
+        } else {
+            for (Pair<ClientHandler, PlayerBoard> e : players) {
+                if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED && e.getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS && e.getKey().getPlayerState() != PlayerState.PLAYING && e.getKey().getPlayerState() != PlayerState.PLAYINGBEGINNINGDECISIONS) {
+                    if (willPlayInThisTurn(e.getKey()))
+                        e.getKey().setPlayerState(PlayerState.WAITING4LASTTURN);
+                    else
+                        e.getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
 
+                }
             }
         }
 

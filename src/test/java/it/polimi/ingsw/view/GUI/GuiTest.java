@@ -48,7 +48,7 @@ public class GuiTest {
         //addInstructionPanel();
 
         //test for the leaderCheckboxPanel display
-        //addLeaderCheckBoxPanel();
+        addLeaderCheckBoxPanel();
 
         //test for the moveResourceChoice display
         //moveResourceChoice();

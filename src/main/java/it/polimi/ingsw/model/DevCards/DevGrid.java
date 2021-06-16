@@ -296,7 +296,10 @@ public class DevGrid {
         DevCard[][] devMatrix = new DevCard[3][4];
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 4; j++)
-                devMatrix[i][j] = this.devDecksGrid[i][j].getFirst();
+                if(!devDecksGrid[i][j].isEmpty())
+                    devMatrix[i][j] = this.devDecksGrid[i][j].getFirst();
+                else
+                    devMatrix[i][j] = null;
 
         return devMatrix;
     }

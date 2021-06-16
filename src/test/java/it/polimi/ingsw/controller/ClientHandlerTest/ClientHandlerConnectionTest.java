@@ -301,7 +301,7 @@ public class ClientHandlerConnectionTest {
 
         c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(1)));
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":1}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+//        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
 
         List<Integer> indexList = new ArrayList<>();
         indexList.add(0);
@@ -321,14 +321,14 @@ public class ClientHandlerConnectionTest {
 
         c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(1)));
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":1}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+//        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"GAME STARTED!\\\"}\"}");
 
         //reads update messages
         clientFileReader.nextLine();
 
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"EXTRARESOURCEANDLEADERCARDBEGINNING\",\"responseContent\":\"{\\\"numRes\\\":0,\\\"numLeader\\\":2,\\\"order\\\":0}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYINGBEGINNINGDECISIONS\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":-1}}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYINGBEGINNINGDECISIONS\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":0}}\"}");
 
         List<Integer> indexList = new ArrayList<>();
         indexList.add(0);
@@ -338,7 +338,7 @@ public class ClientHandlerConnectionTest {
 
         clientFileReader.nextLine();
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETBEGINNINGDECISIONS\",\"responseContent\":\"{}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYING\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":-1}}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYING\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":0}}\"}");
 
         c1.executeCommand(new Command("getResourcesFromMarket", new GetFromMatrixMessage(1, 0, new ArrayList<>())));
         //controllare se le risorse sono corrette
@@ -354,14 +354,14 @@ public class ClientHandlerConnectionTest {
 
         c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(1)));
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":1}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+//        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"GAME STARTED!\\\"}\"}");
 
         //reads update messages
         clientFileReader.nextLine();
 
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"EXTRARESOURCEANDLEADERCARDBEGINNING\",\"responseContent\":\"{\\\"numRes\\\":0,\\\"numLeader\\\":2,\\\"order\\\":0}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYINGBEGINNINGDECISIONS\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":-1}}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYINGBEGINNINGDECISIONS\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":0}}\"}");
 
         List<Integer> indexList = new ArrayList<>();
         indexList.add(0);
@@ -371,7 +371,7 @@ public class ClientHandlerConnectionTest {
 
         clientFileReader.nextLine();
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETBEGINNINGDECISIONS\",\"responseContent\":\"{}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYING\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":-1}}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYING\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":0}}\"}");
 
         c1.executeCommand(new Command("getCardCost", new GetFromMatrixMessage(1, 1, new ArrayList<>())));
 
@@ -387,14 +387,14 @@ public class ClientHandlerConnectionTest {
 
         c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(1)));
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":1}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+//        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"GAME STARTED!\\\"}\"}");
 
         //reads update messages
         clientFileReader.nextLine();
 
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"EXTRARESOURCEANDLEADERCARDBEGINNING\",\"responseContent\":\"{\\\"numRes\\\":0,\\\"numLeader\\\":2,\\\"order\\\":0}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYINGBEGINNINGDECISIONS\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":-1}}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYINGBEGINNINGDECISIONS\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":0}}\"}");
 
         List<Integer> indexList = new ArrayList<>();
         indexList.add(0);
@@ -404,12 +404,52 @@ public class ClientHandlerConnectionTest {
 
         clientFileReader.nextLine();
         assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETBEGINNINGDECISIONS\",\"responseContent\":\"{}\"}");
-        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYING\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":-1}}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYING\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":0}}\"}");
 
         c1.executeCommand(new Command("getResourcesFromMarket", new GetFromMatrixMessage(1, 0, new ArrayList<>())));
         //controllare se le risorse sono corrette
         System.out.println("Resources on the first row (upper row): " + clientFileReader.nextLine() + "\n");
         System.out.println(c1.getGame().getMainBoard().getMarket().toString());
+    }
+
+    @Test
+    public void endTurn() throws InterruptedException, UnexpectedException, NotAvailableNicknameException, IllegalActionException {
+        c1.executeCommand(new Command("login", new LoginMessage("1")));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNICK\",\"responseContent\":\"{\\\"confirmedNickname\\\":\\\"1\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"ASKFORNUMPLAYERS\",\"responseContent\":\"{\\\"message\\\":\\\"You are creating a game! Tell me how many players you want in this game!\\\"}\"}");
+
+        c1.executeCommand(new Command("setNumPlayer", new SetNumPlayerMessage(1)));
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETNUMPLAYERCONF\",\"responseContent\":\"{\\\"confirmedNumPlayers\\\":1}\"}");
+        //assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"You are in Game! You\\\\u0027ll soon start play with others!\\\"}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"INFOSTRING\",\"responseContent\":\"{\\\"message\\\":\\\"GAME STARTED!\\\"}\"}");
+
+        //reads update messages
+        clientFileReader.nextLine();
+
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"EXTRARESOURCEANDLEADERCARDBEGINNING\",\"responseContent\":\"{\\\"numRes\\\":0,\\\"numLeader\\\":2,\\\"order\\\":0}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYINGBEGINNINGDECISIONS\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":0}}\"}");
+
+        List<Integer> indexList = new ArrayList<>();
+        indexList.add(0);
+        indexList.add(1);
+        c1.executeCommand(new Command("discardLeaderAndExtraResBeginning", new DiscardLeaderAndExtraResBeginningMessage(indexList, new ArrayList<>())));
+        assertEquals(PlayerState.PLAYING, c1.getPlayerState());
+
+        clientFileReader.nextLine();
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"SETBEGINNINGDECISIONS\",\"responseContent\":\"{}\"}");
+        assertEquals(clientFileReader.nextLine(), "{\"responseType\":\"UPDATE\",\"responseContent\":\"{\\\"game\\\":{\\\"players\\\":[{\\\"nickName\\\":\\\"1\\\",\\\"playerState\\\":\\\"PLAYING\\\"}],\\\"mainBoard\\\":{},\\\"lorenzosPosition\\\":0}}\"}");
+
+
+        try {
+            c1.executeCommand(new Command("endTurn", new Message()));
+            c1.executeCommand(new Command("endTurn", new Message()));
+            c1.executeCommand(new Command("endTurn", new Message()));
+            c1.executeCommand(new Command("endTurn", new Message()));
+            c1.executeCommand(new Command("endTurn", new Message()));
+            c1.executeCommand(new Command("endTurn", new Message()));
+        }catch (IllegalActionException e){
+            e.printStackTrace();
+        }
     }
 
 
