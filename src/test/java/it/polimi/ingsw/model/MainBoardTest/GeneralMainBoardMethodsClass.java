@@ -10,6 +10,8 @@ import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.MainBoard;
 import it.polimi.ingsw.model.Market.Market;
 import it.polimi.ingsw.model.PlayerBoard;
+import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.soloGame.SoloBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
@@ -18,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,6 +61,30 @@ public class GeneralMainBoardMethodsClass {
         LeaderCardDeck usual = new LeaderCardDeck(LeaderCardDeck.initLeaderCards(new File("LeaderCardConfig.xml")));
 
         assertEquals(inMB, usual);
+    }
+
+    @Test
+    public void discardResources() throws LastVaticanReportException {
+        HashMap<ResourceType, Integer> discardMap = new HashMap<>();
+        discardMap.put(ResourceType.COIN, 1);
+        mainBoard.discardResources(discardMap, mainBoard.getPlayerBoard(0));
+
+        assertEquals(0, mainBoard.getPlayerBoard(0).getPositionOnFaithTrack());
+        assertEquals(1, mainBoard.getPlayerBoard(1).getPositionOnFaithTrack());
+        assertEquals(1, mainBoard.getPlayerBoard(2).getPositionOnFaithTrack());
+        assertEquals(1, mainBoard.getPlayerBoard(3).getPositionOnFaithTrack());
+    }
+
+    @Test
+    public void discardResourcesSolo() throws LastVaticanReportException, IOException, SAXException, ParserConfigurationException {
+        mainBoard = new SoloBoard();
+        HashMap<ResourceType, Integer> discardMap = new HashMap<>();
+        discardMap.put(ResourceType.COIN, 1);
+        mainBoard.discardResources(discardMap, mainBoard.getPlayerBoard(0));
+
+        assertEquals(0, mainBoard.getPlayerBoard(0).getPositionOnFaithTrack());
+        assertEquals(1, mainBoard.getLorenzoFaithTrackPosition());
+
     }
 
     @Test

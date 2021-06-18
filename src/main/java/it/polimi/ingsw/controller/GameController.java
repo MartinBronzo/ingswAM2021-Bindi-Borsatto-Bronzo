@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.EndOfGameException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.MainBoard;
@@ -18,6 +19,7 @@ import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.cli.CliClient;
+import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -1500,6 +1502,41 @@ public class GameController {
         //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
+    private void endGameSolo(){
+        final int faithCells = 24;
+        final int devCardNumber = 7;
+        SoloBoard soloBoard = (SoloBoard) mainBoard;
+        SoloGameResultMessage soloGameResultMessage;
+
+        PlayerBoard playerBoard = null;
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if(e.getKey().getNickname().equals(activePlayer.getNickname()))
+                playerBoard = e.getValue();
+
+        //check if one of the column in dev grid is empty
+        for(DevCardColour color : DevCardColour.values()){
+            if(soloBoard.isDevCardColumnEmpty(color)){
+                soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo bought an entire column of dev cards");
+                activePlayer.send(soloGameResultMessage);
+                return;
+            }
+        }
+
+        if(soloBoard.getLorenzoFaithTrackPosition() == faithCells) {
+            soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo made his last vatican report");
+            activePlayer.send(soloGameResultMessage);
+            return;
+        }
+
+        if (playerBoard.getPositionOnFaithTrack() == faithCells || playerBoard.getDevSlots().getAllDevCards().size() == devCardNumber){
+            soloGameResultMessage = new SoloGameResultMessage(true, "You won against Lorenzo the Magnificent! Your score is: " + playerBoard.calculateVictoryPoints() + " points");
+            activePlayer.send(soloGameResultMessage);
+        }
+
+        //todo: GamesManagerSingleton.getInstance().deleteGame(this); (?)
+        //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
+    }
+
     private void distributeFinalPoints() {
         FinalScoresMessage message = new FinalScoresMessage();
         for (Pair<ClientHandler, PlayerBoard> e : players)
@@ -1559,7 +1596,7 @@ public class GameController {
         this.state = GameState.LASTTURN;
 
         if (numberOfPlayers == 1) {
-            //TODO: TERMINARE IL GIOCO E MOSTRARE I PUNTEGGI
+            this.endGameSolo();
         } else {
             for (Pair<ClientHandler, PlayerBoard> e : players) {
                 if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED && e.getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS && e.getKey().getPlayerState() != PlayerState.PLAYING && e.getKey().getPlayerState() != PlayerState.PLAYINGBEGINNINGDECISIONS) {

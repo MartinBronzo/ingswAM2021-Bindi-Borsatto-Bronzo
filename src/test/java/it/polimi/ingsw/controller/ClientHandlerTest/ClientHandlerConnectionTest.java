@@ -248,6 +248,13 @@ public class ClientHandlerConnectionTest {
     }
 
     @Test
+    public void commandTest(){
+        Command command = new Command("Cmd");
+        assertEquals("cmd", command.getCmd());
+        assertEquals("", command.getParameters());
+    }
+
+    @Test
     public void setnicknameErrorState2() throws InterruptedException, UnexpectedException, IllegalActionException, NotAvailableNicknameException {
         //c1.setPlayerState(PlayerState.PLAYING);
 
