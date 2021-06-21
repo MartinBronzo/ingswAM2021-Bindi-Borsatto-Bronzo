@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.LeaderCard.leaderEffects.DiscountLeaderEffect;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
 import it.polimi.ingsw.view.gui.ViewComponents.InstructionPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.CardCheckbox;
+import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DevSlotOnlyView;
+import it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD.DragAndDropBaseProd;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 
@@ -36,7 +38,7 @@ public class DevCardPanel1 extends JPanel {
     public DevCardPanel1() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-        this.setSize(panelWidth, panelHeight);
+        this.setSize(panelWidth, panelHeight-100);
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         this.selectedCard = new JLabel();
         this.selectedCard.setSize(200, 300);

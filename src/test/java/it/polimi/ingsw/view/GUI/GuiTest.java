@@ -57,7 +57,7 @@ public class GuiTest {
         //seeOthersPlayers();
 
         //test for base production
-        //baseProduction();
+        baseProduction();
 
         //test change of player view
         //seeOthersPlayers();
@@ -77,11 +77,12 @@ public class GuiTest {
         //test for devslots only view
         //devSlotOnlyView();
 
-        onlyViewsInPlayerboard();
+        //onlyViewsInPlayerboard();
 
         //faithTrackOnlyView();
 
         //printButtons(gameFrame);
+
         gameFrame.setVisible(true);
 
         //test of the leaderCheckboxPanel's checkbox functionality
