@@ -267,10 +267,20 @@ public final class PanelManager {
             case PLAYERCONNECTIONUPDATE:
                 this.manageConnectionUpdate(responseContent);
                 break;
+            case SOLOGAMERESULT:
+                this.manageSoloGameResult(responseContent);
+                break;
             default:
                 System.out.println("unmanaged respone:\t" + responseMessage);
                 System.exit(1);
         }
+    }
+
+    private void manageSoloGameResult(String responseContent) {
+        synchronized (this) {
+            SoloGameResultMessage soloGameResultMessage = gson.fromJson(responseContent, SoloGameResultMessage.class);
+        }
+        //TODO: mostrare panel con risultato finale;
     }
 
     private void manageConnectionUpdate(String responseContent) {

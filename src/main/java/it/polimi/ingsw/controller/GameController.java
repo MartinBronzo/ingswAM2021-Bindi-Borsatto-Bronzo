@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.EndOfGameException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
 import it.polimi.ingsw.model.MainBoard;
@@ -18,6 +19,7 @@ import it.polimi.ingsw.network.messages.fromClient.*;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.cli.CliClient;
+import it.polimi.ingsw.view.gui.panels.PanelManager;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -862,7 +864,7 @@ public class GameController {
             result = mainBoard.getResourcesFromRowInMarket(resFromMkt.getRow() - 1, effects);
 
         System.out.println("MESSAGE FOR CLIENT: ");
-        for(Map.Entry<ResourceType, Integer> e : result.entrySet())
+        for (Map.Entry<ResourceType, Integer> e : result.entrySet())
             System.out.println(e.getKey() + " " + e.getValue());
 
         //If we are here, then everything is going fine so result is containing something useful and must returned to the client
@@ -921,14 +923,14 @@ public class GameController {
             List<DepotParams> depotRes = buyFromMarket.getDepotRes();
 
             String result = "FROM MARKET\n";
-            for(Map.Entry<ResourceType, Integer> e : res.entrySet())
+            for (Map.Entry<ResourceType, Integer> e : res.entrySet())
                 result += e.getKey() + " " + e.getValue() + "\n";
             System.out.println(result);
 
             //Let's check if the description the player gives in the message is valid: all the resources they put are present in the computed market
             //output resources (we check both if the indicated ResourceType is present and if it is present with the right quantity)
             for (DepotParams e : depotRes) {
-                if (e.getResourceType() != ResourceType.FAITHPOINT &&  ( res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt() ) ) {
+                if (e.getResourceType() != ResourceType.FAITHPOINT && (res.get(e.getResourceType()) == null || res.get(e.getResourceType()) < e.getQt())) {
                     //this.rollbackState();
                     throw new IllegalArgumentException("The given input parameters for the Depot don't match the result!");
                 }
@@ -977,7 +979,7 @@ public class GameController {
 
             //If we are here, then everything went fine and the player can get their extra FaithPoints
             try {
-                if(res.get(ResourceType.FAITHPOINT) != null)
+                if (res.get(ResourceType.FAITHPOINT) != null)
                     playerBoard.moveForwardOnFaithTrack(res.get(ResourceType.FAITHPOINT));
             } catch (LastVaticanReportException e) {
                 this.setLastTurn();
@@ -1334,23 +1336,22 @@ public class GameController {
         } catch (LastVaticanReportException | EmptyDevColumnException e) {
             e.printStackTrace();
             this.setLastTurn();
+        } finally {
+            Game game = new Game();
+            Board board = new Board();
+            Player player = new Player();
+
+            board.setDevMatrix(mainBoard.getDevMatrix());
+            game.setMainBoard(board);
+            player.setNickName(clientHandler.getNickname());
+            player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
+            player.setPopeTiles(playerBoard.getPopeTile());
+            player.setPlayerState(PlayerState.PLAYING);
+            game.addPlayer(player);
+            game.setLorenzosPosition(soloBoard.getLorenzoFaithTrackPosition());
+
+            clientHandler.send(new ModelUpdate(game));
         }
-
-        Game game = new Game();
-        Board board = new Board();
-        Player player = new Player();
-
-        board.setDevMatrix(mainBoard.getDevMatrix());
-        game.setMainBoard(board);
-        player.setNickName(clientHandler.getNickname());
-        player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
-        player.setPopeTiles(playerBoard.getPopeTile());
-        player.setPlayerState(PlayerState.PLAYING);
-        game.addPlayer(player);
-        game.setLorenzosPosition(soloBoard.getLorenzoFaithTrackPosition());
-
-        clientHandler.send(new ModelUpdate(game));
-        //this.sendBroadcastUpdate(game);
     }
 
 
@@ -1423,7 +1424,7 @@ public class GameController {
             game.addPlayer(player);
         }
         if (numberOfPlayers == 1)
-        game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
+            game.setLorenzosPosition(mainBoard.getLorenzoFaithTrackPosition());
         this.sendBroadcastUpdate(new ModelUpdate(game));
     }
 
@@ -1501,6 +1502,41 @@ public class GameController {
         //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
+    private void endGameSolo(){
+        final int faithCells = 24;
+        final int devCardNumber = 7;
+        SoloBoard soloBoard = (SoloBoard) mainBoard;
+        SoloGameResultMessage soloGameResultMessage;
+
+        PlayerBoard playerBoard = null;
+        for (Pair<ClientHandler, PlayerBoard> e : players)
+            if(e.getKey().getNickname().equals(activePlayer.getNickname()))
+                playerBoard = e.getValue();
+
+        //check if one of the column in dev grid is empty
+        for(DevCardColour color : DevCardColour.values()){
+            if(soloBoard.isDevCardColumnEmpty(color)){
+                soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo bought an entire column of dev cards");
+                activePlayer.send(soloGameResultMessage);
+                return;
+            }
+        }
+
+        if(soloBoard.getLorenzoFaithTrackPosition() == faithCells) {
+            soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo made his last vatican report");
+            activePlayer.send(soloGameResultMessage);
+            return;
+        }
+
+        if (playerBoard.getPositionOnFaithTrack() == faithCells || playerBoard.getDevSlots().getAllDevCards().size() == devCardNumber){
+            soloGameResultMessage = new SoloGameResultMessage(true, "You won against Lorenzo the Magnificent! Your score is: " + playerBoard.calculateVictoryPoints() + " points");
+            activePlayer.send(soloGameResultMessage);
+        }
+
+        //todo: GamesManagerSingleton.getInstance().deleteGame(this); (?)
+        //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
+    }
+
     private void distributeFinalPoints() {
         FinalScoresMessage message = new FinalScoresMessage();
         for (Pair<ClientHandler, PlayerBoard> e : players)
@@ -1559,13 +1595,17 @@ public class GameController {
         //TODO: se è stato attivato l'ultimo turno e il giocatore ha già giocato, va in WAITEND, se non ha ancora giocato va in WAITLAST
         this.state = GameState.LASTTURN;
 
-        for (Pair<ClientHandler, PlayerBoard> e : players) {
-            if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED && e.getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS && e.getKey().getPlayerState() != PlayerState.PLAYING && e.getKey().getPlayerState() != PlayerState.PLAYINGBEGINNINGDECISIONS) {
-                if (willPlayInThisTurn(e.getKey()))
-                    e.getKey().setPlayerState(PlayerState.WAITING4LASTTURN);
-                else
-                    e.getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
+        if (numberOfPlayers == 1) {
+            this.endGameSolo();
+        } else {
+            for (Pair<ClientHandler, PlayerBoard> e : players) {
+                if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED && e.getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS && e.getKey().getPlayerState() != PlayerState.PLAYING && e.getKey().getPlayerState() != PlayerState.PLAYINGBEGINNINGDECISIONS) {
+                    if (willPlayInThisTurn(e.getKey()))
+                        e.getKey().setPlayerState(PlayerState.WAITING4LASTTURN);
+                    else
+                        e.getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
 
+                }
             }
         }
 

@@ -32,8 +32,10 @@ public class DiscardTokenObserver {
         numCards = soloToken.getNumCards();
 
         soloBoard.discardDevCards(colour, numCards);
-        if (soloBoard.isDevColumnEmpty(colour))
+        if (soloBoard.isDevCardColumnEmpty(colour)) {
+            System.out.println("Empty column");
             throw new EmptyDevColumnException("Empty column");
+        }
 
         return true;
     }

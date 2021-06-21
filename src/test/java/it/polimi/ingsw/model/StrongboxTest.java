@@ -126,6 +126,18 @@ public class StrongboxTest {
         assertEquals("Negative quantity", exception.getMessage());
     }
 
+     @Test
+     public void removeFaithPoints(){
+         Exception exception;
+         HashMap<ResourceType, Integer> removeMap = new HashMap<>();
+         Strongbox strongbox = new Strongbox();
+
+         removeMap.put(faithPoint, 1);
+         exception = assertThrows(IllegalArgumentException.class, () -> strongbox.removeResource(removeMap));
+         assertEquals("Can't add Faith point", exception.getMessage());
+
+     }
+
     @Test
     public void multipleRemoves() throws IllegalArgumentException, NotEnoughResourcesException {
         HashMap<ResourceType, Integer> addMap = new HashMap<>();
