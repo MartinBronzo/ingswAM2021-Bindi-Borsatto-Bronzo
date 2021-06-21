@@ -17,7 +17,10 @@ import it.polimi.ingsw.model.soloGame.DiscardToken;
 import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
+import it.polimi.ingsw.network.messages.fromClient.BaseProductionParams;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
+import it.polimi.ingsw.network.messages.fromClient.GetProductionCostMessage;
+import it.polimi.ingsw.network.messages.fromClient.Message;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevCardPanel1;
@@ -78,6 +81,7 @@ public final class PanelManager {
     private int resourcesToTake;
     private Map<String, Integer> results;
     private SoloActionToken lorenzoToken;
+    private List<Integer> lastSelectedDevCards;
     private List<Integer> lastSelectedLeaderList;
     private int lastSelectedRow;
     private int lastSelectedCol;
@@ -191,7 +195,8 @@ public final class PanelManager {
 
         devGridPayingCost = new DevGridPayingCost();
 
-        productionGetInfo = new ProductionGetInfo();
+        //ProductionGetInfo must be created each time must be used
+        //productionGetInfo = new ProductionGetInfo();
 
         gameFrame.validate();
 
@@ -349,6 +354,11 @@ public final class PanelManager {
             System.out.println("Ended GameConfiguration set visible true");
         });
 
+    }
+
+    public void manageProductionInfos(List<Integer> devCards, List<Integer> leader, BaseProductionParams baseProd){
+
+        this.writeMessage(new Command("getProductionCost", new GetProductionCostMessage(devCards,leader, baseProd)));
     }
 
     private void manageProductionResources(String responseContent) {

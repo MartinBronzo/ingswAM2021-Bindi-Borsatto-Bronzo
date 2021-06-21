@@ -77,6 +77,12 @@ public class DragAndDropBaseProd extends JPanel {
         return output.getResource();
     }
 
+    public List<ResourceType> getOutputsList(){
+        List<ResourceType> outputList = new ArrayList<>();
+        outputList.add(output.getResource());
+        return outputList;
+    }
+
     public void setCheckDropFunction(DropChecker checkDropFunction){
         for(MyDropTargetListener listener : this.targetListeners)
             listener.setCheckDrop(checkDropFunction);
