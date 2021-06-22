@@ -533,22 +533,24 @@ public final class PanelManager {
     }
 
     public void displayProduction() {
-        visualizer.submit(() -> {
+        //visualizer.submit(() -> {
+        mainPanel.setVisible(false);
+        if (productionGetInfo != null) {
+            gameFrame.remove(productionGetInfo);
+        }
+        productionGetInfo = new ProductionGetInfo(player);
+        gameFrame.add(productionGetInfo);
+        productionGetInfo.setVisible(true);
+        gameFrame.revalidate();
 
-            if (productionGetInfo != null) {
-                gameFrame.remove(productionGetInfo);
-            }
-            productionGetInfo = new ProductionGetInfo(player);
-            gameFrame.add(productionGetInfo);
-            gameFrame.revalidate();
-            mainPanel.setVisible(false);
-            productionGetInfo.setVisible(true);
-        });
+
+        //});
     }
 
     //TODO: this must be changed we shound't print just the market but the action view
 
     public void displayMarket() {
+        // why is this panel recreated each time, calling set methods and then print should work as well
         mainPanel.setVisible(false);
         gameFrame.remove(buyFromMarketPanel);
         buyFromMarketPanel = new BuyFromMarketPanel();

@@ -96,7 +96,7 @@ public class InstructionPanel extends JPanel{
         c.weighty = 1.0;   //request any extra vertical space
         c.anchor = GridBagConstraints.PAGE_END; //bottom of space
         c.insets = new Insets(10, 10, 10, 10);  //top padding
-        c.gridx = 2;       //aligned with button 2
+        c.gridx = 1;       //aligned with button 2
         c.gridwidth = 1;   //2 columns wide
         c.gridy = 2;       //third row
         this.add(this.backButton, c);

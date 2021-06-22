@@ -1,8 +1,11 @@
 package it.polimi.ingsw.view.GUI.panels;
 
+import it.polimi.ingsw.exceptions.EmptyDeckException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.DevCards.DevCard;
+import it.polimi.ingsw.model.DevCards.DevCardColour;
 import it.polimi.ingsw.model.DevCards.DevGrid;
+import it.polimi.ingsw.model.DevCards.DevSlots;
 import it.polimi.ingsw.model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
 import it.polimi.ingsw.model.Market.Market;
@@ -11,6 +14,7 @@ import it.polimi.ingsw.view.gui.GuiClient;
 import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevCardPanel1;
 import it.polimi.ingsw.view.gui.ViewComponents.market.BuyFromMarketPanel;
 import it.polimi.ingsw.view.gui.panels.PanelManager;
+import it.polimi.ingsw.view.gui.panels.ProductionGetInfo;
 import it.polimi.ingsw.view.readOnlyModel.Board;
 import it.polimi.ingsw.view.readOnlyModel.Game;
 import it.polimi.ingsw.view.readOnlyModel.Player;
@@ -92,6 +96,33 @@ class PanelManagerTest {
         panel.setBoard(this.board);
         panel.print();
         panel.setVisible(true);
+
+        System.in.read();
+    }
+
+    @Test
+    void PrintproductiongetInfo() throws IOException, InterruptedException, NegativeQuantityException, ParserConfigurationException, SAXException, EmptyDeckException {
+        Game gameModel = new Game();
+
+        Player player = new Player();
+
+        LeaderCardDeck l1 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        List<LeaderCard> leaderCards = l1.getCopyLeaderCards().subList(0,2);
+        player.setUsedLeaders(leaderCards);
+
+        xmlConfig = new File("DevCardConfig.xsd.xml");
+        devGrid = new DevGrid(xmlConfig);
+        DevSlots devSlots = new DevSlots();
+        devSlots.addDevCard(0, devGrid.getDevCardFromDeck(1, DevCardColour.BLUE));
+        devSlots.addDevCard(1, devGrid.getDevCardFromDeck(1, DevCardColour.GREEN));
+        devSlots.addDevCard(2, devGrid.getDevCardFromDeck(1, DevCardColour.PURPLE));
+        devSlots.addDevCard(2, devGrid.getDevCardFromDeck(2, DevCardColour.PURPLE));
+        player.setDevSlots(devSlots);
+
+        PanelManager.getInstance().setPlayer(player);
+        PanelManager.getInstance().displayProduction();
+
+
 
         System.in.read();
     }

@@ -12,6 +12,7 @@ import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +64,7 @@ public class ProductionGetInfo extends JPanel {
         });
 
         instructionPanel = new InstructionPanel(info, submit, cancel, reset);
+        instructionPanel.setMinimumSize(new Dimension(50, 50));
         upperPanel.add(instructionPanel);
         this.add(upperPanel);
         this.add(Box.createVerticalGlue());
