@@ -73,6 +73,10 @@ public class DragAndDropBaseProd extends JPanel {
         return inputList;
     }
 
+    public boolean isActivated(){
+        return (input1.getResource() != null && input2.getResource() != null && output.getResource()!= null);
+    }
+
     public ResourceType getOutput(){
         return output.getResource();
     }

@@ -42,7 +42,7 @@ public class BaseProdPanel extends JPanel {
     public void addDecision(ResourceType res) {
         resource = res;
         //removes the previous image of the resource and repaints the panel
-        this.remove(getComponentCount()-2);
+        this.remove(getComponentCount()-1);
         this.revalidate();
         this.repaint();
     }

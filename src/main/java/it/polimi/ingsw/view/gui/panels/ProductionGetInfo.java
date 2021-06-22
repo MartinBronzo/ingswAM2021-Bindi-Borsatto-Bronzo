@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.panels;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.BaseProductionParams;
 import it.polimi.ingsw.view.gui.ViewComponents.CardCheckbox;
 import it.polimi.ingsw.view.gui.ViewComponents.DevSlotCheckBox;
@@ -41,14 +43,13 @@ public class ProductionGetInfo extends JPanel {
 
         //TODO: add info text and JButtons functions
         String info = "Select the desired dev and leader cards, move resources to activate baseProd and then press submit";
-        JButton cancel = new CancelButton();
-        cancel.setText("cancel");
-        cancel.addActionListener(e -> {
-            //TODO: idk what to print
-            this.setVisible(false);
+        JButton back = new BackButton();
+        back.setText("Back");
+        back.addActionListener(e -> {
+            PanelManager.getInstance().showPlayerBoard(this);
         });
-        JButton reset = new BackButton();
-        reset.setText("reset view");
+        JButton reset = new CancelButton();
+        reset.setText("Reset");
         reset.addActionListener(e -> {
             //TODO reset view
         });
@@ -58,12 +59,28 @@ public class ProductionGetInfo extends JPanel {
         submit.addActionListener(e -> {
             dragAndDropBaseProd.getInputs();
             //TODO change check on activated
-            Boolean activated = dragAndDropBaseProd.getInputs().isEmpty() ? false : true;
+            //Boolean activated = dragAndDropBaseProd.getInputs().isEmpty() ? false : true;
+            boolean activated = dragAndDropBaseProd.isActivated();
+            if(!dragAndDropBaseProd.isActivated()) {
+                List<ResourceType> inputs = dragAndDropBaseProd.getInputs();
+            /*if (inputs.size() != 2)
+                throw new IllegalActionException("Specify all the resources for the input or reset the choice");*/
+
+                for (ResourceType res : inputs) {
+                    if (res != null) {
+                        PanelManager.getInstance().printError("Specify all the resources for the input or reset the choice");
+                        return;
+                    }
+                    if (dragAndDropBaseProd.getOutput() != null) {
+                        PanelManager.getInstance().printError("Specify the resource for reset the choice");
+                    }
+                }
+            }
             BaseProductionParams baseProductionParams = new BaseProductionParams(activated, dragAndDropBaseProd.getInputs(), dragAndDropBaseProd.getOutputsList());
             PanelManager.getInstance().manageProductionInfos(devSlotcheckBox.getSelectedDevSlotIndexes(), cardCheckboxPanel.getSelectedLeaderIndexes(), baseProductionParams);
         });
 
-        instructionPanel = new InstructionPanel(info, submit, cancel, reset);
+        instructionPanel = new InstructionPanel(info, submit, reset, back);
         instructionPanel.setMinimumSize(new Dimension(50, 50));
         upperPanel.add(instructionPanel);
         this.add(upperPanel);

@@ -14,7 +14,13 @@ public class RegisterBaseProdDrop implements RegisterDropInterface {
 
     @Override
     public void accept(Icon icon) {
-        switch (icon.toString()){
+        ResourceType imageType = ResourceType.valueOf(((ImageIcon) icon).getDescription().split(" ")[1]);
+
+        //Updates the DropTarget about what drop has been made
+        baseProdPanel.addDecision(imageType);
+
+
+        /*switch (icon.toString()){
             case "src/main/resources/coins small.png":
                 baseProdPanel.addDecision(ResourceType.COIN);
                 break;
@@ -27,7 +33,7 @@ public class RegisterBaseProdDrop implements RegisterDropInterface {
             case "src/main/resources/stone small.png":
                 baseProdPanel.addDecision(ResourceType.STONE);
                 break;
-        }
+        }*/
     }
 
 

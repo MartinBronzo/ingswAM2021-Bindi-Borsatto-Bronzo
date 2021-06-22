@@ -48,7 +48,7 @@ public class GuiTest {
         //addInstructionPanel();
 
         //test for the leaderCheckboxPanel display
-        addLeaderCheckBoxPanel();
+        //addLeaderCheckBoxPanel();
 
         //test for the moveResourceChoice display
         //moveResourceChoice();
@@ -267,6 +267,7 @@ public class GuiTest {
         dragAndDropBaseProd = new DragAndDropBaseProd();
         dragAndDropBaseProd.setCheckDropFunction(new CheckBaseProd(dragAndDropBaseProd));
         gameFrame.add(dragAndDropBaseProd);
+        gameFrame.revalidate();
 
     }
 
