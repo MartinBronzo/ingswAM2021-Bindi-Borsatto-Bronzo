@@ -12,8 +12,6 @@ import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.readOnlyModel.Player;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,16 +39,29 @@ public class ProductionGetInfo extends JPanel {
         upperPanel.add(Box.createHorizontalGlue());
 
         //TODO: add info text and JButtons functions
-        String info = "";
+        String info = "Select the desired dev and leader cards, move resources to activate baseProd and then press submit";
         JButton cancel = new CancelButton();
+        cancel.setText("cancel");
+        cancel.addActionListener(e -> {
+            //TODO: idk what to print
+            this.setVisible(false);
+        });
         JButton reset = new BackButton();
+        reset.setText("reset view");
+        reset.addActionListener(e -> {
+            //TODO reset view
+        });
+
         JButton submit = new SubmitButton();
+        submit.setText("submit");
         submit.addActionListener(e -> {
             dragAndDropBaseProd.getInputs();
+            //TODO change check on activated
             Boolean activated = dragAndDropBaseProd.getInputs().isEmpty() ? false : true;
             BaseProductionParams baseProductionParams = new BaseProductionParams(activated, dragAndDropBaseProd.getInputs(), dragAndDropBaseProd.getOutputsList());
-            //TODO PanelManager.getInstance().manageProductionInfos();
+            PanelManager.getInstance().manageProductionInfos(devSlotcheckBox.getSelectedDevSlotIndexes(), cardCheckboxPanel.getSelectedLeaderIndexes(), baseProductionParams);
         });
+
         instructionPanel = new InstructionPanel(info, submit, cancel, reset);
         upperPanel.add(instructionPanel);
         this.add(upperPanel);

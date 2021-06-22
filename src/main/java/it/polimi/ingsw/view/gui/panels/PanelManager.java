@@ -85,6 +85,7 @@ public final class PanelManager {
     private List<Integer> lastSelectedLeaderList;
     private int lastSelectedRow;
     private int lastSelectedCol;
+    private BaseProductionParams lastSelectedBaseProdParams;
     /*idk if can be useful selected cell, row, column attributes and relatives methods*/
 
 
@@ -357,6 +358,9 @@ public final class PanelManager {
     }
 
     public void manageProductionInfos(List<Integer> devCards, List<Integer> leader, BaseProductionParams baseProd){
+        this.lastSelectedLeaderList = leader;
+        this.lastSelectedDevCards = devCards;
+        this.lastSelectedBaseProdParams = baseProd;
 
         this.writeMessage(new Command("getProductionCost", new GetProductionCostMessage(devCards,leader, baseProd)));
     }
@@ -367,8 +371,7 @@ public final class PanelManager {
             this.resourcesMap = message.getResources();
             this.mapDescription = "resourcesProduced";
         }
-        //TODO: salvare i dati dalla view precedente e passarli al costruttore
-        //productionGetResources = new ProductionGetResources(resourcesMap, lastSelectedLeaderList, lastSelectedDevCard, lastProductionParams);
+        productionGetResources = new ProductionGetResources(resourcesMap, lastSelectedLeaderList, lastSelectedDevCards, lastSelectedBaseProdParams);
 
         //TODO: aggiungere al panel
         //TODO: aggiungere al panel
@@ -530,8 +533,17 @@ public final class PanelManager {
     }
 
     public void displayProduction() {
-        mainPanel.setVisible(false);
-        //productionGetInfo
+        visualizer.submit(() -> {
+
+            if (productionGetInfo != null) {
+                gameFrame.remove(productionGetInfo);
+            }
+            productionGetInfo = new ProductionGetInfo(player);
+            gameFrame.add(productionGetInfo);
+            gameFrame.revalidate();
+            mainPanel.setVisible(false);
+            productionGetInfo.setVisible(true);
+        });
     }
 
     //TODO: this must be changed we shound't print just the market but the action view

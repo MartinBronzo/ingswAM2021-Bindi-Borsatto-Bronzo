@@ -21,6 +21,7 @@ public class DevSlotCheckBox extends JPanel{
 
     public DevSlotCheckBox(Player player){
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        checkBoxList = new ArrayList<>();
         HashMap<Integer, DevCard> devCards = player.getDevSlots().getTopCards();
         DevCard devCard;
 
@@ -44,11 +45,12 @@ public class DevSlotCheckBox extends JPanel{
                 img = null;
                 try {
                     img = ImageIO.read(new File(cardPath+devCard.getUrl()));
+                    dimg = img.getScaledInstance(200, 300, Image.SCALE_SMOOTH);
+                    cardLabel.setIcon(new ImageIcon(dimg));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                dimg = img.getScaledInstance(200, 300, Image.SCALE_SMOOTH);
-                cardLabel.setIcon(new ImageIcon(dimg));
+
                 verticalPanel.add(cardLabel);
                 verticalPanel.add(Box.createRigidArea(new Dimension(5, 5)));
                 verticalPanel.add(jCheckBox);
@@ -64,7 +66,7 @@ public class DevSlotCheckBox extends JPanel{
 
         for(int i = 0; i < checkBoxList.size(); i++){
             if(checkBoxList.get(i).isSelected())
-                devSlotList.add(i+1);
+                devSlotList.add(i);
         }
 
         return devSlotList;
