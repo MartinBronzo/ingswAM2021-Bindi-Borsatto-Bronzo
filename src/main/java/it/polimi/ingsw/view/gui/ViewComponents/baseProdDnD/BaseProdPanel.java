@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.ViewComponents.baseProdDnD;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.Droppable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -9,7 +10,7 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 
-public class BaseProdPanel extends JPanel {
+public class BaseProdPanel extends JPanel implements Resettable {
     private ResourceType resource;
 
     public BaseProdPanel() {
@@ -51,6 +52,15 @@ public class BaseProdPanel extends JPanel {
         return resource;
     }
 
+    @Override
+    public void resetState() {
+        resource = null;
+        //removes the previous image of the resource and repaints the panel
+        this.remove(getComponentCount()-1);
+        this.add(new JLabel(new ImageIcon("src/main/resources/genericMarble.png")));
+        this.revalidate();
+        this.repaint();
+    }
 }
 
 

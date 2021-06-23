@@ -4,13 +4,14 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.DropChecker;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.MyDropTargetListener;
 import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.InfiniteResourcesDrag;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DragAndDropBaseProd extends JPanel {
+public class DragAndDropBaseProd extends JPanel implements Resettable {
     private InfiniteResourcesDrag infiniteResourcesDrag;
     private List<MyDropTargetListener> targetListeners;
     private BaseProdPanel input1;
@@ -92,4 +93,10 @@ public class DragAndDropBaseProd extends JPanel {
             listener.setCheckDrop(checkDropFunction);
     }
 
+    @Override
+    public void resetState() {
+        input1.resetState();
+        input2.resetState();
+        output.resetState();
+    }
 }
