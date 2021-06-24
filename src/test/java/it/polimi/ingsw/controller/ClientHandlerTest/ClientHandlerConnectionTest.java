@@ -249,7 +249,7 @@ public class ClientHandlerConnectionTest {
 
     @Test
     public void commandTest(){
-        Command command = new Command("Cmd");
+        Command command = new Command("cmd");
         assertEquals("cmd", command.getCmd());
         assertEquals("", command.getParameters());
     }

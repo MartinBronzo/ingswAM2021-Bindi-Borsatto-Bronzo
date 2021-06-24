@@ -75,9 +75,10 @@ public class CliView implements view {
                 break;
             case WAITING4BEGINNINGDECISIONS:
                 printGeneralInfo("We are about to start our marvellous journey togeth'r: hold tight a little longeth'r while thy dreadful competit'rs take their first choices, thee'll lief do the same ");
+                printOthersPlayersName(gameModel, player.getNickName());
                 break;
         }
-        printOthersPlayersName(gameModel, player.getNickName());
+        //printOthersPlayersName(gameModel, player.getNickName());
     }
 
 
@@ -292,10 +293,10 @@ public class CliView implements view {
                                  "    |                            |.\n");
         String fullLine;
         if (gameModel.getPlayers().size() > 1) {
-            fullLine = "Master" + currentPlayer + ", thy dreadful competitors are hither shown: ";
+            fullLine = "Master " + currentPlayer + ", thy dreadful competitors are hither shown: ";
             fullLine = fullLine + getOtherPlayersNicknames(gameModel, currentPlayer);
         } else {
-            fullLine = "Master" + currentPlayer + ", thy dreadful competitor is the Almighty Lorenzo the Magnificent!";
+            fullLine = "Master " + currentPlayer + ", thy dreadful competitor is the Almighty Lorenzo the Magnificent!";
         }
         String[] lines = CliView.splitInLinesBySize(fullLine, 27);
         for (String line : lines) {
@@ -1396,6 +1397,8 @@ public class CliView implements view {
         printCommandAndString(CliCommandType.HOLP, ": cooler way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());
 
         System.out.print("***********************************************************************************\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
     private static void printCommandAndString(CliCommandType command, String line, String backgroundColor){

@@ -611,6 +611,8 @@ public class CliClient extends Client implements Runnable {
                             CliView.printDisconnectionUpdate(modelUpdate.getChangedPlayer(), isPlayerDisconnected(gamemodel, modelUpdate.getChangedPlayer()));
                         }
                         break;
+                    case SOLOGAMERESULT:
+                        break;
                 }
             } catch (NullPointerException e) {
                 CliView.printError(e.getMessage());
