@@ -82,8 +82,8 @@ public class CompletePanelsTest {
 
         resToBeTaken = new HashMap<>();
         resToBeTaken.put(ResourceType.SERVANT, 1);
-        resToBeTaken.put(ResourceType.STONE, 1);
-        resToBeTaken.put(ResourceType.COIN, 1);
+        resToBeTaken.put(ResourceType.STONE, 2);
+        resToBeTaken.put(ResourceType.COIN, 2);
         DevSlot[] slots = new DevSlot[3];
 
         DevSlot devSlot = new DevSlot();
