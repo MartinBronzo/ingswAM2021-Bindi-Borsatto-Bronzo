@@ -263,6 +263,51 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    public static void printSoloGameScores(boolean victory, String message) {
+        System.out.print(AnsiCommands.clear());
+        if(victory)
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+        else
+            System.out.print(AnsiCommands.RED.getTextColor());
+
+        System.out.print("\n   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |                            |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+
+        String[] lines = CliView.splitInLinesBySize(message, 27);
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+        }
+        System.out.print("    |                            |.\n");
+
+        String end;
+        if(victory)
+            end = "My master, thou art our Almighty New Lord!";
+        else
+            end = "My master, Lorenzo the Magnificent is our Eternal Almighty Lord!";
+        lines = CliView.splitInLinesBySize(end, 27);
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+        }
+
+        System.out.print("    |                            |.\n");
+
+        lines = CliView.splitInLinesBySize("May long live the Lord!", 27);
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+        }
+
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+
+    }
+
     /*
     #############################################################################################
     GENERAL PURPOSES METHODS
@@ -1435,6 +1480,8 @@ public class CliView {
 
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
+
+
 
 
 

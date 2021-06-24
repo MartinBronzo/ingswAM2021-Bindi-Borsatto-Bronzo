@@ -375,6 +375,12 @@ public final class PanelManager {
         }
         productionGetResources = new ProductionGetResources(resourcesMap, lastSelectedLeaderList, lastSelectedDevCards, lastSelectedBaseProdParams);
 
+        gameFrame.add(productionGetResources);
+        gameFrame.revalidate();
+
+        buyFromMarketPanel.setVisible(false);
+        productionGetResources.setVisible(true);
+
         //TODO: aggiungere al panel
         //TODO: aggiungere al panel
 

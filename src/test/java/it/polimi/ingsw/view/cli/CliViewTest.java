@@ -660,4 +660,15 @@ class CliViewTest {
         CliView.printDisconnectionUpdate("Jar-Jar", false);
     }
 
+    @Test
+    void printSoloScoreLorenzoWins(){
+        CliView.printSoloGameScores(false, "You lost! Lorenzo bought an entire column of dev cards!");
+        CliView.printSoloGameScores(false, "You lost! Lorenzo made his last vatican report!");
+    }
+
+    @Test
+    void printSoloScoreLorenzoLoses(){
+        CliView.printSoloGameScores(true, "You won against Lorenzo the Magnificent! Your score is: 155  points!");
+    }
+
 }

@@ -1513,20 +1513,20 @@ public class GameController {
         //check if one of the column in dev grid is empty
         for(DevCardColour color : DevCardColour.values()){
             if(soloBoard.isDevCardColumnEmpty(color)){
-                soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo bought an entire column of dev cards");
+                soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo bought an entire column of dev cards!");
                 activePlayer.send(soloGameResultMessage);
                 return;
             }
         }
 
         if(soloBoard.getLorenzoFaithTrackPosition() == faithCells) {
-            soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo made his last vatican report");
+            soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo made his last vatican report!");
             activePlayer.send(soloGameResultMessage);
             return;
         }
 
         if (playerBoard.getPositionOnFaithTrack() == faithCells || playerBoard.getDevSlots().getAllDevCards().size() == devCardNumber){
-            soloGameResultMessage = new SoloGameResultMessage(true, "You won against Lorenzo the Magnificent! Your score is: " + playerBoard.calculateVictoryPoints() + " points");
+            soloGameResultMessage = new SoloGameResultMessage(true, "You won against Lorenzo the Magnificent! Your score is: " + playerBoard.calculateVictoryPoints() + " points!");
             activePlayer.send(soloGameResultMessage);
         }
 
