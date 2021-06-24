@@ -1,15 +1,15 @@
 package it.polimi.ingsw.model.MainBoardTest;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.DevCards.DevCardColour;
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.devCards.DevCardColour;
+import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leaderCard.LeaderCardDeck;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.*;
+import it.polimi.ingsw.model.resources.ResourceType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;

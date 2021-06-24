@@ -1,12 +1,10 @@
 package it.polimi.ingsw.view.GUI.ViewComponents.devGrid;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.model.DevCards.DevDeck;
-import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridContainer;
-import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
-import it.polimi.ingsw.view.readOnlyModel.Board;
+import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.devCards.DevGrid;
+import it.polimi.ingsw.view.gui.mainViews.panels.DevGridContainer;
+import it.polimi.ingsw.view.lightModel.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;

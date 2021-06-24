@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
-import it.polimi.ingsw.model.FaithTrack.ReportNum;
-import it.polimi.ingsw.model.FaithTrack.ReportNumOrder;
+import it.polimi.ingsw.model.faithTrack.ReportNum;
+import it.polimi.ingsw.model.faithTrack.ReportNumOrder;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

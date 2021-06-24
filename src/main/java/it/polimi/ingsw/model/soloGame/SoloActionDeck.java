@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.soloGame;
 
-import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.devCards.DevCardColour;
 import it.polimi.ingsw.model.Interfaces.Deck;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

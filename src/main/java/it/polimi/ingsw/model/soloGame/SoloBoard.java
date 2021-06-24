@@ -3,15 +3,14 @@ package it.polimi.ingsw.model.soloGame;
 import it.polimi.ingsw.exceptions.EmptyDeckException;
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
-import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.model.DevCards.DevCardColour;
-import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.model.FaithTrack.FaithLevelBasic;
-import it.polimi.ingsw.model.MainBoard;
+import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.devCards.DevCardColour;
+import it.polimi.ingsw.model.devCards.DevGrid;
+import it.polimi.ingsw.model.faithTrack.FaithLevelBasic;
+import it.polimi.ingsw.model.board.MainBoard;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.SourceLocator;
 import java.io.File;
 import java.io.IOException;
 

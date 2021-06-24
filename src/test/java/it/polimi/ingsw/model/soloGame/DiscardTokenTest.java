@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.soloGame;
 
-import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.devCards.DevCardColour;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

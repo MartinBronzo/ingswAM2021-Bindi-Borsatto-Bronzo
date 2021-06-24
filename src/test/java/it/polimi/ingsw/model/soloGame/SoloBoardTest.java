@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.soloGame;
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.devCards.DevCardColour;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;

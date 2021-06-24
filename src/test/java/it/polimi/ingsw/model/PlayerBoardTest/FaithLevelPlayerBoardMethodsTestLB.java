@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.PlayerBoardTest;
 
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
-import it.polimi.ingsw.model.FaithTrack.*;
-import it.polimi.ingsw.model.PlayerBoard;
+import it.polimi.ingsw.model.faithTrack.*;
+import it.polimi.ingsw.model.board.PlayerBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

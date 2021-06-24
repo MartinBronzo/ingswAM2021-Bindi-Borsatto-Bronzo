@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
-import it.polimi.ingsw.view.readOnlyModel.Game;
+import it.polimi.ingsw.view.lightModel.Game;
 
 public class ModelUpdate implements ResponseInterface {
     private Game game;

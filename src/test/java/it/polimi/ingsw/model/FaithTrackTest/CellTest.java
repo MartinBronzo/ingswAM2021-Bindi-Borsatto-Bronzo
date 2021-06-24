@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
-import it.polimi.ingsw.model.FaithTrack.*;
+import it.polimi.ingsw.model.faithTrack.*;
 import it.polimi.ingsw.model.Interfaces.Observer;
 import org.junit.jupiter.api.Test;
 

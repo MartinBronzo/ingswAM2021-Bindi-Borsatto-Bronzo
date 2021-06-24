@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.fromClient;
 
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.resources.ResourceType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

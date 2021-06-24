@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Market.Market;
-import it.polimi.ingsw.model.Market.MarketFactory;
+import it.polimi.ingsw.model.market.Market;
+import it.polimi.ingsw.model.market.MarketFactory;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 

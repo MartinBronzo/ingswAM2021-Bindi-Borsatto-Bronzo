@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.MainBoardTest;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.MainBoard;
+import it.polimi.ingsw.model.board.MainBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;

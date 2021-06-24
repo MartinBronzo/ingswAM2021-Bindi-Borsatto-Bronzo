@@ -1,7 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.*;
+import it.polimi.ingsw.view.cli.StringToMessage;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

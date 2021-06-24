@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
-import it.polimi.ingsw.model.FaithTrack.*;
+import it.polimi.ingsw.model.faithTrack.*;
 import it.polimi.ingsw.model.Interfaces.Observer;
-import it.polimi.ingsw.model.MainBoard;
+import it.polimi.ingsw.model.board.MainBoard;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 

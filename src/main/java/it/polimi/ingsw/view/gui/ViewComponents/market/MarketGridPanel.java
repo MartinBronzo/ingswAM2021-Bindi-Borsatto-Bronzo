@@ -1,10 +1,9 @@
 package it.polimi.ingsw.view.gui.ViewComponents.market;
 
 import it.polimi.ingsw.model.marble.MarbleType;
-import it.polimi.ingsw.view.gui.ViewComponents.buttons.BackButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
-import it.polimi.ingsw.view.gui.panels.PanelManager;
-import it.polimi.ingsw.view.readOnlyModel.Board;
+import it.polimi.ingsw.view.gui.mainViews.PanelManager;
+import it.polimi.ingsw.view.lightModel.Board;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

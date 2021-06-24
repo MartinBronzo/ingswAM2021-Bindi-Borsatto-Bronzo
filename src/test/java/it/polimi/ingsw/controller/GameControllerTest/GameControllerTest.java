@@ -6,8 +6,8 @@ import it.polimi.ingsw.controller.enums.GameState;
 import it.polimi.ingsw.controller.enums.PlayerState;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
-import it.polimi.ingsw.model.FaithTrack.ReportNum;
-import it.polimi.ingsw.model.MainBoard;
+import it.polimi.ingsw.model.faithTrack.ReportNum;
+import it.polimi.ingsw.model.board.MainBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

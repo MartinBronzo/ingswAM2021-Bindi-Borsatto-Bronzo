@@ -1,14 +1,14 @@
 package it.polimi.ingsw.model.PlayerBoardTest;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.DevCards.DevCardColour;
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
-import it.polimi.ingsw.model.PlayerBoard;
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.devCards.DevCardColour;
+import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.model.board.PlayerBoard;
+import it.polimi.ingsw.model.resources.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

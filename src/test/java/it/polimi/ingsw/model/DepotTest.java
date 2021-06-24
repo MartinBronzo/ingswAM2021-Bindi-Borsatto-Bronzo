@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.model.resources.Depot;
+import it.polimi.ingsw.model.resources.ResourceType;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

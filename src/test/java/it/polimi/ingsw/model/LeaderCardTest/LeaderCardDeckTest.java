@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.LeaderCardTest;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardDeck;
+import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leaderCard.LeaderCardDeck;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 

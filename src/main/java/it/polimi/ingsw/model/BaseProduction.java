@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.resources.ResourceType;
+
 import java.util.*;
 
 /**

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
 import it.polimi.ingsw.exceptions.LastVaticanReportException;
-import it.polimi.ingsw.model.FaithTrack.FaithLevelBasic;
-import it.polimi.ingsw.model.FaithTrack.FaithTrack;
-import it.polimi.ingsw.model.FaithTrack.PopeCell;
-import it.polimi.ingsw.model.FaithTrack.ReportNumOrder;
+import it.polimi.ingsw.model.faithTrack.FaithLevelBasic;
+import it.polimi.ingsw.model.faithTrack.FaithTrack;
+import it.polimi.ingsw.model.faithTrack.PopeCell;
+import it.polimi.ingsw.model.faithTrack.ReportNumOrder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

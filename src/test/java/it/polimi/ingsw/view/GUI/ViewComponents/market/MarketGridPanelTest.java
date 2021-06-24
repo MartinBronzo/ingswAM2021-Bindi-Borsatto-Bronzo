@@ -1,25 +1,15 @@
 package it.polimi.ingsw.view.GUI.ViewComponents.market;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.model.Market.Market;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.marble.MarbleType;
-import it.polimi.ingsw.view.cli.CliView;
-import it.polimi.ingsw.view.gui.ViewComponents.devGrid.DevGridPanel;
-import it.polimi.ingsw.view.gui.ViewComponents.market.MarketGridPanel;
-import it.polimi.ingsw.view.readOnlyModel.Board;
+import it.polimi.ingsw.view.lightModel.Board;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 class MarketGridPanelTest {
     Board board;

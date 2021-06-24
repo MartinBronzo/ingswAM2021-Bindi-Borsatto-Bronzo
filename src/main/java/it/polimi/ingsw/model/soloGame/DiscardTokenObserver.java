@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.soloGame;
 
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
-import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.devCards.DevCardColour;
 
 /**
  * This class is the observer of discardTokens that applies the effect when notified

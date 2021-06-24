@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.NotEnoughResourcesException;
+import it.polimi.ingsw.model.resources.ResourceType;
+import it.polimi.ingsw.model.resources.Strongbox;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

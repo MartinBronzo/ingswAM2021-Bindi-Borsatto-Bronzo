@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.LeaderCardTest;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.*;
+import it.polimi.ingsw.model.resources.ResourceType;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

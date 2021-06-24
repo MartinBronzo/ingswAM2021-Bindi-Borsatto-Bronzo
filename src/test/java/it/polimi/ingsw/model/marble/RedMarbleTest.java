@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.marble;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.Effect;
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.Effect;
+import it.polimi.ingsw.model.resources.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

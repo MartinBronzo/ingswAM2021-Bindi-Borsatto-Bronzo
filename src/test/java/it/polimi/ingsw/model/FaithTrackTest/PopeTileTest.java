@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.FaithTrackTest;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.model.FaithTrack.FaithTrack;
-import it.polimi.ingsw.model.FaithTrack.PopeTile;
-import it.polimi.ingsw.model.FaithTrack.ReportNum;
-import it.polimi.ingsw.model.FaithTrack.ReportNumOrder;
+import it.polimi.ingsw.model.faithTrack.FaithTrack;
+import it.polimi.ingsw.model.faithTrack.PopeTile;
+import it.polimi.ingsw.model.faithTrack.ReportNum;
+import it.polimi.ingsw.model.faithTrack.ReportNumOrder;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 

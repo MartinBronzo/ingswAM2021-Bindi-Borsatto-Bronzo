@@ -1,39 +1,48 @@
 package it.polimi.ingsw.view.GUI.panels;
 
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
-import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.model.DevCards.DevGrid;
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.ExtraSlotLeaderEffect;
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.ExtraSlotLeaderEffect;
+import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.view.gui.GuiClient;
-import it.polimi.ingsw.view.gui.ViewComponents.*;
-import it.polimi.ingsw.view.gui.ViewComponents.DepotDragDrop.*;
-import it.polimi.ingsw.view.gui.ViewComponents.CheckMoveToLeader;
-import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveBetweenShelves;
-import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveLeaderToShelf;
-import it.polimi.ingsw.view.gui.ViewComponents.MoveResourcesElements.MoveShelfToLeader;
-import it.polimi.ingsw.view.gui.ViewComponents.OldVersion.CollectMoveToLeaderOld;
-import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.DepotOnlyView;
-import it.polimi.ingsw.view.gui.ViewComponents.OnlyViewPanels.StrongBoxOnlyView;
+import it.polimi.ingsw.view.gui.ViewComponents.depot.depotDrag.DepotDrag;
+import it.polimi.ingsw.view.gui.ViewComponents.depot.depotDrop.*;
+import it.polimi.ingsw.view.gui.ViewComponents.depot.moveResources.MoveBetweenShelves;
+import it.polimi.ingsw.view.gui.ViewComponents.depot.moveResources.MoveLeaderToShelf;
+import it.polimi.ingsw.view.gui.ViewComponents.depot.moveResources.MoveShelfToLeader;
+import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.leaderCardsDrag.DragLeaderCards;
+import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.leaderCardsDrop.*;
+import it.polimi.ingsw.view.gui.ViewComponents.oldVersion.CollectCostsChoices;
+import it.polimi.ingsw.view.gui.ViewComponents.oldVersion.CollectMoveToLeaderOld;
+import it.polimi.ingsw.view.gui.ViewComponents.depot.depotViews.DepotOnlyView;
+import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrag.InfiniteResourcesDrag;
+import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrag.LimitedResourcesDrag;
+import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrop.CheckLimitedDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrop.DiscardedResDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrop.PanelDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrop.RegisterLimitedDropInPlainPanel;
+import it.polimi.ingsw.view.gui.ViewComponents.strongbox.StrongBoxDrag;
+import it.polimi.ingsw.view.gui.ViewComponents.strongbox.StrongBoxDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.strongbox.StrongBoxOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
-import it.polimi.ingsw.view.gui.panels.ActualPlayerBoardPanel;
-import it.polimi.ingsw.view.gui.panels.BeginningDecisionsPanel;
-import it.polimi.ingsw.view.gui.panels.PanelManager;
-import it.polimi.ingsw.view.readOnlyModel.Board;
-import it.polimi.ingsw.view.readOnlyModel.Game;
-import it.polimi.ingsw.view.readOnlyModel.Player;
-import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
+import it.polimi.ingsw.view.gui.ViewComponents.utils.DumbCheckDrop;
+import it.polimi.ingsw.view.gui.ViewComponents.utils.MyDragGestureListener;
+import it.polimi.ingsw.view.gui.ViewComponents.utils.MyDropTargetListener;
+import it.polimi.ingsw.view.gui.ViewComponents.utils.ResetState;
+import it.polimi.ingsw.view.gui.mainViews.panels.BeginningDecisionsPanel;
+import it.polimi.ingsw.view.gui.mainViews.PanelManager;
+import it.polimi.ingsw.view.lightModel.Game;
+import it.polimi.ingsw.view.lightModel.Player;
+import it.polimi.ingsw.view.lightModel.player.DepotShelf;
 import org.xml.sax.SAXException;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -372,7 +381,7 @@ public class Test {
         resToBeTaken.remove(ResourceType.SERVANT);
         CheckLimitedDrop checker = new CheckLimitedDrop(resToBeTaken);
         RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBox, new DepotDrag(), pDrop);
-        MyDropTargetListener dListener = new MyDropTargetListener(pDrop,registerDrop, checker);
+        MyDropTargetListener dListener = new MyDropTargetListener(pDrop, registerDrop, checker);
         pDrop.init(dListener);
         frame.add(pDrop, BorderLayout.PAGE_END);
 
@@ -1304,7 +1313,7 @@ public class Test {
 /*
 package it.polimi.ingsw.view.GUI.panels;
 
-        import it.polimi.ingsw.model.ResourceType;
+        import it.polimi.ingsw.model.resources.ResourceType;
         import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 
         import javax.swing.*;

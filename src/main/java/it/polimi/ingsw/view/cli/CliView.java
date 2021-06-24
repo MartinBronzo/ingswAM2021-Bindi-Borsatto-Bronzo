@@ -1,33 +1,32 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.controller.enums.PlayerState;
-import it.polimi.ingsw.model.DevCards.DevCard;
-import it.polimi.ingsw.model.DevCards.DevCardColour;
-import it.polimi.ingsw.model.DevCards.DevSlot;
-import it.polimi.ingsw.model.DevCards.DevSlots;
-import it.polimi.ingsw.model.FaithTrack.PopeTile;
-import it.polimi.ingsw.model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColor;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.CardRequirementResource;
-import it.polimi.ingsw.model.LeaderCard.LeaderCardRequirements.Requirement;
-import it.polimi.ingsw.model.LeaderCard.leaderEffects.*;
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.devCards.DevCard;
+import it.polimi.ingsw.model.devCards.DevCardColour;
+import it.polimi.ingsw.model.devCards.DevSlot;
+import it.polimi.ingsw.model.devCards.DevSlots;
+import it.polimi.ingsw.model.faithTrack.PopeTile;
+import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementColor;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementColorAndLevel;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementResource;
+import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.Requirement;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.*;
+import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.model.marble.MarbleType;
 import it.polimi.ingsw.model.soloGame.DiscardToken;
 import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
-import it.polimi.ingsw.view.readOnlyModel.Board;
-import it.polimi.ingsw.view.readOnlyModel.Game;
-import it.polimi.ingsw.view.readOnlyModel.Player;
-import it.polimi.ingsw.view.readOnlyModel.player.DepotShelf;
-import it.polimi.ingsw.view.view;
+import it.polimi.ingsw.view.lightModel.Board;
+import it.polimi.ingsw.view.lightModel.Game;
+import it.polimi.ingsw.view.lightModel.Player;
+import it.polimi.ingsw.view.lightModel.player.DepotShelf;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CliView implements view {
+public class CliView {
 
      /*
     #############################################################################################

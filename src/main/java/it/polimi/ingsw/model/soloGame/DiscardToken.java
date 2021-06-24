@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.soloGame;
 
 import it.polimi.ingsw.exceptions.EmptyDevColumnException;
-import it.polimi.ingsw.model.DevCards.DevCardColour;
+import it.polimi.ingsw.model.devCards.DevCardColour;
 
 import java.util.ArrayList;
 import java.util.List;
