@@ -180,7 +180,8 @@ public class Depot {
 
         sourceValue = depotLevel.get(shelves[sourceShelf - 1]);
         if (sourceValue > destShelf)
-            throw new NotEnoughSpaceException("Not enough space in destination shelf", destShelf - depotLevel.get(shelves[destShelf - 1]));
+            throw new IllegalArgumentException("Not enough space in destination shelf");
+
 
         if (shelves[destShelf - 1] != null) {
             destValue = depotLevel.get(shelves[destShelf - 1]);

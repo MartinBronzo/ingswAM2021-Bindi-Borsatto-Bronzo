@@ -1533,7 +1533,7 @@ public class GameController {
             activePlayer.send(soloGameResultMessage);
         }
 
-        //todo: GamesManagerSingleton.getInstance().deleteGame(this); (?)
+        GamesManagerSingleton.getInstance().deleteGame(this);
         //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
