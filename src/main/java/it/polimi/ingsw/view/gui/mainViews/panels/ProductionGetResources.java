@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.mainViews.panels;
 
 import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.BaseProductionParams;
+import it.polimi.ingsw.view.gui.ViewComponents.buttons.BackButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.CancelButton;
 import it.polimi.ingsw.view.gui.ViewComponents.buttons.SubmitButton;
 import it.polimi.ingsw.view.gui.ViewComponents.depot.depotDrag.DepotDrag;
@@ -12,6 +13,7 @@ import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrop.PanelDrop
 import it.polimi.ingsw.view.gui.ViewComponents.strongbox.StrongBoxDrag;
 import it.polimi.ingsw.view.gui.ViewComponents.utils.InstructionPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.utils.ResetState;
+import it.polimi.ingsw.view.gui.mainViews.PanelManager;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -68,9 +70,13 @@ public class ProductionGetResources extends JPanel {
         else
             cancel.addActionListener(new ResetState(depotDrag, strongBox, pDrop));
 
+        //Creating the Back button
+        BackButton back = new BackButton("Back");
+        back.addActionListener(event -> PanelManager.getInstance().showPlayerBoard(this));
+
         //Creating the InfoBox
         //InstructionPanelFree infoBox = new InstructionPanelFree(this.createDescription(resToBeTaken), submit, cancel);
-        InstructionPanel infoBox = new InstructionPanel(this.createDescription(resToBeTaken), submit, cancel);
+        InstructionPanel infoBox = new InstructionPanel(this.createDescription(resToBeTaken), submit, cancel, back);
 
         //Adding all the elements to the panel
 

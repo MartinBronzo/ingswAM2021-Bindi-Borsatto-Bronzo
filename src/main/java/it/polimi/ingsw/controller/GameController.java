@@ -1060,6 +1060,7 @@ public class GameController {
         try {
             //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
             devCard = mainBoard.drawDevCardFromDeckInDevGrid(buyDevCard.getRow() - 1, buyDevCard.getCol() - 1);
+            System.out.println(devCard.toString());
             cost = mainBoard.applyDiscountToDevCard(devCard, effects);
         } catch (IllegalArgumentException e) {
             this.rollbackState();
@@ -1073,6 +1074,7 @@ public class GameController {
         HashMap<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
         HashMap<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
 
+
         removeSelectedResources(cost, playerBoard, depotRes, resToLeader, strongboxRes);
 
         //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
@@ -1080,6 +1082,9 @@ public class GameController {
             playerBoard.addCardToDevSlot(buyDevCard.getDevSlot() - 1, devCard);
         } catch (EndOfGameException e) {
             this.setLastTurn();
+        } catch (IllegalArgumentException e ){
+            this.rollbackState();
+            throw new IllegalArgumentException(e.getMessage());
         }
 
         Game game = new Game();
@@ -1254,6 +1259,9 @@ public class GameController {
 
     private void removeSelectedResources(HashMap<ResourceType, Integer> cost, PlayerBoard playerBoard, List<DepotParams> depotRes, HashMap<ResourceType, Integer> resToLeader, HashMap<ResourceType, Integer> strongboxRes) throws IllegalActionException {
         //check if depot params are correct
+        System.out.println("COST\n");
+        for(Map.Entry<ResourceType, Integer> e : cost.entrySet())
+            System.out.println(e.getKey() + " "  + e.getValue());
         for (DepotParams e : depotRes) {
             if (cost.get(e.getResourceType()) == null || cost.get(e.getResourceType()) < e.getQt()) {
                 this.rollbackState();
@@ -1660,6 +1668,11 @@ public class GameController {
         //this.modelCopy = new MainBoard(mainBoard);
         this.modelCopy = mainBoard.getClone();
 
+        System.out.println("SAVE STATE\nDEVGRID");
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 4; j++)
+                System.out.println(modelCopy.getDevMatrix()[i][j]);
+
 
         //Saves a partial copy of the players in the game keeping the same order as the one stored in this GameController
         this.clientHandlersCopy = new ArrayList<>();
@@ -1681,6 +1694,10 @@ public class GameController {
             e.setValue(mainBoard.getPlayerBoard(i));
             i++;
         }
+        System.out.println("RESET STATE\nDEVGRID");
+        for(int k = 0; k < 3; k++)
+            for(int j = 0; j < 4; j++)
+                System.out.println(modelCopy.getDevMatrix()[k][j]);
 
         //Changes back the values of the players
         i = 0;
