@@ -364,6 +364,7 @@ public final class PanelManager {
         this.lastSelectedBaseProdParams = baseProd;
 
         this.writeMessage(new Command("getProductionCost", new GetProductionCostMessage(devCards,leader, baseProd)));
+        //TODO gestire cambio view
     }
 
     private void manageProductionResources(String responseContent) {
