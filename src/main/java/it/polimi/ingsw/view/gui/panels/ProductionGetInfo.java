@@ -51,7 +51,8 @@ public class ProductionGetInfo extends JPanel {
         JButton reset = new CancelButton();
         reset.setText("Reset");
         reset.addActionListener(e -> {
-            //TODO reset view
+            dragAndDropBaseProd.resetState();
+            //TODO: ci sono altre cose da resettare?
         });
 
         JButton submit = new SubmitButton();

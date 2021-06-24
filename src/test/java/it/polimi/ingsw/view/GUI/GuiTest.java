@@ -264,9 +264,21 @@ public class GuiTest {
     }*/
 
     private static void baseProduction(){
+        gameFrame.setLayout(new BorderLayout());
         dragAndDropBaseProd = new DragAndDropBaseProd();
         dragAndDropBaseProd.setCheckDropFunction(new CheckBaseProd(dragAndDropBaseProd));
-        gameFrame.add(dragAndDropBaseProd);
+        gameFrame.add(dragAndDropBaseProd, BorderLayout.CENTER);
+        JButton button = new CancelButton("Reset");
+        button.addActionListener((e) -> {
+            dragAndDropBaseProd.resetState();
+        });
+        SubmitButton submit = new SubmitButton("Submit");
+        submit.addActionListener((e) -> {
+            System.out.println("INPUTS: " + dragAndDropBaseProd.getInputs());
+            System.out.println("OUTPUT: " + dragAndDropBaseProd.getOutput());
+        });
+        gameFrame.add(button, BorderLayout.PAGE_END);
+        gameFrame.add(submit, BorderLayout.LINE_END);
         gameFrame.revalidate();
 
     }
