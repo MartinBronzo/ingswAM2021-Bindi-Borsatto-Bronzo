@@ -378,7 +378,7 @@ public final class PanelManager {
         gameFrame.add(productionGetResources);
         gameFrame.revalidate();
 
-        buyFromMarketPanel.setVisible(false);
+        productionGetInfo.setVisible(false);
         productionGetResources.setVisible(true);
 
         //TODO: aggiungere al panel
@@ -638,6 +638,8 @@ public final class PanelManager {
         gameFrame.remove(moveResourceChoice);
         gameFrame.remove(marketPlacingResources);
         gameFrame.remove(devGridPayingCost);
+        if(productionGetResources != null)
+            gameFrame.remove(productionGetResources);
 
         gameFrame.revalidate();
 
