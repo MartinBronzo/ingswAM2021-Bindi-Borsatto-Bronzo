@@ -568,7 +568,8 @@ public class CliClient extends Client implements Runnable {
                             List<Map.Entry<String, Integer>> results = new LinkedList<>(message.getResults().entrySet());
                             results.sort((x, y) -> y.getValue().compareTo(x.getValue()));
                             CliView.printFinalScores(results);
-                            //TODO: dobbiamo chiudere il client ????
+                            sendMessage(new Command("quit"));
+                            //TODO: funziona la chiusura del client?
                         }
                         break;
                    /* case SETBEGINNINGDECISIONS:
@@ -606,6 +607,13 @@ public class CliClient extends Client implements Runnable {
                         }
                         break;
                     case SOLOGAMERESULT:
+                        synchronized (this){
+                            SoloGameResultMessage message = gson.fromJson(responseContent, SoloGameResultMessage.class);
+                            CliView.printSoloGameScores(message.isVictory(), message.getMessage());
+                            sendMessage(new Command("quit"));
+                            //TODO: funziona la chiusura del client?
+                        }
+
                         break;
                 }
             } catch (NullPointerException e) {

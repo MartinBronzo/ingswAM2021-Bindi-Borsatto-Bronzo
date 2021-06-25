@@ -82,8 +82,8 @@ public class CompletePanelsTest {
 
         resToBeTaken = new HashMap<>();
         resToBeTaken.put(ResourceType.SERVANT, 1);
-        resToBeTaken.put(ResourceType.STONE, 1);
-        resToBeTaken.put(ResourceType.COIN, 1);
+        resToBeTaken.put(ResourceType.STONE, 2);
+        resToBeTaken.put(ResourceType.COIN, 2);
         DevSlot[] slots = new DevSlot[3];
 
         DevSlot devSlot = new DevSlot();
@@ -108,7 +108,7 @@ public class CompletePanelsTest {
         player.setDevSlots(fullSlot);
     }
 
-    public static void main(String[] args) throws NegativeQuantityException {
+    /*public static void main(String[] args) throws NegativeQuantityException {
         CompletePanelsTest test = new CompletePanelsTest();
         test.init();
 
@@ -116,7 +116,7 @@ public class CompletePanelsTest {
         //test.checkMarketPlacingResources();
         //test.checkDevGridPayingCost();
         test.checkGetProductionCost();
-    }
+    }*/
 
     private void checkMarketPlacingResources() {
         JFrame frame = new JFrame();

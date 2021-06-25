@@ -375,6 +375,12 @@ public final class PanelManager {
         }
         productionGetResources = new ProductionGetResources(resourcesMap, lastSelectedLeaderList, lastSelectedDevCards, lastSelectedBaseProdParams);
 
+        gameFrame.add(productionGetResources);
+        gameFrame.revalidate();
+
+        productionGetInfo.setVisible(false);
+        productionGetResources.setVisible(true);
+
         //TODO: aggiungere al panel
         //TODO: aggiungere al panel
 
@@ -632,6 +638,8 @@ public final class PanelManager {
         gameFrame.remove(moveResourceChoice);
         gameFrame.remove(marketPlacingResources);
         gameFrame.remove(devGridPayingCost);
+        if(productionGetResources != null)
+            gameFrame.remove(productionGetResources);
 
         gameFrame.revalidate();
 

@@ -263,6 +263,51 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    public static void printSoloGameScores(boolean victory, String message) {
+        System.out.print(AnsiCommands.clear());
+        if(victory)
+            System.out.print(AnsiCommands.GREEN.getTextColor());
+        else
+            System.out.print(AnsiCommands.RED.getTextColor());
+
+        System.out.print("\n   ______________________________\n" +
+                " / \\                             \\.\n");
+        System.out.print("|   |                            |.\n");
+        System.out.print(" \\_ |                            |.\n" +
+                "    |                            |.\n");
+
+        String[] lines = CliView.splitInLinesBySize(message, 27);
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+        }
+        System.out.print("    |                            |.\n");
+
+        String end;
+        if(victory)
+            end = "My master, thou art our Almighty New Lord!";
+        else
+            end = "My master, Lorenzo the Magnificent is our Eternal Almighty Lord!";
+        lines = CliView.splitInLinesBySize(end, 27);
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+        }
+
+        System.out.print("    |                            |.\n");
+
+        lines = CliView.splitInLinesBySize("May long live the Lord!", 27);
+        for (String line : lines) {
+            System.out.print("    | " + line + " ".repeat(27 - line.length()) + "|.\n");
+        }
+
+        System.out.print(
+                "    |   _________________________|___\n" +
+                        "    |  /                            /.\n" +
+                        "    \\_/____________________________/.\n");
+
+        System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+
+    }
+
     /*
     #############################################################################################
     GENERAL PURPOSES METHODS
@@ -1373,31 +1418,59 @@ public class CliView {
         System.out.print("My Master, thee mustn't feel lost: thou devoted servant is here to holp you out!\n");
         System.out.print("Hither presented the commands are:\n");
         printCommandAndString(CliCommandType.QUIT, ": disconnects you from the game", AnsiCommands.BLUE.getTextColor());
+            printCommandExampleNoRule("QUIT", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.SETNICKNAME, ": sets your nickname", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("SETNICKNAME: NAME__OF_PLAYER", "SETNICKNAME: Jar-Jar", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.SETNUMOFPLAYERS, ": sets the number of the players in your game", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("SETNUMOFPLAYERS: NUM__OF_PLAYERS;", "SETNUMOFPLAYERS: 4;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.CONFIGURESTART, ": plays your beginning decisions", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("CONFIGURESTART: LEADER_CARD_INDEX, LEADER_CARD_INDEX; RESOURCE_TYPE QUANTITY SHELF_NUM [, ...];", "CONFIGURESTART: 1, 3; COIN 1 2, STONE 1 3;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.GETRESOURCESFROMMARKET, ": tells you how many resources you'd get from the market", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("GETRESOURCESFROMMARKET: row/column NUMBER_ROW/COLUMN; [LEADER_CARD_INDEX_LIST];", "GETRESOURCESFROMMARKET: row 3; 1, 2, 4;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.BUYFROMMARKET, ": gets you the resources from the market", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("BUYFROMMARKET: row/column NUM_ROW/COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];", "BUYFROMMARKET: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.GETDEVCARDCOST, ": tells you how much a DevCard would cost", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("GETDEVCARDCOST: NUM_COLUMN; NUM_ROW; [LEADER_CARD_LIST];", "GETDEVCARDCOST: 3; 2; 1, 2, 4;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.BUYDEVCARD, ": buys a DevCard", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("BUYDEVCARD: row/column NUM_ROW/COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];", "BUYDEVCARD: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.GETPRODUCTIONCOST, ": tells you how much producing would cost you", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("GETPRODUCTIONCOST: DEV_CARD_LIST; [LEADER_CARD_LIST]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT;", "GETPRODUCTIONCOST: 1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.ACTIVATEPRODUCTION, ": activates your production", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("ACTIVATEPRODUCTION: DEV_CARD_LIST; [LEADER_CARD RESOURCE_OUTPUT, ...]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT; DEPOT_RES QT SHELF_NUM [, ...]; LEADER_DEPOT_RES QT [, ...]; STRONGBOX_RES QT;", "ACTIVATEPRODUCTION: 1, 2, 4; 1 SHIELD, 2 STONE; FALSE, COIN SERVANT, STONE; COIN 2 2; SERVANT 1; STONE 3;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.DISCARDLEADER, ": discards a LeaderCard", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("DISCARDLEADER: LEADER_CARD_INDEX;", "DISCARDLEADER: 2;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.ACTIVATELEADER, ": activates a LeaderCard", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("ACTIVATELEADER: LEADER_CARD_INDEX;", "ACTIVATELEADER: 2;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.MOVEBETWEENSHELF, ": moves resources between shelves", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("MOVEBETWEENSHELF:  SOURCE_SHELF; DEST_SHELF;", "MOVEBETWEENSHELF: 1; 2;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.MOVELEADERTOSHELF, ": moves resources from Leader Depots to the Depot shelves", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("MOVELEADERTOSHELF: LEADER_DEPOT_RES; QT; DEST_SHELF;", "MOVELEADERTOSHELF: COIN; 2; 1;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.MOVESHELFTOLEADER, ": moves resources from Depot shelves to the Leader Depots", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("MOVESHELFTOLEADER: SOURCE_SHELF; QT;", "MOVESHELFTOLEADER: 2; 1;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.SEEPLAYERBOARD, ": lets you see the public PlayerBoard of another player", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("SEEPLAYERBOARD NAME__OF__PLAYER", "SEEPLAYERBOARD Palpatine", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.PRINTMYBOARD, ": lets you see your PlayerBoard", AnsiCommands.BLUE.getTextColor());
+            printCommandExampleNoRule("PRINTMYBOARD", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.ENDTURN, ": ends your turn", AnsiCommands.BLUE.getTextColor());
+            printCommandExampleNoRule("ENDTURN", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.SEEOTHERSPLAYERSNAMES, ": tells your your competitors' names", AnsiCommands.BLUE.getTextColor());
-        printCommandAndString(CliCommandType.MOVESHELFTOLEADER, ": moves resources from Depot shelves to the Leader Depots", AnsiCommands.BLUE.getTextColor());
+            printCommandExampleNoRule("SEEOTHERSPLAYERSNAMES", AnsiCommands.BLUE.getTextColor());
+        //printCommandAndString(CliCommandType.MOVESHELFTOLEADER, ": moves resources from Depot shelves to the Leader Depots", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.HELP, ": less cool way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());
+            printCommandExampleNoRule("HELP", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.HOLP, ": cooler way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());
+            printCommandExampleNoRule("HOLP", AnsiCommands.BLUE.getTextColor());
 
         System.out.print("***********************************************************************************\n");
 
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
+    }
+
+    private static void printCommandExampleNoRule(String structure, String background){
+        System.out.print("        Ex: ");
+        System.out.print(AnsiCommands.PURPLE.getTextColor());
+        System.out.print(structure + "\n");
+        System.out.print(background);
     }
 
     private static void printCommandAndString(CliCommandType command, String line, String backgroundColor){
@@ -1406,6 +1479,19 @@ public class CliView {
         System.out.print(backgroundColor);
         System.out.print(line + "\n");
     }
+
+    private static void printCommandExample(String structure, String example, String backgroundColor){
+        System.out.print("        Rule: ");
+        System.out.print(AnsiCommands.PURPLE.getTextColor());
+        System.out.print(structure);
+        System.out.print(backgroundColor);
+        System.out.print("   Ex: ");
+        System.out.print(AnsiCommands.PURPLE.getTextColor());
+        System.out.print(example + "\n");
+        System.out.print(backgroundColor);
+    }
+
+
 
     public static void printDisconnectionUpdate(String changedPlayerName, boolean disconnected) {
         System.out.print(AnsiCommands.clear());
@@ -1435,6 +1521,8 @@ public class CliView {
 
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
+
+
 
 
 

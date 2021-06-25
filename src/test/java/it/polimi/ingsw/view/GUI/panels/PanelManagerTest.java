@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 class PanelManagerTest {
-
+/*
     Board board;
     DevGrid devGrid;
     File xmlConfig;
@@ -126,5 +126,5 @@ class PanelManagerTest {
         System.in.read();
     }
 
-
+*/
 }

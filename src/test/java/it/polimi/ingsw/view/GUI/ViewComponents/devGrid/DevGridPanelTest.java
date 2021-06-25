@@ -14,7 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-class DevGridPanelTest {
+class DevGridPanelTest {/*
     Board board;
     DevGrid devGrid;
     File xmlDevCardsConfig;
@@ -47,5 +47,5 @@ class DevGridPanelTest {
         //System.in.read();
 
     }
-
+*/
 }

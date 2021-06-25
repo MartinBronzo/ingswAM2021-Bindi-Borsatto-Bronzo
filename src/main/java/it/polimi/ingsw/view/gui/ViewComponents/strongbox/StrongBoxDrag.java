@@ -21,11 +21,13 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
     private List<JLabel> resources;
     //DragGestureListenerOneShot dlistener;
     MyDragGestureListener dlistener;
+    private HashMap<ResourceType, Integer> storedHere;
 
     public StrongBoxDrag(){
         super();
         this.setBorder(new TitledBorder("Drag Resources from this strongbox"));
         this.resources = new ArrayList<>();
+        this.storedHere = new HashMap<>();
     }
 
     @Deprecated
@@ -48,7 +50,7 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
         ImageIcon resource;
         JLabel label;
         DragSource ds;
-        for(int i = 0; i < quantity; i++){
+        /*for(int i = 0; i < quantity; i++){
             resource = new ImageIcon(DepotDrop.getImagePathFromResource(type));
             resource.setDescription("strongbox " + type);
             label = new JLabel(resource);
@@ -57,7 +59,20 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
             ds.createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, dlistener);
             label.setTransferHandler(new TransferHandler("label"));
             this.add(label);
-        }
+        }*/
+        resource = new ImageIcon(DepotDrop.getImagePathFromResource(type));
+        resource.setDescription("strongbox " + type);
+        label = new JLabel(resource);
+        label.setText(String.valueOf(quantity));
+        label.setBounds(10,10,45,45);
+        label.setFont(new Font("Serif", Font.BOLD, 30));
+        label.setForeground(Color.BLUE);
+        this.resources.add(label);
+        ds = new DragSource();
+        ds.createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, dlistener);
+        label.setTransferHandler(new TransferHandler("label"));
+        this.add(label);
+        this.storedHere.put(type, quantity);
     }
 
     @Override
@@ -65,6 +80,7 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
         for(JLabel label: this.resources)
             this.remove(label);
         this.resources = new ArrayList<>();
+        this.storedHere = new HashMap<>();
         this.fillStrongBox(PanelManager.getInstance().getStrongBox());
         this.revalidate();
         this.repaint();
@@ -78,8 +94,13 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
 
     @Override
     public void updateAfterDrop(String info) {
-        JLabel draggedAway = this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get();
-        draggedAway.setVisible(false);
+        /*JLabel draggedAway = this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get();
+        draggedAway.setVisible(false);*/
+        this.storedHere.put(ResourceType.valueOf(info), this.storedHere.get(ResourceType.valueOf(info)) - 1);
+        if(this.storedHere.get(ResourceType.valueOf(info)) == 0){
+            this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get().setVisible(false);
+        }else
+            this.resources.stream().filter(x -> ((ImageIcon)x.getIcon()).getDescription().split(" ")[1].equals(info) && x.isVisible()).findAny().get().setText(String.valueOf(this.storedHere.get(ResourceType.valueOf(info))));
         this.revalidate();
         this.repaint();
     }

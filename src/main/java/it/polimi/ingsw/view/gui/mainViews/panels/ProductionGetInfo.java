@@ -75,7 +75,7 @@ public class ProductionGetInfo extends JPanel {
                 }
             }
             BaseProductionParams baseProductionParams = new BaseProductionParams(activated, dragAndDropBaseProd.getInputs(), dragAndDropBaseProd.getOutputsList());
-            this.setVisible(false);
+            //this.setVisible(false);
             PanelManager.getInstance().manageProductionInfos(devSlotcheckBox.getSelectedDevSlotIndexes(), cardCheckboxPanel.getSelectedLeaderIndexes(), baseProductionParams);
         });
 
