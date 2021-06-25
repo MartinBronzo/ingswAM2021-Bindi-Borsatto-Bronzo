@@ -1,5 +1,5 @@
 package it.polimi.ingsw.view.GUI;
-
+/*
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.devCards.DevCard;
 import it.polimi.ingsw.model.devCards.DevCardColour;
@@ -38,8 +38,8 @@ public class GuiTest {
 
     static CardCheckbox check;
     static JFrame gameFrame;
-    static DragAndDropBaseProd dragAndDropBaseProd;
-
+    static DragAndDropBaseProd dragAndDropBaseProd;*/
+/*
     public static void main(String[] args) throws InterruptedException, NegativeQuantityException {
         gameFrame= new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,9 +96,10 @@ public class GuiTest {
         //test for base production choices
         /*Thread.sleep(5000);
         System.out.println("input: " + dragAndDropBaseProd.getInputs() + " output: " + dragAndDropBaseProd.getOutput());*/
-
+/*
     }
-
+*/
+    /*
     private static void faithTrackOnlyView() {
         List<PopeTile> popeTiles = new ArrayList<>();
         popeTiles.add(new PopeTile(3, ReportNum.REPORT1));
@@ -192,12 +193,12 @@ public class GuiTest {
         gameFrame.add(leaderCardPanel);
         //gameFrame.setVisible(true);
     }
-
+*/
     /*private static void showPlayerBoard() {
         ActualPlayerBoardPanel actualPlayerBoardPanel = new ActualPlayerBoardPanel();
         gameFrame.add(actualPlayerBoardPanel);
     }*/
-
+/*
     private static void setBeginningResources() {
         ArrayList<String> leaderList = new ArrayList<>();
         leaderList.add("src/main/resources/PUNCHBOARD/cerchio1.png");
@@ -256,7 +257,7 @@ public class GuiTest {
 
         gameFrame.add(panel);
     }
-
+*/
     /*private static void seeOthersPlayers(){
         List<String> playersNames = new ArrayList<>();
         playersNames.add("satto");
@@ -266,7 +267,7 @@ public class GuiTest {
         MainPanel mainPanel = new MainPanel(playersNames, "satto");
         gameFrame.add(mainPanel);
     }*/
-
+/*
     private static void baseProduction(){
         gameFrame.setLayout(new BorderLayout());
         dragAndDropBaseProd = new DragAndDropBaseProd();
@@ -286,5 +287,5 @@ public class GuiTest {
         gameFrame.revalidate();
 
     }
-
-}
+*//*
+}*/

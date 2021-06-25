@@ -14,8 +14,8 @@ import it.polimi.ingsw.view.gui.ViewComponents.depot.moveResources.MoveLeaderToS
 import it.polimi.ingsw.view.gui.ViewComponents.depot.moveResources.MoveShelfToLeader;
 import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.leaderCardsDrag.DragLeaderCards;
 import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.leaderCardsDrop.*;
-import it.polimi.ingsw.view.gui.ViewComponents.oldVersion.CollectCostsChoices;
-import it.polimi.ingsw.view.gui.ViewComponents.oldVersion.CollectMoveToLeaderOld;
+//import it.polimi.ingsw.view.gui.ViewComponents.oldVersion.CollectCostsChoices;
+//import it.polimi.ingsw.view.gui.ViewComponents.oldVersion.CollectMoveToLeaderOld;
 import it.polimi.ingsw.view.gui.ViewComponents.depot.depotViews.DepotOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrag.InfiniteResourcesDrag;
 import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrag.LimitedResourcesDrag;
@@ -55,7 +55,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class Test {
 
-    public static void main(String[] args) throws InterruptedException, ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
+  /*  public static void main(String[] args) throws InterruptedException, ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
         //LUDO
         //createAndShowJFrame();
         //createAndShowJFrameWithChecksAdded();
@@ -92,7 +92,7 @@ public class Test {
         showSetBeginningDecisionsPanel();
         //showPlayerBoards();
     }
-
+*/
 
     public static void showSetBeginningDecisionsPanel(){
         SwingUtilities.invokeLater(() -> {
@@ -679,7 +679,7 @@ public class Test {
 
         //Adding a Submit button which then prints the choices the player did
         SubmitButton submitButton = new SubmitButton("Submit");
-        submitButton.addActionListener(new CollectCostsChoices(pDrop));
+        //submitButton.addActionListener(new CollectCostsChoices(pDrop));
         frame.add(submitButton, BorderLayout.LINE_END);
 
         //Finishing it up
@@ -921,7 +921,7 @@ public class Test {
 
         //Setting up the Submit button
         SubmitButton submit = new SubmitButton("Submit");
-        submit.addActionListener(new CollectCostsChoices(pDrop));
+        //submit.addActionListener(new CollectCostsChoices(pDrop));
 
         //Placing the buttons
         JPanel panel = new JPanel();
@@ -990,7 +990,7 @@ public class Test {
 
         //Adding the submit button
         SubmitButton submit = new SubmitButton("Submit");
-        submit.addActionListener(new CollectMoveToLeaderOld(leaderCards));
+        //submit.addActionListener(new CollectMoveToLeaderOld(leaderCards));
 
         //Setting up the CancelButton
         CancelButton cancel = new CancelButton("Cancel");
@@ -1291,7 +1291,7 @@ public class Test {
 
         //Creating the Submit button
         SubmitButton submit = new SubmitButton("submit");
-        submit.addActionListener(new CollectCostsChoices(pDrop));
+        //submit.addActionListener(new CollectCostsChoices(pDrop));
 
         //Creating the cancel button
         CancelButton cancel = new CancelButton("cancel");

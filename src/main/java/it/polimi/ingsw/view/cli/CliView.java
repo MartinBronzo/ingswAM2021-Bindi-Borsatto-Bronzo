@@ -1420,7 +1420,7 @@ public class CliView {
         printCommandAndString(CliCommandType.QUIT, ": disconnects you from the game", AnsiCommands.BLUE.getTextColor());
             printCommandExampleNoRule("QUIT", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.SETNICKNAME, ": sets your nickname", AnsiCommands.BLUE.getTextColor());
-            printCommandExample("SETNICKNAME NAME__OF_PLAYER", "SETNICKNAME Jar-Jar", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("SETNICKNAME: NAME__OF_PLAYER", "SETNICKNAME: Jar-Jar", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.SETNUMOFPLAYERS, ": sets the number of the players in your game", AnsiCommands.BLUE.getTextColor());
             printCommandExample("SETNUMOFPLAYERS: NUM__OF_PLAYERS;", "SETNUMOFPLAYERS: 4;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.CONFIGURESTART, ": plays your beginning decisions", AnsiCommands.BLUE.getTextColor());

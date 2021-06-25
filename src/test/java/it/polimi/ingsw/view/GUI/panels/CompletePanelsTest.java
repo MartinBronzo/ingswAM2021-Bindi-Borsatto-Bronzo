@@ -108,7 +108,7 @@ public class CompletePanelsTest {
         player.setDevSlots(fullSlot);
     }
 
-    public static void main(String[] args) throws NegativeQuantityException {
+    /*public static void main(String[] args) throws NegativeQuantityException {
         CompletePanelsTest test = new CompletePanelsTest();
         test.init();
 
@@ -116,7 +116,7 @@ public class CompletePanelsTest {
         //test.checkMarketPlacingResources();
         //test.checkDevGridPayingCost();
         test.checkGetProductionCost();
-    }
+    }*/
 
     private void checkMarketPlacingResources() {
         JFrame frame = new JFrame();

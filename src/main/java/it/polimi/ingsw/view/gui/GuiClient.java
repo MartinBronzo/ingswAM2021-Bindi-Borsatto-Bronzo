@@ -90,7 +90,7 @@ public class GuiClient implements Runnable{
     }
 
 
-    public void startConnection() throws IOException {
+    public void startConnection() {
         try {
             socket = new Socket(hostName, portNumber);
             out = new PrintWriter(socket.getOutputStream(), true);

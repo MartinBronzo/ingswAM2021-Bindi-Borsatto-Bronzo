@@ -387,7 +387,7 @@ class DepotTest {
         depot.addToShelf(stone, 1, 1);
         depot.addToShelf(shield, 3, 3);
 
-        exception = assertThrows(NotEnoughSpaceException.class, () -> depot.moveBetweenShelves(3, 1));
+        exception = assertThrows(IllegalArgumentException.class, () -> depot.moveBetweenShelves(3, 1));
         assertEquals(exception.getMessage(), "Not enough space in destination shelf");
     }
 
