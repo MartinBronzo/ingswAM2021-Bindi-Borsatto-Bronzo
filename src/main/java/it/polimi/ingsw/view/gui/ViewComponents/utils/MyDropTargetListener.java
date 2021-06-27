@@ -16,25 +16,42 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
 
+/**
+ * This class is the DropTargetAdapter used in this application. It checks whether the drop can be made and if that is the
+ * case then it takes note of that.
+ */
 public class MyDropTargetListener extends DropTargetAdapter {
-
     private DropTarget dropTarget;
+    /**
+     * The panel where the drop has been made
+     */
     private JPanel p;
-    private RegisterDropInterface makeCall;
+    /**
+     * The function to be called in order to check whether a drop can be made
+     */
     private DropChecker checkDrop;
+    /**
+     * The function to be called in order to register the drop
+     */
+    private RegisterDropInterface makeCall;
 
-    public MyDropTargetListener(JPanel panel) {
-        p = panel;
-        dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
-        //makeCall = new RegisterDropFromInfiniteRes(panel);
-    }
-
+    /**
+     * Constructs a MyDrpTargetListener which refers the specified panel and uses the specified RegisterDropInterface function
+     * @param panel the panel the drop are made onto
+     * @param actionListener the function used to register the drop
+     */
     public MyDropTargetListener(JPanel panel, RegisterDropInterface actionListener) {
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
         makeCall = actionListener;
     }
 
+    /**
+     * Constructs a MyDrpTargetListener which refers the specified panel and uses the specified RegisterDropInterface function and DropChecker function
+     * @param panel the panel the drop are made onto
+     * @param actionListener the function used to register the drop
+     * @param checkDrop the function used to check whether the drop can be made
+     */
     public MyDropTargetListener(JPanel panel, RegisterDropInterface actionListener, DropChecker checkDrop){
         p = panel;
         dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
@@ -83,10 +100,18 @@ public class MyDropTargetListener extends DropTargetAdapter {
         }
     }
 
+    /**
+     * Adds the specified RegisterDropInterface function
+     * @param function the function to be added
+     */
     public void addActionListener(RegisterDropInterface function){
         this.makeCall = function;
     }
 
+    /**
+     * Adds the specified DropChecker function
+     * @param checkDrop the function to be added
+     */
     public void setCheckDrop(DropChecker checkDrop) {
         this.checkDrop = checkDrop;
     }
@@ -102,8 +127,17 @@ public class MyDropTargetListener extends DropTargetAdapter {
         return ((CheckLimitedDrop) checkDrop).hasPlayerSpecifiedEverything();
     }
 
+    /**
+     * Resets the DropChecker function if it implements the Resettable interface
+     */
     public void resetChecker(){
         if(this.checkDrop instanceof Resettable)
             ((Resettable) checkDrop).resetState();
     }
+
+    /*public MyDropTargetListener(JPanel panel) {
+        p = panel;
+        dropTarget = new DropTarget(panel, DnDConstants.ACTION_COPY, this, true, null);
+        //makeCall = new RegisterDropFromInfiniteRes(panel);
+    }*/
 }

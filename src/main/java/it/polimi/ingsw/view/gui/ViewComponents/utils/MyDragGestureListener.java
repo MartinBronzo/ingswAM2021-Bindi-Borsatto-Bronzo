@@ -9,6 +9,9 @@ import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.io.IOException;
 
+/**
+ * This class implements the DragGestureListener used for this application.
+ */
 public class MyDragGestureListener implements DragGestureListener {
 
     @Override

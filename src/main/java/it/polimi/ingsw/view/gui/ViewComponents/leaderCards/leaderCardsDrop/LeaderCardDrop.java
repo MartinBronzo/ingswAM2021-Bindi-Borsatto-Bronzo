@@ -153,14 +153,14 @@ public class LeaderCardDrop extends JPanel implements DropResettable, Droppable 
     }
 
     @Override
-    public void addDecision(Integer shelf, ResourceType res) throws IllegalActionException{
+    public void addDecision(Integer intInfo, ResourceType res) throws IllegalActionException{
         if(!res.equals(this.resStored))
             throw new IllegalActionException("You can only store " + this.resStored + "s here!");
         this.dropInfo++;
     }
 
     @Override
-    public int getShelfNumber() {
+    public int getDropInfo() {
         return 0;
     }
 

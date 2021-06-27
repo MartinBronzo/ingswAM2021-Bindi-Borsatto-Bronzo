@@ -7,12 +7,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * This panel is an instruction panel that can hold print information and up to three buttons. It has a GridLayout.
+ */
 public class InstructionPanel extends JPanel{
     JButton confirmButton;
     JButton cancelButton;
     JButton backButton;
     JLabel l;
 
+    /**
+     * Constructs an information panel which shows the specified text and two buttons
+     * @param info the information to be shown
+     * @param confirm the first button to be used as a confirmation button
+     * @param cancel the second button to be used as a cancellation button
+     */
     public InstructionPanel(String info, JButton confirm, JButton cancel){
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -52,6 +61,13 @@ public class InstructionPanel extends JPanel{
 
     }
 
+    /**
+     * Constructs an information panel which shows the specified text and three buttons
+     * @param info the information to be shown
+     * @param confirm the first button to be used as a confirmation button
+     * @param cancel the second button to be used as a cancellation button
+     * @param back the third button to be used as a back button
+     */
     public InstructionPanel(String info, JButton confirm, JButton cancel, JButton back){
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -103,7 +119,9 @@ public class InstructionPanel extends JPanel{
 
     }
 
-
+    /**
+     * Constructs a panel with only a SubmitButton
+     */
     public InstructionPanel() {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -130,6 +148,10 @@ public class InstructionPanel extends JPanel{
         this.add(confirmButton, c);
     }
 
+    /**
+     * Constructs a panel with the SubmitButton and, if specified, a CancelButton
+     * @param cancelButton true if the CancelButton is to be created and shown, false otherwise
+     */
     public InstructionPanel(boolean cancelButton) {
         this();
         if (cancelButton) {
@@ -147,20 +169,36 @@ public class InstructionPanel extends JPanel{
         }
     }
 
+    /**
+     * Sets the actionLister to the button which is used a confirmation button
+     * @param actionListener the actionListener to be added
+     */
     public void setConfirmActionListener(ActionListener actionListener){
         this.confirmButton.addActionListener(actionListener);
     }
 
+    /**
+     * Sets the actionLister to the button which is used a cancellation button
+     * @param actionListener the actionListener to be added
+     */
     public void setCancelActionListener(ActionListener actionListener) {
         if (cancelButton!=null)
             this.cancelButton.addActionListener(actionListener);
     }
 
+    /**
+     * Sets the actionLister to the button which is used a back button
+     * @param actionListener the actionListener to be added
+     */
     public void setBackActionListener(ActionListener actionListener){
         if(backButton != null)
             this.backButton.addActionListener(actionListener);
     }
 
+    /**
+     * Sets the information text to be shown to the user
+     * @param text the text to be shown to the user
+     */
     public void setLabelText(String text){
         this.l.setText(text);
     }

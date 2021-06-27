@@ -15,22 +15,37 @@ import java.awt.dnd.DragSource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel represents a shelf of the player's depot where resources can be dragged from.
+ */
 public class ShelfDrag extends JPanel implements DragUpdatable, Resettable {
     private int shelfNumber;
+    /**
+     * All the labels of the resources stored at the moment in the shelf
+     */
     private List<JLabel> resources;
-    private int resourceRemoved;
+    //private int resourceRemoved;
     MyDragGestureListener dlistener;
 
+    /**
+     * Constructs a shelf with the specified shelf number
+     * @param shelfNumber the number of the shelf
+     */
     public ShelfDrag(int shelfNumber){
         super();
         this.shelfNumber = shelfNumber;
         this.resources = new ArrayList<>();
-        this.resourceRemoved = 0;
+        //this.resourceRemoved = 0;
 
         this.setBorder(new TitledBorder("Drag Resources from shelf number " + this.shelfNumber));
         this.dlistener = null;
     }
 
+    /**
+     * Fills this shelf by getting the information from the specified DepotShelf object (a part of the LightModel)
+     * @param depotShelf the DepotShelf object where are stored the information for this shelf (that is, the DepotShelf contains
+     *                   information for the shelf whose number is the same as the one of this object)
+     */
     public void filShelf(DepotShelf depotShelf){
         ImageIcon resource;
         JLabel label;
@@ -49,7 +64,7 @@ public class ShelfDrag extends JPanel implements DragUpdatable, Resettable {
 
     //For testing purposes:
     public void printChoices(){
-        System.out.println("From shelf " + this.shelfNumber + ", " + this.resourceRemoved + " removed");
+        System.out.println("From shelf " + this.shelfNumber + ", " + /*this.resourceRemoved*/ 0 + " removed");
     }
 
     @Override
@@ -58,6 +73,9 @@ public class ShelfDrag extends JPanel implements DragUpdatable, Resettable {
         g.drawImage(new ImageIcon(ShelfDrop.getDepotFileName(shelfNumber)).getImage(), 100, 100, null);
     }
 
+    /**
+     * Sets the DragGestureListener of this object by creating a new MyDragGestureListner object
+     */
     public void setDlistener() {
         this.dlistener = new MyDragGestureListener();
     }
@@ -75,7 +93,7 @@ public class ShelfDrag extends JPanel implements DragUpdatable, Resettable {
         for(JLabel label : this.resources)
             this.remove(label);
         this.resources = new ArrayList<>();
-        this.resourceRemoved = 0;
+        //this.resourceRemoved = 0;
     }
 
 

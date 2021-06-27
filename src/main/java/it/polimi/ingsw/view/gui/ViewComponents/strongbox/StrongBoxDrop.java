@@ -67,7 +67,7 @@ public class StrongBoxDrop extends JPanel implements Droppable {
     }
 
     @Override
-    public void addDecision(Integer shelf, ResourceType res) {
+    public void addDecision(Integer intInfo, ResourceType res) {
         if(this.resToStrongBox.get(res) != null && this.resToStrongBox.get(res) > 0)
             this.resToStrongBox.put(res, this.resToStrongBox.get(res) + 1);
         else
@@ -75,7 +75,7 @@ public class StrongBoxDrop extends JPanel implements Droppable {
     }
 
     @Override
-    public int getShelfNumber() {
+    public int getDropInfo() {
         return 0;
     }
 

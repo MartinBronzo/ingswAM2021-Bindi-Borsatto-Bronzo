@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This abstract class implements an ActionListener interface. It collects (with the actionPerformed method inherited by the
+ * ActionListener interface) the drop choices that have been made when the user has to specify which resources to used
+ * in order to pay for something.
+ */
 public abstract class CollectCostsChoiceAbstract implements ActionListener {
     protected PanelDrop panelDrop;
     
@@ -40,8 +45,15 @@ public abstract class CollectCostsChoiceAbstract implements ActionListener {
 
     }
 
+    /**
+     * Sends a message holding the choices made by the user to the server
+     * @param fromDepot the drops made whose resources came from the player's Depot
+     * @param fromStrongBox the drops made whose resources came from the player's Strongbox
+     * @param fromLeaderCards the drops made whose resources came from the player's ExtraSlot LeaderCard
+     */
     protected abstract void sendMessage(List<DepotParams> fromDepot, HashMap<ResourceType, Integer> fromStrongBox, HashMap<ResourceType, Integer> fromLeaderCards);
 
+    //Used for testing purposes
     protected void print(List<DepotParams> fromDepot, HashMap<ResourceType, Integer> fromStrongBox, HashMap<ResourceType, Integer> fromLeaderCards) {
         System.out.println("FROM DEPOT: ");
         for(DepotParams d: fromDepot)

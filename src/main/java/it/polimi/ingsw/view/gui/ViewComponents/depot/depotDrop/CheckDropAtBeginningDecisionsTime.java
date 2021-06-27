@@ -6,9 +6,16 @@ import it.polimi.ingsw.view.gui.mainViews.PanelManager;
 
 import javax.swing.*;
 
+/**
+ * This DropChecker function checks whether the player can make the drop onto the Depot in the BeginningDecisionPanel
+ */
 public class CheckDropAtBeginningDecisionsTime implements DropChecker {
     private DepotDrop depot;
 
+    /**
+     * Constructs a CheckDropAtBeginningDecisionsTime for the specified DepotDrop
+     * @param depot the DepotDrop whose drops the function checks
+     */
     public CheckDropAtBeginningDecisionsTime(DepotDrop depot){
         this.depot = depot;
     }
@@ -26,7 +33,7 @@ public class CheckDropAtBeginningDecisionsTime implements DropChecker {
 
         //Checks whether there is still room onto the shelf
         //if(depotPanel.getResToDepot().size() + manager.getDepotShelves().get(depotPanel.getShelfNumber() - 1).getQuantity() == getMaxShelfCapacity(depotPanel.getShelfNumber()))
-        if(depotPanel.getQuantityDropped() + manager.getDepotShelves().get(depotPanel.getShelfNumber() - 1).getQuantity() == getMaxShelfCapacity(depotPanel.getShelfNumber()))
+        if(depotPanel.getQuantityDropped() + manager.getDepotShelves().get(depotPanel.getDropInfo() - 1).getQuantity() == getMaxShelfCapacity(depotPanel.getDropInfo()))
             throw new IllegalActionException("There is no room on this shelf!");
         return true;
     }

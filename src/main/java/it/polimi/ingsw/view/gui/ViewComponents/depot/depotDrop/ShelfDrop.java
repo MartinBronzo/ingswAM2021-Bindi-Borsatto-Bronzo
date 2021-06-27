@@ -112,7 +112,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     }
 
     @Override
-    public void addDecision(Integer shelf, ResourceType res) throws IllegalActionException{
+    public void addDecision(Integer intInfo, ResourceType res) throws IllegalActionException{
         //Pair<Integer, ResourceType> decision = new Pair<>(shelf, res);
         //this.resToDepot.add(decision);
         if(parentDepot != null)
@@ -131,7 +131,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     }
 
     @Override
-    public int getShelfNumber() {
+    public int getDropInfo() {
         return shelfNumber;
     }
 

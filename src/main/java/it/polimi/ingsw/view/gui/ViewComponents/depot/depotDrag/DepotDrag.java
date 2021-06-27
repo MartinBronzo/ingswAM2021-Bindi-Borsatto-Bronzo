@@ -12,12 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This panel represents a depot where we can drag the resources from the shelves.
+ * This panel represents a depot where resources can be dragged from the shelves.
  */
 public class DepotDrag extends JPanel implements DragUpdatable, Resettable {
     private List<ShelfDrag> shelves;
     private List<MyDragGestureListener> dragListeners;
 
+    /**
+     * Constructs a Depot where resources can be dragged from the shelves
+     */
     public DepotDrag(){
         super();
         this.setBorder(new TitledBorder("Drag Resources from your depot"));
@@ -45,6 +48,9 @@ public class DepotDrag extends JPanel implements DragUpdatable, Resettable {
         this.add(shelf);
     }
 
+    /**
+     * Initiates this object by filling it with the resources that the player holds in their depot
+     */
     public void init() {
        /* for (ShelfDrag s : this.shelves) {
             //new UnWantedDropTarget(s, this);
@@ -54,6 +60,7 @@ public class DepotDrag extends JPanel implements DragUpdatable, Resettable {
 
         fillDepot();
     }
+
     private void fillDepot() {
         List<DepotShelf> depotShelves = PanelManager.getInstance().getDepotShelves();
         int i = 0;

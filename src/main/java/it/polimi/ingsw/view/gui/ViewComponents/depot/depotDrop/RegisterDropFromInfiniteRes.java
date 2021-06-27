@@ -22,7 +22,7 @@ public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
             throw new IllegalActionException("You cannot drop different type of resources onto the same shelf!");
 
         //Updates the DropTarget about what drop has been made
-        dropTarget.addDecision(dropTarget.getShelfNumber(), imageType);
+        dropTarget.addDecision(dropTarget.getDropInfo(), imageType);
 
         /*switch (icon.toString()){
             case "src/main/resources/coins small.png":

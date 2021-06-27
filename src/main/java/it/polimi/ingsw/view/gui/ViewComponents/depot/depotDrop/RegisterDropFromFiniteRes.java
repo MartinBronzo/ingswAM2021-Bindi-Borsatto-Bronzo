@@ -34,7 +34,7 @@ public class RegisterDropFromFiniteRes implements RegisterDropInterface {
                 dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.STONE);
                 break;
         }*/
-        dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.valueOf(((ImageIcon) icon).getDescription().split(" ")[1]));
+        dropTarget.addDecision(dropTarget.getDropInfo(), ResourceType.valueOf(((ImageIcon) icon).getDescription().split(" ")[1]));
 
         //If we arrive here then the drop can be made
         //We update the LimitedResourceDrag by removing the resource that has been dragged

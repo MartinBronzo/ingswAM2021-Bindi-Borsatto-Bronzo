@@ -80,7 +80,7 @@ public class DiscardedResDrop extends JPanel implements Droppable, DropResettabl
     }
 
     @Override
-    public void addDecision(Integer shelf, ResourceType res) {
+    public void addDecision(Integer intInfo, ResourceType res) {
         if(this.resToBeDiscarded.get(res) != null && this.resToBeDiscarded.get(res) > 0)
             this.resToBeDiscarded.put(res, this.resToBeDiscarded.get(res) + 1);
         else
@@ -88,7 +88,7 @@ public class DiscardedResDrop extends JPanel implements Droppable, DropResettabl
     }
 
     @Override
-    public int getShelfNumber() {
+    public int getDropInfo() {
         return 0;
     }
 
