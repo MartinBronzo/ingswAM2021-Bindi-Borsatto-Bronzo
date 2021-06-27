@@ -19,11 +19,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+/**
+ * This panel is where the player drops the resources bought in the market they cannot or don't want to store in the Depot.
+ */
 public class DiscardedResDrop extends JPanel implements Droppable, DropResettable {
     private Map<ResourceType, Integer> resToBeDiscarded;
     private MyDropTargetListener targetListener;
     private List<JLabel> labelResDropped;
 
+    /**
+     * Constructs a DiscardResDrop panel but not yet ready to be used: the user of this class must initiates the panel with either
+     * the initFromInfiniteRes or initFromFiniteRes method
+     */
     public DiscardedResDrop(){
         super();
         resToBeDiscarded = new HashMap<>();
@@ -69,11 +76,20 @@ public class DiscardedResDrop extends JPanel implements Droppable, DropResettabl
 
     }
 
+    /**
+     * Initiates this panel to accept drops of resources who come from a panel containing infinite resources
+     * @param checkDropFunction the DropChecker function used to check whether the drops are acceptable
+     */
     public void initFromInfiniteRes(DropChecker checkDropFunction){
         this.targetListener = new MyDropTargetListener(this, new RegisterDropFromInfiniteRes(this));
         this.targetListener.setCheckDrop(checkDropFunction);
     }
 
+    /**
+     * Initiates this panel to accept drops of resources who come from the specified panel containing finite resources
+     * @param checkDropFunction the DropChecker function used to check whether the drops are acceptable
+     * @param resDrag the panel containing the limited resources that can be dropped onto this panel
+     */
     public void initFromFiniteRes(DropChecker checkDropFunction, LimitedResourcesDrag resDrag){
         this.targetListener = new MyDropTargetListener(this, new RegisterDropFromFiniteRes(this, resDrag));
         this.targetListener.setCheckDrop(checkDropFunction);
@@ -98,6 +114,7 @@ public class DiscardedResDrop extends JPanel implements Droppable, DropResettabl
         g.drawImage(new ImageIcon("src/main/resources/trashcan medium.png").getImage(), 100, 100, null);
     }
 
+    @Override
     public void resetState(){
         this.resToBeDiscarded = new HashMap<>();
         for(JLabel label : this.labelResDropped)
@@ -107,6 +124,10 @@ public class DiscardedResDrop extends JPanel implements Droppable, DropResettabl
         this.labelResDropped = new ArrayList<>();
     }
 
+    /**
+     * Returns the resources the player decided do discard
+     * @return the resources the player decided do discard
+     */
     public Map<ResourceType, Integer> getDecisions() {
         return resToBeDiscarded;
     }

@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This panel contains a finite number of draggable resources
+ */
 public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Resettable {
     private List<JLabel> resources;
     /**
@@ -24,6 +27,9 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Reset
     private MyDragGestureListener dlistener;
     private JLabel faithPointReceivedInfo;
 
+    /**
+     * Constructs a panel containing finite draggable resources
+     */
     public LimitedResourcesDrag(){
         super();
         this.setBorder(new TitledBorder("Drag Resources from here"));
@@ -41,6 +47,10 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Reset
             addResourceLabel(e.getKey(), e.getValue());
     }
 
+    /**
+     * Fills the panel with the specified resources that are to be draggable
+     * @param resources the resources to be dragged away this panel contains before any drag and drop occurs
+     */
     public void init(HashMap<ResourceType, Integer> resources){
         this.dlistener = new MyDragGestureListener();
         //new UnWantedDropTarget(this, this);
@@ -72,7 +82,7 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Reset
 
     }
 
-    public void addResourceLabel(ResourceType type, int quantity){
+    private void addResourceLabel(ResourceType type, int quantity){
         ImageIcon resource;
         JLabel label;
         DragSource ds;

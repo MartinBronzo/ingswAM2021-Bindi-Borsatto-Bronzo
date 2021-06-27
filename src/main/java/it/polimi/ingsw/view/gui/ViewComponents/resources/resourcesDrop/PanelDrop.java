@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This panel is where the player drops the limited resources they want to use for something and that they stored somewhere in their boards.
+ */
 public class PanelDrop extends JPanel implements DropResettable {
     private MyDropTargetListener targetListener;
     private HashMap<ResourceType, Integer> fromStrongBox;
@@ -24,6 +27,9 @@ public class PanelDrop extends JPanel implements DropResettable {
     private HashMap<ResourceType, Integer> fromLeaders;
     private List<JLabel> addedLabels;
 
+    /**
+     * Constructs a PanelDrop but not ready to be used yet: the user of this class must initiates this panel by using the init method
+     */
     public PanelDrop(){
         super();
 
@@ -82,10 +88,23 @@ public class PanelDrop extends JPanel implements DropResettable {
         this.targetListener = new MyDropTargetListener(panelTarget, registerDrop, checker);
     }
 
+    /**
+     * Initiates this panel to accept limited drops
+     * @param checker the DropChecker function used to check drops made onto this panel
+     * @param depot the player's Depot which can be a source of the resources dropped onto this panel
+     * @param strongBox the player's StrongBox which can be a source of the resources dropped onto this panel
+     * @param leaders the player's ExtraSlot LeaderCards which can be a source of the resources dropped onto this panel
+     */
     public void init(CheckLimitedDrop checker, DepotDrag depot, StrongBoxDrag strongBox, DragLeaderCards leaders){
         RegisterDropInterface registerDrop = new RegisterLimitedDropInPlainPanel(checker, strongBox, depot, leaders, this);
         this.targetListener = new MyDropTargetListener(this, registerDrop, checker);
     }
+
+    /**
+     * Updates this panel with the information that a drop of a resource who came from the player's Depot has been made onto the panel itself
+     * @param res the dropped resource
+     * @param shelf the origin shelf of the resource
+     */
     public void updateDepotCounter(String res, String shelf) {
         int shelfNum = Integer.parseInt(shelf);
         ResourceType resDropped = ResourceType.valueOf(res);
@@ -99,6 +118,10 @@ public class PanelDrop extends JPanel implements DropResettable {
 
     }
 
+    /**
+     * Updates this panel with the information that a drop of a resource who came from the player's StrongBox has been made onto the panel itself
+     * @param res the dropped resource
+     */
     public void updateStrongBoxCounter(String res) {
         ResourceType resDropped = ResourceType.valueOf(res);
         if(fromStrongBox.get(resDropped) == null)
@@ -107,6 +130,10 @@ public class PanelDrop extends JPanel implements DropResettable {
             fromStrongBox.put(resDropped, fromStrongBox.get(resDropped) + 1);
     }
 
+    /**
+     * Updates this panel with the information that a drop of a resource who came from the player's ExtraSlot LeaderCards has been made onto the panel itself
+     * @param res the dropped resource
+     */
     public void updateLeaderCardsCounter(String res){
         ResourceType resDropped = ResourceType.valueOf(res);
         if(fromLeaders.get(resDropped) == null)
@@ -115,18 +142,34 @@ public class PanelDrop extends JPanel implements DropResettable {
             fromLeaders.put(resDropped, fromLeaders.get(resDropped) + 1);
     }
 
+    /**
+     * Returns the player's drops from the StrongBox
+     * @return the player's drops from the StrongBox
+     */
     public HashMap<ResourceType, Integer> getFromStrongBox() {
         return fromStrongBox;
     }
 
+    /**
+     * Returns the player's drops from the Depot
+     * @return the player's drops from the Depot
+     */
     public List<DepotParams> getFromDepot() {
         return fromDepot;
     }
 
+    /**
+     * Returns the player's drops from the ExtraSlot LeaderCards
+     * @return the player's drops from the ExtraSlot LeaderCards
+     */
     public HashMap<ResourceType, Integer> getFromLeaders() {
         return fromLeaders;
     }
 
+    /**
+     * Returns whether the player has dropped all the resources they were supposed to
+     * @return true if the player has dropped all the resources they were supposed to, false otherwise
+     */
     public boolean hasPlayerSpecifiedEverything(){
         return this.targetListener.hasPlayerSpecifiedEverything();
     }

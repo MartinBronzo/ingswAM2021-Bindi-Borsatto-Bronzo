@@ -15,19 +15,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This ActionListener will listen to the Confirm button of the ProductionGetResources view
+ */
 public class CollectCostsChoiceForProduction extends CollectCostsChoiceAbstract {
     private List<Integer> devCards;
     private Map<Integer, JComboBox> leadersOutput;
     private BaseProductionParams baseProduction;
 
+    /**
+     * Constructs a CollectCostsChoiceForProduction ActionListener
+     * @param panelDrop the panel where the player drops the resources they want to use as inputs for the production
+     * @param devCards the list of indexes of the player's DevCards whose production method the player wants to use
+     * @param leadersOutput the JComboBoxes used to specify the extra output the player gets to choose when they choose to use the LeaderCards production methods
+     *                      The indexes of the ExtraProduction LeaderCards the player wants to use are matched with their corresponding JComboBox
+     * @param baseProduction the BaseProduction params which represent the player's choice
+     */
     public CollectCostsChoiceForProduction(PanelDrop panelDrop, List<Integer> devCards, Map<Integer, JComboBox> leadersOutput, BaseProductionParams baseProduction){
         super.panelDrop = panelDrop;
         this.devCards = devCards;
         this.leadersOutput = leadersOutput;
         this.baseProduction = baseProduction;
     }
-
-
 
     @Override
     protected void sendMessage(List<DepotParams> fromDepot, HashMap<ResourceType, Integer> fromStrongBox, HashMap<ResourceType, Integer> fromLeaderCards) {

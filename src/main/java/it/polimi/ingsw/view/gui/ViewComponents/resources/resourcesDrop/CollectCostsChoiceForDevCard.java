@@ -12,11 +12,22 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This ActionListener will listen to the Confirm button of the DevGridPayingCost view
+ */
 public class CollectCostsChoiceForDevCard extends CollectCostsChoiceAbstract {
     private int row, col;
     private List<Integer> leaderList;
     private JComboBox devSlotMenu;
 
+    /**
+     * Constructs a CollectCostsChoiceForDevCard ActionListener
+     * @param panelDrop the panel where the player drops the resources they want to use to pay for the DevCard
+     * @param row the row of the DevCard the player wants to buy
+     * @param col the column of the DevCard the player wants to buy
+     * @param leaderList the list of indexes of Discount LeaderCards the player wants to use to pay for this card
+     * @param devSlotMenu the JComboBox the player uses to specify the DevSlot where they want to put the DevCard once they have bought it
+     */
     public CollectCostsChoiceForDevCard(PanelDrop panelDrop, int row, int col, List<Integer> leaderList, JComboBox devSlotMenu){
         super.panelDrop = panelDrop;
         this.row = row;

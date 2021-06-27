@@ -8,12 +8,18 @@ import javax.swing.border.TitledBorder;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 
+/**
+ * This panel contains infinite draggable resources.
+ */
 public class InfiniteResourcesDrag extends JPanel {
     private JLabel label1;
     private JLabel label2;
     private JLabel label3;
     private JLabel label4;
 
+    /**
+     * Constructs a panel containing infinite draggable resources
+     */
     public InfiniteResourcesDrag(){
         super();
         this.setBorder(new TitledBorder("Drag Resources from here to the Depot above"));

@@ -11,14 +11,15 @@ import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.leaderCardsDrag.DragL
 
 import javax.swing.*;
 
+/**
+ * This RegisterDropInterface functions register the drops that have been made to a PanelDrop.
+ */
 public class RegisterLimitedDropInPlainPanel implements RegisterDropInterface {
     private CheckLimitedDrop checkLimitedDrop;
     private PanelDrop panelTarget;
     private StrongBoxDrag strongBoxDrag;
     private DepotDrag depotDrag;
     private DragLeaderCards leaders;
-
-
 
     @Deprecated
     public RegisterLimitedDropInPlainPanel(CheckLimitedDrop checkLimitedDrop, StrongBoxDrag strongBoxDrag, DepotDrag depotDrag, PanelDrop panelTarget) {
@@ -28,6 +29,14 @@ public class RegisterLimitedDropInPlainPanel implements RegisterDropInterface {
         this.depotDrag = depotDrag;
     }
 
+    /**
+     * Constructs a RegisterLimitedDropInPlainPanel
+     * @param checkLimitedDrop the CheckLimitedDrop function used to check the drops onto the specified PanelDrop
+     * @param strongBoxDrag the player's StrongBox which stored resources can be dropped onto the specified PanelDrop
+     * @param depotDrag the player's Depot which stored resources can be dropped onto the specified PanelDrop
+     * @param leaders the player's ExtraSlot LeaderCard which stored resources can be dropped onto the specified PanelDrop
+     * @param panelTarget the PanelDrop the players drops resources onto
+     */
     public RegisterLimitedDropInPlainPanel(CheckLimitedDrop checkLimitedDrop, StrongBoxDrag strongBoxDrag, DepotDrag depotDrag,
                                            DragLeaderCards leaders, PanelDrop panelTarget) {
         this.checkLimitedDrop = checkLimitedDrop;
@@ -36,7 +45,6 @@ public class RegisterLimitedDropInPlainPanel implements RegisterDropInterface {
         this.depotDrag = depotDrag;
         this.leaders = leaders;
     }
-
 
     @Override
     public void accept(Icon icon) throws IllegalActionException {
