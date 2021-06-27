@@ -46,6 +46,7 @@ public class CliClient extends Client implements Runnable {
     private String nickname;
     private final AtomicBoolean forceLogout;
     private String logoutMessage = "Thanks for Playing, See you next time :D";
+    private String cliCommandContent;
 
 
     public CliClient(int portNumber, String hostName) {
@@ -54,7 +55,7 @@ public class CliClient extends Client implements Runnable {
         this.hostName = hostName;
         this.forceLogout = new AtomicBoolean();
         this.forceLogout.set(false);
-        this.stdIn = new BufferedReader(new InputStreamReader(System.in));
+        stdIn = new BufferedReader(new InputStreamReader(System.in));
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -140,15 +141,25 @@ public class CliClient extends Client implements Runnable {
     @Override
     public void doConnection() {
         CliCommandType cliCommandType = CliCommandType.SETNICKNAME;
+        String line = "";
         do {
             try {
-                String line = stdIn.readLine().toUpperCase();
+                line = stdIn.readLine().toUpperCase();
+            } catch (IOException e) {
                 if (forceLogout.get())
                     break;
-                cliCommandType = CliCommandType.valueOf(line);
+            }
+            try {
+                if (forceLogout.get())
+                    break;
+                String[] strings = line.split(":");
+                cliCommandType = CliCommandType.valueOf(strings[0].strip());
+                if (strings.length>1)
+                    cliCommandContent = strings[1].strip();
                 switch (cliCommandType) {
                     case QUIT:
                         synchronized (this) {
+                            thread.interrupt();
                             sendMessage(new Command("quit"));
                         }
                         break;
@@ -203,7 +214,7 @@ public class CliClient extends Client implements Runnable {
                         synchronized (this) {
                             if(gamemodel != null) {
                                 System.out.print("\n");
-                                CliView.printOtherGameBoard(gamemodel, stdIn.readLine());
+                                CliView.printOtherGameBoard(gamemodel, cliCommandContent);
                             }else
                                 CliView.printInfo("It can't be printed yet");
                         }
@@ -233,9 +244,6 @@ public class CliClient extends Client implements Runnable {
                     default:
                         System.err.println("Command not Valid\n");
                 }
-            } catch (IOException e) {
-                System.err.println("can't read your stream");
-                System.exit(1);
             } catch (IllegalArgumentException e) {
                 System.err.println("your Command doesn't exists");
             }
@@ -253,6 +261,7 @@ public class CliClient extends Client implements Runnable {
             System.exit(1);
         }
         thread.interrupt();
+        System.exit(0);
     }
 
 
@@ -264,21 +273,15 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    public synchronized void manageLogin() throws IOException {
-        String nickUnchecked;
-        System.out.println("What's your nickname?");
-        nickUnchecked = stdIn.readLine();
-        Command loginCommand = new Command("login", new LoginMessage(nickUnchecked));
+    public synchronized void manageLogin() {
+        Command loginCommand = new Command("login", new LoginMessage(cliCommandContent));
         sendMessage(loginCommand);
     }
 
     @Override
-    protected synchronized void manageGameStarting() throws IOException {
-        System.out.println("Resources and Leaders to discard: LEADER_CARD_INDEX, LEADER_CARD_INDEX; RESOURCE_TYPE QUANTITY SHELF_NUM [, ...];");
-        System.out.println("Example: 1, 3; COIN 1 2, STONE 1 3;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void manageGameStarting() {
         try {
-            Command configureStartCommand = new Command("discardLeaderAndExtraResBeginning", StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(usrCommand));
+            Command configureStartCommand = new Command("discardLeaderAndExtraResBeginning", StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(cliCommandContent));
             sendMessage(configureStartCommand);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -287,12 +290,9 @@ public class CliClient extends Client implements Runnable {
 
 
     @Override
-    protected synchronized void setNumPlayer() throws IOException {
-        System.out.println("Set num Player: NUM__OF_PLAYERS;");
-        System.out.println("Example: 4;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void setNumPlayer() {
         try {
-            Command setNumPlayerCommand = new Command("setNumPlayer", StringToMessage.toSetNumPlayerMessage(usrCommand));
+            Command setNumPlayerCommand = new Command("setNumPlayer", StringToMessage.toSetNumPlayerMessage(cliCommandContent));
             sendMessage(setNumPlayerCommand);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -300,12 +300,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void getResourcesFromMarket() throws IOException {
-        System.out.println("GetResourcesFromMarket: row/column NUMBER_ROW/COLUMN; [LEADER_CARD_INDEX_LIST];");
-        System.out.println("Example: row 3; 1, 2, 4;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void getResourcesFromMarket() {
         try {
-            Command getResourcesFromMarket = new Command("getResourcesFromMarket", StringToMessage.toMatrixMessageLine(usrCommand));
+            Command getResourcesFromMarket = new Command("getResourcesFromMarket", StringToMessage.toMatrixMessageLine(cliCommandContent));
             sendMessage(getResourcesFromMarket);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -313,12 +310,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void buyFromMarket() throws IOException {
-        System.out.println("buyFromMarket example: row/column NUM_ROW/COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];");
-        System.out.println("Example: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void buyFromMarket() {
         try {
-            Command buyFromMarketCommand = new Command("buyFromMarket", StringToMessage.toBuyFromMarketMessage(usrCommand));
+            Command buyFromMarketCommand = new Command("buyFromMarket", StringToMessage.toBuyFromMarketMessage(cliCommandContent));
             sendMessage(buyFromMarketCommand);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -326,12 +320,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void getDevCardCost() throws IOException {
-        System.out.println("GetDevCardCost: NUM_COLUMN; NUM_ROW; [LEADER_CARD_LIST];");
-        System.out.println("Example: 3; 2; 1, 2, 4;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void getDevCardCost() {
         try {
-            Command getDevCardCost = new Command("getCardCost", StringToMessage.toMatrixMessageCell(usrCommand));
+            Command getDevCardCost = new Command("getCardCost", StringToMessage.toMatrixMessageCell(cliCommandContent));
             sendMessage(getDevCardCost);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -339,12 +330,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void buyDevCard() throws IOException {
-        System.out.println("BuyDevCard: NUM_COLUMN; NUM_ROW; [LEADER_CARD_LIST]; DEPOT_RESOURCE QT SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QT [, ...]; STRONGBOX_RESOURCE QT [, ...]; DEV_SLOT_NUM;");
-        System.out.println("Example: 3; 2; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void buyDevCard() {
         try {
-            Command buyDevCard = new Command("buyDevCard", StringToMessage.toBuyDevCardMessage(usrCommand));
+            Command buyDevCard = new Command("buyDevCard", StringToMessage.toBuyDevCardMessage(cliCommandContent));
             sendMessage(buyDevCard);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -352,12 +340,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void getProductionCost() throws IOException {
-        System.out.println("GetProductionCost: DEV_CARD_LIST; [LEADER_CARD_LIST]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT;");
-        System.out.println("Example: 1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void getProductionCost() {
         try {
-            Command getProductionCost = new Command("getProductionCost", StringToMessage.toGetProductionCostMessage(usrCommand));
+            Command getProductionCost = new Command("getProductionCost", StringToMessage.toGetProductionCostMessage(cliCommandContent));
             sendMessage(getProductionCost);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -365,12 +350,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void activateProduction() throws IOException {
-        System.out.println("ActivateProduction: DEV_CARD_LIST; [LEADER_CARD RESOURCE_OUTPUT, ...]; TRUE/FALSE, BASE_PROD_INPUT_1 BASE PROD_INPUT_2, BASE_PROD_OUTPUT; DEPOT_RES QT SHELF_NUM [, ...]; LEADER_DEPOT_RES QT [, ...]; STRONGBOX_RES QT;");
-        System.out.println("Example: 1, 2, 4; 1 SHIELD, 2 STONE; FALSE, COIN SERVANT, STONE; COIN 2 2; SERVANT 1; STONE 3;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void activateProduction() {
         try {
-            Command activateProduction = new Command("activateProductionMesssage", StringToMessage.toActivateProductionMessage(usrCommand));
+            Command activateProduction = new Command("activateProductionMesssage", StringToMessage.toActivateProductionMessage(cliCommandContent));
             sendMessage(activateProduction);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -378,12 +360,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void moveBetweenShelves() throws IOException {
-        System.out.println("MoveBetweenShelves: SOURCE_SHELF; DEST_SHELF;");
-        System.out.println("Example: 1; 2;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void moveBetweenShelves() {
         try {
-            Command moveBetweenShelves = new Command("moveBetweenShelves", StringToMessage.toMoveBetweenShelvesMessage(usrCommand));
+            Command moveBetweenShelves = new Command("moveBetweenShelves", StringToMessage.toMoveBetweenShelvesMessage(cliCommandContent));
             sendMessage(moveBetweenShelves);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -391,12 +370,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void moveLeaderToShelf() throws IOException {
-        System.out.println("MoveLeaderToShelf: LEADER_DEPOT_RES; QT; DEST_SHELF;");
-        System.out.println("Example: COIN; 2; 1;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void moveLeaderToShelf() {
         try {
-            Command moveLeaderToShelf = new Command("moveLeaderToShelf", StringToMessage.toMoveLeaderToShelfMessage(usrCommand));
+            Command moveLeaderToShelf = new Command("moveLeaderToShelf", StringToMessage.toMoveLeaderToShelfMessage(cliCommandContent));
             sendMessage(moveLeaderToShelf);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -404,12 +380,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void moveShelfToLeader() throws IOException {
-        System.out.println("MoveShelfToLeader: SOURCE_SHELF; QT;");
-        System.out.println("Example: 2; 1;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void moveShelfToLeader() {
         try {
-            Command moveShelfToLeader = new Command("moveShelfToLeader", StringToMessage.toMoveShelfToLeaderMessage(usrCommand));
+            Command moveShelfToLeader = new Command("moveShelfToLeader", StringToMessage.toMoveShelfToLeaderMessage(cliCommandContent));
             sendMessage(moveShelfToLeader);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -417,12 +390,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void discardLeader() throws IOException {
-        System.out.println("DiscardLeader: LEADER_CARD_INDEX;");
-        System.out.println("Example: 2;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void discardLeader() {
         try {
-            Command discardLeader = new Command("discardLeader", StringToMessage.toLeaderMessage(usrCommand));
+            Command discardLeader = new Command("discardLeader", StringToMessage.toLeaderMessage(cliCommandContent));
             sendMessage(discardLeader);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -430,12 +400,9 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void activateLeader() throws IOException {
-        System.out.println("ActivateLeader: LEADER_CARD_INDEX;");
-        System.out.println("Example: 2;\n");
-        String usrCommand = stdIn.readLine();
+    protected synchronized void activateLeader() {
         try {
-            Command activateLeader = new Command("ActivateLeader", StringToMessage.toLeaderMessage(usrCommand));
+            Command activateLeader = new Command("ActivateLeader", StringToMessage.toLeaderMessage(cliCommandContent));
             sendMessage(activateLeader);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -456,12 +423,35 @@ public class CliClient extends Client implements Runnable {
                 responseMessage = gson.fromJson(response, ResponseMessage.class);
             } catch (IOException e) {
                 logoutMessage = "the server is offline. Please try restart the game.";
+                synchronized (this) {
+                    CliView.printInfo(logoutMessage);
+                    System.exit(1);
+                }
+                /*
                 forceLogout.set(true);
+                // this has no effect on stdin.readline();
+                try {
+                    stdIn.close();
+                } catch (IOException ioException) {
+                    // this catch should do nothing
+                }
                 thread.interrupt();
+
+                 */
             }catch (com.google.gson.JsonSyntaxException gsone){
                 logoutMessage = "message received from server is not well format";
+                CliView.printInfo(logoutMessage);
+                System.exit(1);
+                /*
                 forceLogout.set(true);
+                try {
+                    stdIn.close();
+                } catch (IOException ioException) {
+                    // this catch should do nothing
+                }
                 thread.interrupt();
+
+                 */
             }
             try {
                 //TODO: DA TOGLIERE QUESTO IF
@@ -537,8 +527,13 @@ public class CliClient extends Client implements Runnable {
                         break;
                     case KICKEDOUT:
                         logoutMessage = "You Have been kicked out, please restart the game to connect to a new Game";
+                        CliView.printInfo(logoutMessage);
+                        System.exit(0);
+                        /*
                         forceLogout.set(true);
                         thread.interrupt();
+
+                         */
                         break;
                     case TURNINFO:
                         break;

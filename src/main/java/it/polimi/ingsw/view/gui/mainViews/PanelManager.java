@@ -57,6 +57,7 @@ public final class PanelManager {
     private InfoDialog infoDialog;
     private LorenzoDialog lorenzoDialog;
     private SetNumOfPlayersDialog configureGameDialog;
+    private FinalResultsDialog resultsDialog;
 
     //TODO: add here panels created for each view
     private EntryViewPanel entryPanel;
@@ -171,6 +172,7 @@ public final class PanelManager {
         infoDialog = new InfoDialog(gameFrame);
         errorDialog = new ErrorDialog(gameFrame);
         lorenzoDialog = new LorenzoDialog(gameFrame);
+        resultsDialog = new FinalResultsDialog(gameFrame);
 
         //TODO: add here panels to frame
         entryPanel = new EntryViewPanel();
@@ -284,10 +286,13 @@ public final class PanelManager {
     }
 
     private void manageSoloGameResult(String responseContent) {
-        synchronized (this) {
-            SoloGameResultMessage soloGameResultMessage = gson.fromJson(responseContent, SoloGameResultMessage.class);
-        }
-        //TODO: mostrare panel con risultato finale;
+
+        SoloGameResultMessage soloGameResultMessage = gson.fromJson(responseContent, SoloGameResultMessage.class);
+        visualizer.submit(() -> {
+            resultsDialog.setMultilineText(soloGameResultMessage.getMessage());
+            resultsDialog.setVisible(true);
+
+        });
     }
 
     private void manageConnectionUpdate(String responseContent) {
@@ -324,10 +329,14 @@ public final class PanelManager {
     }
 
     private void manageleaderboard(String responseContent) {
-        synchronized (this) {
-            FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
-            this.results = message.getResults();
-        }
+        //synchronized (this) {
+        FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
+        visualizer.submit(() -> {
+            resultsDialog.setFinalScores(message.getResults());
+            resultsDialog.setVisible(true);
+        });
+            //this.results = message.getResults();
+        //}
         //TODO: do things to setup view
 
     }
