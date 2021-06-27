@@ -22,8 +22,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This panel lets the player choose where the resources used as input for the production come from. The resources can be taken
+ * from the player's Depot, StrongBox, and, eventually, the ExtraSlot LeaderCards.
+ */
 public class ProductionGetResources extends JPanel {
 
+    /**
+     * Constructs a ProductionGetResources panel
+     * @param resToBeTaken the inputs of the productions the player wants to make and that now they have to specify where they come from
+     * @param prodLeaders the list of indexes of ExtraProduction LeaderCards whose production methods the player wants to use
+     * @param devCards the list of indexes of DevCards whose production methods the player wants to use
+     * @param baseProduction the parameters for the BaseProduction the player has specified
+     */
     public ProductionGetResources(HashMap<ResourceType, Integer> resToBeTaken, List<Integer> prodLeaders, List<Integer> devCards, BaseProductionParams baseProduction){
         super();
         this.setLayout(new BorderLayout());
@@ -137,5 +148,5 @@ public class ProductionGetResources extends JPanel {
         return result;
     }
 
-    //TODO: per le carte che leader fare combo box per scegliere il resource type, mappare il risultato del combo box con l'indice della carta
+    //ex to do: per le carte che leader fare combo box per scegliere il resource type, mappare il risultato del combo box con l'indice della carta
 }

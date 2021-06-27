@@ -22,13 +22,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This panel lets the player specify which resources they want to use in order to pay for the DevGrid they want to buy. The resources
+ * can come from the player's Depot, StrongBox, and, eventually, the ExtraSlot LeaderCards.
+ */
 public class DevGridPayingCost extends JPanel {
     boolean created;
 
+    //TODO: a cosa servono questi metodi?
     public DevGridPayingCost(){
         this.created = true;
     }
 
+    public boolean isCreated(){return created;}
+
+    /**
+     * Creates a DevGridPayingCost panel
+     * @param resToBeTaken the cost of the card the player needs to specify in order to buy the card
+     * @param row the row of the card the player wants to buy
+     * @param col the column of the card the player wants to buy
+     * @param leaderList the list of indexes of Discount LeaderCards whose effects the player wants to use in order to buy the card
+     */
     public DevGridPayingCost(HashMap<ResourceType, Integer> resToBeTaken, int row, int col, List<Integer> leaderList){
         super();
         this.setLayout(new BorderLayout());
@@ -168,5 +182,5 @@ public class DevGridPayingCost extends JPanel {
         return result;
     }
 
-    public boolean isCreated(){return created;}
+
 }

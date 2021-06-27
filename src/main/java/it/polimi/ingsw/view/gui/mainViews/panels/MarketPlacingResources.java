@@ -21,13 +21,26 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This panel lets the player specify where they want to put the resources they have gotten from the market. The player can either store
+ * the resources in their Depot or discard them.
+ */
 public class MarketPlacingResources extends JPanel {
     private boolean created;
-
+    //TODO: a cosa servono questi metodi?
     public MarketPlacingResources(boolean created){
         this.created = created;
     }
 
+    public boolean isCreated(){return created;}
+
+    /**
+     * Constructs a MarketPlacingResources panel
+     * @param resourcesToBePlaced the resources the player got from the market and that now they have to place
+     * @param row the row of the market they want to buy from or 0
+     * @param col the column of the market they want to buy from or 0
+     * @param leaderList the list of indexes of WhiteMarble LeaderCards whose effects the player wants to use in order to buy resources from the market
+     */
     public MarketPlacingResources(HashMap<ResourceType, Integer> resourcesToBePlaced, int row, int col, List<Integer> leaderList){
         super();
         this.setLayout(new BorderLayout());
@@ -95,5 +108,5 @@ public class MarketPlacingResources extends JPanel {
         this.setBorder(new TitledBorder(border));
     }
 
-    public boolean isCreated(){return created;}
+
 }

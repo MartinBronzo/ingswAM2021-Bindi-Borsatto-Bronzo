@@ -15,6 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This panel represents a StrongBox that can only be seen by the user (the stored resources cannot be dragged away and no
+ * resource can be dropped onto it).
+ */
 public class StrongBoxOnlyView extends JPanel {
     private List<JLabel> resources;
     private final int width = 180;
@@ -29,6 +33,10 @@ public class StrongBoxOnlyView extends JPanel {
         this.fillStrongBox();
     }*/
 
+    /**
+     * Constructs the StrongBoxOnlyView which represents the StrongBox of the specified player
+     * @param nickname a player's nickname
+     */
     public StrongBoxOnlyView(String nickname){
         super();
         //this.setBorder(new TitledBorder("Your StrongBox"));

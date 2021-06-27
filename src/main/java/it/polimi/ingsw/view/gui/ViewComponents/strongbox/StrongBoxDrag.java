@@ -17,12 +17,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This panel represents the player's StrongBox where the already stored resources can be dragged away.
+ */
 public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
     private List<JLabel> resources;
     //DragGestureListenerOneShot dlistener;
     MyDragGestureListener dlistener;
     private HashMap<ResourceType, Integer> storedHere;
 
+    /**
+     * Constructs an empty StrongBoxDrag which must be initiated via the init method after construction.
+     */
     public StrongBoxDrag(){
         super();
         this.setBorder(new TitledBorder("Drag Resources from this strongbox"));
@@ -36,6 +42,9 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
         this.fillStrongBox(res);
     }
 
+    /**
+     * Initiates this StrongBoxDrag by filling it with the resources the player has stored in their StrongBox
+     */
     public void init(){
         this.dlistener = new MyDragGestureListener();
         this.fillStrongBox(PanelManager.getInstance().getStrongBox());

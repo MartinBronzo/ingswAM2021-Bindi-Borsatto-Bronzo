@@ -2,7 +2,9 @@ package it.polimi.ingsw.view.gui.ViewComponents.strongbox;
 
 import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DropChecker;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DropResettable;
 import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Droppable;
+import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 import it.polimi.ingsw.view.gui.ViewComponents.utils.MyDropTargetListener;
 import it.polimi.ingsw.view.gui.ViewComponents.depot.depotDrop.RegisterDropFromInfiniteRes;
 
@@ -11,16 +13,27 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
-public class StrongBoxDrop extends JPanel implements Droppable {
+/**
+ * This panel represents the player's StrongBox where resources can be dropped.
+ */
+public class StrongBoxDrop extends JPanel implements Droppable, DropResettable {
     private Map<ResourceType, Integer> resToStrongBox;
     private MyDropTargetListener targetListener;
-    
+    private List<JLabel> droppedHere;
+
+    /**
+     * Constructs a StrongBoxDrop but before it is ready to be used the user of this class must initiates it with the
+     * setTargetListenerAndCheckDropFunction
+     */
     public StrongBoxDrop(){
         super();
         resToStrongBox = new HashMap<>();
+        this.droppedHere = new ArrayList<>();
 
         this.setBorder(new TitledBorder("Drag here the resource you want to store in your StrongBox"));
 
@@ -61,6 +74,10 @@ public class StrongBoxDrop extends JPanel implements Droppable {
 
     }
 
+    /**
+     * Initiates the StrongBoxDrop by making it accept drops from a panel containing infinite resources and with the specified DropChecker function and b
+     * @param checkDropFunction the DropChecker function used to accept drops onto this panel
+     */
     public void setTargetListenerAndCheckDropFunction(DropChecker checkDropFunction){
         this.targetListener = new MyDropTargetListener(this, new RegisterDropFromInfiniteRes(this));
         this.targetListener.setCheckDrop(checkDropFunction);
@@ -85,13 +102,24 @@ public class StrongBoxDrop extends JPanel implements Droppable {
         g.drawImage(new ImageIcon("src/main/resources/strongbox medium.png").getImage(), 100, 100, null);
     }
 
+    @Override
     public void resetState(){
         this.resToStrongBox = new HashMap<>();
+        for(JLabel label : this.droppedHere)
+            this.remove(label);
+        this.droppedHere = new ArrayList<>();
     }
 
-    public Map<ResourceType, Integer> getDecisions() {
+    @Override
+    public void addDroppedLabel(JLabel label) {
+        this.droppedHere.add(label);
+    }
+
+  /*  public Map<ResourceType, Integer> getDecisions() {
         return resToStrongBox;
     }
+*/
+
 
     //TODO: ma questa classe serve? Se sì fare metodo init dove si riempe lo strongbox con le risorse già presenti, queste risorse sono prese dal PanelManager
 
