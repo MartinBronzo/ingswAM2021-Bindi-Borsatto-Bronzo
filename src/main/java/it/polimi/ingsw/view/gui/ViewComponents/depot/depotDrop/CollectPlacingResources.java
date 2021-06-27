@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This ActionListener will listen to the Confirm button of the MarketPlacingResources view
+ */
 public class CollectPlacingResources implements ActionListener {
     private DepotDrop depot;
     private DiscardedResDrop trashCan;
@@ -37,6 +40,15 @@ public class CollectPlacingResources implements ActionListener {
         this.leaders = leaders;
     }
 
+    /**
+     * Constructs a CollectPlacingResources ActionListener which will collect all the information the user has specified for buying something at the Market
+     * @param depot the DepotDrop the player uses to drop what they have bought from the Market and want to keep in their Depot
+     * @param trashCan the DiscardedResDrop the player uses to drop what they have bought from the Market and cannot or want to store in their Depot
+     * @param leaders a list of the LeaderCardDrop the player can have and uses to drop what they have bought from the Market
+     * @param row the row of the Market the player wants to buy from or zero
+     * @param col the column of the Market the player wants to buy from or zero
+     * @param leaderList a list of the indexes of the player's LeaderCards whose effects the player wants to use for buying from the Market
+     */
     public CollectPlacingResources(DepotDrop depot, DiscardedResDrop trashCan, List<LeaderCardDrop> leaders, int row, int col, List<Integer> leaderList) {
         this.depot = depot;
         this.trashCan = trashCan;

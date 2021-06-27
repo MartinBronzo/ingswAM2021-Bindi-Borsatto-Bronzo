@@ -9,20 +9,32 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This ActionListener will listen to the Confirm button of the MoveShelfToLeader view when it is displayed onto the MoveResourceChoice.
+ */
 public class CollectMoveShelfToLeader implements ActionListener {
     private JComboBox shelf;
     private JComboBox quantity;
 
+    /*
     public CollectMoveShelfToLeader(JComboBox shelf, JComboBox quantity) {
         this.shelf = shelf;
         this.quantity = quantity;
-    }
+    }*/
 
+    /**
+     * Constructs a CollectMoveShelfToLeader function which will take the player's choice for the source shelf from the specified JComboBox
+     * @param shelf the JComboBox used to specify the source shelf
+     */
     public CollectMoveShelfToLeader(JComboBox shelf){
         this.shelf = shelf;
         this.quantity = null;
     }
 
+    /**
+     * Sets the JComboBox used by the player to specify the quantity of the resources stored onto the shelf they have already specified they want to move
+     * @param quantity the JComboBox used to specify the quantity of resources to be moved
+     */
     public void setQuantity(JComboBox quantity) {
         this.quantity = quantity;
     }

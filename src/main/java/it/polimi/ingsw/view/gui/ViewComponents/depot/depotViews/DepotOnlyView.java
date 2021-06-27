@@ -7,10 +7,17 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel represents a Depot that is used only to be seen by the user (the resources are not draggable and no drop can occur onto the panel).
+ */
 public class DepotOnlyView extends JPanel {
     private List<ShelfOnlyView> shelves;
     private String nickname;
 
+    /**
+     * Constructs a view of the player's Depot containing the player's stored resources
+     * @param nickname the nickname of a player
+     */
     public DepotOnlyView(String nickname) {
         super();
 

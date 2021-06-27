@@ -8,10 +8,18 @@ import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrag.LimitedRe
 
 import javax.swing.*;
 
+/**
+ * This class registers the drop the user makes from a panel containing finite resources (LimitedResourcesDrag object) onto a Droppable object.
+ */
 public class RegisterDropFromFiniteRes implements RegisterDropInterface {
     public LimitedResourcesDrag start;
     private final Droppable dropTarget;
 
+    /**
+     * Constructs a RegisterDropFromFiniteRes function
+     * @param dropTarget the Droppable object where objects will be dropped onto
+     * @param start a LimitedResourcesDrag panel which is the source of the dragged resources
+     */
     public RegisterDropFromFiniteRes(Droppable dropTarget, LimitedResourcesDrag start){
         this.dropTarget = dropTarget;
         this.start = start;

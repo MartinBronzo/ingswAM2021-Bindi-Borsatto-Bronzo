@@ -29,6 +29,13 @@ public class CollectBeginningChoices implements ActionListener {
         this.depotDrop = dragAndDrop;
     }
 
+    /**
+     * Constructs a CollectBeggingChoices ActionListener which will collect the choices the user takes at the beginning of the game
+     * @param dragAndDrop a DepotDrop panel where the user can eventually drop some resources
+     * @param cardCheckbox1 a CardCheckbox containing two of the four LeaderCards given to the player at the beginning of the game
+     * @param cardCheckbox2 a CardCheckbox containing two of the four LeaderCards given to the player at the beginning of the game
+     * @param numLeaders the amount of LeaderCard the player is to discard
+     */
     public CollectBeginningChoices(DepotDrop dragAndDrop, CardCheckbox cardCheckbox1, CardCheckbox cardCheckbox2, int numLeaders) {
         this.depotDrop = dragAndDrop;
         this.cardCheckbox1 = cardCheckbox1;

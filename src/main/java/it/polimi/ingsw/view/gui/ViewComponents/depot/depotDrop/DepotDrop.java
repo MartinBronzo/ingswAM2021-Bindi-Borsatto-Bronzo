@@ -21,6 +21,9 @@ public class DepotDrop extends JPanel implements Resettable {
     private List<ShelfDrop> shelves;
     private List<MyDropTargetListener> targetListeners;
 
+    /**
+     * Constructs a DepotDrop the player can use to drop resources on. It contains the resources the player already has on the shelves
+     */
     public DepotDrop(){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -52,6 +55,11 @@ public class DepotDrop extends JPanel implements Resettable {
             result.addAll(e.getResToDepot());
         return result;
     }*/
+
+    /**
+     * Returns a list of DepotParams which represents the choices the player has made, that is what resources the player has dropped onto which shelf
+     * @return a list of DepotParams representing the player's choices
+     */
     public List<DepotParams> getDecisions(){
         List<DepotParams> result = new ArrayList<>();
         DepotParams tmp;
@@ -63,6 +71,7 @@ public class DepotDrop extends JPanel implements Resettable {
         return result;
     }
 
+    @Override
     public void resetState(){
         for(ShelfDrop e: this.shelves)
             e.resetState();
@@ -91,6 +100,10 @@ public class DepotDrop extends JPanel implements Resettable {
         this.setCheckDropFunction(checkDropFunction);
     }
 
+    /**
+     * Sets the DropChecker used to check whether the drop can be made onto the Depot
+     * @param checkDropFunction a DropChecker function
+     */
     public void setCheckDropFunction(DropChecker checkDropFunction){
         for(MyDropTargetListener listener : this.targetListeners)
             listener.setCheckDrop(checkDropFunction);
@@ -114,6 +127,11 @@ public class DepotDrop extends JPanel implements Resettable {
         }
     }*/
 
+    /**
+     * Returns the path to the image representing the specified type of resource
+     * @param resource a resource type
+     * @return the path to the image for the specified resource
+     */
     public static String getImagePathFromResource(ResourceType resource){
         switch (resource){
             case SHIELD:
@@ -131,6 +149,11 @@ public class DepotDrop extends JPanel implements Resettable {
         }
     }
 
+    /**
+     * Returns a list of the resource types stored in the shelves that are not the specified one
+     * @param currentDrop the number of a Depot shelf (from 1 to 3)
+     * @return a list of the resource types stored in the other shelves than the one specified
+     */
     public List<ResourceType> getStoredResources(int currentDrop){
         List<ResourceType> result = new ArrayList<>();
         for(int i = 0; i < this.shelves.size(); i++)

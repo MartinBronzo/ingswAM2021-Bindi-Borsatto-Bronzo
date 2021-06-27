@@ -8,6 +8,13 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This ActionListener is used to create or update the JComboBox the player uses to specify the quantity they want to move from an ExtraSlot LeaderCard
+ * to a Depot shelf when the MoveLeaderToShelf panel is displayed. This function is invoked every time the player specify
+ * a resource type in the resource type drop-down menu in order to display only the amounts of the resources the player is actually able to
+ * move from the LeaderCards. It also creates only once (at the first time this function is invoked) the JComboBox used by the
+ * player to choose the destination shelf.
+ */
 public class ResChoiceListener implements ActionListener {
     private HashMap<ResourceType, Integer> leaderSlots;
     private JComboBox quantity;
@@ -16,6 +23,13 @@ public class ResChoiceListener implements ActionListener {
     private JPanel menus;
     private List<Integer> addableShelf;
 
+    /**
+     * Constructs a ResChoiceListener ActionListener for the MoveLeaderToShelf panel
+     * @param leaderSlots the resources the player has onto their ExtraSlot LeaderCard
+     * @param collector the function used to collect the player's choices from the MoveLeaderToShelf panel
+     * @param menus a panel containing all the JComboBox for the MoveLeaderToShelf panel
+     * @param addableShelf a list containing the number of the shelves where resources can actually be added to
+     */
     public ResChoiceListener(HashMap<ResourceType, Integer> leaderSlots, CollectMoveLeaderToShelf collector, JPanel menus, List<Integer> addableShelf) {
         this.leaderSlots = leaderSlots;
         this.collector = collector;

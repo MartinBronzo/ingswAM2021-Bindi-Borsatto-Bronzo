@@ -5,7 +5,7 @@ import it.polimi.ingsw.view.gui.ViewComponents.interfaces.DropChecker;
 import it.polimi.ingsw.view.gui.mainViews.PanelManager;
 
 import javax.swing.*;
-//LUDO IS HERE
+
 /**
  * This checker is used when we drop resources in the Depot when we place resources from the Market
  */
@@ -13,6 +13,10 @@ public class CheckDropInDepot implements DropChecker {
 
     private DepotDrop depot;
 
+    /**
+     * Constructs a CheckDropInDepot used to check whether drop can be made onto the specified DepotDrop panel
+     * @param depot a DepotDrop panel
+     */
     public CheckDropInDepot(DepotDrop depot){
         this.depot = depot;
     }

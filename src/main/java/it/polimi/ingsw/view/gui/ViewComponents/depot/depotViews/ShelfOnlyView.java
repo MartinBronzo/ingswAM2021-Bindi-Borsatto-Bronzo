@@ -13,10 +13,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel represents a shelf of a Depot that is used only to be seen by the user (the resources are not draggable and no drop can occur onto the panel).
+ */
 public class ShelfOnlyView extends JPanel {
     private int shelfNumber;
     private List<JLabel> resources;
 
+    /**
+     * Constructs a view of the player's shelf
+     * @param shelfNumber the number of a Depot shelf
+     */
     public ShelfOnlyView(int shelfNumber){
         super();
         this.shelfNumber = shelfNumber;
@@ -42,6 +49,11 @@ public class ShelfOnlyView extends JPanel {
         }
     }*/
 
+    /**
+     * Fills this shelf with the resources the player stores onto it. The information regarding the player's resources are retrieved from the specified DepotShelf object
+     * (a part of the player's LightModel)
+     * @param depotShelf the DepotShelf containing information for this shelf
+     */
     public void filShelf(DepotShelf depotShelf){
         final int img_width = 40;
         final int img_height = 40;

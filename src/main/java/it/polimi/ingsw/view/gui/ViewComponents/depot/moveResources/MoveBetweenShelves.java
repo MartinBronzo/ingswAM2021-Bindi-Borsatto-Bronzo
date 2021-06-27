@@ -11,8 +11,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel lets the user specify how they want to move resources between the Depot shelves.
+ */
 public class MoveBetweenShelves extends JPanel {
 
+    /**
+     * Constructs a MoveBetweenShelves displaying the player's Depot filled with their stored resources
+     */
     public MoveBetweenShelves(){
         super();
 

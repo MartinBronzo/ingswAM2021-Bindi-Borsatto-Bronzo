@@ -6,12 +6,20 @@ import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
 import javax.swing.*;
 
+/**
+ * This class registers the drop the user makes from a panel containing infinite resources onto a Droppable object.
+ */
 public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
     private final Droppable dropTarget;
 
+    /**
+     * Constructs a RegisterDropFromInfiniteRes function
+     * @param dropTarget the Droppable object where the resources will be dropped onto
+     */
     public RegisterDropFromInfiniteRes(Droppable dropTarget){
         this.dropTarget = dropTarget;
     }
+
     @Override
     public void accept(Icon icon) throws IllegalActionException {
         ResourceType imageType = ResourceType.valueOf(((ImageIcon) icon).getDescription().split(" ")[1]);

@@ -14,8 +14,10 @@ import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel represents a player's shelf filled with the resources the player already stores onto the shelf. Resources can be dropped onto this shelf.
+ */
 public class ShelfDrop extends JPanel implements Droppable, DropResettable {
-    //TODO: ci sarà da stampare le risorse già presenti nel depot
     private int shelfNumber;
     /**
      * In each depot panel we have this resToDepot list which takes track of all the resources moved to this depot. When  the confirm
@@ -59,6 +61,10 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         }
     }*/
 
+    /**
+     * Constructs a shelf with the specified shelf number
+     * @param shelfNumber the number of the shelf
+     */
     public ShelfDrop(int shelfNumber){
         super();
         this.shelfNumber = shelfNumber;
@@ -141,6 +147,11 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         g.drawImage(new ImageIcon(getDepotFileName(shelfNumber)).getImage(), 100, 100, null);
     }
 
+    /**
+     * Returns the path to the image representing the specified shelf
+     * @param shelf a shelf number
+     * @return the path to the image for the specified shelf or an empty string
+     */
     public static String getDepotFileName(int shelf){
         switch (shelf){
             case 1:
@@ -157,14 +168,23 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         return resToDepot;
     }*/
 
+    /**
+     * Returns the type of resource stored onto this shelf
+     * @return the type of resource stored onto this shelf
+     */
     public ResourceType getTypeForShelf() {
         return typeForShelf;
     }
 
+    /**
+     * Returns the amount of resources dropped onto this shelf
+     * @return the amount of resources dropped onto this shelf
+     */
     public int getQuantityDropped() {
         return quantityDropped;
     }
 
+    @Override
     public void resetState(){
         //this.resToDepot = new ArrayList<>();
         this.typeForShelf = null;
@@ -184,7 +204,10 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
         this.droppedRes.add(label);
     }
 
-
+    /**
+     * Initiates the shelf with the already stored resources (this information is retrieved from the specified DepotShelf object of the LightModel)
+     * @param depotShelf the DepotShelf containing the information about the player's shelf which this object represents
+     */
     public void fillShelf(DepotShelf depotShelf) {
         JLabel resource;
         for(int i = 0; i < depotShelf.getQuantity(); i++){
@@ -198,6 +221,11 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
             this.typeForShelf = depotShelf.getResourceType();
     }
 
+    /**
+     * Saves the DepotDrop this shelf belongs to into this object. This method must be called when the initiation of this object is
+     * being made
+     * @param parentDepot the DepotDrop this shelf belongs to
+     */
     public void setParentDepot(DepotDrop parentDepot) {
         this.parentDepot = parentDepot;
     }
