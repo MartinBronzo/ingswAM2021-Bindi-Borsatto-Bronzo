@@ -13,9 +13,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This panel contains all the LeaderCardDrag panels which represents the ExtraSlot LeaderCard the player has. From this panels
+ * the stored resources onto the player's cards can be dragged away.
+ */
 public class DragLeaderCards extends JPanel implements Resettable, DragUpdatable {
     private List<LeaderCardDrag> cards;
 
+    /**
+     * Constructs a DragLeaderCards already filled with the LeaderCardDrag representing the player's ExtraSlot LeaderCard
+     */
     public DragLeaderCards(){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -47,6 +54,10 @@ public class DragLeaderCards extends JPanel implements Resettable, DragUpdatable
 
     }
 
+    /**
+     * Checks whether this panel has LeaderCardDrag panel onto it, that is whether the player has actually ExtraSlot LeaderCard active
+     * @return true if there is at least one LeaderCardDrag panel displayed, false otherwise
+     */
     public boolean isEmpty(){
         if(this.cards == null)
             return true;

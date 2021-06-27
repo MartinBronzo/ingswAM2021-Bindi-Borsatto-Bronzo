@@ -14,9 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This panel contains all the LeaderCardDrop panels which represents the ExtraSlot LeaderCard the player has. Onto this panels
+ * resources can be dropped.
+ */
 public class DropLeaderCards extends JPanel implements Resettable {
     private List<LeaderCardDrop> cards;
 
+
+    /**
+     * Constructs a DropLeaderCards already filled with the LeaderCardDrop representing the player's ExtraSlot LeaderCard
+     */
     public DropLeaderCards(){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -30,6 +38,10 @@ public class DropLeaderCards extends JPanel implements Resettable {
         }
     }
 
+    /**
+     * Checks whether this panel has LeaderCardDrop panel onto it, that is whether the player has actually ExtraSlot LeaderCard active
+     * @return true if there is at least one LeaderCardDrop panel displayed, false otherwise
+     */
     public boolean isEmpty(){
         if(this.cards == null)
             return true;
@@ -52,6 +64,11 @@ public class DropLeaderCards extends JPanel implements Resettable {
         }
     }
 
+    /**
+     * Prepares the LeaderCardDrop in this panel to take drops from the specified source of limited draggable resources (the LimitedResourceDrag panel)
+     * @param checkDropFunction the DropChecker function to be used to checks the drop onto this DropLeaderCards
+     * @param resDrag a source of limited draggable resources
+     */
     public void initFromFiniteRes(DropChecker checkDropFunction, LimitedResourcesDrag resDrag){
         for(LeaderCardDrop lDD : this.cards)
             lDD.initFromFiniteRes(checkDropFunction, resDrag);
@@ -63,6 +80,10 @@ public class DropLeaderCards extends JPanel implements Resettable {
             lDD.resetState();
     }
 
+    /**
+     * Returns the list of LeaderCardDrop displayed onto this panel
+     * @return the list of LeaderCardDrop displayed onto this panel
+     */
     public List<LeaderCardDrop> getCards() {
         return cards;
     }

@@ -9,10 +9,20 @@ import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.leaderCardsDrop.Leade
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * This RegisterDropInterface function is used to register drop whose resources come from the DepotShelf and onto a collection of LeaderCardDrops. This function works but it
+ * is not used in this application (it was designed for the case in which the moving resources from the Depot to the ExtraSlot LeaderCards were made
+ * with a drag and drop).
+ */
 public class RegisterMoveToLeader implements RegisterDropInterface {
     private List<LeaderCardDrop> leaders;
     private DepotDrag depotDrag;
 
+    /**
+     * Creates a RegisterMoveToLeader function
+     * @param leaders the list of LeaderCardDrop this function registers the drops onto
+     * @param depotDrag the Depot where the resources are dragged away
+     */
     public RegisterMoveToLeader(List<LeaderCardDrop> leaders, DepotDrag depotDrag) {
         this.leaders = leaders;
         this.depotDrag = depotDrag;

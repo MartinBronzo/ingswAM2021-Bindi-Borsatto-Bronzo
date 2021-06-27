@@ -13,10 +13,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This panel contains the image of the LeaderCards a player's opponent has (active or not used yet).
+ */
 public class OthersPlayerLeaderCards extends JPanel {
     private ArrayList<LeaderCard> activeLeaders;
     private ArrayList<LeaderCard> unusedLeaders;
 
+    /**
+     * Constructs a OthersPlayerLeaderCards containing the specified LeaderCards
+     * @param activeLeaders the player's opponent's active cards
+     * @param unusedLeaders the player's opponent's unused cards
+     */
     public OthersPlayerLeaderCards(ArrayList<LeaderCard> activeLeaders, ArrayList<LeaderCard> unusedLeaders) {
         super();
         this.activeLeaders = activeLeaders;
@@ -29,6 +37,13 @@ public class OthersPlayerLeaderCards extends JPanel {
         addLeaderCards();
     }
 
+    /**
+     * Creates a scaled ImageIcon of the specified image
+     * @param image the path to the image to be displayed in the ImageIcon
+     * @param width the width the ImageIcon needs to have
+     * @param height the height the ImageIcon needs to have
+     * @return a properly scaled ImageIcon
+     */
     public static ImageIcon scaleImage(String image, int width, int height) {
         //scale image
         BufferedImage img = null;
@@ -82,6 +97,9 @@ public class OthersPlayerLeaderCards extends JPanel {
         }
     }
 
+    /**
+     * Updates the panel. It is used in the case the player's opponent changed their unused LeaderCards by activating or discarding one
+     */
     public void update(){
         for (Component component: this.getComponents()) {
             this.remove(component);

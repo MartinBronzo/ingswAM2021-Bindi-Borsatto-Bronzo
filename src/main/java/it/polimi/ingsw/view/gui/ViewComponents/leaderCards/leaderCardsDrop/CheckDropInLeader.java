@@ -12,7 +12,6 @@ import javax.swing.*;
 //We can use the same CheckDrop function for every LeaderCard present
 public class CheckDropInLeader implements DropChecker {
 
-
     @Override
     public boolean test(JPanel jPanel) throws IllegalActionException {
         PanelManager manager = PanelManager.getInstance();

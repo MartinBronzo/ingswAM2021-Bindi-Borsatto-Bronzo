@@ -14,11 +14,19 @@ import java.awt.dnd.DragSource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel represents a player's ExtraSlot LeaderCard where the stored resources can be dragged.
+ */
 public class LeaderCardDrag extends JPanel implements DragUpdatable, Resettable {
     private MyDragGestureListener dlistener;
     private List<JLabel> resources; //The resources already present
     private ResourceType resStored;
 
+    /**
+     * Constructs a LeaderCardDrag panel which represents the specified LeaderCard and with the specified amount of LeaderCards already stored
+     * @param leader the LeaderCard this panel represents
+     * @param alreadyStoredRes the quantity of resources the player has stored onto the card
+     */
     public LeaderCardDrag(LeaderCard leader, int alreadyStoredRes){
         super();
 
@@ -71,6 +79,10 @@ public class LeaderCardDrag extends JPanel implements DragUpdatable, Resettable 
             label.setVisible(true);
     }
 
+    /**
+     * Returns the resource type that can be stored onto this card
+     * @return the resource type that can be stored onto this card
+     */
     public ResourceType getResStored() {
         return resStored;
     }

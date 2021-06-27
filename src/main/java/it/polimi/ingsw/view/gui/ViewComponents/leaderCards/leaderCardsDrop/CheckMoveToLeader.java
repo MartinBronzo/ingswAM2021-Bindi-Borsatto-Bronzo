@@ -8,11 +8,14 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This DropChecker function is used to check whether a drop can be made onto a collection of LeaderCardDrop panels.
+ */
 public class CheckMoveToLeader implements DropChecker, Resettable {
     private List<LeaderCardDrop> leaders;
     private LeaderCardDrop destination;
 
-    public CheckMoveToLeader() {
+  /*  public CheckMoveToLeader() {
         this.leaders = new ArrayList<>();
         this.destination = null;
     }
@@ -20,14 +23,23 @@ public class CheckMoveToLeader implements DropChecker, Resettable {
     public void addLeaderCard(LeaderCardDrop leader){
         this.leaders.add(leader);
     }
+*/
 
-    public void setLeaders(List<LeaderCardDrop> leaders) {
-        this.leaders = leaders;
-    }
-
+    /**
+     * Constructs a CheckMoveToLeader function which checks the drop onto the specified LeaderCardDrops
+     * @param leaders a list of LeaderCardDrop panels
+     */
     public CheckMoveToLeader(List<LeaderCardDrop> leaders) {
         this.leaders = leaders;
         this.destination = null;
+    }
+
+    /**
+     * Sets the list of LeaderCardDrop this DropChecker function controls the drop onto
+     * @param leaders a list of LeaderCardDrop panels
+     */
+    public void setLeaders(List<LeaderCardDrop> leaders) {
+        this.leaders = leaders;
     }
 
     @Override

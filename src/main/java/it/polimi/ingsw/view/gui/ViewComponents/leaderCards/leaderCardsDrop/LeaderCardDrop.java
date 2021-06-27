@@ -19,6 +19,11 @@ import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel represents a player's ExtraSlot LeaderCard where resources can be dropped onto. N.B.: this class has methods used to
+ * implement drops whose resources come from a shelf in the case the moving resources from the Depot to the ExtraSlot LeaderCards were made
+ * with a drag and drop (this isn't the case for this application, but the drag and drop for this case works).
+ */
 public class LeaderCardDrop extends JPanel implements DropResettable, Droppable {
     private MyDropTargetListener targetListener;
     private List<JLabel> resources; //The already present resources
@@ -29,6 +34,11 @@ public class LeaderCardDrop extends JPanel implements DropResettable, Droppable 
     private ResourceType resStored;
     private int dropInfo;
 
+    /**
+     * Constructs a LeaderCardDrop panel which represents the specified LeaderCard and with the specified amount of LeaderCards already stored
+     * @param leader the LeaderCard this panel represents
+     * @param alreadyStoredRes the quantity of resources the player has stored onto the card
+     */
     public LeaderCardDrop(LeaderCard leader, int alreadyStoredRes){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -97,6 +107,12 @@ public class LeaderCardDrop extends JPanel implements DropResettable, Droppable 
         }
     }
 
+    /**
+     * Prepares this LeaderCardDrop to take drops from a source of limited draggable resources (a LimitedResourceDrag panel)
+     * @param checker the DropChecker function to be used to checks the drop onto this LeaderCardDrop
+     * @param registerDrop the RegisterDropInterface function used to register the drops made onto the collection of LeaderCardDrop this LeaderCardDrop belongs to
+     */
+    //Used for testing purposes
     public void init(DropChecker checker, RegisterDropInterface registerDrop){
         this.targetListener = new MyDropTargetListener(this, registerDrop, checker);
     }
@@ -124,30 +140,58 @@ public class LeaderCardDrop extends JPanel implements DropResettable, Droppable 
         this.droppedRes.add(label);
     }
 
+    /**
+     * Returns from which shelf the dropped resources come from
+     * @return the number of the shelf the dropped resources come from or -1
+     */
     public int getShelf() {
         return shelf;
     }
 
+    /**
+     * Returns the amount of dropped resources onto this card
+     * @return the amount of dropped resources onto this card
+     */
     public int getQuantity(){
         return this.droppedRes.size();
     }
 
+    /**
+     * Returns how many resources can be stored onto this card
+     * @return the amount of resources that can be dropped onto this card
+     */
     public int getMaximumCapacity() {
         return maximumCapacity;
     }
 
+    /**
+     * Returns how many resources this card held before any drop had been made
+     * @return the resources stored before any drop had been made
+     */
     public int getOriginalPresent(){
         return this.resources.size();
     }
 
+    /**
+     * Returns whether a resource has been dropped here
+     * @return true if at least a resource was dropped here, false otherwise
+     */
     public boolean isDroppedHere() {
         return droppedHere;
     }
 
+    /**
+     * Sets a boolean which takes track of whether at least a resource was dropped onto the card with the specified value
+     * @param droppedHere a boolean
+     */
     public void setDroppedHere(boolean droppedHere) {
         this.droppedHere = droppedHere;
     }
 
+    /**
+     * Returns the type of resources that can be stored onto this card
+     * @return the type of resources that can be stored onto this card
+     */
     public ResourceType getResStored() {
         return resStored;
     }
@@ -164,11 +208,20 @@ public class LeaderCardDrop extends JPanel implements DropResettable, Droppable 
         return 0;
     }
 
+    /**
+     * Prepares this LeaderCardDrop to take drops from the specified source of limited draggable resources (the LimitedResourceDrag panel)
+     * @param checkDropFunction the DropChecker function to be used to checks the drop onto this LeaderCardDrop and the collection of LeaderCardDrops this panel belongs to
+     * @param resDrag a source of limited draggable resources
+     */
     public void initFromFiniteRes(DropChecker checkDropFunction, LimitedResourcesDrag resDrag){
         this.targetListener = new MyDropTargetListener(this, new RegisterDropFromFiniteRes(this, resDrag));
         this.targetListener.setCheckDrop(checkDropFunction);
     }
 
+    /**
+     * Returns the number of resources dropped onto this card
+     * @return the number of resources dropped onto this card
+     */
     public int getDroppedHereAmount(){
         return this.dropInfo;
     }
