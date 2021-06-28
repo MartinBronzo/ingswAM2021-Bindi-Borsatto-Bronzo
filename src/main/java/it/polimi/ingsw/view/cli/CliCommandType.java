@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
+/**
+ * This Enumeration contains the commands that the CliClient can make.
+ */
 public enum CliCommandType {
     QUIT,
     SETNICKNAME,

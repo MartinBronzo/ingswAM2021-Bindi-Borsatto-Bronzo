@@ -8,6 +8,7 @@ public class Command {
     private String parameters;
 
     /**
+     * Constructs a Command object for the specified command and which will contain the specified parameters
      * @param cmd the command type to be send, check network documentation to see all available command types
      * @param message the message command content
      */
@@ -28,10 +29,18 @@ public class Command {
         this.parameters = "";
     }
 
+    /**
+     * Returns the command type
+     * @return the command type
+     */
     public String getCmd() {
         return cmd;
     }
 
+    /**
+     * Returns the message command content
+     * @return the message command content
+     */
     public String getParameters() {
         return parameters;
     }

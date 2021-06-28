@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller.enums;
 
-
+/**
+ * This Enumeration represents the state the game can be found in.
+ */
 public enum GameState {
     CONFIGURING,
     /**

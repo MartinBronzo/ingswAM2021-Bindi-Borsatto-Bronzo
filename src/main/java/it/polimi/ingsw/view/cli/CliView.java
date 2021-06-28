@@ -26,6 +26,10 @@ import it.polimi.ingsw.view.lightModel.player.DepotShelf;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class contains all the static methods needed to print the messages the player's receives from the server and that
+ * will help them playing.
+ */
 public class CliView {
 
      /*

@@ -29,11 +29,17 @@ import java.util.Map;
 public class DevGridPayingCost extends JPanel {
     boolean created;
 
-    //TODO: a cosa servono questi metodi?
+    /**
+     * Constructs a dumb DevGridPayingCost
+     */
     public DevGridPayingCost(){
         this.created = true;
     }
 
+    /**
+     * Returns whether the object has been created
+     * @return true
+     */
     public boolean isCreated(){return created;}
 
     /**

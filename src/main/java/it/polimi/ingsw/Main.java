@@ -5,6 +5,9 @@ import it.polimi.ingsw.view.gui.GuiClient;
 
 import java.io.IOException;
 
+/**
+ * This class is used as the Application launcher.
+ */
 public class Main {
 
     /**

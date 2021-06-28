@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel contains a list of LeaderCards that can be selected via ComboBoxes.
+ */
 public class CardComboBox extends JPanel {
     List<JComboBox<Integer>> comboBoxList;
 
@@ -78,6 +81,11 @@ public class CardComboBox extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     }
 
+    /**
+     * Resets the current view by adding the specified cards and the specified text for the checkboxes
+     * @param cardList the list with the absolute paths of the images to display
+     * @param comboBoxValues the integer values in the comboBoxes
+     */
     public void resetView(List<String> cardList, List<Integer> comboBoxValues){
         for (Component component: this.getComponents()) {
             this.remove(component);
@@ -126,6 +134,10 @@ public class CardComboBox extends JPanel {
         this.validate();
     }
 
+    /**
+     * Returns a list of indexes of the cards that have been selected
+     * @return a list of indexes of the cards that have been selected
+     */
     public List<Integer> getSelectedLeaderIndexes(){
         List<Integer> leaderList = new ArrayList<>();
         int c;
@@ -137,9 +149,5 @@ public class CardComboBox extends JPanel {
 
         return leaderList;
     }
-
-
-
-
 
 }
