@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages.sendToClient;
 
+/**
+ * This enumeration represents all the possible messages that the GameController sends back to the players.
+ */
 public enum ResponseType {
     PING,
     UPDATE,
