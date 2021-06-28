@@ -12,10 +12,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This panel represents the Market in the game.
+ */
 public class MarketGridPanel extends JPanel{
     private final Board mainBoard;
     private final String directoryPath = "src/main/resources/front/";
 
+    /**
+     * Constructs a MarketGridPanel
+     * @param mainBoard the LightModel object which contains the information on the Market
+     */
     public MarketGridPanel(Board mainBoard){
         super(new GridLayout(4, 5, 5, 5));
         this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -61,6 +68,9 @@ public class MarketGridPanel extends JPanel{
 
     }
 
+    /**
+     * Updates this panel
+     */
     public void update(){
         BufferedImage img = null;
         Image dimg;

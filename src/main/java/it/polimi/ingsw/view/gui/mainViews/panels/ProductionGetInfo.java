@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.BaseProductionParams;
 import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.CardCheckbox;
 import it.polimi.ingsw.view.gui.ViewComponents.devCards.DevSlotCheckBox;
+import it.polimi.ingsw.view.gui.ViewComponents.utils.DumbCheckDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.utils.InstructionPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.production.baseProd.CheckBaseProd;
 import it.polimi.ingsw.view.gui.ViewComponents.production.baseProd.DragAndDropBaseProd;
@@ -38,6 +39,7 @@ public class ProductionGetInfo extends JPanel {
 
         this.dragAndDropBaseProd = new DragAndDropBaseProd();
         dragAndDropBaseProd.setCheckDropFunction(new CheckBaseProd(dragAndDropBaseProd));
+        //dragAndDropBaseProd.setCheckDropFunction(new DumbCheckDrop());
         upperPanel.add(dragAndDropBaseProd);
         upperPanel.add(Box.createHorizontalGlue());
 

@@ -13,10 +13,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This panel represents the player's DevSlots containing the DevCards that can be checked if the player wants to use it for some reason.
+ */
 public class DevSlotCheckBox extends JPanel{
     private List<JCheckBox> checkBoxList;
     private static final String cardPath = "src/main/resources/Masters of Renaissance_Cards_FRONT/";
 
+    /**
+     * Constructs a DevSlotCheckBox
+     * @param player the LightModel object containing the information on the player's DevSlots
+     */
     public DevSlotCheckBox(Player player){
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         checkBoxList = new ArrayList<>();
@@ -59,6 +66,10 @@ public class DevSlotCheckBox extends JPanel{
 
     }
 
+    /**
+     * Returns a list of the indexes of the DevCards the player has selected
+     * @return a list of the indexes of the DevCards the player has selected
+     */
     public List<Integer> getSelectedDevSlotIndexes(){
         List<Integer> devSlotList = new ArrayList<>();
 

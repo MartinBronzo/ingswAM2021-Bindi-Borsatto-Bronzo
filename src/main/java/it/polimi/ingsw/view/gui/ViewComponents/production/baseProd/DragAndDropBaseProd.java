@@ -11,6 +11,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel contains all the elements for the BaseProduction.
+ */
 public class DragAndDropBaseProd extends JPanel implements Resettable {
     private InfiniteResourcesDrag infiniteResourcesDrag;
     private List<MyDropTargetListener> targetListeners;
@@ -18,7 +21,10 @@ public class DragAndDropBaseProd extends JPanel implements Resettable {
     private BaseProdPanel input2;
     private BaseProdPanel output;
 
-
+    /**
+     * Constructs a DragAndDropBaseProd where the player can drag and drop the resources they want to use for the BaseProduction. Before
+     * being able to use this object, the user of this class must specify the DropChecker function used for this panel
+     */
     public DragAndDropBaseProd(){
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -66,6 +72,10 @@ public class DragAndDropBaseProd extends JPanel implements Resettable {
         this.add(prodPanel);
     }
 
+    /**
+     * Returns the resources the player wants to use as inputs for the BaseProduction
+     * @return the resources the player wants to use as inputs for the BaseProduction
+     */
     public List<ResourceType> getInputs(){
         List<ResourceType> inputList = new ArrayList<>();
         inputList.add(input1.getResource());
@@ -74,20 +84,37 @@ public class DragAndDropBaseProd extends JPanel implements Resettable {
         return inputList;
     }
 
+    /**
+     * Returns whether the player wants to actually use the BaseProduction
+     * @return true if the player wants to use the BaseProduction (that is, if all the inputs and output have been specified
+     * by the player), false otherwise
+     */
     public boolean isActivated(){
         return (input1.getResource() != null && input2.getResource() != null && output.getResource()!= null);
     }
 
+    /**
+     * Returns the resource the player wants to use as output for the BaseProduction
+     * @return the resource the player wants to use as output for the BaseProduction
+     */
     public ResourceType getOutput(){
         return output.getResource();
     }
 
+    /**
+     * Returns the resource the player wants to use as output for the BaseProduction in a list
+     * @return the resource the player wants to use as output for the BaseProduction in a list
+     */
     public List<ResourceType> getOutputsList(){
         List<ResourceType> outputList = new ArrayList<>();
         outputList.add(output.getResource());
         return outputList;
     }
 
+    /**
+     * Sets the DropChecker function used for this panel
+     * @param checkDropFunction the DropChecker function used for this panel
+     */
     public void setCheckDropFunction(DropChecker checkDropFunction){
         for(MyDropTargetListener listener : this.targetListeners)
             listener.setCheckDrop(checkDropFunction);

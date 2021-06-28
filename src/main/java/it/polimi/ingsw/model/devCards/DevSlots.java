@@ -32,6 +32,7 @@ public class DevSlots {
     }
 
     /**
+     * Returns a copy of the specified DevSlot
      * @param index is the DevSlot number starting from 0
      * @return a copy the DevSlot at te specified Index
      * @throws IndexOutOfBoundsException if index is not valid [0...2]

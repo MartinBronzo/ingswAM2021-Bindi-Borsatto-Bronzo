@@ -5,9 +5,16 @@ import it.polimi.ingsw.view.gui.ViewComponents.interfaces.RegisterDropInterface;
 
 import javax.swing.*;
 
+/**
+ * This RegisterDropInterface function is used to take tracks of the drop that have been made onto the BaseProduction panel.
+ */
 public class RegisterBaseProdDrop implements RegisterDropInterface {
     private final BaseProdPanel baseProdPanel;
 
+    /**
+     * Constructs a RegisterBaseProdDrop function used to register the drops that occur onto the specified BaseProdPanel
+     * @param dropTarget the BaseProdPanel whose drops this function takes track of
+     */
     public RegisterBaseProdDrop(BaseProdPanel dropTarget){
         this.baseProdPanel = dropTarget;
     }

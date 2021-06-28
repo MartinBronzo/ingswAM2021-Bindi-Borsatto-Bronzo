@@ -13,12 +13,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel represents a DevSlot of the player that can only be shown (that is, it cannot be checked).
+ */
 public class DevSlotOnlyView extends JPanel {
     private List<JLabel> labelList;
     private final int spaceBtwCards = 40;
     private final int width = 200;
     private final int height = 400;
 
+    /**
+     * Constructs a DevSlotOnlyView representing the specified DevSlot
+     * @param devSlot the DevSlot whose visual presentation is going to be displayed onto this panel
+     */
     public DevSlotOnlyView(DevSlot devSlot) {
         String path = "src/main/resources/Masters of Renaissance_Cards_FRONT/";
         labelList = new ArrayList<>();
