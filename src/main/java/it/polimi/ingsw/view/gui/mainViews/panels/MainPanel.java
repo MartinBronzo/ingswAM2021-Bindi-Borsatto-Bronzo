@@ -90,8 +90,7 @@ public class MainPanel extends JPanel {
         controlPanel.add(comboBox);
 
         JButton quitButton = new JButton("QUIT");
-        quitButton.addActionListener(event -> PanelManager.getInstance().writeMessage(
-                new Command("quit", new Message())));
+        quitButton.addActionListener(event -> PanelManager.getInstance().manageLogoutCommand());
         quitButton.setAlignmentX(LEFT_ALIGNMENT);
         //todo:
         //quitButton.addActionListener(event -> PanelManager.getInstance().quit());

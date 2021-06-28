@@ -149,9 +149,10 @@ public class GuiClient implements Runnable{
     }
 
     public void quitCommand(){
+        threadReader.interrupt();
         PanelManager.getInstance().printLogout("Thanks for playing");
         forceLogout.set(true);
-        threadReader.interrupt();
+
     }
 
 
@@ -216,6 +217,5 @@ public class GuiClient implements Runnable{
         GuiClient client = new GuiClient(portNumber, hostName);
         client.startConnection();
         client.doConnection();
-        System.out.println("eedwqw");
     }
 }

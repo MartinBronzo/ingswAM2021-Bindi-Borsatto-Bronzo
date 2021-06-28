@@ -39,7 +39,7 @@ public class FinalResultsDialog extends JDialog {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                //TODO: close the game
+                PanelManager.getInstance().manageLogoutCommand();
             }
 
             @Override
