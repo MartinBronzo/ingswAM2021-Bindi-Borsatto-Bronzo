@@ -9,6 +9,9 @@ import it.polimi.ingsw.network.messages.sendToClient.*;
 import java.rmi.UnexpectedException;
 import java.util.*;
 
+/**
+ * manages games in the server, avoids more players having same nick and manages player reconnection
+ */
 public final class GamesManagerSingleton {
 
     private final Collection<GameController> games;
@@ -23,6 +26,9 @@ public final class GamesManagerSingleton {
         this.startingGame = null;
     }
 
+    /** creates a new instance if there is none
+     * @return the instance of the GamesManagerSingleton
+     */
     public static GamesManagerSingleton getInstance() {
         if (instance == null) {
             synchronized (GamesManagerSingleton.class) {

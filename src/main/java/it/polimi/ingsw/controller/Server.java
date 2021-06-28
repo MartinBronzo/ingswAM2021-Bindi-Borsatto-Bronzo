@@ -9,11 +9,18 @@ import java.util.concurrent.Executors;
 public class Server {
     final private int port;
 
+    /**
+     * @param port the server socket port
+     */
     public Server(int port) {
         this.port = port;
     }
 
 
+    /**
+     * start the server in listening for any new socket connection
+     * each connection is managed in a new thread
+     */
     public void startServer() {
         ExecutorService executor = Executors.newCachedThreadPool();
         ServerSocket serverSocket;

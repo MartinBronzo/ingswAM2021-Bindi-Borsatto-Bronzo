@@ -122,6 +122,9 @@ public class LeaderCardDeck implements Deck {
         return this.leaderCards.size();
     }
 
+    /**
+     * @return a list of the leader Cards in the deck
+     */
     public List<LeaderCard> getCopyLeaderCards() {
         List<LeaderCard> result = new ArrayList<>();
         for (LeaderCard lD : this.leaderCards)
@@ -156,6 +159,14 @@ public class LeaderCardDeck implements Deck {
         return l1Copy.isEmpty();
     }
 
+    /** Reads all the cards in the xml file
+     * @param configFile the xml describing the leader Cards
+     * @return a list containing all the leader cards described
+     * @throws ParserConfigurationException if there is an error in the syntax of the file
+     * @throws IOException if the file can't be read
+     * @throws SAXException if an error appeared parsing xmlFile
+     * @throws NegativeQuantityException if the file contains a value with a negative quantity associated
+     */
     public static LinkedList<LeaderCard> initLeaderCards(File configFile) throws ParserConfigurationException, IOException, SAXException, NegativeQuantityException {
         LinkedList<LeaderCard> deck = new LinkedList<>();
 

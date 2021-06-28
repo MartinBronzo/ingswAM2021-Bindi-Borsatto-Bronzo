@@ -306,6 +306,10 @@ public class MainBoard {
     ###########################################################################################################
      */
 
+    /** discards or activates the desired reportnum for each player in the game
+     * @param reportNum the reportnum to be activated or discarded
+     * @throws IllegalActionException if the current vatican report had already been activated
+     */
     public void dealWithVaticanReportAllPlayers(ReportNum reportNum) throws IllegalActionException {
         for (PlayerBoard pB : this.playerBoardsList)
             pB.dealWithVaticanReport(reportNum);

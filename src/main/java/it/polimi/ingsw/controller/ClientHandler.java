@@ -134,6 +134,11 @@ public class ClientHandler implements Runnable {
     }
 
 
+    /**
+     * Creates a new clienHandler, it sends and reads messages from the client
+     * @param socket the communication socket, which allows the communication with the client
+     * @throws IOException if there is a problem in the communication streams with the client
+     */
     public ClientHandler(Socket socket) throws IOException {
         this.socket = socket;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -314,11 +319,17 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**Sends a string to the client
+     * @param message string to be sent
+     */
     public synchronized void send(String message) {
         out.println(message);
         //out.flush();
     }
 
+    /**Sends a Json string to the client
+     * @param response the response to a command to be sent to the client through Json
+     */
     public synchronized void send(ResponseInterface response) {
         ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
         out.println(gson.toJson(responseMessage));
