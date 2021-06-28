@@ -27,7 +27,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.*;
 
-
+/**
+ * This class is the Controller object for the game: it receives the messages from the players via the ClientHandlers and then
+ * sends them to the Model. Among the other things, it manages the changing of turns, the notification of a player's disconnection.
+ */
 public class GameController {
     private ClientHandler activePlayer;
     private MainBoard mainBoard;
@@ -554,18 +557,39 @@ public class GameController {
                 return e.getValue();
         return null;
     }*/
+
+    /**
+     * Returns the reference to the safe copy of the Model stored in this GameController
+     * @return the reference to the safe copy of the Model stored in this GameController
+     */
+    //Used for testing purposes
     public MainBoard getModelCopy() {
         return this.modelCopy;
     }
 
+    /**
+     * Returns the reference to the MainBoard of this game stored in this GameController
+     * @return the reference to the MainBoard of this game stored in this GameController
+     */
+    //Used for testing purposes
     public MainBoard getMainBoard() {
         return this.mainBoard;
     }
 
+    /**
+     * Returns the reference to the safe copy of the ClientHandler in this game stored in this GameController
+     * @return the reference to the safe copy of the ClientHandler in this game stored in this GameController
+     */
+    //Used for testing purposes
     public List<ClientHandler> getClientHandlersCopy() {
         return this.clientHandlersCopy;
     }
 
+    /**
+     * Returns the reference to the safe copy of the GameState of this game stored in this GameController
+     * @return the reference to the safe copy of the GameState of this game stored in this GameController
+     */
+    //Used for testing purposes
     public GameState getGameStateCopy() {
         return this.gameStateCopy;
     }
@@ -598,6 +622,10 @@ public class GameController {
     ###########################################################################################################
      */
 
+    /**
+     * Sends the first update of the game to the players. It contains the LeaderCards the players receive at the beginning of the game
+     * @return true if the method finishes correctly
+     */
     //Tested
     public boolean showLeaderCardAtBeginning() {
         mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
@@ -633,6 +661,10 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Manages the begging of the game by giving to the player their extra FaithPoints and by telling them how many resources they can get
+     * @return true if the method finishes correctly
+     */
     //Tested
     public boolean sendNumExtraResBeginning() {
         //Randomly chooses a first player
@@ -656,6 +688,13 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Sends to a disconnected player their begging of the game information (the amount of resources to get and of LeaderCards to discard, and their order in the game) if they haven't received
+     * this information yet
+     * @param usedToBeDisconnected the ClientHandler of the player which was disconnected and now is back in the game
+     * @return true if the method finishes correctly
+     * @throws IllegalActionException if the player has already given their beginning of the game choices
+     */
     public boolean sendNumExtraResBeginningToDisconnectedPlayer(ClientHandler usedToBeDisconnected) throws IllegalActionException {
         /*if (!(this.disconnectedBeforeStarting.contains(usedToBeDisconnected)))
             throw new IllegalActionException("The player has already given their beginning decisions!");*/
@@ -683,6 +722,14 @@ public class GameController {
 
     //TODO: i numeri che il client passa degli indici NON sono da informatici (devono essere decrementati per accedere agli indici effettivi delle matrici, delle liste, etc.)
 
+    /**
+     * Communicates to the Model the beginning of the game decisions of the specified player
+     * @param discardLeaderCardBeginning the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalArgumentException if there is an error in the choices format
+     * @throws IllegalActionException if the player cannot make a choice
+     */
     //Tested
     public boolean discardLeaderAndExtraResBeginning(DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
@@ -746,6 +793,13 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that a player wants to discard a LeaderCard during the game
+     * @param discardLeader the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalArgumentException if there is an error in the choices format
+     */
     //Tested
     public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
@@ -784,6 +838,14 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that a player wants to activate a LeaderCard during the game
+     * @param activateLeader the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalArgumentException if there is an error in the choices format
+     * @throws IllegalActionException if the player cannot make a choice
+     */
     //Tested
     public boolean activateLeader(LeaderMessage activateLeader, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
@@ -817,6 +879,14 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that the player is interested in buying from the Market and sends what is the possible outputs
+     * they would get back to the player
+     * @param resFromMkt the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalArgumentException if there is an error in the choices format
+     */
     //Tested
     public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalArgumentException {
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
@@ -869,6 +939,15 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that the player has decided to buy from the Market and the Model changes accordingly to this
+     * choice
+     * @param buyFromMarket the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalActionException if the player cannot make a choice
+     * @throws IllegalArgumentException if there is an error in the choices format
+     */
     //Tested
     public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         System.out.println(buyFromMarket.toString());
@@ -1030,6 +1109,14 @@ public class GameController {
 
     //SATTOOOO's methods
 
+    /**
+     * Communicates to the Model that the player is interested in buying a DevCard and sends the cost of this card back to
+     * player
+     * @param devCardMessage the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalArgumentException if there is an error in the choices format
+     */
     //Tested
     public boolean getCardCost(GetFromMatrixMessage devCardMessage, ClientHandler clientHandler) throws IllegalArgumentException {
         DevCard devCard;
@@ -1048,6 +1135,14 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that the player has decided to buy a DevCard and the Model changes accordingly to this choice
+     * @param buyDevCard the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalActionException if the player cannot make a choice
+     * @throws IllegalArgumentException if there is an error in the choices format
+     */
     public boolean buyDevCard(BuyDevCardMessage buyDevCard, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         DevCard devCard;
         HashMap<ResourceType, Integer> cost;
@@ -1108,6 +1203,13 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that the player has decided to move resources between shelves and the Model changes accordingly to this choice
+     * @param moveBtwShelvesMessage the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalActionException if the player cannot make a choice
+     */
     public boolean moveResourcesBetweenShelves(MoveBetweenShelvesMessage moveBtwShelvesMessage, ClientHandler clientHandler) throws IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         playerBoard.moveBetweenShelves(moveBtwShelvesMessage.getSourceShelf(), moveBtwShelvesMessage.getDestShelf());
@@ -1125,6 +1227,13 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that the player has decided to move resources from a Depot shelf to the ExtraSlot LeaderCards and the Model changes accordingly to this choice
+     * @param moveShelfToLeaderMessage the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalActionException if the player cannot make a choice
+     */
     public boolean moveResourcesToLeader(MoveShelfToLeaderMessage moveShelfToLeaderMessage, ClientHandler clientHandler) throws IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         playerBoard.moveFromShelfToLeader(moveShelfToLeaderMessage.getNumShelf(), moveShelfToLeaderMessage.getQuantity());
@@ -1142,6 +1251,13 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that the player has decided to move resources from the ExtraSlot LeaderCards to a Depot shelf and the Model changes accordingly to this choice
+     * @param moveLeaderToShelfMessage the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalActionException if the player cannot make a choice
+     */
     public boolean moveResourcesToShelf(MoveLeaderToShelfMessage moveLeaderToShelfMessage, ClientHandler clientHandler) throws IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         playerBoard.moveFromLeaderToShelf(moveLeaderToShelfMessage.getRes(), moveLeaderToShelfMessage.getQuantity(), moveLeaderToShelfMessage.getDestShelf());
@@ -1157,6 +1273,14 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that the player is interested in activating production methods and sends the cost of these productions back to
+     * player
+     * @param getProductionCostMessage the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalArgumentException if there is an error in the choices format
+     */
     //Tested
     public boolean getProductionCost(GetProductionCostMessage getProductionCostMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         HashMap<ResourceType, Integer> prodCost;
@@ -1184,6 +1308,14 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Communicates to the Model that the player has decided to buy activate production methods and the Model changes accordingly to this choice
+     * @param activateProductionMessage the message containing the player's information
+     * @param clientHandler the player who's made the specified choices
+     * @return true if the method finishes correctly
+     * @throws IllegalActionException if the player cannot make a choice
+     * @throws IllegalArgumentException if there is an error in the choices format
+     */
     public boolean activateProduction(ActivateProductionMessage activateProductionMessage, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         HashMap<ResourceType, Integer> prodCost;
         HashMap<LeaderCard, ResourceType> leaderMap = new HashMap<>();
@@ -1331,6 +1463,10 @@ public class GameController {
     ###########################################################################################################
      */
 
+    /**
+     * Makes the Model make a Lorenzo's action and communicates the result back to the player
+     * @param clientHandler the player in the game
+     */
     public void drawSoloToken(ClientHandler clientHandler) {
         SoloBoard soloBoard = (SoloBoard) mainBoard;
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
@@ -1358,8 +1494,6 @@ public class GameController {
             clientHandler.send(new ModelUpdate(game));
         }
     }
-
-
 
      /*
     ###########################################################################################################
@@ -1419,6 +1553,9 @@ public class GameController {
         this.sendBroadcastUpdate(new PlayerConnectionsUpdate(game, disconnectedPlayer.getNickname()), disconnectedPlayer);
     }
 
+    /**
+     * Sends to the players an update containing the information about the player's states
+     */
     public synchronized void updatesPlayersStates() {
         List<ClientHandler> playerList = getPlayersList();
         Game game = new Game();
@@ -1488,6 +1625,11 @@ public class GameController {
             this.endGame();
     }
 
+    /**
+     * Sends to the only player plaing a Solo game an update containing the player's state and Lorenzo's position onto the
+     * FaithTrack
+     * @param soloPlayer the player in the game
+     */
     public void sendUpdateSolo(ClientHandler soloPlayer) {
         Game game = new Game();
         Player player = new Player();
@@ -1499,7 +1641,6 @@ public class GameController {
         soloPlayer.send(new ModelUpdate(game));
 
     }
-
 
     private synchronized void endGame() {
         this.distributeFinalPoints();
@@ -1563,6 +1704,10 @@ public class GameController {
             e.getKey().send(message);
     }
 
+    /**
+     * Creates a ModelUpdate message ready to be sent containing all the information about the game
+     * @return a ModelUpdate message containing all the information about the game
+     */
     public ModelUpdate getWholeMessageUpdateToClient() {
         Game game = new Game();
         Board board = new Board();
@@ -1730,16 +1875,6 @@ public class GameController {
         this.rollbackState();
     }
 
-    /*
-    ###########################################################################################################
-     TO BE USED....
-    ###########################################################################################################
-     */
-
-    public ClientHandler getActivePlayer() {
-        return activePlayer;
-    }
-
     //used only for testing
     public void setActivePlayer(ClientHandler activePlayer) {
         this.activePlayer = activePlayer;
@@ -1754,6 +1889,16 @@ public class GameController {
     public List<Pair<ClientHandler, PlayerBoard>> getPlayers() {
         return players;
     }
+
+    /*
+    ###########################################################################################################
+     TO BE USED....
+    ###########################################################################################################
+     */
+
+    /*public ClientHandler getActivePlayer() {
+        return activePlayer;
+    }*/
 
     private boolean findClientHandler(ClientHandler clientHandler) {
         for (Pair<ClientHandler, PlayerBoard> e : players)
