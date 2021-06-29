@@ -6,6 +6,9 @@ import it.polimi.ingsw.view.cli.AnsiCommands;
  * This Enumeration represents the type of the Marbles that can be found in the Market.
  */
 public enum MarbleType {
+    /**
+     * The Blue Marble.
+     */
     BLUEMARBLE {
         @Override
         public Marble getMarble() {
@@ -20,6 +23,9 @@ public enum MarbleType {
         @Override
         public String getUrl() {return "src/main/resources/PUNCHBOARD/blueMarble.png";}
     },
+    /**
+     * The Grey Marble.
+     */
     GREYMARBLE {
         @Override
         public Marble getMarble() {
@@ -34,6 +40,9 @@ public enum MarbleType {
         @Override
         public String getUrl() {return "src/main/resources/PUNCHBOARD/greyMarble.png";}
     },
+    /**
+     * The Purple Marble.
+     */
     PURPLEMARBLE {
         @Override
         public Marble getMarble() {
@@ -48,6 +57,9 @@ public enum MarbleType {
         @Override
         public String getUrl() {return "src/main/resources/PUNCHBOARD/purpleMarble.png";}
     },
+    /**
+     * The Red Marble.
+     */
     REDMARBLE {
         @Override
         public Marble getMarble() {
@@ -62,6 +74,9 @@ public enum MarbleType {
         @Override
         public String getUrl() {return "src/main/resources/PUNCHBOARD/redMarble.png";}
     },
+    /**
+     * The White Marble.
+     */
     WHITEMARBLE {
         @Override
         public Marble getMarble() {
@@ -81,6 +96,9 @@ public enum MarbleType {
         @Override
         public String getUrl() {return "src/main/resources/PUNCHBOARD/whiteMarble.png";}
     },
+    /**
+     * The Yellow Marble.
+     */
     YELLOWMARBLE {
         @Override
         public Marble getMarble() {

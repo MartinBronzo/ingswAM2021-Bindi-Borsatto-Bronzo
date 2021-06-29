@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.marble.MarbleType;
  * can be used also equals method, but this is specific for every constant
  */
 public enum ResourceType {
+    /**
+     * The coin.
+     */
     COIN {
         @Override
         public boolean isCoin() {
@@ -19,6 +22,9 @@ public enum ResourceType {
             return MarbleType.YELLOWMARBLE;
         }
     },
+    /**
+     * The stone.
+     */
     STONE {
         @Override
         public boolean isStone() {
@@ -30,6 +36,9 @@ public enum ResourceType {
             return MarbleType.GREYMARBLE;
         }
     },
+    /**
+     * The servant.
+     */
     SERVANT {
         @Override
         public boolean isServant() {
@@ -41,6 +50,9 @@ public enum ResourceType {
             return MarbleType.PURPLEMARBLE;
         }
     },
+    /**
+     * The shield.
+     */
     SHIELD {
         @Override
         public boolean isShield() {
@@ -52,6 +64,9 @@ public enum ResourceType {
             return MarbleType.BLUEMARBLE;
         }
     },
+    /**
+     * The faith point.
+     */
     FAITHPOINT {
         @Override
         public boolean isFaithPoint() {
