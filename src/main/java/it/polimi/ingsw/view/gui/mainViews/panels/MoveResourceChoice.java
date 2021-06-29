@@ -7,13 +7,23 @@ import it.polimi.ingsw.view.gui.ViewComponents.depot.moveResources.MoveShelfToLe
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This panel shows to the player all the possible move of resources actions they can make.
+ */
 public class MoveResourceChoice extends JPanel {
     private boolean created = false;
 
+    /**
+     * Constructs a dumb MarketPlacingResources
+     * @param created boolean
+     */
     public MoveResourceChoice(boolean created){
         this.created = created;
     }
 
+    /**
+     * Constructs a MoveResourceChoice panel ready to be used
+     */
     public MoveResourceChoice(){
         final String MOVEBTW = "Move between shelves";
         final String MOVESHELFTOLEAD = "Move from Shelf to Leader Depot";
@@ -59,6 +69,10 @@ public class MoveResourceChoice extends JPanel {
         this.add(resourcePanel);
     }
 
+    /**
+     * Returns
+     * @return
+     */
     public boolean isCreated(){return created;}
 
 }
