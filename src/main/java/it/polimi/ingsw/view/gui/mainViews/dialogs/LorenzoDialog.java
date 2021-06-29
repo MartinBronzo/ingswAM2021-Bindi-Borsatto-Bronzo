@@ -11,6 +11,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This dialog is used to see Lorenzo's actions in a Solo Game.
+ */
 public class LorenzoDialog extends JDialog {
     private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
     private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
@@ -18,6 +21,10 @@ public class LorenzoDialog extends JDialog {
     private JLabel label;
     private JLabel image;
 
+    /**
+     * Constructs a LorenzoDialog which still needs the message, which it is going to display, to be set
+     * @param owner the Frame of the player
+     */
     public LorenzoDialog(Frame owner) {
         super(owner, "INFO :D ", true);
 
@@ -62,11 +69,18 @@ public class LorenzoDialog extends JDialog {
 
     }
 
-
+    /**
+     * Sets the message to be shown to the player
+     * @param info the message to be shown to the player
+     */
     public void setInfoMessage(String info){
         label.setText(label.getText()+" "+info);
     }
 
+    /**
+     * Sets the Lorenzo's token, which has been just used, to be shown
+     * @param path the path of the Lorenzo's token which has been just used
+     */
     public void setTokenImage(String path){
         image.setIcon(scaleImage(path, 100, 100));
         image.setVisible(true);

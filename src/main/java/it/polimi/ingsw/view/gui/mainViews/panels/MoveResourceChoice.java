@@ -70,8 +70,8 @@ public class MoveResourceChoice extends JPanel {
     }
 
     /**
-     * Returns
-     * @return
+     * Returns whether the object has been created
+     * @return true
      */
     public boolean isCreated(){return created;}
 

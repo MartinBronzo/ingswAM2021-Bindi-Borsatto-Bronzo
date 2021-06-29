@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+/**
+ * This dialog is used to ask the game creator how many player they want in their game.
+ */
 public class SetNumOfPlayersDialog extends JDialog {
     private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
     private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
@@ -18,7 +21,10 @@ public class SetNumOfPlayersDialog extends JDialog {
     private final JTextField textField;
     private final JButton button;
 
-
+    /**
+     * Constructs a SetNumOfPlayersDialog
+     * @param owner the Frame of the player
+     */
     public SetNumOfPlayersDialog(Frame owner) {
         super(owner, "How many Players there will be in the Game", true);
 

@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+/**
+ * This dialog is used to ask the player their nicknames.
+ */
 public class LoginDialog extends JDialog {
     private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
     private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
@@ -18,7 +21,10 @@ public class LoginDialog extends JDialog {
     private final JTextField textField;
     private final JButton button;
 
-
+    /**
+     * Constructs a LoginDialog
+     * @param owner the Frame of the player
+     */
     public LoginDialog(Frame owner) {
         super(owner, "What's your Nickname?", true);
 

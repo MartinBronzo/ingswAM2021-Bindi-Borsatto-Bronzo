@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * This panel is shown when the player is waiting for their game to start.
+ */
 public class WaitingRoomPanel extends JPanel {
 
     private static final int panelHeight = PanelManager.getInstance().getGameFrame().getHeight();

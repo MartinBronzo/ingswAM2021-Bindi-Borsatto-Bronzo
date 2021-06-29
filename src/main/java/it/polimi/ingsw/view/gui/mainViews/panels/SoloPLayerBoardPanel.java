@@ -16,11 +16,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This panel shows the board to the player when the player is playing in a Solo Game.
+ */
 public class SoloPLayerBoardPanel extends JPanel {
     LeaderCardPanel leaderCardPanel;
     SoloFaithTrackOnlyView faithTrackOnlyView;
     DepotOnlyView depotOnlyView;
 
+    /**
+     * Constructs a SoloPLayerBoardPanel for the specified player
+     * @param player the LightModel object which represent the player who's playing in this Solo Game
+     */
     public SoloPLayerBoardPanel(Player player) {
         super();
 
