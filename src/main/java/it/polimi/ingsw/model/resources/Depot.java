@@ -176,7 +176,7 @@ public class Depot {
         controlShelfNum(destShelf);
 
         if (shelves[sourceShelf - 1] == null)
-            throw new NullPointerException("No source resource to move");
+            throw new IllegalArgumentException("No source resource to move");
 
         sourceValue = depotLevel.get(shelves[sourceShelf - 1]);
         if (sourceValue > destShelf)
