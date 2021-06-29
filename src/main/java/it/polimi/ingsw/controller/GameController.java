@@ -976,9 +976,16 @@ public class GameController {
                         throw new IllegalArgumentException("There are not enough LeaderCards specified!");
                 }
             } else {
-                if (playerBoard.ctrlIfWhiteMarbleLeaderCardPresent())
-                    throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
-                else {
+                if (playerBoard.ctrlIfWhiteMarbleLeaderCardPresent()) {
+                    if (buyFromMarket.getRow() != 0) {
+                        if (mainBoard.getNumberOfWhiteMarbleInMarketRow(buyFromMarket.getRow() - 1) > 0)
+                            throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
+                    } else {
+                        if (mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1) > 0)
+                            throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
+                    }
+
+                }else {
                     if (buyFromMarket.getCol() != 0) {
                         for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1); j++)
                             effects.add(new Effect());
