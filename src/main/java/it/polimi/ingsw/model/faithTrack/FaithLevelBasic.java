@@ -22,6 +22,9 @@ public class FaithLevelBasic {
         this.isFaithTrackSet = true;
     }
 
+    /**
+     * Constructs a FaithLevelBasic without the FaithTrack set
+     */
     public FaithLevelBasic() {
         this.position = 0;
         this.faithTrack = null;

@@ -7,12 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class represents the depot of the player where the player can store limited resources.
+ */
 public class Depot {
     private final HashMap<ResourceType, Integer> depotLevel;
     private final ResourceType[] shelves;
     private final HashMap<ResourceType, Integer> leaderDepot;
     private final List<Effect> depotLimit;
 
+    /**
+     * Constructs an empty Depot ready to be used
+     */
     public Depot() {
         depotLevel = new HashMap<>();
         leaderDepot = new HashMap<>();

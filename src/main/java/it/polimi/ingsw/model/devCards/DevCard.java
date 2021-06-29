@@ -75,40 +75,56 @@ public class DevCard implements Comparable<DevCard> {
         this.url = url;
     }
 
+    /**
+     * Returns the level of this card
+     * @return the level of this card
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Returns the color of this card
+     * @return the color of this card
+     */
     public DevCardColour getColour() {
         return colour;
     }
 
+    /**
+     * Returns the victory points of this card
+     * @return the victory points of this card
+     */
     public int getVictoryPoints() {
         return victoryPoints;
     }
 
     /**
-     * @return is a copy of production input, because this class and its references must be immutable
+     * Returns a copy of production input, because this class and its references must be immutable
+     * @return a copy of production input, because this class and its references must be immutable
      */
     public HashMap<ResourceType, Integer> getProductionInput() {
         return new HashMap<>(productionInput);
     }
 
     /**
-     * @return is a copy of production output, because this class and its references must be immutable
+     * Returns a copy of production output, because this class and its references must be immutable
+     * @return a copy of production output, because this class and its references must be immutable
      */
     public HashMap<ResourceType, Integer> getProductionOutput() {
         return new HashMap<>(productionOutput);
     }
 
     /**
-     * @return is a copy of cost, because this class and its references must be immutable
+     * Returns a copy of cost, because this class and its references must be immutable
+     * @return a copy of cost, because this class and its references must be immutable
      */
     public HashMap<ResourceType, Integer> getCost() {
         return new HashMap<>(cost);
     }
 
     /**
+     * Returns the image url of the devCard
      * @return the image url of the devCard
      */
     public String getUrl() {

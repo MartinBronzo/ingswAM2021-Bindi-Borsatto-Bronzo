@@ -16,6 +16,9 @@ public class ExtraProductionLeaderEffect extends Effect {
     private final int extraOutputQuantity;
     private final int normalOutputQuantity;
 
+    /**
+     * Constructs an ExtraProductionLeaderEffect without the required input type and amount set
+     */
     public ExtraProductionLeaderEffect() {
         this.requiredInputType = null;
         this.requiredInputNumber = 0;
@@ -88,22 +91,42 @@ public class ExtraProductionLeaderEffect extends Effect {
         return input;
     }
 
+    /**
+     * Returns the required input type of this extra production
+     * @return the required input type of this extra production
+     */
     public ResourceType getRequiredInputType() {
         return requiredInputType;
     }
 
+    /**
+     * Returns the required input amount of this extra production
+     * @return the required input amount of this extra production
+     */
     public int getRequiredInputNumber() {
         return requiredInputNumber;
     }
 
+    /**
+     * Returns the mandatory output type of this extra production
+     * @return the mandatory output type of this extra production
+     */
     public ResourceType getExtraOutputType() {
         return extraOutputType;
     }
 
+    /**
+     * Returns the output amount of the mandatory output type of this extra production
+     * @return the output amount of the mandatory output type of this extra production
+     */
     public int getExtraOutputQuantity() {
         return extraOutputQuantity;
     }
 
+    /**
+     * Returns the amount the player gets to specify for this extra production
+     * @return the amount the player gets to specify for this extra production
+     */
     public int getNormalOutputQuantity() {
         return normalOutputQuantity;
     }

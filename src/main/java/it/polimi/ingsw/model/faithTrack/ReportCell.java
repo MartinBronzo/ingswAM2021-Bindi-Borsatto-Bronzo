@@ -38,6 +38,10 @@ public class ReportCell extends Cell {
         return currentReportNum.equals(this.getReportNum());
     }
 
+    /**
+     * Constructs a ReportCell which is the copy of the specified ReportCell
+     * @param original a ReportCell to be cloned
+     */
     public ReportCell(ReportCell original) {
         this(original.getVictoryPoints(), original.getReportNum());
     }

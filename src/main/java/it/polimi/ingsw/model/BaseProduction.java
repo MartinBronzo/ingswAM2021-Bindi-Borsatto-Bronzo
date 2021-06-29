@@ -137,6 +137,7 @@ public class BaseProduction {
     }
 
     /**
+     * Returns the number of resources required as input
      * @return the number of resources required as input
      */
     public int getQuantityInputResources() {
@@ -144,6 +145,7 @@ public class BaseProduction {
     }
 
     /**
+     * Returns the number of resources required as output
      * @return the number of resources required as output
      */
     public int getQuantityOutputResources() {
@@ -151,6 +153,7 @@ public class BaseProduction {
     }
 
     /**
+     * Returns a List of the must Have resources required as Input, an empty List if no resources are required
      * @return a List of the must Have resources required as Input, an empty List if no resources are required
      */
     public List<ResourceType> getInputForcedResources() {
@@ -158,6 +161,7 @@ public class BaseProduction {
     }
 
     /**
+     * Returns a List of the must Have resources required as Output, an empty List if no resources are required
      * @return a List of the must Have resources required as Output, an empty List if no resources are required
      */
     public List<ResourceType> getOutputForcedResources() {
@@ -165,6 +169,7 @@ public class BaseProduction {
     }
 
     /**
+     * Returns the HashMap which represents the cost required to produce resources
      * @return the HashMap which represents the cost required to produce resources
      */
     public HashMap<ResourceType, Integer> getInputHashMap() {
@@ -172,6 +177,7 @@ public class BaseProduction {
     }
 
     /**
+     * Returns the HashMap which represents the production
      * @return the HashMap which represents the production
      */
     public HashMap<ResourceType, Integer> getOutputHashMap() {

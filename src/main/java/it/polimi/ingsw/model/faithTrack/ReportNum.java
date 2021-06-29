@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.faithTrack;
 
 
 /**
- * Enumaration used to determine which vatican report cells belong to
+ * This Enumeration is used to determine which vatican report cells belong to
  */
 public enum ReportNum {
     REPORT1,

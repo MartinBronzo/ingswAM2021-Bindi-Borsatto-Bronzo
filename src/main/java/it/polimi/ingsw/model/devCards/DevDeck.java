@@ -44,8 +44,8 @@ public class DevDeck implements Deck {
     }
 
     /**
+     * Returns the first card in the deck and the card is removed from the deck)
      * @return the first card in the deck
-     * this Card is removed from the deck
      */
     @Override
     public DevCard drawFromDeck() throws NoSuchElementException {
@@ -53,8 +53,8 @@ public class DevDeck implements Deck {
     }
 
     /**
+     * Returns the first card in the deck but the card isn't removed from the deck
      * @return the first card in the deck
-     * this Card is not removed from the deck
      */
     @Override
     public DevCard getFirst() throws NoSuchElementException {
@@ -71,7 +71,8 @@ public class DevDeck implements Deck {
     }
 
     /**
-     * @return true if the deck is empty;
+     * Returns whether the deck is empty
+     * @return true if the deck is empty, false otherwise
      */
     @Override
     public boolean isEmpty() {
@@ -79,6 +80,7 @@ public class DevDeck implements Deck {
     }
 
     /**
+     * Returns the number of cards in the deck;
      * @return the number of cards in the deck;
      */
     @Override

@@ -24,8 +24,16 @@ public abstract class Marble {
      */
     public abstract boolean onActivate(HashMap<ResourceType, Integer> resourceMap, List<Effect> effects) throws NegativeQuantityException, NullPointerException;
 
+    /**
+     * Returns whether this Marble is a WhiteMarble
+     * @return true if this Marble is a WhiteMarble, false otherwise
+     */
     public abstract boolean isWhiteMarble();
 
+    /**
+     * Returns the MarbleType of this Marble
+     * @return the MarbleType of this Marble
+     */
     public abstract MarbleType getMarbleType();
 
     @Override

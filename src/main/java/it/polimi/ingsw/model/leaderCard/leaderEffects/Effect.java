@@ -9,7 +9,8 @@ import java.util.HashMap;
 /**
  * This class represents all the possible effects a LeaderCard may have. Right now, there are four of them:
  * discounting the cost of a DevCard, adding extra slots to the Depot, making WhiteMarbles be worth some Resources,
- * and increasing the production power.
+ * and increasing the production power. There are some Effects whose powers can only be activated once (such as the
+ * ExtraSlotLeaderEffect): this Effects are set to belong to a OneShotCard.
  */
 //
 public class Effect implements Serializable {
@@ -89,6 +90,10 @@ public class Effect implements Serializable {
         return !(obj instanceof WhiteMarbleLeaderEffect);
     }
 
+    /**
+     * Returns whether this is a OneShotCard, that is, its Effect can only be activated one (such as the ExtraSlot LeaderCard)
+     * @return true if this Effect belongs to a OneShotCard, false otherwise
+     */
     public boolean isOneShotCard() {
         return false;
     }

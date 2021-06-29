@@ -16,6 +16,11 @@ public class FaithPointToken extends SoloActionToken {
     protected boolean shuffleToken;
     private final String name;
 
+    /**
+     * Constructs a FaithPointToken which gives the player in the game the specified FaithPoints
+     * @param faithPoints the FaithPoints the player in the game gets
+     * @param name the path of this token image
+     */
     public FaithPointToken(int faithPoints, String name) {
         this.name = name;
         if (faithPoints < 0)

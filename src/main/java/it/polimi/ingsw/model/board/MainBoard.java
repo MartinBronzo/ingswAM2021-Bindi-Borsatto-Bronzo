@@ -474,7 +474,7 @@ public class MainBoard {
      */
 
     /**
-     * Creates a ready-to-be-used MainBoard
+     * Creates a ready-to-be-used MainBoard by reading the elements of this game from various files
      *
      * @param numberOfPlayers the number of player in this game
      * @throws IllegalArgumentException     if the number of players is lower than 0 or greater than 4 or in the configuration files there are some errors in the elements described
