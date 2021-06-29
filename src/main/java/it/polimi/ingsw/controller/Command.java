@@ -3,6 +3,9 @@ package it.polimi.ingsw.controller;
 import com.google.gson.Gson;
 import it.polimi.ingsw.network.messages.fromClient.Message;
 
+/**
+ * This is the container of the messages that the GameController receives from the player. This is what is actually being sent by the players.
+ */
 public class Command {
     private String cmd;
     private String parameters;
