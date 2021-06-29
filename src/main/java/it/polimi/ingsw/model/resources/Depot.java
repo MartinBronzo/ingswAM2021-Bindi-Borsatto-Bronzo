@@ -239,7 +239,7 @@ public class Depot {
      * @param effect: the effect of the leaderCard
      * @return true if the action in performed without errors
      * @throws IllegalArgumentException if the effect has non valid values
-     * @throws FullExtraSlotException   if the maximum number of active leader cards ha been already reached
+     * @throws FullExtraSlotException   if the maximum number of active leader cards has been already reached
      */
     public boolean addExtraSlot(Effect effect) throws IllegalArgumentException, FullExtraSlotException {
         final int maxLeaderCards = 2;
