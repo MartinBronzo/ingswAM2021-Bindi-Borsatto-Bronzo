@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This panel is used to show to the player the DevCard they have selected from the DevGrid and to let them specify the
+ * Discount LeaderCards they would like to use in order to pay for the card cost.
+ */
 public class DevCardGetInfo extends JPanel {
     private int row;
     private int column;
@@ -29,7 +33,10 @@ public class DevCardGetInfo extends JPanel {
     private InstructionPanel instructionPanel;
     private CardCheckbox cardCheckboxPanel;
 
-
+    /**
+     * Constructs a DevCardGetInfo. Before using this object, the user of this class must specify the player who's using
+     * this panel by calling the setPlayer method
+     */
     public DevCardGetInfo() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -63,6 +70,12 @@ public class DevCardGetInfo extends JPanel {
         this.add(rightSidePanel);
     }
 
+    /**
+     * Communicates to this object which row and column the player chose in the DevGrid
+     * @param row the row the player chose
+     * @param column the row the player chose
+     * @throws NullPointerException if the LightModel communicated to the PanelManager by the Server has no DevGrid specified
+     */
     public synchronized void selectCell(int row, int column) throws NullPointerException{
         this.row = row;
         this.column = column;
@@ -70,11 +83,20 @@ public class DevCardGetInfo extends JPanel {
         if (devMatrix == null) throw new NullPointerException("can't select cell if gamemodel has devgrid null");
     }
 
+    /**
+     * Sets the Player object this panel will use in order to display the right information to the specified player
+     * @param player the LightModel object which represents the player who's using this panel
+     * @throws NullPointerException if the specified player attribute is a null pointer
+     */
     public synchronized void setPlayer(Player player) throws NullPointerException{
         if (player==null) throw new NullPointerException("Player can't be null");
         this.player = player;
     }
 
+    /**
+     * Print this panel
+     * @throws NullPointerException if the Player has not been specified yet or the LightModel communicated to the PanelManager by the Server has no DevGrid specified
+     */
     public synchronized void print() throws NullPointerException {
         BufferedImage img = null;
         Image dimg;

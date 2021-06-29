@@ -118,6 +118,9 @@ public class MainPanel extends JPanel {
 
     }
 
+    /**
+     * Constructs a dumb MarketPlacingResources
+     */
     public MainPanel() {
         this.created = false;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -192,6 +195,10 @@ public class MainPanel extends JPanel {
         this.validate();
     }*/
 
+    /**
+     * Returns a boolean representing the constructor used to create this object
+     * @return false if this object has been created with the dumb constructor, true if it has been created with the main constructor
+     */
     public boolean getCreated() {
         return created;
     }

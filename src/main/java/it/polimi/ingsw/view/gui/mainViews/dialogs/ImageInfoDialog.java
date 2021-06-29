@@ -11,19 +11,27 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * used to see lorenzo's actions
+ * This dialog is used to see Lorenzo's actions in a Solo Game.
  */
 public class ImageInfoDialog extends InfoDialog{
 
     private JLabel image;
     private static String punchBoardDir ="src/main/resources/PUNCHBOARD/";
 
+    /**
+     * Constructs an ImageInfoDialog
+     * @param owner the Frame of the player
+     */
     public ImageInfoDialog(Frame owner) {
         super(owner);
         image = new JLabel();
         this.add(image);
     }
 
+    /**
+     * Sets the image of the Lorenzo's token, which has been just used, to be shown
+     * @param path the relative path of the used Lorenzo's token
+     */
     public void setPathImage(String path){
         BufferedImage img;
         Image dimg;
@@ -39,7 +47,8 @@ public class ImageInfoDialog extends InfoDialog{
     }
 
     /**
-     * @param token to be set as image
+     * Sets the Lorenzo's token, which has been just used, to be shown
+     * @param token the Lorenzo's token which has been just used
      */
     public void setToken(SoloActionToken token){
         this.setPathImage(token.getName());

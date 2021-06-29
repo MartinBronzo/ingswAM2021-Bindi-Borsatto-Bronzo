@@ -28,6 +28,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * This class represents the game board that is being used in this game. Since it contains all the references to all the elements of the
+ * game (DevGrid, Market, players' PlayerBoards), it can be considered as the whole Model.
+ */
 public class MainBoard {
     protected FaithTrack faithTrack;
     protected List<List<PopeTile>> popeTiles;
@@ -331,62 +335,117 @@ public class MainBoard {
         return this.playerBoardsList.get(position);
     }
 
+    /**
+     * Returns the position the specified PlayerBoard holds for the MainBoard
+     * @param playerBoard the PlayerBoard whose position is to be found
+     * @return the position the specified PlayerBoard holds for the MainBoard
+     */
     public int getPlayerBoardIndex(PlayerBoard playerBoard) {
         return this.playerBoardsList.indexOf(playerBoard);
     }
 
-    public List<PlayerBoard> getPlayerBoardsList() {
+    /*public List<PlayerBoard> getPlayerBoardsList() {
         return playerBoardsList;
-    }
+    }*/
 
+    /**
+     * Returns the number of PlayerBoards in the game
+     * @return the number of PlayerBoards in the game
+     */
     public int getPlayerBoardsNumber() {
         return this.playerBoardsList.size();
     }
 
+    /**
+     * Returns a copy of the common FaithTrack
+     * @return a copy of the common FaithTrack
+     */
     public FaithTrack getFaithTrack() {
         return new FaithTrack(this.faithTrack);
     }
 
+    /**
+     * Returns a reference to the common FaithTrack
+     * @return a reference to the common FaithTrack
+     */
     public FaithTrack getFaithTrackReference() {
         return this.faithTrack;
     }
 
+    /**
+     * Returns a copy of the LeaderCards of this game
+     * @return a copy of the LeaderCards of this game
+     */
     public Deck getLeaderCardsDeck() {
         return new LeaderCardDeck((LeaderCardDeck) this.leaderCardsDeck);
     }
 
+    /**
+     * Returns a copy of the game DevGrid
+     * @return a copy of the game DevGrid
+     */
     public DevGrid getDevGrid() {
         return new DevGrid(this.devGrid);
     }
 
+    /**
+     * Returns a copy of the game Market
+     * @return a copy of the game Market
+     */
     public Market getMarket() {
         return new Market(this.market);
     }
 
+    /**
+     * Returns the number of players in this game
+     * @return the number of players in this game
+     */
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
+    /**
+     * Returns the number of LeaderCards to give to each player at the beginning of the game
+     * @return the number of LeaderCards to give to each player at the beginning of the game
+     */
     public int getNumberOfLeaderCardsToGive() {
         return numberOfLeaderCardsToGive;
     }
 
+    /**
+     * Returns the extra FaithPoints to give to the players at the beginning of the game accordingly to their order in the game (that is, the first
+     * player will get as many extra FaithPoints as the number stored in the first position of the returned array)
+     * @return the extra FaithPoints to give to the players
+     */
     public int[] getExtraFaithPointsAtBeginning() {
         int[] copy = new int[this.extraFaithPointsAtBeginning.length];
         System.arraycopy(this.extraFaithPointsAtBeginning, 0, copy, 0, this.extraFaithPointsAtBeginning.length);
         return copy;
     }
 
+    /**
+     * Returns the extra resources the players can get at the beginning of the game accordingly to their order in the game (that is, the first
+     * player will get as many extra resources as the number stored in the first position of the returned array)
+     * @return the extra FaithPoints to give to the players
+     */
     public int[] getExtraResourcesAtBeginning() {
         int[] copy = new int[this.extraResourcesAtBeginning.length];
         System.arraycopy(this.extraResourcesAtBeginning, 0, copy, 0, this.extraResourcesAtBeginning.length);
         return copy;
     }
 
+    /**
+     * Returns the amount of steps the players will on the FaithTrack when someone discards a resource bought from the Market
+     * @return the amount of steps the players will on the FaithTrack when someone discards a resource bought from the Market
+     */
     public int getStepForEachDiscardedRes() {
         return stepForEachDiscardedRes;
     }
 
+    /**
+     * Returns the amount of LeaderCards to discard at the beginning of the game
+     * @return the amount of LeaderCards to discard at the beginning of the game
+     */
     public int getNumberOfLeaderCardsToDiscardAtBeginning() {
         return numberOfLeaderCardsToDiscardAtBeginning;
     }
@@ -400,6 +459,10 @@ public class MainBoard {
         return -1;
     }
 
+    /**
+     * Returns a copy of the game DevGrid
+     * @return a copy of the game DevGrid
+     */
     public DevCard[][] getDevMatrix(){
         return this.devGrid.getDevMatrix();
     }
@@ -586,6 +649,10 @@ public class MainBoard {
 
     }
 
+    /**
+     * Returns a copy of this MainBoard
+     * @return a copy of this MainBoard
+     */
     public MainBoard getClone() {
         return new MainBoard(this);
     }

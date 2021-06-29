@@ -19,6 +19,9 @@ import it.polimi.ingsw.model.resources.Strongbox;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents a player's board. It contains all the elements that only belong to the player.
+ */
 public class PlayerBoard {
     private final FaithLevel playerFaithLevel;
     private final Depot depot;
@@ -36,6 +39,10 @@ public class PlayerBoard {
         return new FaithLevel(this.playerFaithLevel);
     }
 
+    /**
+     * Returns a copy of the player's DevSlots
+     * @return a copy of the player's DevSlots
+     */
     public DevSlots getDevSlots() {
         return new DevSlots(this.devSlots);
     }
@@ -255,10 +262,19 @@ public class PlayerBoard {
         return this.leaderCards.getNotPlayedCards();
     }
 
+    /**
+     * Returns a copy of the player's Active Cards
+     * @return a copy of the player's Active Cards
+     */
     public List<LeaderCard> getActiveLeaderCards() {
         return this.leaderCards.getActiveCards();
     }
 
+    /**
+     * Returns a copy of the LeaderCards whose effect can be only activated once (such as the ExtraSlot LeaderCards) and that
+     * the player did already activate
+     * @return a copy of the LeaderCards whose effect can be only activated once and that the player did already activate
+     */
     public List<LeaderCard> getAlreadyUsedOneShotCard() {
         return this.leaderCards.getAlreadyUsedOneShotCard();
     }
@@ -320,6 +336,11 @@ public class PlayerBoard {
         return false;
     }
 
+    /**
+     * Returns the DevCard which can be used by the player of the specified DevSlot
+     * @param index a number of a DevSlot
+     * @return the DevCard which can be used by the player of the specified DevSlot
+     */
     public DevCard getUsableDevCardFromDevSlotIndex(int index) {
         return devSlots.getDevSlot(index).getLastDevCard();
     }
@@ -568,6 +589,10 @@ public class PlayerBoard {
         return strongbox.getResource(resource);
     }
 
+    /**
+     * Returns all the resources that the player stores into the StrongBox
+     * @return all the resources that the player stores into the StrongBox
+     */
     public HashMap<ResourceType, Integer> getStrongboxMap() {
         return strongbox.getAllResources();
     }
@@ -657,6 +682,10 @@ public class PlayerBoard {
         return this.playerFaithLevel.getPopeTilesPoints();
     }
 
+    /**
+     * Returns a copy of the player's PopeTiles
+     * @return a copy of the player's PopeTiles
+     */
     public List<PopeTile> getPopeTile() {
         return playerFaithLevel.getPopeTilesSafe();
     }
@@ -789,10 +818,18 @@ public class PlayerBoard {
         return new BaseProduction(this.baseProduction);
     }
 
+    /**
+     * Returns the inputs of the BaseProduction the player has specified
+     * @return the inputs of the BaseProduction the player has specified
+     */
     public HashMap<ResourceType, Integer> getBaseProductionInput() {
         return new HashMap<>(this.baseProduction.getInputHashMap());
     }
 
+    /**
+     * Returns the outputs of the BaseProduction the player has specified
+     * @return the outputs of the BaseProduction the player has specified
+     */
     public HashMap<ResourceType, Integer> getBaseProductionOutput() {
         return new HashMap<>(this.baseProduction.getOutputHashMap());
     }
@@ -888,6 +925,10 @@ public class PlayerBoard {
         return false;
     }
 
+    /**
+     * Returns whether the player has an activate WhiteMarble LeaderCard
+     * @return true if the player has activated a WhiteMarble LeaderCard, false otherwise
+     */
     public boolean ctrlIfWhiteMarbleLeaderCardPresent() {
         return this.leaderCards.checkIfWhiteMarbleActive();
     }

@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This panel lets the player buy from the Market by letting them specify the row or column of the Market they want to buy
+ * from and, eventually, the needed WhiteMarble LeaderCards.
+ */
 public class BuyFromMarketPanel extends JPanel {
     private Player player;
     private Board board;
@@ -34,7 +38,10 @@ public class BuyFromMarketPanel extends JPanel {
     private CardComboBox cardComboBoxPanel;
     private MarketGridPanel marketGridPanel;
 
-
+    /**
+     * Constructs a BuyFromMarketPanel. Before using this object, the user of this class must specify the player who's using
+     * this panel and the board of this game by calling the setPlayer and setBoard methods
+     */
     public BuyFromMarketPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -88,11 +95,21 @@ public class BuyFromMarketPanel extends JPanel {
         this.add(rightSidePanel);
     }
 
+    /**
+     * Sets the Player object this panel will use in order to display the right information to the specified player
+     * @param player the LightModel object which represents the player who's using this panel
+     * @throws NullPointerException if the specified player attribute is a null pointer
+     */
     public synchronized void setPlayer(Player player) throws NullPointerException{
         if (player==null) throw new NullPointerException("Player can't be null");
         this.player = player;
     }
 
+    /**
+     * Sets the Board object this panel will use in order to display the right information to the specified player
+     * @param board the LightModel object which represents the board of this game
+     * @throws NullPointerException if the specified player attribute is a null pointer
+     */
     public synchronized void setBoard(Board board) throws NullPointerException{
         if (board==null) throw new NullPointerException("Player can't be null");
         this.board = board;
@@ -104,6 +121,10 @@ public class BuyFromMarketPanel extends JPanel {
         this.revalidate();
     }
 
+    /**
+     * Print this panel
+     * @throws NullPointerException if either the Player or the Board object have not been specified yet
+     */
     public synchronized void print() throws NullPointerException {
         BufferedImage img = null;
         Image dimg;
@@ -123,6 +144,10 @@ public class BuyFromMarketPanel extends JPanel {
         this.setVisible(true);
     }
 
+    /**
+     * Returns a list of the indexes of the WhiteMarble LeaderCards that the player has chosen to use
+     * @return a list of the indexes of the WhiteMarble LeaderCards that the player has chosen to use
+     */
     public List<Integer> getLeaderList(){
         return this.cardComboBoxPanel.getSelectedLeaderIndexes();
     }

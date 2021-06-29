@@ -7,12 +7,19 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * This dialog is used to show a generic info message to the player.
+ */
 public class InfoDialog extends JDialog {
     private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
     private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
     private static final int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
     private JLabel label;
 
+    /**
+     * Constructs an InfoDialog which still needs the message, which it is going to display, to be set
+     * @param owner the Frame of the player
+     */
     public InfoDialog(Frame owner) {
         super(owner, "INFO :D ", true);
 
@@ -55,7 +62,10 @@ public class InfoDialog extends JDialog {
 
     }
 
-
+    /**
+     * Sets the message to be shown to the player
+     * @param info the message to be shown to the player
+     */
     public void setInfoMessage(String info){
         label.setText(label.getText()+" "+info);
     }

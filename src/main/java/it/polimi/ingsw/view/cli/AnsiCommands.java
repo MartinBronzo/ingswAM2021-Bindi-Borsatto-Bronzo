@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
+/**
+ * This Enumeration contains the colors used in the CLI views for this application.
+ */
 public enum AnsiCommands {
     RED {
         @Override

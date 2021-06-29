@@ -19,6 +19,9 @@ import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This panel let the player choose the production powers they want to activate.
+ */
 public class ProductionGetInfo extends JPanel {
     private Player player;
     private int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
@@ -28,6 +31,10 @@ public class ProductionGetInfo extends JPanel {
     private DragAndDropBaseProd dragAndDropBaseProd;
     private DevSlotCheckBox devSlotcheckBox;
 
+    /**
+     * Constructs a ProductionGetInfo panel for the specified player
+     * @param player the LightModel object which represent the player who's going to use this panel
+     */
     public ProductionGetInfo(Player player){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
