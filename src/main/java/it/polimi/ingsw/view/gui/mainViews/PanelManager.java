@@ -640,7 +640,6 @@ public final class PanelManager {
                 if ((oldPlayerState != PlayerState.PLAYING && oldPlayerState != PlayerState.PLAYINGBEGINNINGDECISIONS) && (newPlayerState == PlayerState.PLAYING || newPlayerState == PlayerState.PLAYINGBEGINNINGDECISIONS))
                     printInfo("Now it's your turn, Master " + nickname + "!");
             }
-            //TODO: add turn info dialog
         }
 
         //This remove are needed because we have to close these panels if they're open.

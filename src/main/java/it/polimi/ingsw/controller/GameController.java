@@ -676,6 +676,7 @@ public class GameController {
         } catch (LastVaticanReportException e) {
             //this.setLastTurn();
             System.out.println("FATAL ERROR");
+            //todo: si scrive fatal error ma non si fa nulla. una system exit?
         }
 
         //For each player in the game computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
@@ -959,7 +960,6 @@ public class GameController {
     public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         System.out.println(buyFromMarket.toString());
 
-
         System.out.println("MARKET BEFORE\n" + mainBoard.getMarket().toString());
 
         if (buyFromMarket.getRow() != 0 && buyFromMarket.getCol() != 0)
@@ -1139,12 +1139,10 @@ public class GameController {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         List<Effect> effects = playerBoard.getEffectsFromCards(devCardMessage.getLeaderList());
 
-        //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
         devCard = mainBoard.getDevCardFromDeckInDevGrid(devCardMessage.getRow() - 1, devCardMessage.getCol() - 1);
         cost = mainBoard.applyDiscountToDevCard(devCard, effects);
 
         //send message only to the client that sent the message
-        //TODO: nel messaggio io metterei anche il risultato dell'azione(status) per dire se è andata bene o no
         clientHandler.send(new HashMapResFromDevGridMessage(cost));
         return true;
     }
@@ -1167,7 +1165,6 @@ public class GameController {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         List<Effect> effects = playerBoard.getEffectsFromCards(buyDevCard.getLeaders());
         try {
-            //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
             devCard = mainBoard.drawDevCardFromDeckInDevGrid(buyDevCard.getRow() - 1, buyDevCard.getCol() - 1);
             System.out.println(devCard.toString());
             cost = mainBoard.applyDiscountToDevCard(devCard, effects);
@@ -1183,10 +1180,8 @@ public class GameController {
         HashMap<ResourceType, Integer> resToLeader = buyDevCard.getLeaderRes();
         HashMap<ResourceType, Integer> strongboxRes = buyDevCard.getStrongboxRes();
 
-
         removeSelectedResources(cost, playerBoard, depotRes, resToLeader, strongboxRes);
 
-        //TODO: da controllare il -1 perchè dipende dal come passiamo il valore nel messaggio
         try {
             playerBoard.addCardToDevSlot(buyDevCard.getDevSlot() - 1, devCard);
         } catch (EndOfGameException e) {
@@ -1207,7 +1202,6 @@ public class GameController {
         setDepotInClientModel(player, playerBoard);
         player.setStrongBox(playerBoard.getStrongboxMap());
         int vp = playerBoard.partialVictoryPoints();
-        //int vp = e.getValue().calculateVictoryPoints();
         player.setVictoryPoints(vp);
         game.addPlayer(player);
         if (numberOfPlayers == 1)
@@ -1226,6 +1220,7 @@ public class GameController {
      */
     public boolean moveResourcesBetweenShelves(MoveBetweenShelvesMessage moveBtwShelvesMessage, ClientHandler clientHandler) throws IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
+
         playerBoard.moveBetweenShelves(moveBtwShelvesMessage.getSourceShelf(), moveBtwShelvesMessage.getDestShelf());
 
         Game game = new Game();
@@ -1365,7 +1360,7 @@ public class GameController {
 
         try {
             prodCost = playerBoard.getProductionCost(devList, leaderList, baseProductionParams.isActivated());
-        } catch (IllegalActionException | NullPointerException e) {
+        } catch (IllegalArgumentException | IllegalActionException | NullPointerException e) {
             this.rollbackState();
             throw new IllegalActionException(e.getMessage());
         }
@@ -1465,7 +1460,6 @@ public class GameController {
                 tmp.setFaithPosition(e.getValue().getPositionOnFaithTrack());
                 tmp.setPopeTiles(e.getValue().getPopeTile());
                 int vp = e.getValue().partialVictoryPoints();
-                //int vp = e.getValue().calculateVictoryPoints();
                 tmp.setVictoryPoints(vp);
                 game.addPlayer(tmp);
             }
@@ -1659,10 +1653,14 @@ public class GameController {
     private synchronized void endGame() {
         this.distributeFinalPoints();
         GamesManagerSingleton.getInstance().deleteGame(this);
+        this.setState(GameState.ENDED);
+        for(Pair<ClientHandler, PlayerBoard> player : players){
+            player.getKey().setGameEnded();
+        }
         //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
-    private void endGameSolo(){
+    public void endGameSolo(){
         final int faithCells = 24;
         final int devCardNumber = 7;
         SoloBoard soloBoard = (SoloBoard) mainBoard;
@@ -1694,6 +1692,7 @@ public class GameController {
         }
 
         GamesManagerSingleton.getInstance().deleteGame(this);
+        this.setState(GameState.ENDED);
         //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
@@ -1756,7 +1755,6 @@ public class GameController {
 
     //Is public only for testing purposes
     public synchronized void setLastTurn() {
-        //TODO: se è stato attivato l'ultimo turno e il giocatore ha già giocato, va in WAITEND, se non ha ancora giocato va in WAITLAST
         this.state = GameState.LASTTURN;
 
         if (numberOfPlayers == 1) {
@@ -1772,24 +1770,6 @@ public class GameController {
                 }
             }
         }
-
-
-        /*//TODO: SISTEMARRE SECONDO SATTO'S WAY
-        this.state = GameState.LASTTURN;
-        int i = this.getPlayerNumber(currentPlayer);
-        i++;
-        if (i == this.numberOfPlayers)
-            i = 0;
-        for (Pair<ClientHandler, PlayerBoard> e : players)
-            if (e.getKey().getPlayerState() != PlayerState.DISCONNECTED && players.get(i).getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS)
-                e.getKey().setPlayerState(PlayerState.WAITING4GAMEEND);
-        while (i != this.firstPlayer) {
-            if (players.get(i).getKey().getPlayerState() != PlayerState.DISCONNECTED && players.get(i).getKey().getPlayerState() != PlayerState.WAITING4BEGINNINGDECISIONS)
-                players.get(i).getKey().setPlayerState(PlayerState.WAITING4LASTTURN);
-            i++;
-            if (i == this.numberOfPlayers)
-                i = 0;
-        }*/
     }
 
     /**

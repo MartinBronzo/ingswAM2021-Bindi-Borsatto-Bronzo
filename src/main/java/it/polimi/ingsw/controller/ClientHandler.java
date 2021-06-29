@@ -40,6 +40,7 @@ public class ClientHandler implements Runnable {
     private boolean keepRunning;
     private boolean beginningActionDone;
     private final int MAX_LEADER_ACTION = 2;
+    private boolean gameEnded;
     //ONLY FOR TESTING PURPOSE
     private boolean startTimer;
 
@@ -57,6 +58,7 @@ public class ClientHandler implements Runnable {
         this.gson = null;
         this.keepRunning = true;
         this.beginningActionDone = original.beginningActionDone;
+        this.gameEnded = original.gameEnded;
     }
 
     /**
@@ -106,6 +108,7 @@ public class ClientHandler implements Runnable {
         keepRunning = true;
         beginningActionDone = false;
         startTimer = true;
+        gameEnded = false;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -148,6 +151,7 @@ public class ClientHandler implements Runnable {
         keepRunning = true;
         beginningActionDone = false;
         startTimer = true;
+        gameEnded = false;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -188,6 +192,7 @@ public class ClientHandler implements Runnable {
         keepRunning = true;
         beginningActionDone = false;
         this.startTimer = startTimer;
+        gameEnded = false;
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -261,7 +266,10 @@ public class ClientHandler implements Runnable {
                 }
                 command = gson.fromJson(line, Command.class);
                 while (!socket.isClosed() && !command.getCmd().equals("quit")) {
-                    executeCommand(command);
+                    if(gameEnded && !command.getCmd().equals("ping"))
+                        this.send(new ErrorMessage("The game is ended, you can't do this action"));
+                    else
+                        executeCommand(command);
 
                     line = in.readLine();
                     while (!(line.charAt(0) == '{' && line.contains("{\"cmd\":") && line.contains("\"parameters\":") && line.charAt(line.length() - 1) == '}')) {
@@ -279,7 +287,6 @@ public class ClientHandler implements Runnable {
                 //If the socket is closed by the timer and the thread was waiting waiting a message from InputStream, this exception is launched
                 //we simply print what happened and we finish the thread. The socket is closed only if the client haven't logged in yet
                 System.out.println("Closed socket while waiting message from client or trying to send a response");
-
                 keepRunning = false;
                 //e.printStackTrace();
             } catch (IOException e) {
@@ -327,6 +334,10 @@ public class ClientHandler implements Runnable {
         //out.flush();
     }
 
+    public void setGameEnded(){
+        gameEnded = true;
+    }
+
     /**Sends a Json string to the client
      * @param response the response to a command to be sent to the client through Json
      */
@@ -353,8 +364,10 @@ public class ClientHandler implements Runnable {
             setPlayerState(PlayerState.DISCONNECTED);
 
         //If the player was playing his turn, the turn is ended
-        if (tmp == PlayerState.PLAYING || tmp == PlayerState.PLAYINGBEGINNINGDECISIONS)
+        if (game.getNumberOfPlayers() > 1 && (tmp == PlayerState.PLAYING || tmp == PlayerState.PLAYINGBEGINNINGDECISIONS))
             game.specifyNextPlayer(ClientHandler.this);
+        else if(game.getNumberOfPlayers() == 1)
+            game.endGameSolo();
     }
 
     public void setNickname(String nickname) {
@@ -554,7 +567,7 @@ public class ClientHandler implements Runnable {
         //game.setPlayer(this);
     }
 
-    public void getResourcesFromMarket(Command command) throws IllegalActionException {
+    public void getResourcesFromMarket(Command command) {
         if (!checkBeginningActionDone()) {
             return;
         }

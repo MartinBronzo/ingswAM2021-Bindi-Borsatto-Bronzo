@@ -98,7 +98,7 @@ public class ProductionGetInfo extends JPanel {
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
 
         List<String> leaderPaths = player.getUsedLeaders().stream().map(card -> card.getUrl()).collect(Collectors.toList());
-        cardCheckboxPanel = new CardCheckbox(leaderPaths, "select desired leader cards");
+        cardCheckboxPanel = new CardCheckbox(leaderPaths, "activate this leader card");
         bottomPanel.add(cardCheckboxPanel);
 
         devSlotcheckBox = new DevSlotCheckBox(player);
