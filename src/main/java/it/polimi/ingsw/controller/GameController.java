@@ -136,7 +136,7 @@ public class GameController {
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
 
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
-                        updatesAfterDisconnection(newClientHandler);
+                        updatesAfterDisconnection(newClientHandler, true);
                         return true;
                     }
             }
@@ -166,7 +166,7 @@ public class GameController {
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
-                        updatesAfterDisconnection(newClientHandler);
+                        updatesAfterDisconnection(newClientHandler, true);
                         return true;
                     }
                 break;
@@ -181,7 +181,7 @@ public class GameController {
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
-                        updatesAfterDisconnection(newClientHandler);
+                        updatesAfterDisconnection(newClientHandler, true);
                         return true;
                     }
                 break;
@@ -198,7 +198,7 @@ public class GameController {
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
-                        updatesAfterDisconnection(newClientHandler);
+                        updatesAfterDisconnection(newClientHandler, true);
                         return true;
                     }
                 break;
@@ -1538,18 +1538,7 @@ public class GameController {
      *
      * @param disconnectedPlayer the player that disconnected/reconnected from the game
      */
-    public synchronized void updatesAfterDisconnection(ClientHandler disconnectedPlayer) {
-        /*int index = this.getPlayerNumber(disconnectedPlayer);
-
-        Game game = new Game();
-        Player player = new Player();
-        player.setNickName(this.players.get(index).getKey().getNickname());
-        player.setPlayerState(this.players.get(index).getKey().getPlayerState());
-        game.addPlayer(player);
-
-        this.sendBroadcastUpdate(new ModelUpdate(game), disconnectedPlayer);*/
-
-
+    public synchronized void updatesAfterDisconnection(ClientHandler disconnectedPlayer, boolean isReconnected) {
         List<ClientHandler> playerList = getPlayersList();
         Game game = new Game();
         for (ClientHandler playerInGame : playerList) {
@@ -1558,7 +1547,10 @@ public class GameController {
             player.setPlayerState(playerInGame.getPlayerState());
             game.addPlayer(player);
         }
-        this.sendBroadcastUpdate(new PlayerConnectionsUpdate(game, disconnectedPlayer.getNickname()), disconnectedPlayer);
+        if(isReconnected)
+            this.sendBroadcastUpdate(new PlayerConnectionsUpdate(game, disconnectedPlayer.getNickname()));
+        else
+            this.sendBroadcastUpdate(new PlayerConnectionsUpdate(game, disconnectedPlayer.getNickname()), disconnectedPlayer);
     }
 
     /**

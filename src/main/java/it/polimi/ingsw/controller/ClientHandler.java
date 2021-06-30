@@ -26,6 +26,10 @@ import java.rmi.UnexpectedException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This class
+ */
+
 public class ClientHandler implements Runnable {
     private String nickname;
     private final Socket socket;
@@ -112,14 +116,14 @@ public class ClientHandler implements Runnable {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement");
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect");
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
@@ -127,7 +131,7 @@ public class ClientHandler implements Runnable {
 
         RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
                 = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
-        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken");
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
         tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
@@ -139,6 +143,7 @@ public class ClientHandler implements Runnable {
 
     /**
      * Creates a new clienHandler, it sends and reads messages from the client
+     *
      * @param socket the communication socket, which allows the communication with the client
      * @throws IOException if there is a problem in the communication streams with the client
      */
@@ -155,14 +160,14 @@ public class ClientHandler implements Runnable {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement");
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect");
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
@@ -170,7 +175,7 @@ public class ClientHandler implements Runnable {
 
         RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
                 = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
-        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken");
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
         tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
@@ -179,7 +184,9 @@ public class ClientHandler implements Runnable {
                 .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
 
-    //Used only for testing purpose
+    /**
+     * used only for test purpose
+     */
     @Deprecated
     public ClientHandler(Socket socket, BufferedReader in, PrintWriter out, boolean startTimer) {
         this.socket = socket;
@@ -196,14 +203,14 @@ public class ClientHandler implements Runnable {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement");
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect");
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
@@ -211,7 +218,7 @@ public class ClientHandler implements Runnable {
 
         RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
                 = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
-        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken");
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
         tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
@@ -222,16 +229,18 @@ public class ClientHandler implements Runnable {
 
 
     /**
-     * Creates a new thread for the communication with the client. This thread receives the message from the client,
-     * parses the message in the Command class and reads the name of the command; based on this name it parses
-     * the parameters of the command in the correct class and calls the methods of game to do the action
+     * Creates a new thread for the communication with the client and starts a timer that send a ping message to the
+     * client every 10 seconds and handles the response.
+     * This thread receives the message from the client, parses the message in the Command class and reads the name of
+     * the command; based on this name it parses the parameters of the command in the correct class and calls the
+     * methods of game to do the action
      */
     @Override
     public void run() {
         Command command;
 
         Timer pingTimer = new Timer();
-        //Creates a timer that pings the client every 5 sec
+        //Creates a timer that pings the client every 10 sec
         if (startTimer) {
             pingTimer.schedule(new TimerTask() {
                 @Override
@@ -266,7 +275,7 @@ public class ClientHandler implements Runnable {
                 }
                 command = gson.fromJson(line, Command.class);
                 while (!socket.isClosed() && !command.getCmd().equals("quit")) {
-                    if(gameEnded && !command.getCmd().equals("ping"))
+                    if (gameEnded && !command.getCmd().equals("ping"))
                         this.send(new ErrorMessage("The game is ended, you can't do this action"));
                     else
                         executeCommand(command);
@@ -279,7 +288,6 @@ public class ClientHandler implements Runnable {
                     command = gson.fromJson(line, Command.class);
                 }
 
-                //TODO: logout utente(lo setta disconnesso) e passa il turno
                 updatePlayerState();
                 keepRunning = false;
 
@@ -326,7 +334,9 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**Sends a string to the client
+    /**
+     * Sends a string message to the client
+     *
      * @param message string to be sent
      */
     public synchronized void send(String message) {
@@ -334,15 +344,20 @@ public class ClientHandler implements Runnable {
         //out.flush();
     }
 
-    public void setGameEnded(){
+    /**
+     * sets that the game is ended, so other actions can't be done
+     */
+    public void setGameEnded() {
         gameEnded = true;
     }
 
-    /**Sends a Json string to the client
+    /**
+     * Sends a Json string message to the client
+     *
      * @param response the response to a command to be sent to the client through Json
      */
     public synchronized void send(ResponseInterface response) {
-        if(response != null) {
+        if (response != null) {
             ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
             out.println(gson.toJson(responseMessage));
         } else {
@@ -352,6 +367,12 @@ public class ClientHandler implements Runnable {
         //out.flush();
     }
 
+    /**
+     * Updates the state of the player after a disconnection according to the current situation:
+     * register if the player hasn't done the beginning action;
+     * sets the player state to disconnected and, if the player is playing his turn, ends the turn;
+     * if it's a solo game, it ends the game
+     */
     public void updatePlayerState() {
         //check if the player has done the beginning action
         if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART || (playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone)) {
@@ -364,49 +385,85 @@ public class ClientHandler implements Runnable {
         if (playerState != PlayerState.WAITING4NAME && playerState != PlayerState.WAITING4SETNUMPLAYER) {
             setPlayerState(PlayerState.DISCONNECTED);
             if (tmp != PlayerState.PLAYING && tmp != PlayerState.PLAYINGBEGINNINGDECISIONS)
-                game.updatesAfterDisconnection(ClientHandler.this);
+                game.updatesAfterDisconnection(ClientHandler.this, false);
         } else
             setPlayerState(PlayerState.DISCONNECTED);
 
         //If the player was playing his turn, the turn is ended
         if (game.getNumberOfPlayers() > 1 && (tmp == PlayerState.PLAYING || tmp == PlayerState.PLAYINGBEGINNINGDECISIONS))
             game.specifyNextPlayer(ClientHandler.this);
-        else if(game.getNumberOfPlayers() == 1)
+        else if (game.getNumberOfPlayers() == 1)
             game.endGameSolo();
     }
 
+    /**
+     * sets the nickname of the player
+     *
+     * @param nickname: the nickname of the player
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * sets the state of the player
+     *
+     * @param state: the state of the player
+     */
     public void setPlayerState(PlayerState state) {
         this.playerState = state;
     }
 
+    /**
+     * sets the game
+     *
+     * @param game: the game
+     */
     public void setGame(GameController game) {
         this.game = game;
     }
 
+    /*
     public BufferedReader getIn() {
         return in;
     }
 
     public PrintWriter getOut() {
         return out;
-    }
+    }*/
 
+    /**
+     * returns the nickname of the player
+     *
+     * @return the nickname of the player
+     */
     public String getNickname() {
         return this.nickname;
     }
 
+    /**
+     * returns the state of the player
+     *
+     * @return the state of the player
+     */
     public PlayerState getPlayerState() {
         return playerState;
     }
 
+    /**
+     * return if the player has already done the initial action of the game
+     *
+     * @return return if the player has already done the initial action of the game
+     */
     public boolean isBeginningActionDone() {
         return beginningActionDone;
     }
 
+    /**
+     * check if the player has done the initial action of the game and if not sends an error
+     *
+     * @return false if the player hasn't done the initial action yet
+     */
     private boolean checkBeginningActionDone() {
         if (playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone) {
             this.send(new ErrorMessage("You must satisfy your liege's demand first"));
@@ -415,23 +472,38 @@ public class ClientHandler implements Runnable {
         return true;
     }
 
-    //This method was used for purposes reasons
+    /**
+     * used for testing purpose
+     */
     public String getInput() throws IOException {
         //Scanner in = new Scanner(socket.getInputStream());
         return this.in.readLine();
     }
 
-    //used only for testing purpose
+    /**
+     * used for testing purpose
+     */
     public void setBeginningActionDone(boolean value) {
         this.beginningActionDone = value;
     }
 
-    //used only for testing purpose
+    /**
+     * used for testing purpose
+     */
     public GameController getGame() {
         return game;
     }
 
 
+    /**
+     * execute the command received from the client, based on the name of the command
+     *
+     * @param command: the received command
+     * @throws IllegalActionException        if the action can't be performed
+     * @throws UnexpectedException           if the configuration of the game fails
+     * @throws NotAvailableNicknameException if the nickname is already taken by another player
+     * @throws InterruptedException          if the creation of a game fails
+     */
     public void executeCommand(Command command) throws IllegalActionException, UnexpectedException, NotAvailableNicknameException, InterruptedException {
         switch (command.getCmd()) {
             case "pingResponse":
@@ -540,6 +612,14 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * handle the login of the player: it makes the player create a new game or it adds the player to the game from which he left
+     *
+     * @param command the command received from the client
+     * @throws InterruptedException          if the login fails
+     * @throws NotAvailableNicknameException if the nickname is already taken
+     * @throws IllegalActionException        if there are errors during the login
+     */
     public void login(Command command) throws InterruptedException, NotAvailableNicknameException, IllegalActionException {
         if (playerState != PlayerState.WAITING4NAME) {
             this.send(new ErrorMessage("You can't do this action now"));
@@ -557,6 +637,13 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * sets the number of players for the game that is being created
+     *
+     * @param command the command received from the client
+     * @throws IllegalActionException if the action can't be performed
+     * @throws UnexpectedException    if the creation of the game fails
+     */
     public void setNumOfPlayers(Command command) throws IllegalActionException, UnexpectedException {
         if (playerState != PlayerState.WAITING4SETNUMPLAYER) {
             this.send(new ErrorMessage("You can't do this action now"));
@@ -572,6 +659,11 @@ public class ClientHandler implements Runnable {
         //game.setPlayer(this);
     }
 
+    /**
+     * parses the command received from the client and makes the game send the resources of the marked in the specified line
+     *
+     * @param command the command received from the client
+     */
     public void getResourcesFromMarket(Command command) {
         if (!checkBeginningActionDone()) {
             return;
@@ -584,6 +676,12 @@ public class ClientHandler implements Runnable {
         game.getResFromMkt(resFromMkt, this);
     }
 
+    /**
+     * parses the command and makes the game buy the resources in the specified line of the market
+     *
+     * @param command the command received from the client
+     * @throws IllegalActionException if the action can't be performed due to errors
+     */
     public void buyFromMarket(Command command) throws IllegalActionException {
         if (!checkBeginningActionDone()) {
             return;
@@ -601,6 +699,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * parses the command and makes the game get the cost of the specified card in the dev grid
+     *
+     * @param command the command received from the client
+     */
     public void getCardCost(Command command) {
         if (!checkBeginningActionDone()) {
             return;
@@ -613,6 +716,12 @@ public class ClientHandler implements Runnable {
         game.getCardCost(cardCost, this);
     }
 
+    /**
+     * parses the command and makes the game buy the card in the specified position in the dev grid
+     *
+     * @param command the command received from the client
+     * @throws IllegalActionException if the action can't be performed due to errors
+     */
     public void buyDevCard(Command command) throws IllegalActionException {
         if (!checkBeginningActionDone()) {
             return;
@@ -631,6 +740,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * parses the command and makes the game get the cost of the production specified by the client
+     *
+     * @param command the command received from the client
+     * @throws IllegalActionException if the data received from the client are incorrect
+     */
     public void getProductionCost(Command command) throws IllegalActionException {
         if (!checkBeginningActionDone()) {
             return;
@@ -643,6 +758,12 @@ public class ClientHandler implements Runnable {
         game.getProductionCost(productionCost, this);
     }
 
+    /**
+     * parses the command and makes the game activate the production specified by the client
+     *
+     * @param command the command received from the client
+     * @throws IllegalActionException if the data received from the client are incorrect
+     */
     public void activateProduction(Command command) throws IllegalActionException {
         if (!checkBeginningActionDone()) {
             return;
@@ -660,6 +781,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * parses the command and makes the game move the specified resources of the depot
+     *
+     * @param command the command received from the client
+     * @throws IllegalActionException if the resources can't be moved correctly
+     */
     public void moveBetweenShelves(Command command) throws IllegalActionException {
         if (!checkBeginningActionDone()) {
             return;
@@ -672,6 +799,12 @@ public class ClientHandler implements Runnable {
         game.moveResourcesBetweenShelves(moveBetweenShelves, this);
     }
 
+    /**
+     * parses the command and makes the game move the specified resources from a leader card to the depot
+     *
+     * @param command the command received from the client
+     * @throws IllegalActionException if the resources can't be moved correctly
+     */
     public void moveLeaderToShelf(Command command) throws IllegalActionException {
         if (!checkBeginningActionDone()) {
             return;
@@ -684,6 +817,12 @@ public class ClientHandler implements Runnable {
         game.moveResourcesToShelf(moveLeaderToShelf, this);
     }
 
+    /**
+     * parses the command and makes the game move the specified resources from the depot to a leader card
+     *
+     * @param command the command received from the client
+     * @throws IllegalActionException if the resources can't be moved correctly
+     */
     public void moveShelfToLeader(Command command) throws IllegalActionException {
         if (!checkBeginningActionDone()) {
             return;
@@ -696,6 +835,11 @@ public class ClientHandler implements Runnable {
         game.moveResourcesToLeader(moveShelfToLeader, this);
     }
 
+    /**
+     * parses the command and makes the game discard the specified leader card
+     *
+     * @param command the command received from the client
+     */
     public void discardLeader(Command command) {
         if (!checkBeginningActionDone()) {
             return;
@@ -713,6 +857,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * parses the command and makes the game activate the specified leader card
+     *
+     * @param command the command received from the client
+     * @throws IllegalArgumentException if the card can't be activated
+     */
     public void activateLeader(Command command) throws IllegalActionException {
         if (!checkBeginningActionDone()) {
             return;

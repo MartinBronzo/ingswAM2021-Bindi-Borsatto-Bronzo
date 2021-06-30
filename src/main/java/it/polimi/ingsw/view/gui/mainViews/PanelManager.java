@@ -262,7 +262,7 @@ public final class PanelManager {
                 this.manageNickSetting(responseContent);
                 break;
             case SETBEGINNINGDECISIONS:
-                this.managePostStart(responseContent);
+                this.managePostStart();
                 break;
             case FINALSCORES:
                 this.manageleaderboard(responseContent);
@@ -306,8 +306,10 @@ public final class PanelManager {
                 gameModel.merge(update);
 
             if (playerConnectionsUpdate.getChangedPlayer().equals(this.nickname)) {
-                //TODO: aggiungere cosa far rivedere a chi si riconnette, questo sotto NON funziona
-                this.showPlayerBoard(this.waitingRoomPanel);
+                if(this.player.getPlayerState() == PlayerState.WAITING4TURN) {
+                    waitingRoomPanel.setVisible(false);
+                    managePostStart();
+                }
             }
         }
     }
@@ -465,7 +467,7 @@ public final class PanelManager {
         });
     }
 
-    private synchronized void managePostStart(String responseContent) {
+    private synchronized void managePostStart() {
         synchronized (this) {
             nLeadersToDiscard = 0;
             resourcesToTake = 0;
