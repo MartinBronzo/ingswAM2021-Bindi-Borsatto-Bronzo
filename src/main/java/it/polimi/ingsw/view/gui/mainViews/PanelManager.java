@@ -306,7 +306,7 @@ public final class PanelManager {
                 gameModel.merge(update);
 
             if (playerConnectionsUpdate.getChangedPlayer().equals(this.nickname)) {
-                if(this.player.getPlayerState() == PlayerState.WAITING4TURN) {
+                if(this.player.getPlayerState() == PlayerState.WAITING4TURN || this.player.getPlayerState() == PlayerState.WAITING4LASTTURN || this.player.getPlayerState() == PlayerState.WAITING4GAMEEND) {
                     waitingRoomPanel.setVisible(false);
                     managePostStart();
                 }

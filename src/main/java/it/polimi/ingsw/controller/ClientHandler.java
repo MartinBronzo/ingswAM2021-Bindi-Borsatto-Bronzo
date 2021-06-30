@@ -275,7 +275,7 @@ public class ClientHandler implements Runnable {
                 }
                 command = gson.fromJson(line, Command.class);
                 while (!socket.isClosed() && !command.getCmd().equals("quit")) {
-                    if (gameEnded && !command.getCmd().equals("ping"))
+                    if (gameEnded && !command.getCmd().equals("pingResponse"))
                         this.send(new ErrorMessage("The game is ended, you can't do this action"));
                     else
                         executeCommand(command);
@@ -564,7 +564,7 @@ public class ClientHandler implements Runnable {
                     break;
                 }
             case "endTurn":
-                if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS) {
+                if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGBEGINNINGDECISIONS && playerState != PlayerState.PLAYINGLASTTURN) {
                     this.send(new ErrorMessage("Wait your turn to do the action"));
                     break;
                 }
@@ -586,12 +586,10 @@ public class ClientHandler implements Runnable {
 
             case "moveBetweenShelves":
                 moveBetweenShelves(command);
-
                 break;
 
             case "moveLeaderToShelf":
                 moveLeaderToShelf(command);
-
                 break;
 
             case "moveShelfToLeader":
@@ -668,7 +666,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -686,7 +684,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -708,7 +706,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -726,7 +724,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -750,7 +748,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -768,7 +766,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -791,7 +789,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -809,7 +807,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -827,7 +825,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -844,7 +842,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
@@ -867,7 +865,7 @@ public class ClientHandler implements Runnable {
         if (!checkBeginningActionDone()) {
             return;
         }
-        if (playerState != PlayerState.PLAYING) {
+        if (playerState != PlayerState.PLAYING && playerState != PlayerState.PLAYINGLASTTURN) {
             this.send(new ErrorMessage("Wait your turn to do the action"));
             return;
         }
