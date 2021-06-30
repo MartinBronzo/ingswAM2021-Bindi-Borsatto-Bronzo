@@ -139,7 +139,7 @@ public class DepotPlayerBoardMethodsTest {
         Exception exception;
         playerBoard.addResourceToDepot(stone, 2, 3);
 
-        exception = assertThrows(NullPointerException.class, () -> playerBoard.moveBetweenShelves(2, 3));
+        exception = assertThrows(IllegalArgumentException.class, () -> playerBoard.moveBetweenShelves(2, 3));
         assertEquals(exception.getMessage(), "No source resource to move");
     }
 

@@ -376,7 +376,7 @@ class DepotTest {
 
         depot.addToShelf(shield, 2, 2);
 
-        assertThrows(NullPointerException.class, () -> depot.moveBetweenShelves(1, 2));
+        assertThrows(IllegalArgumentException.class, () -> depot.moveBetweenShelves(1, 2));
     }
 
     @Test
