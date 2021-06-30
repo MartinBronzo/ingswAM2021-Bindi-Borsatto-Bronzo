@@ -33,8 +33,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * This class is responsible for the connection with the server, reads and sends messages to the server.
  * it manages the response for non gui related messages
  */
-public class GuiClient implements Runnable{
-
 public class GuiClient implements Runnable, Client {
     private final int portNumber;
     private final String hostName;
@@ -144,12 +142,11 @@ public class GuiClient implements Runnable, Client {
     }
 
 
-    public void endConnection() {
     /**
      * Ends the connection with the server
      * Stops all the threads
      */
-    protected void endConnection() {
+    public void endConnection() {
             writers.shutdown();
             readers.shutdown();
         try {
@@ -178,13 +175,12 @@ public class GuiClient implements Runnable, Client {
 
     /**
      * Prints the logout message in the gui
-     * SetUp everything to end the connection and the program
+     * Set up everything to end the connection and the program
      */
     public void quitCommand(){
         threadReader.interrupt();
         PanelManager.getInstance().printLogout("Thanks for playing");
         forceLogout.set(true);
-
     }
 
 
