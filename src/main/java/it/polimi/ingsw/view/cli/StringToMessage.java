@@ -8,8 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class is used to create client response messages from cli commands. it checks if commands are well formatted
+ */
 public class StringToMessage {
 
+    /**
+     * Generates GetFromMatrixMessage for market related Commands
+     * @param string to be transformed in GetFromMatrixMessage, Ex: "row 3; 1, 2, 4;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static GetFromMatrixMessage toMatrixMessageLine(String string) throws IllegalArgumentException {
         int colNumber;
         int rowNumber;
@@ -34,6 +43,12 @@ public class StringToMessage {
         return new GetFromMatrixMessage(rowNumber, colNumber, leaderList);
     }
 
+    /**
+     * Generates GetFromMatrixMessage for specific cell Commands
+     * @param string to be transformed in GetFromMatrixMessage, Ex: 2; 3; 1, 2, 4;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static GetFromMatrixMessage toMatrixMessageCell(String string) throws IllegalArgumentException {
         int colNumber;
         int rowNumber;
@@ -50,6 +65,12 @@ public class StringToMessage {
         return new GetFromMatrixMessage(rowNumber, colNumber, leaderList);
     }
 
+    /**
+     * Generates BuyDevCardMessage from cli command
+     * @param string to be transformed in BuyDevCardMessage, Ex: "2; 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2; 4;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static BuyDevCardMessage toBuyDevCardMessage(String string) throws IllegalArgumentException {
         int colNumber;
         int rowNumber;
@@ -74,6 +95,12 @@ public class StringToMessage {
         return new BuyDevCardMessage(rowNumber, colNumber, leaderList, depotParamsList, leaderMap, strongboxMap, devslot);
     }
 
+    /**
+     * Generates BuyFromMarketMessage from cli command
+     * @param string to be transformed in BuyFromMarketMessage, Ex: "row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static BuyFromMarketMessage toBuyFromMarketMessage(String string) throws IllegalArgumentException {
         int colNumber;
         int rowNumber;
@@ -104,6 +131,12 @@ public class StringToMessage {
         return new BuyFromMarketMessage(rowNumber, colNumber, leaderList, depotParamsList, leaderMap, discardMap);
     }
 
+    /**
+     * Generates ActivateProductionMessage from cli command
+     * @param string to be transformed in ActivateProductionMessage, Ex: "1, 2, 4; 2 COIN, 1 SERVANT; TRUE, COIN SERVANT, STONE; COIN 2 2, STONE 2 2;  COIN 2, SERVANT 1; STONE 2, SERVANT 2;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static ActivateProductionMessage toActivateProductionMessage(String string) throws IllegalArgumentException {
         List<Integer> devCardList;
         HashMap<Integer, ResourceType> leaderHashMap;
@@ -126,6 +159,12 @@ public class StringToMessage {
         return new ActivateProductionMessage(devCardList, leaderHashMap, baseProductionParams, depotParamsList, leaderSlotMap, strongboxMap);
     }
 
+    /**
+     * Generates GetProductionCostMessage from cli command
+     * @param string to be transformed in GetProductionCostMessage, Ex: "1, 2, 4; 1, 2, 4; TRUE, COIN SERVANT, STONE;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static GetProductionCostMessage toGetProductionCostMessage(String string) throws IllegalArgumentException {
         List<Integer> devCardList;
         List<Integer> leaderList;
@@ -141,6 +180,13 @@ public class StringToMessage {
         return new GetProductionCostMessage(devCardList, leaderList, baseProductionParams);
     }
 
+    /**
+     * Generates DepotParams from cli sub commands
+     * it's public just for Text Purpose
+     * @param string to be transformed in DepotParams"
+     * @return the DepotParams generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static DepotParams toDepotParams(String string) throws IllegalArgumentException {
         ResourceType resource;
         int qt;
@@ -156,6 +202,13 @@ public class StringToMessage {
         return new DepotParams(resource, qt, shelf);
     }
 
+    /**
+     * Generates an HashMap from cli sub commands
+     * it's public just for Text Purpose
+     * @param string to be transformed in a hashMap"
+     * @return the hashMap generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static HashMap<ResourceType, Integer> toResourceHashMap(String string) throws IllegalArgumentException {
         ResourceType resource;
         int qt;
@@ -175,6 +228,13 @@ public class StringToMessage {
         return hashMap;
     }
 
+    /**
+     * Generates an HashMap from cli sub commands
+     * it's public just for Text Purpose
+     * @param string to be transformed in a hashMap"
+     * @return the hashMap generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static HashMap<Integer, ResourceType> toLeadersHashMap(String string) throws IllegalArgumentException {
         ResourceType resource;
         int leaderId;
@@ -194,6 +254,13 @@ public class StringToMessage {
         return hashMap;
     }
 
+    /**
+     * Generates baseProductionParams from cli sub commands
+     * it's public just for Text Purpose
+     * @param string to be transformed in baseProductionParams"
+     * @return the baseProductionParams generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static BaseProductionParams toBaseProductionParams(String string) throws IllegalArgumentException {
         boolean activated;
         List<ResourceType> resourceInput;
@@ -209,6 +276,12 @@ public class StringToMessage {
         return new BaseProductionParams(activated, resourceInput, resourceOutput);
     }
 
+    /**
+     * Generates DiscardLeaderAndExtraResBeginningMessage from cli command
+     * @param string to be transformed in DiscardLeaderAndExtraResBeginningMessage, Ex: "1, 2, 4; COIN 2 3, STONE 1 4;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static DiscardLeaderAndExtraResBeginningMessage toDiscardLeaderAndExtraResBeginningMessage(String string) throws IllegalArgumentException {
         List<Integer> leaderCardIds;
         List<DepotParams> depotParamsList;
@@ -222,6 +295,12 @@ public class StringToMessage {
         return new DiscardLeaderAndExtraResBeginningMessage(leaderCardIds, depotParamsList);
     }
 
+    /**
+     * Generates LeaderMessage from cli command to discard or activate leaders
+     * @param string to be transformed in LeaderMessage, Ex: "1;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static LeaderMessage toLeaderMessage(String string) throws IllegalArgumentException {
         int leaderId;
         try {
@@ -233,6 +312,12 @@ public class StringToMessage {
         return new LeaderMessage(leaderId);
     }
 
+    /**
+     * Generates SetNumPlayerMessage from cli command to set the desired number of players in the game
+     * @param string to be transformed in SetNumPlayerMessage, Ex: "1;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static SetNumPlayerMessage toSetNumPlayerMessage(String string) throws IllegalArgumentException {
         int numberOfPlayers;
         try {
@@ -244,6 +329,12 @@ public class StringToMessage {
         return new SetNumPlayerMessage(numberOfPlayers);
     }
 
+    /**
+     * Generates MoveBetweenShelvesMessage from cli command to to send move between shelf requests
+     * @param string to be transformed in MoveBetweenShelvesMessage, Ex: "1; 2;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static MoveBetweenShelvesMessage toMoveBetweenShelvesMessage(String string) throws IllegalArgumentException {
         int sourceShelf, destShelf;
         try {
@@ -256,6 +347,12 @@ public class StringToMessage {
         return new MoveBetweenShelvesMessage(sourceShelf, destShelf);
     }
 
+    /**
+     * Generates MoveLeaderToShelfMessage from cli command to to send move from leader to shelf requests
+     * @param string to be transformed in MoveLeaderToShelfMessage, Ex: "COIN; 1; 2;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static MoveLeaderToShelfMessage toMoveLeaderToShelfMessage(String string) throws IllegalArgumentException {
         ResourceType resource;
         int quantity, destShelf;
@@ -270,6 +367,12 @@ public class StringToMessage {
         return new MoveLeaderToShelfMessage(resource, quantity, destShelf);
     }
 
+    /**
+     * Generates MoveShelfToLeaderMessage from cli command to to send move shelf to leader requests
+     * @param string to be transformed in MoveShelfToLeaderMessage, Ex: "1; 2;"
+     * @return the Message generated
+     * @throws IllegalArgumentException if the string is not well formatted
+     */
     public static MoveShelfToLeaderMessage toMoveShelfToLeaderMessage(String string) throws IllegalArgumentException {
         int numShelf, quantity;
         try {

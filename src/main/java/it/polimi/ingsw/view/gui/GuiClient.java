@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.gui.mainViews.PanelManager;
 
 import javax.swing.*;
@@ -28,8 +29,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-
-public class GuiClient implements Runnable{
+/**
+ * This class is responsible for the connection with the server, reads and sends messages to the server.
+ * it manages the response for non gui related messages
+ */
+public class GuiClient implements Runnable, Client {
     private final int portNumber;
     private final String hostName;
     private Socket socket;
@@ -41,6 +45,11 @@ public class GuiClient implements Runnable{
     private ExecutorService writers;
     private ExecutorService readers;
 
+    /**
+     * Builds a new Gui Client knowing port and ip server number
+     * @param portNumber the socket port of the server
+     * @param hostName the server ip
+     */
     public GuiClient(int portNumber, String hostName) {
         this.portNumber = portNumber;
         this.hostName = hostName;
@@ -90,6 +99,10 @@ public class GuiClient implements Runnable{
     }
 
 
+    /**
+     * Connects with the server in listening creating a new socket
+     * if the server is not available, it makes the program ends
+     */
     public void startConnection() {
         try {
             socket = new Socket(hostName, portNumber);
@@ -105,6 +118,9 @@ public class GuiClient implements Runnable{
     }
 
 
+    /**
+     * creates a new thread to read from server, instantiate the panel Manager to manage the gui
+     */
     public void doConnection() {
         try {
             threadReader = new Thread(this);
@@ -126,7 +142,11 @@ public class GuiClient implements Runnable{
     }
 
 
-    protected void endConnection() {
+    /**
+     * Ends the connection with the server
+     * Stops all the threads
+     */
+    public void endConnection() {
             writers.shutdown();
             readers.shutdown();
         try {
@@ -138,6 +158,11 @@ public class GuiClient implements Runnable{
     }
 
 
+    /**
+     * Sends a new command to the server. Each message is sent sequentially so it's impossible that concurrent calls to this method sends messages contemporary
+     * @param command the command to be send to the client
+     * @throws NullPointerException if command is null or the buffered reader responsible to send messages to the server is not yet specified
+     */
     public void sendMessage(Command command) throws NullPointerException {
         if (out == null) throw new NullPointerException("PrintWriter is null");
         if (command == null) throw new NullPointerException("Command is null");
@@ -148,11 +173,14 @@ public class GuiClient implements Runnable{
         return;
     }
 
+    /**
+     * Prints the logout message in the gui
+     * Set up everything to end the connection and the program
+     */
     public void quitCommand(){
         threadReader.interrupt();
         PanelManager.getInstance().printLogout("Thanks for playing");
         forceLogout.set(true);
-
     }
 
 
@@ -163,10 +191,8 @@ public class GuiClient implements Runnable{
      * {@code run} method to be called in that separately executing
      * thread.
      * <p>
-     * The general contract of the method {@code run} is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
+     * It's responsible for reading from the server, managing the response for kickedOut and ping messages
+     * for each of the others messages generates a new thread which it's responsible of managing the gui
      */
 
     public void run() {

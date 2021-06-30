@@ -200,13 +200,11 @@ public class BuyFromMarketPanel extends JPanel {
             if (leader2Selector.get())
                 leaders.add(1);
             PanelManager.getInstance().writeMessage(new Command("getCardCost", new GetFromMatrixMessage(row, column, leaders)));
-            //TODO idk if there is the need to print something else
         });
         this.add(this.submit);
 
         this.cancel = new JButton("cancel");
         this.cancel.addActionListener(e -> {
-            //TODO: idk if there is the need to print something else
             this.setVisible(false);
         });
         this.add(this.cancel);

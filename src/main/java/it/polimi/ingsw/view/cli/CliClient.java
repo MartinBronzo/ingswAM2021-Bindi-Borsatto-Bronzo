@@ -29,7 +29,11 @@ import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CliClient extends Client implements Runnable {
+/**
+ * This class constructs the Command Line Interface for the player. It manages the connection with the Server and shows to
+ * the player useful information.
+ */
+public class CliClient implements Runnable, Client {
     private final int portNumber;
     private final String hostName;
     private Game gamemodel;
@@ -49,6 +53,11 @@ public class CliClient extends Client implements Runnable {
     private String cliCommandContent;
 
 
+    /**
+     * Constructs a CliClient object which is going to communicate via the specified connection
+     * @param portNumber the port used for the communication
+     * @param hostName the IP address of the server
+     */
     public CliClient(int portNumber, String hostName) {
         this.gamemodel = null;
         this.portNumber = portNumber;
@@ -59,14 +68,14 @@ public class CliClient extends Client implements Runnable {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); // this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); // this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
@@ -74,7 +83,7 @@ public class CliClient extends Client implements Runnable {
 
         RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
                 = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
-        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); // this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
         tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
@@ -84,6 +93,7 @@ public class CliClient extends Client implements Runnable {
                 .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
 
+    /*
     public CliClient(int portNumber, String hostName, BufferedReader bufferedReader) {
         this.gamemodel = null;
         this.portNumber = portNumber;
@@ -94,14 +104,14 @@ public class CliClient extends Client implements Runnable {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); // this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); // this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
@@ -109,7 +119,7 @@ public class CliClient extends Client implements Runnable {
 
         RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
                 = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
-        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); // this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
         tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
@@ -118,7 +128,7 @@ public class CliClient extends Client implements Runnable {
         this.gson = new GsonBuilder().registerTypeAdapterFactory((requirementTypeFactory))
                 .registerTypeAdapterFactory(effectTypeFactory).registerTypeAdapterFactory(tokenTypeFactory).create();
     }
-
+    */
 
     @Override
     public void startConnection() {
@@ -252,7 +262,7 @@ public class CliClient extends Client implements Runnable {
     }
 
     @Override
-    protected synchronized void endConnection() {
+    public synchronized void endConnection() {
         CliView.printInfo(logoutMessage);
         try {
             socket.close();
@@ -272,14 +282,18 @@ public class CliClient extends Client implements Runnable {
         //System.out.println("Sending:\t" + gson.toJson(command));
     }
 
-    @Override
+    /**
+     * Asks the Server for a connection
+     */
     public synchronized void manageLogin() {
         Command loginCommand = new Command("login", new LoginMessage(cliCommandContent));
         sendMessage(loginCommand);
     }
 
-    @Override
-    protected synchronized void manageGameStarting() {
+    /**
+     * Sends the Server the player's beginning of the game decisions
+     */
+    public synchronized void manageGameStarting() {
         try {
             Command configureStartCommand = new Command("discardLeaderAndExtraResBeginning", StringToMessage.toDiscardLeaderAndExtraResBeginningMessage(cliCommandContent));
             sendMessage(configureStartCommand);
@@ -289,8 +303,10 @@ public class CliClient extends Client implements Runnable {
     }
 
 
-    @Override
-    protected synchronized void setNumPlayer() {
+    /**
+     * Sends the Server the game creator's decisions for the number of players they want in the game
+     */
+    public synchronized void setNumPlayer() {
         try {
             Command setNumPlayerCommand = new Command("setNumPlayer", StringToMessage.toSetNumPlayerMessage(cliCommandContent));
             sendMessage(setNumPlayerCommand);
@@ -299,8 +315,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void getResourcesFromMarket() {
+    /**
+     * Sends the Server the player's interest in buying from the Market
+     */
+    public synchronized void getResourcesFromMarket() {
         try {
             Command getResourcesFromMarket = new Command("getResourcesFromMarket", StringToMessage.toMatrixMessageLine(cliCommandContent));
             sendMessage(getResourcesFromMarket);
@@ -309,8 +327,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void buyFromMarket() {
+    /**
+     * Sends the Server the player's decisions taken in order to buy from the Market
+     */
+    public synchronized void buyFromMarket() {
         try {
             Command buyFromMarketCommand = new Command("buyFromMarket", StringToMessage.toBuyFromMarketMessage(cliCommandContent));
             sendMessage(buyFromMarketCommand);
@@ -319,8 +339,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void getDevCardCost() {
+    /**
+     * Sends the Server the player's interest in buying a DevCard from the DevGrid
+     */
+    public synchronized void getDevCardCost() {
         try {
             Command getDevCardCost = new Command("getCardCost", StringToMessage.toMatrixMessageCell(cliCommandContent));
             sendMessage(getDevCardCost);
@@ -329,8 +351,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void buyDevCard() {
+    /**
+     * Sends the Server the player's decisions taken in order to buy a DevCard the DevGrid
+     */
+    public synchronized void buyDevCard() {
         try {
             Command buyDevCard = new Command("buyDevCard", StringToMessage.toBuyDevCardMessage(cliCommandContent));
             sendMessage(buyDevCard);
@@ -339,8 +363,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void getProductionCost() {
+    /**
+     * Sends the Server the player's interest in activating their production powers
+     */
+    public synchronized void getProductionCost() {
         try {
             Command getProductionCost = new Command("getProductionCost", StringToMessage.toGetProductionCostMessage(cliCommandContent));
             sendMessage(getProductionCost);
@@ -349,8 +375,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void activateProduction() {
+    /**
+     * Sends the Server the player's decisions taken in order to activate their production methods
+     */
+    public synchronized void activateProduction() {
         try {
             Command activateProduction = new Command("activateProductionMessage", StringToMessage.toActivateProductionMessage(cliCommandContent));
             sendMessage(activateProduction);
@@ -359,8 +387,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void moveBetweenShelves() {
+    /**
+     * Sends the Server the player's decisions taken in order to move resources between Depot shelves
+     */
+    public synchronized void moveBetweenShelves() {
         try {
             Command moveBetweenShelves = new Command("moveBetweenShelves", StringToMessage.toMoveBetweenShelvesMessage(cliCommandContent));
             sendMessage(moveBetweenShelves);
@@ -369,8 +399,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void moveLeaderToShelf() {
+    /**
+     * Sends the Server the player's decisions taken in order to move resources from ExtraSlot LeaderCards to a Depot shelf
+     */
+    public synchronized void moveLeaderToShelf() {
         try {
             Command moveLeaderToShelf = new Command("moveLeaderToShelf", StringToMessage.toMoveLeaderToShelfMessage(cliCommandContent));
             sendMessage(moveLeaderToShelf);
@@ -379,8 +411,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void moveShelfToLeader() {
+    /**
+     * Sends the Server the player's decisions taken in order to move resources from a Depot shelf to ExtraSlot LeaderCards
+     */
+    public synchronized void moveShelfToLeader() {
         try {
             Command moveShelfToLeader = new Command("moveShelfToLeader", StringToMessage.toMoveShelfToLeaderMessage(cliCommandContent));
             sendMessage(moveShelfToLeader);
@@ -389,8 +423,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void discardLeader() {
+    /**
+     * Sends the Server the player's decision to discard a LeaderCard during the game
+     */
+    public synchronized void discardLeader() {
         try {
             Command discardLeader = new Command("discardLeader", StringToMessage.toLeaderMessage(cliCommandContent));
             sendMessage(discardLeader);
@@ -399,8 +435,10 @@ public class CliClient extends Client implements Runnable {
         }
     }
 
-    @Override
-    protected synchronized void activateLeader() {
+    /**
+     * Sends the Server the player's decision to activate a LeaderCard during the game
+     */
+    public synchronized void activateLeader() {
         try {
             Command activateLeader = new Command("ActivateLeader", StringToMessage.toLeaderMessage(cliCommandContent));
             sendMessage(activateLeader);
@@ -626,6 +664,11 @@ public class CliClient extends Client implements Runnable {
         return game.getPlayers().stream().filter(x -> x.getNickName().equals(player)).findAny().get().getPlayerState() == PlayerState.DISCONNECTED;
     }
 
+    /**
+     * Starts a CliClient
+     * @param args arguments that can be used to activate the CliClient
+     * @throws IOException if an IO operations fails
+     */
     public static void main(String[] args) throws IOException {
         String hostName = "127.0.0.1";
         int portNumber = 9047;
