@@ -288,7 +288,7 @@ public class ClientHandler implements Runnable {
                 //we simply print what happened and we finish the thread. The socket is closed only if the client haven't logged in yet
                 System.out.println("Closed socket while waiting message from client or trying to send a response");
                 keepRunning = false;
-                //e.printStackTrace();
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
                 this.send(new ErrorMessage("An error occurred (IOException)"));
@@ -342,8 +342,13 @@ public class ClientHandler implements Runnable {
      * @param response the response to a command to be sent to the client through Json
      */
     public synchronized void send(ResponseInterface response) {
-        ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
-        out.println(gson.toJson(responseMessage));
+        if(response != null) {
+            ResponseMessage responseMessage = new ResponseMessage(response.getResponseType(), gson.toJson(response));
+            out.println(gson.toJson(responseMessage));
+        } else {
+            ResponseMessage responseMessage = new ResponseMessage(ResponseType.INFOSTRING, gson.toJson(new GeneralInfoStringMessage("Empty message")));
+            out.println(gson.toJson(responseMessage));
+        }
         //out.flush();
     }
 
