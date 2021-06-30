@@ -86,10 +86,19 @@ public class ReportNumOrder {
         ;
     }
 
+    /**
+     * Returns the ReportNum corresponding to the specified index
+     * @param index a valid index for the ReportNumOrder object
+     * @return the ReportNum corresponding to the specified index
+     */
     public ReportNum getReportNum(int index) {
         return this.order.get(index);
     }
 
+    /**
+     * Returns the number of ReportNums this ReportNumOrder takes track of
+     * @return the number of ReportNums this ReportNumOrder takes track of
+     */
     public int getSize() {
         return this.order.size();
     }

@@ -12,6 +12,9 @@ public class DiscountLeaderEffect extends Effect {
     private final ResourceType discountType;
     private final int discountAmount;
 
+    /**
+     * Constructs a DiscountLeaderEffect without the resource type it discounts and the amount of the discount set
+     */
     public DiscountLeaderEffect() {
         this.discountType = null;
         this.discountAmount = 0;
@@ -47,6 +50,11 @@ public class DiscountLeaderEffect extends Effect {
         return new DiscountLeaderEffect(this);
     }
 
+    /**
+     * Apply the discount this Effect represents to the specified cost
+     * @param cost the cost of a DevCard
+     * @return true if the discount has been successfully applied, false if there was no need to apply the discount
+     */
     public boolean discountEffect(HashMap<ResourceType, Integer> cost) {
         if (cost == null)
             throw new NullPointerException("Cost is a null pointer!");
@@ -68,10 +76,18 @@ public class DiscountLeaderEffect extends Effect {
         return true;
     }
 
+    /**
+     * Returns the resource type this Effect discounts for
+     * @return the resource type this Effect discounts for
+     */
     public ResourceType getDiscountType() {
         return discountType;
     }
 
+    /**
+     * Returns the amount this Effect discounts for
+     * @return the amount this Effect discounts for
+     */
     public int getDiscountAmount() {
         return discountAmount;
     }

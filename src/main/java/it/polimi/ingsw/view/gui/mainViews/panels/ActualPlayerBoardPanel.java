@@ -16,11 +16,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This panel lets the player see their board with their resources, cards, FaithTrack and PopeTiles. It also displays
+ * all the buttons to access the possible actions the player can make.
+ */
 public class ActualPlayerBoardPanel extends JPanel {
     LeaderCardPanel leaderCardPanel;
     FaithTrackOnlyView faithTrackOnlyView;
     DepotOnlyView depotOnlyView;
 
+    /**
+     * Constructs an ActualPlayerBoardPanel for the specified player
+     * @param player the LightModel object which contains the information of the player
+     */
     public ActualPlayerBoardPanel(Player player) {
         super();
 

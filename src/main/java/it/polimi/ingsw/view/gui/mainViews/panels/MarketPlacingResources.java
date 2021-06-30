@@ -27,11 +27,18 @@ import java.util.List;
  */
 public class MarketPlacingResources extends JPanel {
     private boolean created;
-    //TODO: a cosa servono questi metodi?
+
+    /**
+     * Constructs a dumb MarketPlacingResources
+     */
     public MarketPlacingResources(boolean created){
         this.created = created;
     }
 
+    /**
+     * Returns whether the object has been created
+     * @return true
+     */
     public boolean isCreated(){return created;}
 
     /**

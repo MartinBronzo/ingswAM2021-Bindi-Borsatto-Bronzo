@@ -75,6 +75,11 @@ public class LeaderCard {
         this.url = original.url;
     }
 
+    /**
+     * Returns a copy of the specified Requirement list
+     * @param originalList the Requirement list to be cloned
+     * @return a copy of the specified Requirement list
+     */
     public static List<Requirement> getCloneList(List<Requirement> originalList) {
         List<Requirement> result = new ArrayList<>();
         for (Requirement req : originalList) {

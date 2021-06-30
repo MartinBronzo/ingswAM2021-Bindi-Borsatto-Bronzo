@@ -34,6 +34,9 @@ public class FaithLevel extends FaithLevelBasic {
         this.arePopeTilesSet = true;
     }
 
+    /**
+     * Constructs a FaithLevel without the PopeTiles and the FaithTrack set
+     */
     public FaithLevel() {
         super();
         this.popeTiles = new ArrayList<>();

@@ -44,6 +44,10 @@ public class LeaderCards {
         this.alreadyUsedOneShotCard = new ArrayList<>();
     }
 
+    /**
+     * Sets the NotPlayedCards inside this LeaderCards
+     * @param notPlayedCards the NotPlayedCards to be set inside this LeaderCards
+     */
     public void setNotPlayedCards(List<LeaderCard> notPlayedCards) {
         if (!this.areNotPlayedCardsSet) {
             this.notPlayedCards = LeaderCards.cloneList(notPlayedCards);
@@ -51,6 +55,11 @@ public class LeaderCards {
         }
     }
 
+    /**
+     * Returns a copy of the specified LeaderCard list
+     * @param original the LeaderCard list to be cloned
+     * @return a copy of the specified LeaderCard list
+     */
     public static List<LeaderCard> cloneList(List<LeaderCard> original) {
         List<LeaderCard> result = new ArrayList<>();
         for (LeaderCard lD : original) {
@@ -293,18 +302,34 @@ public class LeaderCards {
                 this.alreadyUsedOneShotCard.containsAll(tmp.alreadyUsedOneShotCard) && tmp.alreadyUsedOneShotCard.containsAll(this.alreadyUsedOneShotCard);
     }
 
+    /**
+     * Returns whether the NotPlayedCards have been set yet
+     * @return true if the NotPlayedCards have been set yet, false otherwise
+     */
     public boolean isAreNotPlayedCardsSet() {
         return areNotPlayedCardsSet;
     }
 
+    /**
+     * Returns the amount of NotActiveCards this LeaderCards holds
+     * @return the amount of NotActiveCards this LeaderCards holds
+     */
     public int getNotActiveCardsSize() {
         return this.notPlayedCards.size();
     }
 
+    /**
+     * Returns the amount of ActiveCards this LeaderCards holds
+     * @return the amount of ActiveCards this LeaderCards holds
+     */
     public int getActiveCardsSize() {
         return this.activeCards.size();
     }
 
+    /**
+     * Returns whether a WhiteMarble LeaderCard is active in this LeaderCards
+     * @return true if there is an active WhiteMarble LeaderCard in this LeaderCards, false otherwise
+     */
     public boolean checkIfWhiteMarbleActive() {
         for (LeaderCard lD : this.activeCards)
             if (lD.getEffect() instanceof WhiteMarbleLeaderEffect)

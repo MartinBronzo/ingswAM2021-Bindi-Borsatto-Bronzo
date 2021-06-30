@@ -15,10 +15,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel represents the player's FaithTrack and PopeTiles, and Lorenzo's position when the player is in a Solo Game. This panel is only to be shown to the player.
+ */
 public class SoloFaithTrackOnlyView extends JPanel{
     private List<JLabel> popeTileList;
     private Player player;
 
+    /**
+     * Constructs a FaithTrackOnlyView for the specified player
+     * @param player the player whose FaithTrack and PopeTiles are going to be shown onto this panel
+     */
     public SoloFaithTrackOnlyView(Player player) {
         popeTileList = new ArrayList<>();
         this.player = player;
@@ -87,6 +94,9 @@ public class SoloFaithTrackOnlyView extends JPanel{
         //ImageIcon icon = new ImageIcon(leader);
     }
 
+    /**
+     * Updates this panel
+     */
     public void update(){
         for (Component component: this.getComponents()) {
             this.remove(component);

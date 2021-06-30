@@ -7,12 +7,19 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * This dialog is used to display an error message to the player.
+ */
 public class ErrorDialog extends JDialog {
     private static final int panelXPosition = PanelManager.getInstance().getGameFrame().getX();
     private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
     private static final int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
     private JLabel label;
 
+    /**
+     * Constructs an ErrorDialog which still needs the message, it is going to display, to be set
+     * @param owner the Frame of the player
+     */
     public ErrorDialog(Frame owner) {
         super(owner, "ERROR :( ", true);
 
@@ -55,7 +62,10 @@ public class ErrorDialog extends JDialog {
 
     }
 
-
+    /**
+     * Sets the message to be shown to the player
+     * @param error the message to be shown to the player
+     */
     public void setErrorMessage(String error){
         label.setText(label.getText()+" "+error);
     }

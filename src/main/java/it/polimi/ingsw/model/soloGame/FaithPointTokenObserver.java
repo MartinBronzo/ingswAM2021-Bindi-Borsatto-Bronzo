@@ -9,6 +9,10 @@ import it.polimi.ingsw.exceptions.LastVaticanReportException;
 public class FaithPointTokenObserver {
     SoloBoard soloBoard;
 
+    /**
+     * Constructs a DiscardTokenObserver which observes the FaithPointTokens contained in the specified SoloBoard
+     * @param soloBoard the SoloBoard whose FaithPointTokens this observer observes
+     */
     public FaithPointTokenObserver(SoloBoard soloBoard) {
         this.soloBoard = soloBoard;
     }

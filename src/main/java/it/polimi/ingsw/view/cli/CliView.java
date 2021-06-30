@@ -26,6 +26,10 @@ import it.polimi.ingsw.view.lightModel.player.DepotShelf;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class contains all the static methods needed to print the messages the player's receives from the server and that
+ * will help them playing.
+ */
 public class CliView {
 
      /*
@@ -34,9 +38,13 @@ public class CliView {
     #############################################################################################
      */
 
-    public static void printGameState(Game gameModel, String nickname) throws NoSuchElementException {
+    /**
+     * Prints information accordingly to the state of the game
+     * @param gameModel the LightModel game object which represents the game
+     * @param nickname the player's nickname
+     */
+    public static void printGameState(Game gameModel, String nickname) {
         if (gameModel == null || nickname == null || nickname.equals("")) return;
-
 
         Player player = gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().orElseThrow(NoSuchElementException::new);
         switch (player.getPlayerState()) {
@@ -80,14 +88,15 @@ public class CliView {
         //printOthersPlayersName(gameModel, player.getNickName());
     }
 
-
-
     /*
     #############################################################################################
     WELCOME MESSAGES
     #############################################################################################
      */
 
+    /**
+     * Prints the welcome message
+     */
     public static void printWelcome() {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.YELLOW.getTextColor());
@@ -105,6 +114,11 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    /**
+     * Prints the information for letting the player make their beginning of the game choices
+     * @param nLeadersToDiscard the number of LeaderCards to discard
+     * @param resourcesToTake the number of resources the player can get
+     */
     public static void printSetUpView(int nLeadersToDiscard, int resourcesToTake) {
         System.out.print(AnsiCommands.clear() + AnsiCommands.GREEN.getTextColor());
         System.out.print("     _______________________________________________________\n" +
@@ -136,6 +150,11 @@ public class CliView {
     #############################################################################################
      */
 
+    /**
+     * Prints the player's PlayerBoard
+     * @param player the player which belongs to the CliClient which called this method
+     * @param lorenzoPosition Lorenzo's position onto the FaithTrack or null if the game isn't a Solo Game
+     */
     public static void printPlayerBoard(Player player, Integer lorenzoPosition) {
         if (player == null) return;
         if (lorenzoPosition == null) lorenzoPosition = -1;
@@ -152,6 +171,11 @@ public class CliView {
         printUnusedLeaderCards(player.getUnUsedLeaders());
     }
 
+    /**
+     * Prints the specified opponent's PlayerBoard
+     * @param player the opponent's name
+     * @param lorenzoPosition Lorenzo's position onto the FaithTrack or null if the game isn't a Solo Game
+     */
     public static void printOtherBoard(Player player, Integer lorenzoPosition) {
         if (player == null) return;
         if (lorenzoPosition == null) lorenzoPosition = -1;
@@ -184,6 +208,10 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle());
     }
 
+    /**
+     * Prints the specified DevSlots
+     * @param devSlots the DevSlots to be printed
+     */
     public static void printDevSlots(DevSlots devSlots) {
         if (devSlots == null) return;
         System.out.print(AnsiCommands.PURPLE.getTextColor());
@@ -215,6 +243,10 @@ public class CliView {
             System.out.print("\n");
     }
 
+    /**
+     * Prints the final results of a multi-player game
+     * @param results the results of this game
+     */
     public static void printFinalScores(List<Map.Entry<String, Integer>> results) {
         if (results == null) return;
         System.out.print(AnsiCommands.clear());
@@ -263,6 +295,11 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    /**
+     * Prints the final results of a Solo Game
+     * @param victory true if the player won, false if Lorenzo won
+     * @param message a string to be printed used to communicate the results to the client
+     */
     public static void printSoloGameScores(boolean victory, String message) {
         System.out.print(AnsiCommands.clear());
         if(victory)
@@ -316,6 +353,11 @@ public class CliView {
 
     //SPAZI TRA I BORDI DELLA PERGAMENA PICCOLA: 28
 
+    /**
+     * Prints the specified opponent's PlayerBoard
+     * @param gameModel the LightModel Game object representing this game
+     * @param nickname the opponent's name
+     */
     public static void printOtherGameBoard(Game gameModel, String nickname) {
         if (gameModel == null || nickname == null || nickname.equals("")) return;
         try {
@@ -327,6 +369,11 @@ public class CliView {
 
     }
 
+    /**
+     * Prints the specified player's opponents
+     * @param gameModel the LightModel Game object representing this game
+     * @param currentPlayer the player's nickname whose opponents are to be printed
+     */
     public static void printOthersPlayersName(Game gameModel, String currentPlayer) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.BLACK.getTextColor());
@@ -357,6 +404,12 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    /**
+     * Prints the player's board with a frame which surrounds it
+     * @param player the player which belongs to the CliClient which called this method
+     * @param lorenzoPosition Lorenzo's position onto the FaithTrack or a meaningless number if the Game isn't a SoloGame
+     */
+    //TODO: controllare che cosa viene spedito per la posizione di Lorenzo se non siamo in SoloGame
     public static void printPlayerBoardWithFrame(Player player, int lorenzoPosition) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.BLUE.getTextColor());
@@ -375,6 +428,12 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    /**
+     * Prints the specified player's board with a frame which surrounds it (the specified player is an opponent of the player
+     * which belongs to the CliClient which called this method)
+     * @param player a player's opponents
+     * @param lorenzoPosition Lorenzo's position onto the FaithTrack or a meaningless number if the Game isn't a SoloGame
+     */
     public static void printOthersPlayerBoardWithFrame(Player player, int lorenzoPosition) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.BLUE.getTextColor());
@@ -393,6 +452,10 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    /**
+     * Prints the parts of the board that are in common between the players, that is the Market and the DevGrid
+     * @param gameModel the LightModel Game object which represents this game
+     */
     public static void printCommonParts(Game gameModel) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.BLACK.getTextColor());
@@ -413,7 +476,10 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
-
+    /**
+     * Prints a general message containing some useful information to be shown to the player
+     * @param info the message to be printed
+     */
     public static void printGeneralInfo(String info) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.YELLOW.getTextColor());
@@ -438,6 +504,10 @@ public class CliView {
 
     }
 
+    /**
+     * Prints a generic error message
+     * @param error the message to be printed
+     */
     public static void printError(String error) {
         System.out.print(AnsiCommands.clear());
         try {
@@ -462,6 +532,10 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    /**
+     * Prints a info message containing some useful information to be shown to the player
+     * @param info the message to be printed
+     */
     public static void printInfo(String info) {
         System.out.print(AnsiCommands.clear());
         try {
@@ -492,7 +566,11 @@ public class CliView {
     #############################################################################################
      */
 
-
+    /**
+     * Prints the resources contained in the specified map and the specified message
+     * @param resourcesMap a map containing resources
+     * @param heading the message to be shown to the user
+     */
     public static void printResourcesMap(Map<ResourceType, Integer> resourcesMap, String heading) {
         if (resourcesMap == null) return;
         String[] lines = CliView.splitInLinesBySize(heading, 27);
@@ -539,6 +617,12 @@ public class CliView {
             printResourcesOnScroll(e.getKey(), e.getValue(), boundaryColor);
     }
 
+
+    /**
+     * Prints the specified resources onto the same line
+     * @param map the resources to be printed
+     * @param boundaryColor the color used to print the characters that are not used to print the resources
+     */
     public static void printGeneralResourcesMapOnALine(Map<ResourceType, Integer> map, String boundaryColor) {
         if (map == null) return;
         int j = 0;
@@ -551,6 +635,12 @@ public class CliView {
         }
     }
 
+    /**
+     * Prints the FaithTrack with the specified player's position, PopeTiles and eventually Lorenzo's position
+     * @param position the player's position
+     * @param popeTiles the player's PopeTiles
+     * @param lorenzoPosition Lorenzo's position or -1 if the game isn't a Solo Game
+     */
     public static void printFaithTrack(Integer position, List<PopeTile> popeTiles, int lorenzoPosition) {
         if (popeTiles == null || popeTiles.size() != 3 || position == null) return;
         System.out.print(AnsiCommands.resetStyle());
@@ -587,6 +677,10 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle() + AnsiCommands.clearLine());
     }
 
+    /**
+     * Prints the StrongBox defined by the specified map
+     * @param map a map which defines a StrongBox
+     */
     public static void printStrongBox(Map<ResourceType, Integer> map) {
         if (map == null) return;
         System.out.print(AnsiCommands.BLACK.getTextColor());
@@ -599,6 +693,10 @@ public class CliView {
         System.out.print("     ____________________________.\n");
     }
 
+    /**
+     * Prints the ExtraSlot LeaderCards defined by the specified map
+     * @param map a map which defines a player's ExtraSlot LeaderCards
+     */
     public static void printLeaderDepots(Map<ResourceType, Integer> map) {
         if (map == null) return;
         System.out.print(AnsiCommands.WHITE.getTextColor());
@@ -611,6 +709,10 @@ public class CliView {
         System.out.print("     ____________________________.\n");
     }
 
+    /**
+     * Prints the Depot defined by the specified list of DepotShelf (parts of the LightModel)
+     * @param shelves a list of DepotShelf which represent a player's Depot
+     */
     public static void printDepot(List<DepotShelf> shelves) {
         if (shelves == null) return;
         System.out.print(AnsiCommands.BLACK.getTextColor());
@@ -670,6 +772,11 @@ public class CliView {
         System.out.print(AnsiCommands.resetStyle());
     }
 
+    /**
+     * Prints the BaseProduction whose input and output are defined by the specified maps
+     * @param input the map which represents the BaseProduction input
+     * @param output the map which represents the BaseProduction output
+     */
     public static void printBaseProduction(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output) {
         if (input == null || output == null)
             return;
@@ -717,6 +824,10 @@ public class CliView {
 
     }
 
+    /**
+     * Prints the Market contained in the specified Board object (part of the LightModel)
+     * @param board the LightModel object which contains the objects representing the Market
+     */
     public static void printMarket(Board board) {
         System.out.print(AnsiCommands.resetStyle());
         if (board == null || board.getMarketMatrix() == null || board.getMarbleOnSlide() == null) {
@@ -734,6 +845,10 @@ public class CliView {
         }
     }
 
+    /**
+     * Prints the DevGrid contained in the specified Board object (part of the LightModel)
+     * @param board the LightModel object which contains the objects representing the DevGrid
+     */
     public static void printDevGrid(Board board) {
         if (board == null || board.getDevMatrix() == null) {
             System.out.println("missing board or devgrid in print devgrid");
@@ -780,6 +895,10 @@ public class CliView {
     #############################################################################################
      */
 
+    /**
+     * Prints the specified Unused LeaderCards
+     * @param list the Unused LeaderCards to be printed
+     */
     public static void printUnusedLeaderCards(List<LeaderCard> list) {
         System.out.print(AnsiCommands.RED.getTextColor());
         System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
@@ -787,6 +906,10 @@ public class CliView {
         printLeaderCards(list, AnsiCommands.RED.getTextColor());
     }
 
+    /**
+     * Prints the specified Used LeaderCards
+     * @param list the Used LeaderCards to be printed
+     */
     public static void printUsedLeaderCards(List<LeaderCard> list) {
         System.out.print(AnsiCommands.GREEN.getTextColor());
         System.out.print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
@@ -794,6 +917,11 @@ public class CliView {
         printLeaderCards(list, AnsiCommands.GREEN.getTextColor());
     }
 
+    /**
+     * Prints the specified LeaderCards
+     * @param list the LeaderCards to be printed
+     * @param backgroundColor the color used to print the strings that are not used to print the resources
+     */
     public static void printLeaderCards(List<LeaderCard> list, String backgroundColor) {
         if (list == null)
             return;
@@ -806,6 +934,11 @@ public class CliView {
 
     }
 
+    /**
+     * Prints a LeaderCard
+     * @param card the LeaderCard to be printed
+     * @param backgroundColor the color used to print the strings that are not used to print the resources
+     */
     public static void printLeaderCard(LeaderCard card, String backgroundColor) {
         if (card == null)
             return;
@@ -950,6 +1083,11 @@ public class CliView {
         return devCard.toString();
     }*/
 
+    /**
+     * Prints the specified DevCard or an "Empty Slot" string if the card is null
+     * @param devCard the DevCard to be printed or null
+     * @param backgroundColor the color used to print the strings that are not used to print the DevCard information
+     */
     public static void printCardInfo(DevCard devCard, String backgroundColor) {
         if (devCard == null)
             System.out.print("Empty Slot");
@@ -957,6 +1095,11 @@ public class CliView {
             printCardInfoIfValid(devCard, backgroundColor);
     }
 
+    /**
+     * Prints the specified DevCard
+     * @param devCard the DevCard to be printed
+     * @param backgroundColor the color used to print the strings that are not used to print the DevCard information
+     */
     //Prints a DevCard if it is a valid card (it has all the attributes it is supposed to have)
     public static void printCardInfoIfValid(DevCard devCard, String backgroundColor) {
         System.out.print(AnsiCommands.BLACK.getTextColor());
@@ -1006,6 +1149,10 @@ public class CliView {
     #############################################################################################
      */
 
+    /**
+     * Prints a Lorenzo's action
+     * @param soloActionToken the SoloActionToken which represents a Lorenzo's Action
+     */
     public static void printLorenzosAction(SoloActionToken soloActionToken){
         if(soloActionToken instanceof DiscardToken){
             printDiscardToken((DiscardToken) soloActionToken);
@@ -1130,7 +1277,6 @@ public class CliView {
                         "    |  /                            /.\n" +
                         "    \\_/____________________________/.\n");
     }
-
 
     /*
     #############################################################################################
@@ -1405,6 +1551,15 @@ public class CliView {
         return output;
     }
 
+    /*
+    ###########################
+    HELP MESSAGE METHODS
+    ###########################
+     */
+
+    /**
+     * Prints the help message
+     */
     public static void printHolpMessage() {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.resetStyle());
@@ -1491,7 +1646,11 @@ public class CliView {
         System.out.print(backgroundColor);
     }
 
-
+    /*
+    ###########################
+    DISCONNECTION MESSAGE METHODS
+    ###########################
+     */
 
     public static void printDisconnectionUpdate(String changedPlayerName, boolean disconnected) {
         System.out.print(AnsiCommands.clear());

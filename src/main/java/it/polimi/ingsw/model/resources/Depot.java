@@ -7,12 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class represents the depot of the player where the player can store limited resources.
+ */
 public class Depot {
     private final HashMap<ResourceType, Integer> depotLevel;
     private final ResourceType[] shelves;
     private final HashMap<ResourceType, Integer> leaderDepot;
     private final List<Effect> depotLimit;
 
+    /**
+     * Constructs an empty Depot ready to be used
+     */
     public Depot() {
         depotLevel = new HashMap<>();
         leaderDepot = new HashMap<>();
@@ -176,7 +182,7 @@ public class Depot {
         controlShelfNum(destShelf);
 
         if (shelves[sourceShelf - 1] == null)
-            throw new NullPointerException("No source resource to move");
+            throw new IllegalArgumentException("No source resource to move");
 
         sourceValue = depotLevel.get(shelves[sourceShelf - 1]);
         if (sourceValue > destShelf)
@@ -239,7 +245,7 @@ public class Depot {
      * @param effect: the effect of the leaderCard
      * @return true if the action in performed without errors
      * @throws IllegalArgumentException if the effect has non valid values
-     * @throws FullExtraSlotException   if the maximum number of active leader cards ha been already reached
+     * @throws FullExtraSlotException   if the maximum number of active leader cards has been already reached
      */
     public boolean addExtraSlot(Effect effect) throws IllegalArgumentException, FullExtraSlotException {
         final int maxLeaderCards = 2;

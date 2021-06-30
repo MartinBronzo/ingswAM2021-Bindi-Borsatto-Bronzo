@@ -18,6 +18,12 @@ public class DiscardToken extends SoloActionToken {
     private final int numCards;
     private final String name;
 
+    /**
+     * Constructs a DiscardToken which discard the specified amount of DevCards with the specified DevCardColour
+     * @param devCardColour the color of the DevCards which this token discards
+     * @param numCards the amount of the DevCards which this token discards
+     * @param name the path of this token image
+     */
     public DiscardToken(DevCardColour devCardColour, int numCards, String name) {
         this.name = name;
         if (numCards < 0)

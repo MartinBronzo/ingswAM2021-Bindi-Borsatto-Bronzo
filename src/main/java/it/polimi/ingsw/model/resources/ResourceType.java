@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.marble.MarbleType;
  * can be used also equals method, but this is specific for every constant
  */
 public enum ResourceType {
+    /**
+     * The coin.
+     */
     COIN {
         @Override
         public boolean isCoin() {
@@ -19,6 +22,9 @@ public enum ResourceType {
             return MarbleType.YELLOWMARBLE;
         }
     },
+    /**
+     * The stone.
+     */
     STONE {
         @Override
         public boolean isStone() {
@@ -30,6 +36,9 @@ public enum ResourceType {
             return MarbleType.GREYMARBLE;
         }
     },
+    /**
+     * The servant.
+     */
     SERVANT {
         @Override
         public boolean isServant() {
@@ -41,6 +50,9 @@ public enum ResourceType {
             return MarbleType.PURPLEMARBLE;
         }
     },
+    /**
+     * The shield.
+     */
     SHIELD {
         @Override
         public boolean isShield() {
@@ -52,6 +64,9 @@ public enum ResourceType {
             return MarbleType.BLUEMARBLE;
         }
     },
+    /**
+     * The faith point.
+     */
     FAITHPOINT {
         @Override
         public boolean isFaithPoint() {
@@ -66,31 +81,56 @@ public enum ResourceType {
 
 //poi fare da lì il getMarble();
 
+    /*
+        enum base methods:
+        @return false by default
+     */
+
     /**
-     * enum base methods:
-     *
-     * @return false by default
+     * Returns whether the enumeration corresponds to a coin
+     * @return true if the enumeration corresponds to a coin, false otherwise
      */
     public boolean isCoin() {
         return false;
     }
 
+    /**
+     * Returns whether the enumeration corresponds to a stone
+     * @return true if the enumeration corresponds to a stone, false otherwise
+     */
     public boolean isStone() {
         return false;
     }
 
+    /**
+     * Returns whether the enumeration corresponds to a servant
+     * @return true if the enumeration corresponds to a servant, false otherwise
+     */
     public boolean isServant() {
         return false;
     }
 
+    /**
+     * Returns whether the enumeration corresponds to a shield
+     * @return true if the enumeration corresponds to a shield, false otherwise
+     */
     public boolean isShield() {
         return false;
     }
 
+    /**
+     * Returns whether the enumeration corresponds to a faith point
+     * @return true if the enumeration corresponds to a faith point, false otherwise
+     */
     public boolean isFaithPoint() {
         return false;
     }
 
+    /**
+     * Returns the corresponding MarbleType of this enumeration value (that is, the Marble which returns this resource once the Marble is
+     * picked from the Market)
+     * @return the corresponding MarbleType of this enumeration value
+     */
     public MarbleType getCorrespondingMarble() {
         return null;
     }

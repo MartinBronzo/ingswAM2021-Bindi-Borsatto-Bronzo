@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+/**
+ * This class is the container of all the cards that the players can buy.
+ */
 public class DevGrid {
     private final DevDeck[][] devDecksGrid;
 
@@ -87,6 +90,9 @@ public class DevGrid {
 
     }
 
+    /**
+     * Constructs an empty DevGrid
+     */
     public DevGrid() {
         this.devDecksGrid = new DevDeck[3][4];
     }

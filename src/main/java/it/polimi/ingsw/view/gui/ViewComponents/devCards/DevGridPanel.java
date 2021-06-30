@@ -11,11 +11,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This panel represents the DevGrid of the game.
+ */
 public class DevGridPanel extends JPanel{
     //DevCard[][] devGrid;
     private final Board mainBoard;
     private final String directoryPath = "src/main/resources/front/";
 
+    /**
+     * Constructs a DevGridPanel
+     * @param mainBoard the LightModel object which represents the common parts of the game
+     * @param container the panel which will contain this DevGridPanel
+     */
     public DevGridPanel(Board mainBoard, JPanel container){
         super(new GridLayout(3, 4, 10, 10));
         this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -66,6 +74,9 @@ public class DevGridPanel extends JPanel{
         this.add(backButton);*/
     }
 
+    /**
+     * Updates this DevGrid view
+     */
     public void update(){
         BufferedImage img = null;
         Image dimg;
@@ -104,6 +115,11 @@ public class DevGridPanel extends JPanel{
 
     }
 
+    /**
+     * Updates this DevGrid view
+     * @param width the width the DevCards must have
+     * @param height the height the DevCards must have
+     */
     public void update(int width, int height){
         BufferedImage img = null;
         Image dimg;

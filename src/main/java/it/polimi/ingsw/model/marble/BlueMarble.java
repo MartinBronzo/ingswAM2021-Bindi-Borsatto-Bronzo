@@ -9,6 +9,9 @@ import java.util.List;
 
 /*Warning: this class is not thread safe*/
 
+/**
+ * This class represents Blue Marbles.
+ */
 public class BlueMarble extends Marble {
 
     /**

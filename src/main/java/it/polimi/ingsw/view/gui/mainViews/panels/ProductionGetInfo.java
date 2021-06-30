@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.BaseProductionParams;
 import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.CardCheckbox;
 import it.polimi.ingsw.view.gui.ViewComponents.devCards.DevSlotCheckBox;
+import it.polimi.ingsw.view.gui.ViewComponents.utils.DumbCheckDrop;
 import it.polimi.ingsw.view.gui.ViewComponents.utils.InstructionPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.production.baseProd.CheckBaseProd;
 import it.polimi.ingsw.view.gui.ViewComponents.production.baseProd.DragAndDropBaseProd;
@@ -18,6 +19,9 @@ import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This panel let the player choose the production powers they want to activate.
+ */
 public class ProductionGetInfo extends JPanel {
     private Player player;
     private int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
@@ -27,6 +31,10 @@ public class ProductionGetInfo extends JPanel {
     private DragAndDropBaseProd dragAndDropBaseProd;
     private DevSlotCheckBox devSlotcheckBox;
 
+    /**
+     * Constructs a ProductionGetInfo panel for the specified player
+     * @param player the LightModel object which represent the player who's going to use this panel
+     */
     public ProductionGetInfo(Player player){
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -38,6 +46,7 @@ public class ProductionGetInfo extends JPanel {
 
         this.dragAndDropBaseProd = new DragAndDropBaseProd();
         dragAndDropBaseProd.setCheckDropFunction(new CheckBaseProd(dragAndDropBaseProd));
+        //dragAndDropBaseProd.setCheckDropFunction(new DumbCheckDrop());
         upperPanel.add(dragAndDropBaseProd);
         upperPanel.add(Box.createHorizontalGlue());
 
@@ -89,7 +98,7 @@ public class ProductionGetInfo extends JPanel {
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
 
         List<String> leaderPaths = player.getUsedLeaders().stream().map(card -> card.getUrl()).collect(Collectors.toList());
-        cardCheckboxPanel = new CardCheckbox(leaderPaths, "select desired leader cards");
+        cardCheckboxPanel = new CardCheckbox(leaderPaths, "activate this leader card");
         bottomPanel.add(cardCheckboxPanel);
 
         devSlotcheckBox = new DevSlotCheckBox(player);

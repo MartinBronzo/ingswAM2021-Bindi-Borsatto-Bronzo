@@ -5,24 +5,43 @@ import it.polimi.ingsw.model.marble.MarbleType;
 
 import java.util.Arrays;
 
+/**
+ * This LightModel object contains all the information needed to represent the common parts of the game, that is the Market and the DevGrid.
+ */
 public class Board {
     private MarbleType[][] marketMatrix;
     private MarbleType marbleOnSlide;
     //private DevGrid devGrid;
     private DevCard[][] devMatrix;
 
+    /**
+     * Sets the Marble that is on the slide right now
+     * @param marbleOnSlide the Marble that is on the slide right now
+     */
     public void setMarbleOnSlide(MarbleType marbleOnSlide) {
         this.marbleOnSlide = marbleOnSlide;
     }
 
+    /**
+     * Sets the Market
+     * @param marketMatrix the Market
+     */
     public void setMarketMatrix(MarbleType[][] marketMatrix) {
         this.marketMatrix = marketMatrix;
     }
 
+    /**
+     * Returns the Market
+     * @return the Market
+     */
     public MarbleType[][] getMarketMatrix() {
         return marketMatrix;
     }
 
+    /**
+     * Returns the Marble that is on the slide right now
+     * @return the Marble that is on the slide right now
+     */
     public MarbleType getMarbleOnSlide() {
         return marbleOnSlide;
     }
@@ -35,11 +54,18 @@ public class Board {
         this.devGrid = devGrid;
     }*/
 
-
+    /**
+     * Returns the DevGrid
+     * @return the DevGrid
+     */
     public DevCard[][] getDevMatrix() {
         return devMatrix;
     }
 
+    /**
+     * Sets the DevGrid
+     * @param devMatrix the DevGrid
+     */
     public void setDevMatrix(DevCard[][] devMatrix) {
         this.devMatrix = devMatrix;
     }
@@ -93,6 +119,11 @@ public class Board {
         return c;
     }
 
+    /**
+     * Merge this Board object with the new information contained in the specified Board object
+     * @param updateBoard the Board object containing new information
+     * @return false if the merge succeeded
+     */
     public boolean merge(Board updateBoard) {
         MarbleType[][] marbleMarketUpdate = updateBoard.getMarketMatrix();
         if (marbleMarketUpdate != null) this.marketMatrix = marbleMarketUpdate;

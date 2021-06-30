@@ -23,15 +23,33 @@ import java.util.LinkedList;
 public class SoloActionDeck implements Deck {
     private final LinkedList<SoloActionToken> soloDeck;
 
+    /**
+     * Constructs a SoloActionDeck by reading the tokens from the specified file
+     * @param configFile the file where the description of the SoloTokens is kept
+     * @param discardTokenObserver the observer which will observe the DiscardTokens
+     * @param faithPointTokenObserver the observer which will observe the FaithPointTokesn
+     * @throws ParserConfigurationException if there are problems in the parsing
+     * @throws IOException if an IO operations fails
+     * @throws SAXException if there is a general SAX error or warning
+     */
     public SoloActionDeck(File configFile, DiscardTokenObserver discardTokenObserver, FaithPointTokenObserver faithPointTokenObserver) throws ParserConfigurationException, IOException, SAXException {
         soloDeck = createDeck(configFile, discardTokenObserver, faithPointTokenObserver);
         Collections.shuffle(soloDeck);
     }
 
+    /**
+     * Constructs a copy of the specified SoloActionDeck
+     * @param soloActionDeck the SoloActionDeck to be cloned
+     */
     public SoloActionDeck(SoloActionDeck soloActionDeck) {
         this.soloDeck = new LinkedList<>(soloActionDeck.soloDeck);
     }
 
+    /**
+     * Returns a copy of the specified SoloActionDeck
+     * @param soloActionDeck the SoloActionDeck to be cloned
+     * @return a copy of the specified SoloActionDeck
+     */
     public LinkedList<SoloActionToken> SoloActionDeck(SoloActionDeck soloActionDeck) {
         return new LinkedList<>(soloDeck);
     }

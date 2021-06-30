@@ -5,8 +5,15 @@ import it.polimi.ingsw.view.gui.GuiClient;
 
 import java.io.IOException;
 
+/**
+ * This class is used as the Application launcher.
+ */
 public class Main {
 
+    /**
+     * Prepares the Game by starting the clients
+     * @param args the strings given by the client which specify whether to run a GUI or a CLI
+     */
     public static void main(String [] args){
         //Default values
         boolean cliParam = false;

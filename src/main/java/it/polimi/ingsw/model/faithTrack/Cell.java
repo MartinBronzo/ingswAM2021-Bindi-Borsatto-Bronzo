@@ -57,10 +57,18 @@ public class Cell {
         return false;
     }
 
+    /**
+     * Creates a Cell which is the copy of the specified Cell
+     * @param original the Cell to be cloned
+     */
     public Cell(Cell original) {
         this(original.victoryPoints, original.reportNum);
     }
 
+    /**
+     * Returns a Cell which is the copy of this Cell
+     * @return a Cell which is the copy of this Cell
+     */
     public Cell getClone() {
         return new Cell(this);
     }

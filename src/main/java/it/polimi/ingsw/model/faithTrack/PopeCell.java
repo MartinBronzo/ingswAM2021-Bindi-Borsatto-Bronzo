@@ -103,6 +103,10 @@ public class PopeCell extends ReportCell implements Subject {
         return observersList;
     }
 
+    /**
+     * Constructs a PopeCell which is the copy of the specified PopeCell
+     * @param original the PopeCell to be cloned
+     */
     public PopeCell(PopeCell original) {
         super(original.getVictoryPoints(), original.getReportNum());
         this.activated = original.activated;

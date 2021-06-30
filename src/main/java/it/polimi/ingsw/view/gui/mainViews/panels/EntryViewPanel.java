@@ -11,6 +11,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
+/**
+ * This panel is the welcome panel shown to the player once the GUI is open.
+ */
 public class EntryViewPanel extends JPanel {
 
     private static final int panelHeight = PanelManager.getInstance().getGameFrame().getHeight();

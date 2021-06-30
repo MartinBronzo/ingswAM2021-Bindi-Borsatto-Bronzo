@@ -3,13 +3,19 @@ package it.polimi.ingsw.model.leaderCard.leaderEffects;
 import it.polimi.ingsw.model.resources.ResourceType;
 
 /**
- * This class has the goal of implementing the extra effect which gives extra slot where the player can store their resources.
+ * This class has the goal of implementing the extra effect which gives extra slot where the player can store their resources. This Effect
+ * can only be activated once because the activation of this method means that the extra slot it procures the player are added to the
+ * player's board (from now the player can store resources onto these slots): that is why the cards this kind of Effect belongs to
+ * is called a OneShotCard.
  */
 //
 public class ExtraSlotLeaderEffect extends Effect {
     private final ResourceType slotType;
     private final int slotNumber;
 
+    /**
+     * Constructs an ExtraSlotLeaderEffect without the type and amount of resources it can store set
+     */
     public ExtraSlotLeaderEffect() {
         this.slotType = null;
         this.slotNumber = 0;

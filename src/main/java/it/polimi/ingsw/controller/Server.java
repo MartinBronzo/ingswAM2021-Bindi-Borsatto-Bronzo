@@ -53,6 +53,10 @@ public class Server {
         executor.shutdown();
     }
 
+    /**
+     * Starts the server
+     * @param args parameters that can be used to start the server
+     */
     public static void main(String[] args) {
         Server server = new Server(9047);
         server.startServer();

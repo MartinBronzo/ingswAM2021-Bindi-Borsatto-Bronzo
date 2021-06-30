@@ -32,6 +32,7 @@ public class DevSlots {
     }
 
     /**
+     * Returns a copy of the specified DevSlot
      * @param index is the DevSlot number starting from 0
      * @return a copy the DevSlot at te specified Index
      * @throws IndexOutOfBoundsException if index is not valid [0...2]
@@ -56,7 +57,8 @@ public class DevSlots {
     }
 
     /**
-     * @return the sum of Points of the Cards in the Slots
+     * Returns the sum of the Points of the Cards in the Slots
+     * @return the sum of the Points of the Cards in the Slots
      */
     public int getPoints() {
         int points = 0;
@@ -95,6 +97,10 @@ public class DevSlots {
         return true;
     }
 
+    /**
+     * Returns all the cards that the player can use
+     * @return all the cards that the player can use
+     */
     public Collection<DevCard> getUsableDevCards() {
         Collection<DevCard> devCards = new LinkedList<>();
         DevCard lastCard;

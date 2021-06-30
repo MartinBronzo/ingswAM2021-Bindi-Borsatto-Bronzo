@@ -36,6 +36,12 @@ public class SoloBoard extends MainBoard {
         this.tokenDeck = tokenDeck;
     }
 
+    /**
+     * Constructs a ready-to-be-used SoloBoard by reading the elements of this game from various files
+     * @throws ParserConfigurationException if there are problems in the parsing
+     * @throws IOException if an IO operations fails
+     * @throws SAXException if there is a general SAX error or warning
+     */
     public SoloBoard() throws ParserConfigurationException, IOException, SAXException {
         super(1);
         discardTokenObserver = new DiscardTokenObserver(this);
@@ -44,6 +50,10 @@ public class SoloBoard extends MainBoard {
         this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"), discardTokenObserver, faithPointTokenObserver);
     }
 
+    /**
+     * Constructs a copy of the specified SoloBoard
+     * @param original the SoloBoard to be cloned
+     */
     public SoloBoard(SoloBoard original) {
         super(original);
 

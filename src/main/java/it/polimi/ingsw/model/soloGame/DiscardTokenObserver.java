@@ -10,6 +10,10 @@ import it.polimi.ingsw.model.devCards.DevCardColour;
 public class DiscardTokenObserver {
     private final SoloBoard soloBoard;
 
+    /**
+     * Constructs a DiscardTokenObserver which observes the DiscardTokens contained in the specified SoloBoard
+     * @param soloBoard the SoloBoard whose DiscardTokens this observer observes
+     */
     public DiscardTokenObserver(SoloBoard soloBoard) {
         this.soloBoard = soloBoard;
     }

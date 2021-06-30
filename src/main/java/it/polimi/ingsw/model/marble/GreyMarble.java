@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /*Warning: this class is not thread safe*/
+/**
+ * This class represents Grey Marbles.
+ */
 public class GreyMarble extends Marble {
 
     /**

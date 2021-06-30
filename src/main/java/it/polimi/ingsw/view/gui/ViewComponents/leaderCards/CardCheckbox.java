@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This panel contains a list of LeaderCards that can be checked.
+ */
 public class CardCheckbox extends JPanel {
     List<JCheckBox> checkBoxList;
 
@@ -78,6 +81,11 @@ public class CardCheckbox extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     }
 
+    /**
+     * Resets the current view by adding the specified cards and the specified text for the checkboxes
+     * @param cardList the list with the absolute paths of the images to display
+     * @param checkBoxText the text to display near the checkbox
+     */
     public void resetView(List<String> cardList, String checkBoxText){
         for (Component component: this.getComponents()) {
             this.remove(component);
@@ -126,6 +134,10 @@ public class CardCheckbox extends JPanel {
         this.validate();
     }
 
+    /**
+     * Returns a list of indexes of the cards that have been selected
+     * @return a list of indexes of the cards that have been selected
+     */
     public List<Integer> getSelectedLeaderIndexes(){
         List<Integer> leaderList = new ArrayList<>();
 

@@ -16,11 +16,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This panel shows to the player the board of one of their opponents.
+ */
 public class OthersPlayerPlayerBoardPanel extends JPanel {
     OthersPlayerLeaderCards leaderCardPanel;
     FaithTrackOnlyView faithTrackOnlyView;
     DepotOnlyView depotOnlyView;
 
+    /**
+     * Constructs an OthersPlayerPlayerBoardPanel showing the specified player's board
+     * @param player the LightModel object representing the player's opponents whose board is to be shown
+     */
     public OthersPlayerPlayerBoardPanel(Player player) {
         super();
 

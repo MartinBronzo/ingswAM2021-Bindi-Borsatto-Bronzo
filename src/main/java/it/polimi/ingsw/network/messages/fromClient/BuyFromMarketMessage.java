@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This message is used to buy resources from the Market.
+ */
 public class BuyFromMarketMessage extends Message {
     private int row, col;
     private List<Integer> leaderList;
@@ -14,6 +17,15 @@ public class BuyFromMarketMessage extends Message {
     private Map<ResourceType, Integer> leaderRes;
     private Map<ResourceType, Integer> discardRes;
 
+    /**
+     * Constructs a BuyFromMarketMessage
+     * @param row the number of the Market row the player wants to buy or 0
+     * @param col the number of the Market column the player wants to buy or 0
+     * @param leaderList the list of the indexes of the WhiteMarble LeaderCards whose effects the player wants to use when buying from the Market
+     * @param depotRes the resources got from the Market that are going to be placed onto which Depot shelves
+     * @param leaderRes the resources got from the Market that are going to be placed onto the ExtraSlot LeaderCards
+     * @param discardRes the resources got from the Market that are going to be discarded
+     */
     public BuyFromMarketMessage(int row, int col, List<Integer> leaderList, List<DepotParams> depotRes, Map<ResourceType, Integer> leaderRes, Map<ResourceType, Integer> discardRes) {
         this.row = row;
         this.col = col;
@@ -23,26 +35,50 @@ public class BuyFromMarketMessage extends Message {
         this.discardRes = discardRes;
     }
 
+    /**
+     * Returns the number of the Market row the player wants to buy or 0
+     * @return the number of the Market row the player wants to buy or 0
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * Returns the number of the Market column the player wants to buy or 0
+     * @return the number of the Market column the player wants to buy or 0
+     */
     public int getCol() {
         return col;
     }
 
+    /**
+     * Returns the list of the indexes of the WhiteMarble LeaderCards whose effects the player wants to use when buying from the Market
+     * @return the list of the indexes of the WhiteMarble LeaderCards whose effects the player wants to use when buying from the Market
+     */
     public List<Integer> getLeaderList() {
         return new ArrayList<>(leaderList);
     }
 
+    /**
+     * Returns the resources got from the Market that are going to be placed onto which Depot shelves
+     * @return the resources got from the Market that are going to be placed onto which Depot shelves
+     */
     public List<DepotParams> getDepotRes() {
         return depotRes;
     }
 
+    /**
+     * Returns the resources got from the Market that are going to be placed onto the ExtraSlot LeaderCards
+     * @return the resources got from the Market that are going to be placed onto the ExtraSlot LeaderCards
+     */
     public Map<ResourceType, Integer> getLeaderRes() {
         return new HashMap<>(leaderRes);
     }
 
+    /**
+     * Returns the resources got from the Market that are going to be discarded
+     * @return the resources got from the Market that are going to be discarded
+     */
     public Map<ResourceType, Integer> getDiscardRes() {
         return new HashMap<>(discardRes);
     }
@@ -65,4 +101,5 @@ public class BuyFromMarketMessage extends Message {
         return result;
 
     }
+
 }

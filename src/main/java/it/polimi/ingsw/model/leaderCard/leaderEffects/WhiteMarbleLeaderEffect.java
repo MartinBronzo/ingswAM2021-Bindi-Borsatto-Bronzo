@@ -16,6 +16,9 @@ public class WhiteMarbleLeaderEffect extends Effect {
     private final ResourceType extraResourceType;
     private final int extraResourceAmount;
 
+    /**
+     * Constructs a WhiteMarbleLeaderEffect without the extra resource type this Effect gives when a WhiteMarble is met set
+     */
     public WhiteMarbleLeaderEffect() {
         this.extraResourceType = null;
         this.extraResourceAmount = 1;

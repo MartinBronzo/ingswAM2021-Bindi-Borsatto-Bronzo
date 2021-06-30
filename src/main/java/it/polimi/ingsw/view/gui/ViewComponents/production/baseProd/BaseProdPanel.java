@@ -6,9 +6,16 @@ import it.polimi.ingsw.view.gui.ViewComponents.interfaces.Resettable;
 import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;
 
+/**
+ * This panel represents a input or output resource for the BaseProduction. The player can drop here the resources they want to
+ * use.
+ */
 public class BaseProdPanel extends JPanel implements Resettable {
     private ResourceType resource;
 
+    /**
+     * Constructs a BaseProdPanel displaying a generic marble image
+     */
     public BaseProdPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -36,6 +43,10 @@ public class BaseProdPanel extends JPanel implements Resettable {
         this.setTransferHandler(transferHandler);
     }
 
+    /**
+     * Takes track of the player's drop decision onto this panel
+     * @param res the type of the resource that has been dropped onto this panel
+     */
     public void addDecision(ResourceType res) {
         resource = res;
         //removes the previous image of the resource and repaints the panel
@@ -44,6 +55,10 @@ public class BaseProdPanel extends JPanel implements Resettable {
         this.repaint();
     }
 
+    /**
+     * Returns the type of the resource that has been dropped onto this panel
+     * @return the type of the resource that has been dropped onto this panel
+     */
     public ResourceType getResource() {
         return resource;
     }
