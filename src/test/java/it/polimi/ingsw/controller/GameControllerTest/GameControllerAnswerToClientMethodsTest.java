@@ -43,7 +43,6 @@ public class GameControllerAnswerToClientMethodsTest {
     ClientHandler c4;
     Reader inputStreamReader;
     BufferedReader reader;
-    File file;
     BufferedReader fileReader1;
     BufferedReader fileReader2;
     BufferedReader fileReader3;
@@ -52,7 +51,7 @@ public class GameControllerAnswerToClientMethodsTest {
 
 
     @BeforeEach
-    public void setup() throws FileNotFoundException, IllegalActionException {
+    public void setup() throws FileNotFoundException {
 
         gameController = new GameController();
         inputStreamReader = new InputStreamReader(System.in);
@@ -73,14 +72,14 @@ public class GameControllerAnswerToClientMethodsTest {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement");
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect");
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
         effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
@@ -147,7 +146,6 @@ public class GameControllerAnswerToClientMethodsTest {
 
         //Let's get PlayerBoard and MainBoard so we can change their values
         PlayerBoard p1 = gameController.getMainBoard().getPlayerBoard(0);
-        MainBoard mainBoard = gameController.getMainBoard();
 
         //Creates a list of fake LeaderCards the player will have
         List<LeaderCard> list = new ArrayList<>();

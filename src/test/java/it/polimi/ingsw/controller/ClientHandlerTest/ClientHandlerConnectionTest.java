@@ -40,9 +40,6 @@ public class ClientHandlerConnectionTest {
     ClientHandler c2;
     ClientHandler c3;
     ClientHandler c4;
-    Reader inputStreamReader;
-    //BufferedReader reader;
-    File file;
     Gson gson;
     Scanner clientFileReader;
     Scanner clientFileReader2;
@@ -52,7 +49,6 @@ public class ClientHandlerConnectionTest {
     PipedWriter writer;
     PipedReader pipedReader;
     PrintWriter printWriter;
-    BufferedReader bufferedReader;
     PipedWriter writer2;
     PipedReader pipedReader2;
     PrintWriter printWriter2;
@@ -108,7 +104,7 @@ public class ClientHandlerConnectionTest {
     }
 
     @BeforeEach
-    public void setup() throws IOException, IllegalActionException {
+    public void setup() throws IOException {
         gamesManagerSingleton.resetSingleton();
         gameController = new GameController();
 
@@ -142,14 +138,14 @@ public class ClientHandlerConnectionTest {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement");
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect");
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
         effectTypeFactory.registerSubtype(WhiteMarbleLeaderEffect.class, "whiteMarbleLeaderEffect");
@@ -157,7 +153,7 @@ public class ClientHandlerConnectionTest {
 
         RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
                 = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
-        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken");
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
 

@@ -352,7 +352,7 @@ public class CliClient extends Client implements Runnable {
     @Override
     protected synchronized void activateProduction() {
         try {
-            Command activateProduction = new Command("activateProductionMesssage", StringToMessage.toActivateProductionMessage(cliCommandContent));
+            Command activateProduction = new Command("activateProductionMessage", StringToMessage.toActivateProductionMessage(cliCommandContent));
             sendMessage(activateProduction);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
