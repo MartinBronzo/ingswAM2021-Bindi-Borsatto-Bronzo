@@ -37,7 +37,7 @@ public class MoveBetweenShelves extends JPanel {
         //Creating the submit button
         JPanel container = new JPanel();
         InstructionPanel instructionPanel = new InstructionPanel(true);
-        instructionPanel.setLabelText("Choose the shelf where you want to move your resources from\nand how many resources you want to move");
+        instructionPanel.setLabelText("Choose the the two shelves whose resources you want to swap");
         CollectMoveBetweenShelves collector = new CollectMoveBetweenShelves(source);
         instructionPanel.setConfirmActionListener(collector);
         instructionPanel.setCancelActionListener(event -> PanelManager.getInstance().showPlayerBoard((JPanel) this.getParent().getParent()));
