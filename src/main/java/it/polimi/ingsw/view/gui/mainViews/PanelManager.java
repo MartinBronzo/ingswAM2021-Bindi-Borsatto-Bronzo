@@ -651,11 +651,6 @@ public final class PanelManager {
         if(productionGetResources != null)
             gameFrame.remove(productionGetResources);
 
-        gameFrame.revalidate();
-
-
-        //TODO: do things to setup view
-        //TODO: handle reconnection case: we have to set the main panel
         if (mainPanel.getCreated()) {
             gameFrame.remove(mainPanel);
             List<String> nicknameList = new ArrayList<>();
@@ -667,8 +662,11 @@ public final class PanelManager {
             }
             mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
             gameFrame.add(mainPanel);
-            gameFrame.revalidate();
+            //gameFrame.revalidate();
         }
+
+        gameFrame.revalidate();
+
 
         /*visualizer.submit(() -> {
             // if(mainPanel!=null) {
