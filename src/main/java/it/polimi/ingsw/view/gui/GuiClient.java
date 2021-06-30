@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.sendToClient.*;
+import it.polimi.ingsw.view.Client;
 import it.polimi.ingsw.view.gui.mainViews.PanelManager;
 
 import javax.swing.*;
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 
-public class GuiClient implements Runnable{
+public class GuiClient implements Runnable, Client {
     private final int portNumber;
     private final String hostName;
     private Socket socket;
@@ -126,7 +127,7 @@ public class GuiClient implements Runnable{
     }
 
 
-    protected void endConnection() {
+    public void endConnection() {
             writers.shutdown();
             readers.shutdown();
         try {
