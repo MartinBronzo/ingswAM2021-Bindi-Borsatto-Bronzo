@@ -59,14 +59,14 @@ public class CliClient extends Client implements Runnable {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); // this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); // this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
@@ -74,7 +74,7 @@ public class CliClient extends Client implements Runnable {
 
         RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
                 = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
-        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); // this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
         tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");
@@ -94,14 +94,14 @@ public class CliClient extends Client implements Runnable {
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
-        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); //TODO: this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
+        requirementTypeFactory.registerSubtype(Requirement.class, "requirement"); // this is only for testing purpose, in the real game we won't have requirements of type Requirement but a subtype of it
         requirementTypeFactory.registerSubtype(CardRequirementColor.class, "cardRequirementColor");
         requirementTypeFactory.registerSubtype(CardRequirementResource.class, "cardRequirementResource");
         requirementTypeFactory.registerSubtype(CardRequirementColorAndLevel.class, "cardRequirementColorAndLevel");
 
         RuntimeTypeAdapterFactory<Effect> effectTypeFactory
                 = RuntimeTypeAdapterFactory.of(Effect.class, "type");
-        effectTypeFactory.registerSubtype(Effect.class, "effect"); //TODO: this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
+        effectTypeFactory.registerSubtype(Effect.class, "effect"); // this is only for testing purpose, in the real game we won't have effect of type Effect but a subtype of it
         effectTypeFactory.registerSubtype(DiscountLeaderEffect.class, "discountLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraProductionLeaderEffect.class, "extraProductionLeaderEffect");
         effectTypeFactory.registerSubtype(ExtraSlotLeaderEffect.class, "extraSlotLeaderEffect");
@@ -109,7 +109,7 @@ public class CliClient extends Client implements Runnable {
 
         RuntimeTypeAdapterFactory<SoloActionToken> tokenTypeFactory
                 = RuntimeTypeAdapterFactory.of(SoloActionToken.class, "type");
-        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); //TODO: this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
+        tokenTypeFactory.registerSubtype(SoloActionToken.class, "soloActionToken"); // this is only for testing purpose, in the real game we won't have token of type SoloActionToken but a subtype of it
         tokenTypeFactory.registerSubtype(DiscardToken.class, "discardToken");
         tokenTypeFactory.registerSubtype(FaithPointToken.class, "faithPointToken");
         tokenTypeFactory.registerSubtype(ShuffleToken.class, "shuffleToken");

@@ -336,6 +336,9 @@ public class ClientHandler implements Runnable {
         //out.flush();
     }
 
+    /**
+     * TODO
+     */
     public void updatePlayerState() {
         //check if the player has done the beginning action
         if (playerState == PlayerState.WAITING4BEGINNINGDECISIONS || playerState == PlayerState.WAITING4GAMESTART || (playerState == PlayerState.PLAYINGBEGINNINGDECISIONS && !beginningActionDone)) {

@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.util.ArrayList;
 
-//TODO: MAGARI CAMBIARE A DIALOG
 public class BeginningDecisionsPanel extends JPanel {
 
     public BeginningDecisionsPanel(ArrayList<String> leaderList, int numRes, int numLeaders){

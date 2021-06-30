@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.marble;
 
+import it.polimi.ingsw.model.faithTrack.ReportCell;
 import it.polimi.ingsw.view.cli.AnsiCommands;
 
 public enum MarbleType {

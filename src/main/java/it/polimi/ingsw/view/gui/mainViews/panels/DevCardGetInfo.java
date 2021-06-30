@@ -95,7 +95,6 @@ public class DevCardGetInfo extends JPanel {
             selectedCard.setText(devCard.toString());
         }
 
-        //TODO we can see only DiscountLeaderEffect adding a filter with instaceof but doing this lose the control of the getusedLeaers index to send to the controller, we should change cardCheckboxPanel
         List<String> leaderCardsPath = player.getUsedLeaders().stream()./*filter(card -> card.getEffect() instanceof DiscountLeaderEffect).*/map(card -> card.getUrl()).collect(Collectors.toList());
         this.cardCheckboxPanel.resetView(leaderCardsPath, "Do you want to use this card?");
 
@@ -114,7 +113,6 @@ public class DevCardGetInfo extends JPanel {
         this.add(this.selectedCard);
 
 
-        //TODO; metti tutto il resto in un altro panel verticale e aggiungi info (istruzioni)
         this.leader1 = new JButton();
         this.leader1.addActionListener(e -> {
             if (!leader1Selector.get()){
@@ -150,13 +148,11 @@ public class DevCardGetInfo extends JPanel {
             if (leader2Selector.get())
                 leaders.add(1);
             PanelManager.getInstance().writeMessage(new Command("getCardCost", new GetFromMatrixMessage(row, column, leaders)));
-            //TODO idk if there is the need to print something else
         });
         this.add(this.submit);
 
         this.cancel = new JButton("cancel");
         this.cancel.addActionListener(e -> {
-            //TODO: idk if there is the need to print something else
             this.setVisible(false);
         });
         this.add(this.cancel);

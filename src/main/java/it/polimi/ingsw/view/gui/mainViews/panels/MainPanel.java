@@ -92,8 +92,6 @@ public class MainPanel extends JPanel {
         JButton quitButton = new JButton("QUIT");
         quitButton.addActionListener(event -> PanelManager.getInstance().manageLogoutCommand());
         quitButton.setAlignmentX(LEFT_ALIGNMENT);
-        //todo:
-        //quitButton.addActionListener(event -> PanelManager.getInstance().quit());
         controlPanel.add(quitButton);
 
         this.add(controlPanel);
