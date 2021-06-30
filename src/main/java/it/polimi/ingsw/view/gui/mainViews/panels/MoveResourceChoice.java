@@ -44,8 +44,8 @@ public class MoveResourceChoice extends JPanel {
         MoveLeaderToShelf moveLeaderToShelfPanel = new MoveLeaderToShelf();
         MoveShelfToLeader moveShelfToLeaderPanel = new MoveShelfToLeader();
         resourcePanel.add(moveBetweenShelvesPanel, MOVEBTW);
-        resourcePanel.add(moveLeaderToShelfPanel, MOVESHELFTOLEAD);
-        resourcePanel.add(moveShelfToLeaderPanel, MOVELEADTOSHELF);
+        resourcePanel.add(moveLeaderToShelfPanel, MOVELEADTOSHELF);
+        resourcePanel.add(moveShelfToLeaderPanel, MOVESHELFTOLEAD);
 
         JPanel selectionPanel = new JPanel();
 

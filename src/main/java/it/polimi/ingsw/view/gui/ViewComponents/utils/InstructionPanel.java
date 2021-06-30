@@ -200,7 +200,8 @@ public class InstructionPanel extends JPanel{
      * @param text the text to be shown to the user
      */
     public void setLabelText(String text){
-        this.l.setText(text);
+        //this.l.setText(text);
+        MultiLineTextMaker.multilineJLabelSetText(this.l, text);
     }
 
 }

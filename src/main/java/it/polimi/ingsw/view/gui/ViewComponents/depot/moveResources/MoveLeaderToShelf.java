@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.view.gui.ViewComponents.utils.InstructionPanel;
 import it.polimi.ingsw.view.gui.ViewComponents.depot.depotViews.DepotOnlyView;
 import it.polimi.ingsw.view.gui.ViewComponents.leaderCards.LeaderCardOnlyView;
+import it.polimi.ingsw.view.gui.ViewComponents.utils.MultiLineTextMaker;
 import it.polimi.ingsw.view.gui.mainViews.PanelManager;
 import it.polimi.ingsw.view.lightModel.player.DepotShelf;
 
@@ -61,7 +62,7 @@ public class MoveLeaderToShelf extends JPanel {
 
         JPanel container = new JPanel();
         InstructionPanel instructionPanel = new InstructionPanel(true);
-        instructionPanel.setLabelText("Choose the shelf where you want to move your resources from\nand how many resources you want to move");
+        instructionPanel.setLabelText("Choose the ExtraLeaderCard you want to move resources from,\nhow many resources you want to move\nand onto which shelf you want to put them");
         CollectMoveLeaderToShelf collector = new CollectMoveLeaderToShelf(res);
         instructionPanel.setConfirmActionListener(collector);
         instructionPanel.setCancelActionListener(event -> PanelManager.getInstance().showPlayerBoard((JPanel) this.getParent().getParent()));
