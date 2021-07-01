@@ -30,7 +30,7 @@ public class WaitingRoomPanel extends JPanel {
      * Creates a new <code>JPanel</code> with a double buffer
      * and a flow layout.
      */
-    public WaitingRoomPanel() throws IOException {
+    public WaitingRoomPanel() {
         super(new BorderLayout());
         this.setSize(panelWidth, panelHeight);
         color = new Color(139, 128, 44);

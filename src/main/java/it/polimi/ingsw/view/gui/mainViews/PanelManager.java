@@ -42,12 +42,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+/**
+ * This class manages panels and dialogs, this class can be instantiated once
+ */
 public final class PanelManager {
     private final GuiClient gui;
     private final Gson gson;
     private static PanelManager instance;
 
-    private ExecutorService visualizer;
+    private final ExecutorService visualizer;
 
     private JFrame gameFrame;
 
@@ -124,7 +127,12 @@ public final class PanelManager {
         this.visualizer = Executors.newCachedThreadPool();
     }
 
-    public static PanelManager getInstance() {
+    /**
+     * get the instance of the previously created panelManager
+     * @return the instance of the created panelManager
+     * @throws IllegalStateException if the panel manager is not yet instantiated, try using createInstance
+     */
+    public static PanelManager getInstance() throws IllegalStateException{
         if (instance == null) {
             synchronized (PanelManager.class) {
                 if (instance == null)
@@ -134,7 +142,14 @@ public final class PanelManager {
         return instance;
     }
 
-    public static PanelManager createInstance(GuiClient gui) {
+
+    /**
+     * Instances a new Panel Manager
+     * @param gui used to send commands to the server
+     * @return the panel manager instantiated
+     * @throws IllegalStateException if this method is called more than once, try using getInstance
+     */
+    public static PanelManager createInstance(GuiClient gui) throws IllegalStateException{
         if (instance == null) {
             synchronized (PanelManager.class) {
                 if (instance == null) {
@@ -158,7 +173,10 @@ public final class PanelManager {
         gameFrame.setVisible(false);
     }
 
-    public void init() throws IOException {
+    /**
+     * Initialize panels and dialogs, set up the view to start a new game
+     */
+    public void init() {
         /*Initializing frame, panels....*/
         gameFrame = new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -209,15 +227,25 @@ public final class PanelManager {
 
     }
 
+    /**
+     * makes login dialog visible
+     */
     public void seeLoginPopup() {
         loginDialog.setVisible(true);
     }
 
 
+    /**
+     * Writes a new message to the server through gui
+     */
     public void writeMessage(Command command) {
         gui.sendMessage(command);
     }
 
+    /**
+     * Makes logout message visible, Stops th communication with the server.
+     * @param logoutMessage the string to be displayed
+     */
     public void printLogout(String logoutMessage) {
         infoDialog.setInfoMessage(logoutMessage);
         infoDialog.setVisible(true);
@@ -225,12 +253,18 @@ public final class PanelManager {
         gameFrame.dispose();
     }
 
-    /*method to be called when in a panel is called the quitCommand*/
+    /**
+     * method to be called when in a panel is called the quitCommand or the game ends*
+     */
     public void manageLogoutCommand() {
         gui.quitCommand();
         writeMessage(new Command("quit"));
     }
 
+    /**
+     * Method called when a cui related message from the server is received
+     * @param responseMessage the message received
+     */
     public void readMessage(ResponseMessage responseMessage) {
         String responseContent = responseMessage.getResponseContent();
         switch (responseMessage.getResponseType()) {
@@ -369,10 +403,18 @@ public final class PanelManager {
 
     }
 
-    public void manageProductionInfos(List<Integer> devCards, List<Integer> leader, BaseProductionParams baseProd) {
-        this.lastSelectedLeaderList = leader;
-        this.lastSelectedDevCards = devCards;
-        this.lastSelectedBaseProdParams = baseProd;
+    /**
+     * Sends a new getProductionCost to the server
+     * @param devCards the desired DevCards
+     * @param leader the desired active leaders
+     * @param baseProd the desired baseproductionparams
+     */
+    public void manageProductionInfos(List<Integer> devCards, List<Integer> leader, BaseProductionParams baseProd){
+        synchronized (this) {
+            this.lastSelectedLeaderList = leader;
+            this.lastSelectedDevCards = devCards;
+            this.lastSelectedBaseProdParams = baseProd;
+        }
 
         this.writeMessage(new Command("getProductionCost", new GetProductionCostMessage(devCards, leader, baseProd)));
         //TODO gestire cambio view
@@ -383,9 +425,8 @@ public final class PanelManager {
             HashMapResFromProdCostMessage message = gson.fromJson(responseContent, HashMapResFromProdCostMessage.class);
             this.resourcesMap = message.getResources();
             this.mapDescription = "resourcesProduced";
+            productionGetResources = new ProductionGetResources(resourcesMap, lastSelectedLeaderList, lastSelectedDevCards, lastSelectedBaseProdParams);
         }
-        productionGetResources = new ProductionGetResources(resourcesMap, lastSelectedLeaderList, lastSelectedDevCards, lastSelectedBaseProdParams);
-
         gameFrame.add(productionGetResources);
         gameFrame.revalidate();
 
@@ -541,6 +582,9 @@ public final class PanelManager {
         writeMessage(new Command("getResourcesFromMarket", new GetFromMatrixMessage(row, col, lastSelectedLeaderList)));
     }
 
+    /**
+     * display the DevGrid panel
+     */
     public void displayDevGrid() {
         mainPanel.setVisible(false);
         devGridContainer = new DevGridContainer(gameModel.getMainBoard());
@@ -549,6 +593,9 @@ public final class PanelManager {
         devGridContainer.update(150, 200);
     }
 
+    /**
+     * display the production Panel
+     */
     public void displayProduction() {
         mainPanel.setVisible(false);
         if (productionGetInfo != null) {
@@ -572,6 +619,11 @@ public final class PanelManager {
         gameFrame.revalidate();
     }
 
+    /**
+     * if infoDialog is visible the string is added at the end, if the dialog is not visible,
+     * the string will be the only string in the dialog and the dialog will be set visible
+     * @param info the string to be displayed in InfoPanel
+     */
     public synchronized void printInfo(String info) {
         visualizer.submit(() -> {
             infoDialog.setInfoMessage(info);
@@ -589,6 +641,11 @@ public final class PanelManager {
 
     }
 
+    /**
+     * if errorDialog is visible the string is added at the end, if the dialog is not visible,
+     * the string will be the only string in the dialog and the dialog will be set visible
+     * @param error the string to be displayed in errorPanel
+     */
     public void printError(String error) {
         visualizer.submit(() -> {
             errorDialog.setErrorMessage(error);

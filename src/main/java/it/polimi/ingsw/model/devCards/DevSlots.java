@@ -132,7 +132,9 @@ public class DevSlots {
         return result;
     }
 
-    //ONLY FOR TESTING PURPOSES
+    /**
+     * ONLY FOR TESTING PURPOSES
+     */
     public DevSlots(DevSlot[] devSlots) {
         this.devSlots = devSlots;
     }

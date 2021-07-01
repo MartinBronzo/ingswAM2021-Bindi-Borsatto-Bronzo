@@ -53,7 +53,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * THIS IS A TEST FOR THE BEGINNING DECISIONS DEPOT DRAG & DROP
  */
-public class Test {
+public class Test {}
 
   /*  public static void main(String[] args) throws InterruptedException, ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
         //LUDO
@@ -94,6 +94,7 @@ public class Test {
     }
 */
 
+    /*
     public static void showSetBeginningDecisionsPanel(){
         SwingUtilities.invokeLater(() -> {
             final int resToTake = 2;
@@ -180,6 +181,8 @@ public class Test {
 
     }
 
+     */
+
     /*public static void showPlayerBoards() throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException, InterruptedException {
         Board board;
         DevGrid devGrid;
@@ -202,6 +205,7 @@ public class Test {
         frame.setVisible(true);
     }*/
 
+    /*
     public static void createAndShowJFrameWithResourcesInside(){
         SwingUtilities.invokeLater(() -> {
 
