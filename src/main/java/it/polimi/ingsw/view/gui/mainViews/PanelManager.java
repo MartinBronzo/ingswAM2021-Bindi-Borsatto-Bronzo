@@ -33,7 +33,6 @@ import it.polimi.ingsw.view.lightModel.player.DepotShelf;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +53,7 @@ public final class PanelManager {
 
     private JFrame gameFrame;
 
-    //TODO: add here dialogs
+    //add here dialogs
     private LoginDialog loginDialog;
     private ErrorDialog errorDialog;
     private InfoDialog infoDialog;
@@ -62,7 +61,7 @@ public final class PanelManager {
     private SetNumOfPlayersDialog configureGameDialog;
     private FinalResultsDialog resultsDialog;
 
-    //TODO: add here panels created for each view
+    //add here panels created for each view
     private EntryViewPanel entryPanel;
     private WaitingRoomPanel waitingRoomPanel;
     private BeginningDecisionsPanel beginningDecisionsPanel;
@@ -76,7 +75,7 @@ public final class PanelManager {
     private ProductionGetResources productionGetResources;
     private ProductionGetInfo productionGetInfo;
 
-    //TODO: add here attibutes used in panels
+    //add here attributes used in panels
     private String nickname;
     private Game gameModel;
     private Player player;
@@ -91,8 +90,6 @@ public final class PanelManager {
     private int lastSelectedRow;
     private int lastSelectedCol;
     private BaseProductionParams lastSelectedBaseProdParams;
-    /*idk if can be useful selected cell, row, column attributes and relatives methods*/
-
 
     private PanelManager(GuiClient gui) {
         this.gameModel = null;
@@ -129,10 +126,11 @@ public final class PanelManager {
 
     /**
      * get the instance of the previously created panelManager
+     *
      * @return the instance of the created panelManager
      * @throws IllegalStateException if the panel manager is not yet instantiated, try using createInstance
      */
-    public static PanelManager getInstance() throws IllegalStateException{
+    public static PanelManager getInstance() throws IllegalStateException {
         if (instance == null) {
             synchronized (PanelManager.class) {
                 if (instance == null)
@@ -145,11 +143,12 @@ public final class PanelManager {
 
     /**
      * Instances a new Panel Manager
+     *
      * @param gui used to send commands to the server
      * @return the panel manager instantiated
      * @throws IllegalStateException if this method is called more than once, try using getInstance
      */
-    public static PanelManager createInstance(GuiClient gui) throws IllegalStateException{
+    public static PanelManager createInstance(GuiClient gui) throws IllegalStateException {
         if (instance == null) {
             synchronized (PanelManager.class) {
                 if (instance == null) {
@@ -184,7 +183,7 @@ public final class PanelManager {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         gameFrame.setSize(screenSize.width, screenSize.height - 100);
 
-        //TODO: add here dialog with gameframe owner
+        //add here dialog with gameframe owner
         loginDialog = new LoginDialog(gameFrame);
         configureGameDialog = new SetNumOfPlayersDialog(gameFrame);
         infoDialog = new InfoDialog(gameFrame);
@@ -192,7 +191,7 @@ public final class PanelManager {
         lorenzoDialog = new LorenzoDialog(gameFrame);
         resultsDialog = new FinalResultsDialog(gameFrame);
 
-        //TODO: add here panels to frame
+        //panels for the frame
         entryPanel = new EntryViewPanel();
         gameFrame.add(entryPanel);
 
@@ -216,9 +215,6 @@ public final class PanelManager {
         marketPlacingResources = new MarketPlacingResources(true);
 
         devGridPayingCost = new DevGridPayingCost();
-
-        //ProductionGetInfo must be created each time must be used
-        //productionGetInfo = new ProductionGetInfo();
 
         gameFrame.validate();
 
@@ -244,6 +240,7 @@ public final class PanelManager {
 
     /**
      * Makes logout message visible, Stops th communication with the server.
+     *
      * @param logoutMessage the string to be displayed
      */
     public void printLogout(String logoutMessage) {
@@ -263,6 +260,7 @@ public final class PanelManager {
 
     /**
      * Method called when a cui related message from the server is received
+     *
      * @param responseMessage the message received
      */
     public void readMessage(ResponseMessage responseMessage) {
@@ -302,7 +300,7 @@ public final class PanelManager {
                 this.manageleaderboard(responseContent);
                 break;
             case SETNUMPLAYERCONF:
-                this.manageConfigurationDone(responseContent);
+                this.manageConfigurationDone();
                 break;
             case LORENZOSACTION:
                 this.manageLorenzoAction(responseContent);
@@ -319,8 +317,12 @@ public final class PanelManager {
         }
     }
 
+    /**
+     * Shows the dialog with the result for solo game
+     *
+     * @param responseContent the result sent by the server
+     */
     private void manageSoloGameResult(String responseContent) {
-
         SoloGameResultMessage soloGameResultMessage = gson.fromJson(responseContent, SoloGameResultMessage.class);
         visualizer.submit(() -> {
             resultsDialog.setMultilineText(soloGameResultMessage.getMessage());
@@ -329,6 +331,11 @@ public final class PanelManager {
         });
     }
 
+    /**
+     * Manages the re-connection of a disconnected player: it shows the correct panel based on the previous state of the player
+     *
+     * @param responseContent the message sent by the server to signal the re-connection of the player
+     */
     private void manageConnectionUpdate(String responseContent) {
         synchronized (this) {
             PlayerConnectionsUpdate playerConnectionsUpdate = gson.fromJson(responseContent, PlayerConnectionsUpdate.class);
@@ -348,6 +355,11 @@ public final class PanelManager {
         }
     }
 
+    /**
+     * Shows a dialog with the Lorenzo's action
+     *
+     * @param responseContent the message sent by the server with the Lorenzo's action
+     */
     private void manageLorenzoAction(String responseContent) {
         synchronized (this) {
             LorenzosActionMessage lorenzosActionMessage = gson.fromJson(responseContent, LorenzosActionMessage.class);
@@ -356,6 +368,11 @@ public final class PanelManager {
         printLorenzosAction(lorenzoToken.getName());
     }
 
+    /**
+     * Prints the info for the Lorenzo's action in the dialog, such as the image of the drew token
+     *
+     * @param path the image of the drew token
+     */
     private void printLorenzosAction(String path) {
         visualizer.submit(() -> {
             lorenzoDialog.setInfoMessage("Lorenzo's action");
@@ -364,23 +381,31 @@ public final class PanelManager {
         });
     }
 
+    /**
+     * Shows the dialog for the result of a multiplayer game
+     *
+     * @param responseContent the message sent by the client with the final scores
+     */
     private void manageleaderboard(String responseContent) {
-        //synchronized (this) {
         FinalScoresMessage message = gson.fromJson(responseContent, FinalScoresMessage.class);
         visualizer.submit(() -> {
             resultsDialog.setFinalScores(message.getResults());
             resultsDialog.setVisible(true);
         });
-        //this.results = message.getResults();
-        //}
-        //TODO: do things to setup view
-
     }
 
-    private void manageConfigurationDone(String responseContent) {
+    /**
+     * Shows the dialog for the configuration of the game
+     */
+    private void manageConfigurationDone() {
         configureGameDialog.setVisible(false);
     }
 
+    /**
+     * Shows the waiting room after the nickname of the player has been set
+     *
+     * @param responseContent the message sent by the server with the confirmation of the nickname of the player
+     */
     private void manageNickSetting(String responseContent) {
         synchronized (this) {
             LoginConfirmationMessage setNickMessage = gson.fromJson(responseContent, LoginConfirmationMessage.class);
@@ -395,21 +420,25 @@ public final class PanelManager {
 
     }
 
+    /**
+     * Shows the dialog that allows to configure the game
+     */
     private void manageGameConfiguration() {
         visualizer.submit(() -> {
             configureGameDialog.setVisible(true);
-            System.out.println("Ended GameConfiguration set visible true");
+            //System.out.println("Ended GameConfiguration set visible true");
         });
 
     }
 
     /**
      * Sends a new getProductionCost to the server
+     *
      * @param devCards the desired DevCards
-     * @param leader the desired active leaders
+     * @param leader   the desired active leaders
      * @param baseProd the desired baseproductionparams
      */
-    public void manageProductionInfos(List<Integer> devCards, List<Integer> leader, BaseProductionParams baseProd){
+    public void manageProductionInfos(List<Integer> devCards, List<Integer> leader, BaseProductionParams baseProd) {
         synchronized (this) {
             this.lastSelectedLeaderList = leader;
             this.lastSelectedDevCards = devCards;
@@ -417,9 +446,13 @@ public final class PanelManager {
         }
 
         this.writeMessage(new Command("getProductionCost", new GetProductionCostMessage(devCards, leader, baseProd)));
-        //TODO gestire cambio view
     }
 
+    /**
+     * Shows the panel that allows to choose where the resources for the production come from
+     *
+     * @param responseContent the message from the server with the cost of the production
+     */
     private void manageProductionResources(String responseContent) {
         synchronized (this) {
             HashMapResFromProdCostMessage message = gson.fromJson(responseContent, HashMapResFromProdCostMessage.class);
@@ -432,12 +465,13 @@ public final class PanelManager {
 
         productionGetInfo.setVisible(false);
         productionGetResources.setVisible(true);
-
-        //TODO: aggiungere al panel
-        //TODO: aggiungere al panel
-
     }
 
+    /**
+     * Shows the panel that allows to put the resourcec got from the market in the desired place
+     *
+     * @param responseContent the message sent by the server with the resources to place
+     */
     private void manageMarketResources(String responseContent) {
         synchronized (this) {
             HashMapResFromMarketMessage message = gson.fromJson(responseContent, HashMapResFromMarketMessage.class);
@@ -447,9 +481,9 @@ public final class PanelManager {
 
         //gameFrame.remove(marketPlacingResources);
 
-        System.out.println("MESSAGE FROM SERVER: ");
+        /*System.out.println("MESSAGE FROM SERVER: ");
         for (Map.Entry<ResourceType, Integer> e : this.resourcesMap.entrySet())
-            System.out.println(e.getKey() + " " + e.getValue());
+            System.out.println(e.getKey() + " " + e.getValue());*/
 
         marketPlacingResources = new MarketPlacingResources(resourcesMap, lastSelectedRow + 1, lastSelectedCol + 1, lastSelectedLeaderList);
 
@@ -458,11 +492,13 @@ public final class PanelManager {
 
         buyFromMarketPanel.setVisible(false);
         marketPlacingResources.setVisible(true);
-
-        //TODO: add this panel to the frame
-
     }
 
+    /**
+     * Shows the panel that allows to choose where the resources to pay the desired devCard came from
+     *
+     * @param responseContent the message sent by the server with the cost of the devCard
+     */
     private void manageCardCost(String responseContent) {
         synchronized (this) {
             HashMapResFromDevGridMessage message = gson.fromJson(responseContent, HashMapResFromDevGridMessage.class);
@@ -470,19 +506,19 @@ public final class PanelManager {
             this.mapDescription = "DevCardCost";
         }
 
-
         devGridPayingCost = new DevGridPayingCost(resourcesMap, lastSelectedRow, lastSelectedCol, lastSelectedLeaderList);
         gameFrame.add(devGridPayingCost);
         gameFrame.revalidate();
 
         devCardCostPanel.setVisible(false);
         devGridPayingCost.setVisible(true);
-        //TODO: add this panel to the frame
-
-        //TODO: aggiungere bottone back sulla schermata!
-
     }
 
+    /**
+     * Shows the panel that allows to do the initial decisions of the game
+     *
+     * @param responseContent the message sent by the server with the 4 leader card of the player and the amount of resources to put in the depot
+     */
     private void manageStart(String responseContent) {
         synchronized (this) {
             ExtraResAndLeadToDiscardBeginningMessage message = gson.fromJson(responseContent, ExtraResAndLeadToDiscardBeginningMessage.class);
@@ -490,7 +526,6 @@ public final class PanelManager {
             resourcesToTake = message.getNumRes();
         }
 
-        //TODO: do things to setup view
         List<LeaderCard> leaderList = new ArrayList<>();
         for (Player player : gameModel.getPlayers())
             if (player.getNickName().equals(nickname))
@@ -508,13 +543,15 @@ public final class PanelManager {
         });
     }
 
+    /**
+     * Shows the main panel of the game with all the controls and the playerboard
+     */
     private synchronized void managePostStart() {
         synchronized (this) {
             nLeadersToDiscard = 0;
             resourcesToTake = 0;
         }
 
-        //TODO: do things to remove manageStartView and setup new view
         List<String> nicknameList = new ArrayList<>();
         Player actualPlayer = null;
         for (Player player : gameModel.getPlayers()) {
@@ -522,24 +559,31 @@ public final class PanelManager {
                 actualPlayer = player;
             nicknameList.add(player.getNickName());
         }
+
         gameFrame.remove(mainPanel);
         mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
         gameFrame.add(mainPanel);
         gameFrame.revalidate();
 
-
         visualizer.submit(() -> {
             beginningDecisionsPanel.setVisible(false);
             mainPanel.setVisible(true);
         });
-
     }
 
+    /**
+     * Closes the panel passed as parameter and displays the main panel
+     *
+     * @param jPanel the panel to close
+     */
     public void showPlayerBoard(JPanel jPanel) {
         jPanel.setVisible(false);
         mainPanel.setVisible(true);
     }
 
+    /**
+     * Shows the panel that allows to move the resources between shelves; between depot and leader card and vice versa
+     */
     public void showMoveResources() {
         mainPanel.setVisible(false);
         moveResourceChoice = new MoveResourceChoice();
@@ -547,6 +591,14 @@ public final class PanelManager {
         moveResourceChoice.setVisible(true);
     }
 
+    /**
+     * Shows the panel that allows to choose the leader cards to use while buying the specified devCard
+     *
+     * @param row the row of the desired dev card in the grid
+     * @param col the column of the desired dev card in the grid
+     * @throws IllegalArgumentException if an argument is not valid
+     * @throws IllegalStateException    if the action can't be done without errors
+     */
     public void printGetCardCostPanel(int row, int col) throws IllegalArgumentException, IllegalStateException {
         visualizer.submit(() -> {
             this.getDevCardCostPanel().selectCell(row, col);
@@ -554,6 +606,13 @@ public final class PanelManager {
         });
     }
 
+    /**
+     * Sends a message to the server with all the information required to get the cost of a dev card in the grid
+     *
+     * @param row        the row of the desired dev card in the grid
+     * @param col        the column of the desired dev card in the grid
+     * @param leaderList the list of leader card to use
+     */
     public synchronized void manageGetCardCost(int row, int col, List<Integer> leaderList) {
         this.lastSelectedRow = row;
         this.lastSelectedCol = col;
@@ -562,11 +621,17 @@ public final class PanelManager {
         writeMessage(new Command("getCardCost", new GetFromMatrixMessage(lastSelectedRow + 1, lastSelectedCol + 1, lastSelectedLeaderList)));
     }
 
+    /**
+     * Sends a message to the server with all the information required to get the resources from a line in the market
+     *
+     * @param isRow  if the selected line of the market is a row
+     * @param number the number of the row
+     */
     public synchronized void manageGetResourcesFromMarket(boolean isRow, int number) {
         this.lastSelectedLeaderList = buyFromMarketPanel.getLeaderList();
         int row;
         int col;
-        if (isRow == true) {
+        if (isRow) {
             this.lastSelectedRow = number;
             this.lastSelectedCol = -1;
             row = number + 1;
@@ -583,7 +648,7 @@ public final class PanelManager {
     }
 
     /**
-     * display the DevGrid panel
+     * Displays the DevGrid panel
      */
     public void displayDevGrid() {
         mainPanel.setVisible(false);
@@ -594,7 +659,7 @@ public final class PanelManager {
     }
 
     /**
-     * display the production Panel
+     * Displays the production Panel
      */
     public void displayProduction() {
         mainPanel.setVisible(false);
@@ -607,6 +672,9 @@ public final class PanelManager {
         gameFrame.revalidate();
     }
 
+    /**
+     * Displays the market
+     */
     public void displayMarket() {
         mainPanel.setVisible(false);
         gameFrame.remove(buyFromMarketPanel);
@@ -622,6 +690,7 @@ public final class PanelManager {
     /**
      * if infoDialog is visible the string is added at the end, if the dialog is not visible,
      * the string will be the only string in the dialog and the dialog will be set visible
+     *
      * @param info the string to be displayed in InfoPanel
      */
     public synchronized void printInfo(String info) {
@@ -631,6 +700,11 @@ public final class PanelManager {
         });
     }
 
+    /**
+     * Shows a dialog with a string message passed as parameter
+     *
+     * @param responseContent the message sent by the server with the string to print
+     */
     private void manageInfo(String responseContent) {
         visualizer.submit(() -> {
             GeneralInfoStringMessage errorMessage = gson.fromJson(responseContent, GeneralInfoStringMessage.class);
@@ -644,6 +718,7 @@ public final class PanelManager {
     /**
      * if errorDialog is visible the string is added at the end, if the dialog is not visible,
      * the string will be the only string in the dialog and the dialog will be set visible
+     *
      * @param error the string to be displayed in errorPanel
      */
     public void printError(String error) {
@@ -653,6 +728,11 @@ public final class PanelManager {
         });
     }
 
+    /**
+     * Shows a dialog with an error message sent by the server
+     *
+     * @param responseContent the message sent by the server with the error to print
+     */
     private void manageError(String responseContent) {
         visualizer.submit(() -> {
             ErrorMessage errorMessage = gson.fromJson(responseContent, ErrorMessage.class);
@@ -662,34 +742,43 @@ public final class PanelManager {
         });
     }
 
+    /**
+     * Sets the player for the for this class and for the getDevCardCostPanel
+     *
+     * @param player the player to set
+     */
     private void setPlayerAndViews(Player player) {
         this.player = player;
         this.getDevCardCostPanel().setPlayer(this.player);
     }
 
+    /**
+     * Manages the message with the updates of the model: it merges the old model with the new info, or it creates a new ine
+     * if the model doesn't already exists; it shows a message if the turn has changed; closes other panels and shows the
+     * main panel
+     *
+     * @param responseContent the message sent by the server with the update of the model
+     */
     private synchronized void manageUpdate(String responseContent) {
         PlayerState oldPlayerState = null;
         PlayerState newPlayerState;
 
-        //TODO: questo sync interno è ridondante
-        synchronized (this) {
-            if (player != null)
-                oldPlayerState = player.getPlayerState();
-            ModelUpdate modelUpdate = gson.fromJson(responseContent, ModelUpdate.class);
-            Game update = modelUpdate.getGame();
-            if (this.gameModel == null) {
-                gameModel = update;
-                this.setPlayerAndViews(gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().get());
-            } else
-                gameModel.merge(update);
+        if (player != null)
+            oldPlayerState = player.getPlayerState();
+        ModelUpdate modelUpdate = gson.fromJson(responseContent, ModelUpdate.class);
+        Game update = modelUpdate.getGame();
+        if (this.gameModel == null) {
+            gameModel = update;
+            this.setPlayerAndViews(gameModel.getPlayers().stream().filter(p -> p.getNickName().equals(nickname)).findAny().get());
+        } else
+            gameModel.merge(update);
 
-            newPlayerState = gameModel.findByNick(nickname).getPlayerState();
-            if (player == null && (newPlayerState == PlayerState.PLAYING || newPlayerState == PlayerState.PLAYINGBEGINNINGDECISIONS))
+        newPlayerState = gameModel.findByNick(nickname).getPlayerState();
+        if (player == null && (newPlayerState == PlayerState.PLAYING || newPlayerState == PlayerState.PLAYINGBEGINNINGDECISIONS))
+            printInfo("Now it's your turn, Master " + nickname + "!");
+        else if (player != null) {
+            if ((oldPlayerState != PlayerState.PLAYING && oldPlayerState != PlayerState.PLAYINGBEGINNINGDECISIONS) && (newPlayerState == PlayerState.PLAYING || newPlayerState == PlayerState.PLAYINGBEGINNINGDECISIONS))
                 printInfo("Now it's your turn, Master " + nickname + "!");
-            else if (player != null) {
-                if ((oldPlayerState != PlayerState.PLAYING && oldPlayerState != PlayerState.PLAYINGBEGINNINGDECISIONS) && (newPlayerState == PlayerState.PLAYING || newPlayerState == PlayerState.PLAYINGBEGINNINGDECISIONS))
-                    printInfo("Now it's your turn, Master " + nickname + "!");
-            }
         }
 
         //This remove are needed because we have to close these panels if they're open.
@@ -710,26 +799,10 @@ public final class PanelManager {
             }
             mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
             gameFrame.add(mainPanel);
-            //gameFrame.revalidate();
         }
 
         gameFrame.revalidate();
-
-
-        /*visualizer.submit(() -> {
-            // if(mainPanel!=null) {
-            if (mainPanel.getCreated()) {
-                mainPanel.updateMainPanel(gameModel);
-            }
-        });*/
     }
-
-    /*public void closeBuyFromMarket() {
-        buyFromMarketPanel.setVisible(false);
-        marketPlacingResources.setVisible(false);
-        gameFrame.remove(marketPlacingResources);
-        gameFrame.revalidate();
-    }*/
 
     public Game getGameModel() {
         return gameModel;
@@ -739,13 +812,13 @@ public final class PanelManager {
         return nickname;
     }
 
-    public HashMap<ResourceType, Integer> getResourcesMap() {
+    /*public HashMap<ResourceType, Integer> getResourcesMap() {
         return resourcesMap;
     }
 
     public String getMapDescription() {
         return mapDescription;
-    }
+    }*/
 
     public int getnLeadersToDiscard() {
         return nLeadersToDiscard;
@@ -755,21 +828,21 @@ public final class PanelManager {
         return results;
     }
 
-    public SoloActionToken getLorenzoToken() {
+    /*public SoloActionToken getLorenzoToken() {
         return lorenzoToken;
-    }
+    }*/
 
     public JFrame getGameFrame() {
         return gameFrame;
     }
 
-    public LoginDialog getLoginDialog() {
+    /*public LoginDialog getLoginDialog() {
         return loginDialog;
     }
 
     public ErrorDialog getErrorDialog() {
         return errorDialog;
-    }
+    }*/
 
     public InfoDialog getInfoDialog() {
         return infoDialog;
@@ -779,21 +852,21 @@ public final class PanelManager {
         return configureGameDialog;
     }
 
-    public EntryViewPanel getEntryPanel() {
+    /*public EntryViewPanel getEntryPanel() {
         return entryPanel;
     }
 
     public WaitingRoomPanel getWaitingRoomPanel() {
         return waitingRoomPanel;
-    }
+    }*/
 
     public DevCardGetInfo getDevCardCostPanel() {
         return devCardCostPanel;
     }
 
-    public BuyFromMarketPanel getBuyFromMarketPanel() {
+    /*public BuyFromMarketPanel getBuyFromMarketPanel() {
         return buyFromMarketPanel;
-    }
+    }*/
 
     public int getResourcesToTake() {
         return resourcesToTake;
@@ -901,20 +974,4 @@ public final class PanelManager {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-
-    /*public void updatePlayerBoard(){
-        List<String> nicknameList = new ArrayList<>();
-        Player actualPlayer = null;
-
-        gameFrame.remove(mainPanel);
-
-        for(Player player : gameModel.getPlayers()) {
-            if(player.getNickName().equals(nickname))
-                actualPlayer = player;
-            nicknameList.add(player.getNickName());
-        }
-        mainPanel = new MainPanel(nicknameList, actualPlayer, gameModel);
-        gameFrame.add(mainPanel);
-        mainPanel.setVisible(true);
-    }*/
 }
