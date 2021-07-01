@@ -55,3 +55,8 @@
   Comandi da utilizzare
 </h2>
 
+<h2>Creatori</h2>
+Made with love by (in ordine alfabetico)
+Ludovica Bindi (10619971)
+Andrea Borsatto
+Martin Bronzo
