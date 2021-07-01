@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.model.devCards.DevCardTest" time="0.001" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.model.devCards.DevCardTest" time="0.004" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="15"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IT"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-15.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter6232212991232975745.jar /Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire 2021-06-25T19-05-00_817-jvmRun1 surefire7862712460215349608tmp surefire_014012558601888244575tmp"/>
+    <property name="sun.java.command" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter16695079572961716531.jar /Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire 2021-07-01T11-27-39_208-jvmRun1 surefire14202275003645880999tmp surefire_04911114749291118858tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/test-classes:/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/classes:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter/5.7.1/junit-jupiter-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.7.1/junit-jupiter-params-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.7.1/junit-jupiter-engine-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-engine/1.7.1/junit-platform-engine-1.7.1.jar:/Users/Ekraar/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/Users/Ekraar/.m2/repository/org/danilopianini/gson-extras/0.2.2/gson-extras-0.2.2.jar:/Users/Ekraar/.m2/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Users/Ekraar/.m2/repository/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar:/Users/Ekraar/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/Ekraar/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-commons/1.7.1/junit-platform-commons-1.7.1.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter6232212991232975745.jar"/>
+    <property name="surefire.real.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter16695079572961716531.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="15+36-1562"/>
     <property name="user.name" value="Ekraar"/>
@@ -54,7 +54,7 @@
   <testcase name="NegativeQuantityTest" classname="it.polimi.ingsw.model.devCards.DevCardTest" time="0"/>
   <testcase name="getCost" classname="it.polimi.ingsw.model.devCards.DevCardTest" time="0"/>
   <testcase name="getProductionInput" classname="it.polimi.ingsw.model.devCards.DevCardTest" time="0"/>
-  <testcase name="ctrlEqualsFake" classname="it.polimi.ingsw.model.devCards.DevCardTest" time="0"/>
+  <testcase name="ctrlEqualsFake" classname="it.polimi.ingsw.model.devCards.DevCardTest" time="0.001"/>
   <testcase name="getProductionOutput" classname="it.polimi.ingsw.model.devCards.DevCardTest" time="0"/>
-  <testcase name="IllegalParametersTest" classname="it.polimi.ingsw.model.devCards.DevCardTest" time="0.001"/>
+  <testcase name="IllegalParametersTest" classname="it.polimi.ingsw.model.devCards.DevCardTest" time="0.002"/>
 </testsuite>

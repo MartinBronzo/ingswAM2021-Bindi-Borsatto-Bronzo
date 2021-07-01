@@ -31,7 +31,7 @@ public class EntryViewPanel extends JPanel {
      * Creates a new <code>JPanel</code> with a double buffer
      * and a flow layout.
      */
-    public EntryViewPanel() throws IOException {
+    public EntryViewPanel() {
         super(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         color = new Color(206,98,49);
