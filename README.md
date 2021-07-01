@@ -10,6 +10,7 @@
     <li>Resilienza alle disconnessioni</li>
 </ul>
 </p>
+<h2>UML e User Diagram</h2>
 <h2>
   Aspetti salienti
 </h2>
