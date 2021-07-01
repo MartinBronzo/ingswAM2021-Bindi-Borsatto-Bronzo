@@ -56,7 +56,7 @@
 </h2>
 
 <h2>Creatori</h2>
-Made with love by (in ordine alfabetico)
-Ludovica Bindi (10619971)
-Andrea Borsatto
-Martin Bronzo
+Made with love by (in ordine alfabetico)</br>
+Ludovica Bindi (10619971)</br>
+Andrea Borsatto </br>
+Martin Bronzo </br>
