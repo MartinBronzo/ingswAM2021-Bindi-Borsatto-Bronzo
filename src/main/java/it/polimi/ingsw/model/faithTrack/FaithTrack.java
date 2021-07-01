@@ -51,7 +51,6 @@ public class FaithTrack {
      *
      * @param config the file where to read the design of the track
      */
-    //Forse è meglio che venga anche inizializzato automaticamente il reportNumOrder una volta lette le celle (si capisce leggendo come è l'ordine dei report che va nel report num order)
     private FaithTrack(File config) throws IOException, SAXException, ParserConfigurationException {
         this.track = new ArrayList<>();
         this.initTrack(config);

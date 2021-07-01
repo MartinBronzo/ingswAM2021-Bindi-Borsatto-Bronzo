@@ -306,7 +306,7 @@ public final class PanelManager {
                 gameModel.merge(update);
 
             if (playerConnectionsUpdate.getChangedPlayer().equals(this.nickname)) {
-                if(this.player.getPlayerState() == PlayerState.WAITING4TURN || this.player.getPlayerState() == PlayerState.WAITING4LASTTURN || this.player.getPlayerState() == PlayerState.WAITING4GAMEEND) {
+                if (this.player.getPlayerState() == PlayerState.WAITING4TURN || this.player.getPlayerState() == PlayerState.WAITING4LASTTURN || this.player.getPlayerState() == PlayerState.WAITING4GAMEEND) {
                     waitingRoomPanel.setVisible(false);
                     managePostStart();
                 }
@@ -322,7 +322,7 @@ public final class PanelManager {
         printLorenzosAction(lorenzoToken.getName());
     }
 
-    private void printLorenzosAction(String path){
+    private void printLorenzosAction(String path) {
         visualizer.submit(() -> {
             lorenzoDialog.setInfoMessage("Lorenzo's action");
             lorenzoDialog.setTokenImage(path);
@@ -337,7 +337,7 @@ public final class PanelManager {
             resultsDialog.setFinalScores(message.getResults());
             resultsDialog.setVisible(true);
         });
-            //this.results = message.getResults();
+        //this.results = message.getResults();
         //}
         //TODO: do things to setup view
 
@@ -369,12 +369,12 @@ public final class PanelManager {
 
     }
 
-    public void manageProductionInfos(List<Integer> devCards, List<Integer> leader, BaseProductionParams baseProd){
+    public void manageProductionInfos(List<Integer> devCards, List<Integer> leader, BaseProductionParams baseProd) {
         this.lastSelectedLeaderList = leader;
         this.lastSelectedDevCards = devCards;
         this.lastSelectedBaseProdParams = baseProd;
 
-        this.writeMessage(new Command("getProductionCost", new GetProductionCostMessage(devCards,leader, baseProd)));
+        this.writeMessage(new Command("getProductionCost", new GetProductionCostMessage(devCards, leader, baseProd)));
         //TODO gestire cambio view
     }
 
@@ -542,17 +542,14 @@ public final class PanelManager {
     }
 
     public void displayDevGrid() {
-        //visualizer.submit(() -> {
         mainPanel.setVisible(false);
         devGridContainer = new DevGridContainer(gameModel.getMainBoard());
         gameFrame.add(devGridContainer);
         devGridContainer.setVisible(true);
         devGridContainer.update(150, 200);
-        // });
     }
 
     public void displayProduction() {
-        //visualizer.submit(() -> {
         mainPanel.setVisible(false);
         if (productionGetInfo != null) {
             gameFrame.remove(productionGetInfo);
@@ -561,15 +558,9 @@ public final class PanelManager {
         gameFrame.add(productionGetInfo);
         productionGetInfo.setVisible(true);
         gameFrame.revalidate();
-
-
-        //});
     }
 
-    //TODO: this must be changed we shound't print just the market but the action view
-
     public void displayMarket() {
-        // why is this panel recreated each time, calling set methods and then print should work as well
         mainPanel.setVisible(false);
         gameFrame.remove(buyFromMarketPanel);
         buyFromMarketPanel = new BuyFromMarketPanel();
@@ -648,7 +639,7 @@ public final class PanelManager {
         gameFrame.remove(moveResourceChoice);
         gameFrame.remove(marketPlacingResources);
         gameFrame.remove(devGridPayingCost);
-        if(productionGetResources != null)
+        if (productionGetResources != null)
             gameFrame.remove(productionGetResources);
 
         if (mainPanel.getCreated()) {
