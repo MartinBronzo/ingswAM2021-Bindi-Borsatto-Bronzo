@@ -11,10 +11,10 @@ import java.awt.event.ActionListener;
  * This panel is an instruction panel that can hold print information and up to three buttons. It has a GridLayout.
  */
 public class InstructionPanel extends JPanel{
-    JButton confirmButton;
-    JButton cancelButton;
-    JButton backButton;
-    JLabel l;
+    private JButton confirmButton;
+    private JButton cancelButton;
+    private JButton backButton;
+    private JLabel l;
 
     /**
      * Constructs an information panel which shows the specified text and two buttons

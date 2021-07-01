@@ -552,7 +552,6 @@ public class Depot {
         HashMap<ResourceType, Integer> depotCopy;
         depotCopy = new HashMap<>(depotLevel);
 
-        //TODO: provare a farlo con map.keySet
         for (ResourceType resource : ResourceType.values()) {
             if (!resource.isFaithPoint()) {
                 resNum = depotCopy.get(resource);

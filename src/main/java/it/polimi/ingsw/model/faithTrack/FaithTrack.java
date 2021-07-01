@@ -240,7 +240,6 @@ public class FaithTrack {
     public boolean callCellEffect(int position) throws LastVaticanReportException {
         if (position < track.size() - 1)
             return track.get(position).effect();
-        //TODO: come estendere in modo tale che non è sempre detto l'ultima cella è la ultima cella papale
         throw new LastVaticanReportException("Last Vatican Report was activated!", track.get(position).effect());
     }
 

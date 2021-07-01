@@ -27,7 +27,7 @@ import java.util.Map;
  * can come from the player's Depot, StrongBox, and, eventually, the ExtraSlot LeaderCards.
  */
 public class DevGridPayingCost extends JPanel {
-    boolean created;
+    private boolean created;
 
     /**
      * Constructs a dumb DevGridPayingCost
@@ -165,9 +165,6 @@ public class DevGridPayingCost extends JPanel {
             result[i] = image;
             i++;
         }
-
-        //TODO: perché non stampa le immagini? Se riesco,
-
         return result;
     }
 

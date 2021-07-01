@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * This panel lets the user specify how they want to move resources from an ExtraSlot LeaderCard to a Depot shelf.
  */
 public class MoveLeaderToShelf extends JPanel {
-    private List<LeaderCard> activeLeader;
+    private final List<LeaderCard> activeLeader;
 
     /**
      * Constructs a MoveLeaderToShelf panel showing the player's Depot and ExtraSlot LeaderCard eventually filled with resources

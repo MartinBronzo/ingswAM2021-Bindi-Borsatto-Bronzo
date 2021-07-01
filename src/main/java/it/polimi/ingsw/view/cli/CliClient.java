@@ -591,7 +591,6 @@ public class CliClient implements Runnable, Client {
                         }
                         break;
 
-                        //TODO: DA TERMINARE
                     case LORENZOSACTION:
                         synchronized (this){
                             LorenzosActionMessage lorenzosActionMessage = gson.fromJson(responseContent, LorenzosActionMessage.class);
@@ -607,7 +606,6 @@ public class CliClient implements Runnable, Client {
                             results.sort((x, y) -> y.getValue().compareTo(x.getValue()));
                             CliView.printFinalScores(results);
                             sendMessage(new Command("quit"));
-                            //TODO: funziona la chiusura del client?
                         }
                         break;
                    /* case SETBEGINNINGDECISIONS:
@@ -649,7 +647,6 @@ public class CliClient implements Runnable, Client {
                             SoloGameResultMessage message = gson.fromJson(responseContent, SoloGameResultMessage.class);
                             CliView.printSoloGameScores(message.isVictory(), message.getMessage());
                             sendMessage(new Command("quit"));
-                            //TODO: funziona la chiusura del client?
                         }
 
                         break;

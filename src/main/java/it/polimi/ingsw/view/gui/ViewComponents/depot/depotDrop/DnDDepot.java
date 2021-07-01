@@ -11,8 +11,8 @@ import javax.swing.*;
  * This panel is made of a DepotDrop and a panel of draggable resources (either filled with infinite or finite resources).
  */
 public class DnDDepot extends JPanel implements Resettable {
-    DepotDrop depot;
-    InfiniteResourcesDrag resources;
+    private final DepotDrop depot;
+    private InfiniteResourcesDrag resources;
 
     /**
      * Creates a DnDDepot with only the DepotDrop ready. Next, the user of this class must specify whether the draggable resources are finite

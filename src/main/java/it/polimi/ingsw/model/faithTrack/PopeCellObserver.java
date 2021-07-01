@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.board.MainBoard;
  * This Observer observes the FaithTrack and is notified any time a Vatican Report occurs.
  */
 public class PopeCellObserver implements Observer {
-    MainBoard mainBoard;
+    private MainBoard mainBoard;
 
     /**
      * Constructs a PopeCellObserver which observes the FaithTrack of the specified MainBoard

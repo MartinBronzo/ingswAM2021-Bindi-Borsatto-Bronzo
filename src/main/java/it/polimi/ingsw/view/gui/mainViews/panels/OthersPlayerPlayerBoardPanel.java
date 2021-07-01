@@ -20,9 +20,9 @@ import java.util.ArrayList;
  * This panel shows to the player the board of one of their opponents.
  */
 public class OthersPlayerPlayerBoardPanel extends JPanel {
-    OthersPlayerLeaderCards leaderCardPanel;
-    FaithTrackOnlyView faithTrackOnlyView;
-    DepotOnlyView depotOnlyView;
+    private OthersPlayerLeaderCards leaderCardPanel;
+    private FaithTrackOnlyView faithTrackOnlyView;
+    private DepotOnlyView depotOnlyView;
 
     /**
      * Constructs an OthersPlayerPlayerBoardPanel showing the specified player's board

@@ -1667,6 +1667,8 @@ public class GameController {
             if (soloBoard.isDevCardColumnEmpty(color)) {
                 soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo bought an entire column of dev cards!");
                 activePlayer.send(soloGameResultMessage);
+                GamesManagerSingleton.getInstance().deleteGame(this);
+                this.setState(GameState.ENDED);
                 return;
             }
         }
@@ -1674,6 +1676,8 @@ public class GameController {
         if (soloBoard.getLorenzoFaithTrackPosition() == faithCells) {
             soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo made his last vatican report!");
             activePlayer.send(soloGameResultMessage);
+            GamesManagerSingleton.getInstance().deleteGame(this);
+            this.setState(GameState.ENDED);
             return;
         }
 
@@ -1684,7 +1688,6 @@ public class GameController {
 
         GamesManagerSingleton.getInstance().deleteGame(this);
         this.setState(GameState.ENDED);
-        //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
     private void distributeFinalPoints() {

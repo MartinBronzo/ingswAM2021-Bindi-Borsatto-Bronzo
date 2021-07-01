@@ -118,7 +118,6 @@ public class ShelfDrag extends JPanel implements DragUpdatable, Resettable {
      * Increases the number of resources removed by one unit.
      *//*
     public void updateResourcesRemovedCounter(){
-        //TODO: anche questo fa leva sul fatto che sul depot ci possono essere solo risorse dello steso tipo, come renderlo più estendibile? Con una mappa?
         this.resourceRemoved++;
     }*/
 

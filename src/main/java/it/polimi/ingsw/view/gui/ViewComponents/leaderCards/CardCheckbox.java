@@ -13,7 +13,7 @@ import java.util.List;
  * This panel contains a list of LeaderCards that can be checked.
  */
 public class CardCheckbox extends JPanel {
-    List<JCheckBox> checkBoxList;
+    private final List<JCheckBox> checkBoxList;
 
     /**
      * Prints the images of the leaderCards in a horizontal list

@@ -13,7 +13,7 @@ import java.awt.*;
  * clicked DevCard.
  */
 public class DevGridContainer extends JPanel {
-    DevGridPanel devGridPanel;
+    private final DevGridPanel devGridPanel;
 
     /**
      * Constructs a DevGridContainer panel

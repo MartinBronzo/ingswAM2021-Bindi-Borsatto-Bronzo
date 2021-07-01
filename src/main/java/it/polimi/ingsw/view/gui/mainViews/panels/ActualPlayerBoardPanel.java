@@ -21,9 +21,9 @@ import java.util.ArrayList;
  * all the buttons to access the possible actions the player can make.
  */
 public class ActualPlayerBoardPanel extends JPanel {
-    LeaderCardPanel leaderCardPanel;
-    FaithTrackOnlyView faithTrackOnlyView;
-    DepotOnlyView depotOnlyView;
+    private final LeaderCardPanel leaderCardPanel;
+    private final FaithTrackOnlyView faithTrackOnlyView;
+    private final DepotOnlyView depotOnlyView;
 
     /**
      * Constructs an ActualPlayerBoardPanel for the specified player

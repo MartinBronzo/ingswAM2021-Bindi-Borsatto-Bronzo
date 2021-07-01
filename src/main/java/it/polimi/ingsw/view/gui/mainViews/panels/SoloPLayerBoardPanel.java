@@ -20,9 +20,9 @@ import java.util.ArrayList;
  * This panel shows the board to the player when the player is playing in a Solo Game.
  */
 public class SoloPLayerBoardPanel extends JPanel {
-    LeaderCardPanel leaderCardPanel;
-    SoloFaithTrackOnlyView faithTrackOnlyView;
-    DepotOnlyView depotOnlyView;
+    private LeaderCardPanel leaderCardPanel;
+    private SoloFaithTrackOnlyView faithTrackOnlyView;
+    private DepotOnlyView depotOnlyView;
 
     /**
      * Constructs a SoloPLayerBoardPanel for the specified player

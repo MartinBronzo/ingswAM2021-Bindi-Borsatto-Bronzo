@@ -164,7 +164,6 @@ public class BuyFromMarketPanel extends JPanel {
         this.add(this.selectedCard);
 
 
-        //TODO; metti tutto il resto in un altro panel verticale e aggiungi info (istruzioni)
         this.leader1 = new JButton();
         this.leader1.addActionListener(e -> {
             if (!leader1Selector.get()){
