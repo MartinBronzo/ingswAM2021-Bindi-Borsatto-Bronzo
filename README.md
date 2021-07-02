@@ -83,6 +83,7 @@ Abbiamo implementato un comando di cheat (da CLI scrivere "CHEAT", da GUI clicca
 </h2>
 <p>Per runnare la nostra applicazione, prima bisogna far partire il server tramite </p>
 <p> java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar --server 9047 </p>
+<p>Purtroppo abbiamo avuto problemi con la creazione del JAR del server perché questo non riesce a trovare dinamicamente i file XML di configurazione descritti sopra. Se il server viene fatto partire da Intellij e si fa partire il client pure da JAR, si può usare traquillamente l'applicativo.</br></p>
 <p>Successivamente si può utilizzare la CLI:</p>
 <span> java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar --cli --IP 127.0.0.1 9047</br>java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar -c --IP 127.0.0.1 9047</span>
 
