@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="1.241" tests="35" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="1.244" tests="35" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="15"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IT"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-15.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter8964239982683297252.jar /Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire 2021-07-02T18-27-55_056-jvmRun1 surefire5756745411109526148tmp surefire_02634318918483877060tmp"/>
+    <property name="sun.java.command" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter18207620513602881614.jar /Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire 2021-07-02T18-43-35_688-jvmRun1 surefire16384983694884118551tmp surefire_0308781492685476425tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/test-classes:/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/classes:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter/5.7.1/junit-jupiter-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.7.1/junit-jupiter-params-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.7.1/junit-jupiter-engine-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-engine/1.7.1/junit-platform-engine-1.7.1.jar:/Users/Ekraar/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/Users/Ekraar/.m2/repository/org/danilopianini/gson-extras/0.2.2/gson-extras-0.2.2.jar:/Users/Ekraar/.m2/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Users/Ekraar/.m2/repository/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar:/Users/Ekraar/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/Ekraar/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-commons/1.7.1/junit-platform-commons-1.7.1.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter8964239982683297252.jar"/>
+    <property name="surefire.real.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter18207620513602881614.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="15+36-1562"/>
     <property name="user.name" value="Ekraar"/>
@@ -51,39 +51,39 @@
     <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
     <property name="java.class.version" value="59.0"/>
   </properties>
-  <testcase name="ctrlCreationSettingMainBoard" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.027"/>
-  <testcase name="substituteClientINSESSION" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.06"/>
-  <testcase name="ctrlCreationWrongNumberOfPlayersTooHigh" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.012"/>
-  <testcase name="willPlay2" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.023"/>
-  <testcase name="ctrlRollbackState" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.092"/>
-  <testcase name="ctrlSaveStateWithGameState" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.013"/>
-  <testcase name="ctrlAddingMorePlayersThanNeeded" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.012"/>
-  <testcase name="ctrlCreationWrongNumberOfPlayersTooLow" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.003"/>
-  <testcase name="willPlay" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.023"/>
-  <testcase name="ctrlSavingState" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.046"/>
-  <testcase name="ctrlCreationFirstSetUp" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.008"/>
-  <testcase name="ctrlCreationAddingTheSamePlayerAgain" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.034"/>
-  <testcase name="ctrlLastTurn2" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.019"/>
-  <testcase name="ctrlLastTurn3" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.02"/>
-  <testcase name="ctrlLastTurn4" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.011"/>
-  <testcase name="playerPositionInTurn" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.022"/>
-  <testcase name="ctrlCreationGoodNumberOfPlayers" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.026"/>
-  <testcase name="ctrlCreationAddingAllPlayers" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.029"/>
-  <testcase name="ctrlRollBackStateWithClientHandlersWithDisconnectedPlayerNowDisconnected" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.071"/>
-  <testcase name="playerPositionInTurn2" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0"/>
-  <testcase name="playerPositionInTurn3" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.023"/>
-  <testcase name="ctrlRollBackStateWithGameState" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.061"/>
-  <testcase name="substituteClientLASTTURN1" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.039"/>
-  <testcase name="substituteClientLASTTURN2" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.056"/>
-  <testcase name="substituteClientLASTTURN3" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.066"/>
-  <testcase name="substituteClientLASTTURN4" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.085"/>
-  <testcase name="substituteClientDisconnectedBeforeStarting" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.039"/>
-  <testcase name="ctrlRollBackStateWithClientHandlers" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.052"/>
-  <testcase name="ctrlRollBackStateWithClientHandlersWithDisconnectedPlayerNowActive" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.061"/>
-  <testcase name="ctrlClientHandlerSubstitutionPlayerStateCorrectChange" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.051"/>
-  <testcase name="ctrlClientHandlerSubstitutionPlayerInTheGame" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.037"/>
-  <testcase name="ctrlSaveStateWithClientHandlers" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.017"/>
-  <testcase name="ctrlClientHandlerSubstitutionPlayerNotInTheGame" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.022"/>
-  <testcase name="ctrlCreationAddingOnePlayer" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.017"/>
-  <testcase name="ctrlLastTurn" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.017"/>
+  <testcase name="ctrlCreationSettingMainBoard" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.035"/>
+  <testcase name="substituteClientINSESSION" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.073"/>
+  <testcase name="ctrlCreationWrongNumberOfPlayersTooHigh" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0"/>
+  <testcase name="willPlay2" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.006"/>
+  <testcase name="ctrlRollbackState" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.125"/>
+  <testcase name="ctrlSaveStateWithGameState" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.094"/>
+  <testcase name="ctrlAddingMorePlayersThanNeeded" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.046"/>
+  <testcase name="ctrlCreationWrongNumberOfPlayersTooLow" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.001"/>
+  <testcase name="willPlay" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.042"/>
+  <testcase name="ctrlSavingState" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.045"/>
+  <testcase name="ctrlCreationFirstSetUp" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0"/>
+  <testcase name="ctrlCreationAddingTheSamePlayerAgain" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.018"/>
+  <testcase name="ctrlLastTurn2" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.021"/>
+  <testcase name="ctrlLastTurn3" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.041"/>
+  <testcase name="ctrlLastTurn4" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.025"/>
+  <testcase name="playerPositionInTurn" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.024"/>
+  <testcase name="ctrlCreationGoodNumberOfPlayers" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.02"/>
+  <testcase name="ctrlCreationAddingAllPlayers" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.017"/>
+  <testcase name="ctrlRollBackStateWithClientHandlersWithDisconnectedPlayerNowDisconnected" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.034"/>
+  <testcase name="playerPositionInTurn2" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.006"/>
+  <testcase name="playerPositionInTurn3" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.024"/>
+  <testcase name="ctrlRollBackStateWithGameState" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.049"/>
+  <testcase name="substituteClientLASTTURN1" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.066"/>
+  <testcase name="substituteClientLASTTURN2" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.053"/>
+  <testcase name="substituteClientLASTTURN3" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.044"/>
+  <testcase name="substituteClientLASTTURN4" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.059"/>
+  <testcase name="substituteClientDisconnectedBeforeStarting" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.059"/>
+  <testcase name="ctrlRollBackStateWithClientHandlers" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.022"/>
+  <testcase name="ctrlRollBackStateWithClientHandlersWithDisconnectedPlayerNowActive" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.018"/>
+  <testcase name="ctrlClientHandlerSubstitutionPlayerStateCorrectChange" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.02"/>
+  <testcase name="ctrlClientHandlerSubstitutionPlayerInTheGame" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.046"/>
+  <testcase name="ctrlSaveStateWithClientHandlers" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.013"/>
+  <testcase name="ctrlClientHandlerSubstitutionPlayerNotInTheGame" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.007"/>
+  <testcase name="ctrlCreationAddingOnePlayer" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.031"/>
+  <testcase name="ctrlLastTurn" classname="it.polimi.ingsw.controller.GameControllerTest.GameControllerTest" time="0.032"/>
 </testsuite>

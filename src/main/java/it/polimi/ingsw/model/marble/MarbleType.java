@@ -22,7 +22,7 @@ public enum MarbleType {
         }
 
         @Override
-        public String getUrl() {return "src/main/resources/PUNCHBOARD/blueMarble.png";}
+        public String getUrl() {return "/PUNCHBOARD/blueMarble.png";}
     },
     /**
      * The Grey Marble.
@@ -39,7 +39,7 @@ public enum MarbleType {
         }
 
         @Override
-        public String getUrl() {return "src/main/resources/PUNCHBOARD/greyMarble.png";}
+        public String getUrl() {return "/PUNCHBOARD/greyMarble.png";}
     },
     /**
      * The Purple Marble.
@@ -56,7 +56,7 @@ public enum MarbleType {
         }
 
         @Override
-        public String getUrl() {return "src/main/resources/PUNCHBOARD/purpleMarble.png";}
+        public String getUrl() {return "/PUNCHBOARD/purpleMarble.png";}
     },
     /**
      * The Red Marble.
@@ -73,7 +73,7 @@ public enum MarbleType {
         }
 
         @Override
-        public String getUrl() {return "src/main/resources/PUNCHBOARD/redMarble.png";}
+        public String getUrl() {return "/PUNCHBOARD/redMarble.png";}
     },
     /**
      * The White Marble.
@@ -95,7 +95,7 @@ public enum MarbleType {
         }
 
         @Override
-        public String getUrl() {return "src/main/resources/PUNCHBOARD/whiteMarble.png";}
+        public String getUrl() {return "/PUNCHBOARD/whiteMarble.png";}
     },
     /**
      * The Yellow Marble.
@@ -112,7 +112,7 @@ public enum MarbleType {
         }
 
         @Override
-        public String getUrl() {return "src/main/resources/PUNCHBOARD/yellowMarble.png";}
+        public String getUrl() {return "/PUNCHBOARD/yellowMarble.png";}
     };
 
     private final static Marble blueMarble = new BlueMarble();

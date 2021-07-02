@@ -91,7 +91,7 @@ public class MarketGridPanel extends JPanel{
                 label = (JLabel)component;
 
                 try {
-                    img = ImageIO.read(new File(marketMatrix[i][j].getUrl()));
+                    img = ImageIO.read(getClass().getResource(marketMatrix[i][j].getUrl()));
                     dimg = img.getScaledInstance(marble_width, marble_height, Image.SCALE_SMOOTH);
                     //dimg = img.getScaledInstance(component.getWidth()-30, component.getHeight()-30, Image.SCALE_SMOOTH);
                     imageIcon = new ImageIcon(dimg);
@@ -106,7 +106,7 @@ public class MarketGridPanel extends JPanel{
         label = (JLabel)component;
 
         try {
-            img = ImageIO.read(new File(marbleOnSlide.getUrl()));
+            img = ImageIO.read(getClass().getResource(marbleOnSlide.getUrl()));
             dimg = img.getScaledInstance(marble_width, marble_height, Image.SCALE_SMOOTH);
             //dimg = img.getScaledInstance(component.getWidth()-30, component.getHeight()-30, Image.SCALE_SMOOTH);
 
