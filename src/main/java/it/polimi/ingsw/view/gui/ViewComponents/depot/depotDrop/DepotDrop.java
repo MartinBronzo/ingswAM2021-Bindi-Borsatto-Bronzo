@@ -135,15 +135,15 @@ public class DepotDrop extends JPanel implements Resettable {
     public static String getImagePathFromResource(ResourceType resource){
         switch (resource){
             case SHIELD:
-                return "src/main/resources/shield small.png";
+                return "/shield small.png";
             case SERVANT:
-                return "src/main/resources/servant small.png";
+                return "/servant small.png";
             case STONE:
-                return "src/main/resources/stone small.png";
+                return "/stone small.png";
             case COIN:
-                return "src/main/resources/coins small.png";
+                return "/coins small.png";
             case FAITHPOINT:
-                return "src/main/resources/faithpoint small.png";
+                return "/faithpoint small.png";
             default:
                 return "";
         }

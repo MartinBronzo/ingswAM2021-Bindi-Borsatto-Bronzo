@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class DevSlotOnlyView extends JPanel {
         layeredPane.setPreferredSize(new Dimension(width, height));
 
         JLabel background = new JLabel();
-        background.setIcon(scaleImage("src/main/resources/board/devSlot.png", width, height));
+        background.setIcon(scaleImage(getClass().getResource("/board/devSlot.png"), width, height));
         background.setBounds(0, 0, width, height);
         layeredPane.add(background, new Integer(-1));
 
@@ -46,7 +47,7 @@ public class DevSlotOnlyView extends JPanel {
             devCard = devSlot.getDevCard(i + 1);
             if (devCard != null) {
                 JLabel cardLabel = new JLabel();
-                cardLabel.setIcon(scaleImage(path + devCard.getUrl(), width - 20, 230));
+                cardLabel.setIcon(scaleImage(getClass().getResource(path + devCard.getUrl()), width - 20, 230));
                 //cardLabel.setPreferredSize(new Dimension(200,200));
                 cardLabel.setBounds(10, (3 - i) * spaceBtwCards, width - 20, 230);
                 layeredPane.add(cardLabel, new Integer(i));
@@ -55,11 +56,11 @@ public class DevSlotOnlyView extends JPanel {
         this.add(layeredPane);
     }
 
-    private ImageIcon scaleImage(String image, int width, int height) {
+    private ImageIcon scaleImage(URL image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(image));
+            img = ImageIO.read(image);
         } catch (IOException e) {
             e.printStackTrace();
         }

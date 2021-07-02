@@ -96,7 +96,7 @@ public class DevGridPanel extends JPanel{
                 button.setText("Empty Deck");
             }else {
                 try {
-                    img = ImageIO.read(new File(directoryPath+devCard.getUrl()));
+                    img = ImageIO.read(getClass().getResource(directoryPath+devCard.getUrl()));
                     dimg = img.getScaledInstance(component.getWidth(), component.getHeight(), Image.SCALE_SMOOTH);
                     imageIcon = new ImageIcon(dimg);
                     button.setIcon(imageIcon);
@@ -140,7 +140,7 @@ public class DevGridPanel extends JPanel{
             }else {
                 try {
                     //System.out.println(devCard.getUrl());
-                    img = ImageIO.read(new File(directoryPath+devCard.getUrl()));
+                    img = ImageIO.read(getClass().getResource(directoryPath + devCard.getUrl()));
                     dimg = img.getScaledInstance(width,height, Image.SCALE_SMOOTH);
                     imageIcon = new ImageIcon(dimg);
                     button.setIcon(imageIcon);

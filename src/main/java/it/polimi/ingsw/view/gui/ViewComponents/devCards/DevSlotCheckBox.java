@@ -49,7 +49,7 @@ public class DevSlotCheckBox extends JPanel{
 
                 img = null;
                 try {
-                    img = ImageIO.read(new File(cardPath+devCard.getUrl()));
+                    img = ImageIO.read(getClass().getResource(cardPath + devCard.getUrl()));
                     dimg = img.getScaledInstance(200, 300, Image.SCALE_SMOOTH);
                     cardLabel.setIcon(new ImageIcon(dimg));
                 } catch (IOException e) {

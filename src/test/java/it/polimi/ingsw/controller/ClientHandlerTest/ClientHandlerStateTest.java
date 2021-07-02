@@ -99,9 +99,4 @@ public class ClientHandlerStateTest {
 
 
     }
-
-    //TODO: controllare come cambiano gli stati dei client handler dopo che questi hanno mandato le beginning decisions
-
-    //TODO: controllare cosa succede quando qualcuno si disconnette
-
 }
