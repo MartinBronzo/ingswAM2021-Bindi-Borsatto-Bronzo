@@ -18,12 +18,16 @@
 </ul>
 <p>Questi sono gli User Diagram che abbiamo preparato per la progettazione della comunicazione tra client e server:</p>
 <ul>
+	<li><a href="Login.png"> Connessione al server e login </a></li>
+	<li><a href="Discard LeaderCard And ExtraResource - Begginig.png"> Scartare le Carte Leader e prendere extra risorse all'inizio del gioco </a></li>
 	<li><a href="BuyFromMarket.png"> Comprare dal Mercato </a></li>
-	<li><a href=""> </a></li>
+	<li><a href="BuyDevCard.png"> Comprare una Carta Sviluppo </a></li>
+	<li><a href="Activate Production.png"> Attivare la produzione</a></li>
+	<li><a href="Activate LeaderCard.png"> Attivare una Carta Leader</a></li>
+	<li><a href="Discard LeaderCard.png"> Scartare una Carta Leader </a></li>
+	<li><a href="Move Resources.png"> Muovere le risorse</a></li>
+	<li><a href="Ending Turns.png"> Cambio dei turni </a></li>
 	
-	<li><a href=""> </a></li>
-	
-	<li><a href=""> </a></li>
 </ul>
 <h2>
   Aspetti salienti
