@@ -51,7 +51,7 @@ public class ShelfDrag extends JPanel implements DragUpdatable, Resettable {
         JLabel label;
         DragSource ds;
         for(int i = 0; i < depotShelf.getQuantity(); i++){
-            resource = new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType()));
+            resource = new ImageIcon(getClass().getResource(DepotDrop.getImagePathFromResource(depotShelf.getResourceType())));
             resource.setDescription("depot " + depotShelf.getResourceType() + " " + this.shelfNumber );
             label = new JLabel(resource);
             this.resources.add(label);
@@ -70,7 +70,7 @@ public class ShelfDrag extends JPanel implements DragUpdatable, Resettable {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(new ImageIcon(ShelfDrop.getDepotFileName(shelfNumber)).getImage(), 100, 100, null);
+        g.drawImage(new ImageIcon(getClass().getResource(ShelfDrop.getDepotFileName(shelfNumber))).getImage(), 100, 100, null);
     }
 
     /**

@@ -28,20 +28,6 @@ public class RegisterDropFromFiniteRes implements RegisterDropInterface {
     @Override
     public void accept(Icon icon) throws IllegalActionException {
         //We update our decision counters
-        /*switch (icon.toString()){
-            case "src/main/resources/coins small.png":
-                dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.COIN);
-                break;
-            case "src/main/resources/servant small.png":
-                dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.SERVANT);
-                break;
-            case "src/main/resources/shield small.png":
-                dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.SHIELD);
-                break;
-            case "src/main/resources/stone small.png":
-                dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.STONE);
-                break;
-        }*/
         dropTarget.addDecision(dropTarget.getDropInfo(), ResourceType.valueOf(((ImageIcon) icon).getDescription().split(" ")[1]));
 
         //If we arrive here then the drop can be made

@@ -87,7 +87,7 @@ public class LimitedResourcesDrag extends JPanel implements DragUpdatable, Reset
         JLabel label;
         DragSource ds;
         for(int i = 0; i < quantity; i++){
-            resource = new ImageIcon(DepotDrop.getImagePathFromResource(type));
+            resource = new ImageIcon(getClass().getResource(DepotDrop.getImagePathFromResource(type)));
             resource.setDescription("limitedRes " + type);
             label = new JLabel(resource);
             this.resources.add(label);

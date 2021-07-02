@@ -49,7 +49,7 @@ public class StrongBoxOnlyView extends JPanel {
 
         HashMap<ResourceType, Integer> resources = PanelManager.getInstance().getStrongBox(nickname);
         for(Map.Entry<ResourceType, Integer> e: resources.entrySet()){
-            ImageIcon resource = new ImageIcon(DepotDrop.getImagePathFromResource(e.getKey()));;
+            ImageIcon resource = new ImageIcon(getClass().getResource(DepotDrop.getImagePathFromResource(e.getKey())));
             JLabel label = new JLabel(resource);
             label.setText(String.valueOf(e.getValue()));
             label.setBounds(10,10,45,45);

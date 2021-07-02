@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,13 +64,13 @@ public class ShelfOnlyView extends JPanel {
         layeredPane.setPreferredSize(new Dimension(180, 80));
 
         JLabel background = new JLabel();
-        background.setIcon(scaleImage(ShelfDrop.getDepotFileName(shelfNumber), 180, 80));
+        background.setIcon(scaleImage(getClass().getResource(ShelfDrop.getDepotFileName(shelfNumber)), 180, 80));
         background.setBounds(0, 0, 180, 80);
         layeredPane.add(background, new Integer(-1));
 
         for(int i = 0; i < depotShelf.getQuantity(); i++){
             //resource = new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType()));
-            label = new JLabel(scaleImage(DepotDrop.getImagePathFromResource(depotShelf.getResourceType()),img_width,img_height));
+            label = new JLabel(scaleImage(getClass().getResource(DepotDrop.getImagePathFromResource(depotShelf.getResourceType())),img_width,img_height));
             label.setBounds(((4- shelfNumber)*25)+img_width*i, 30, img_width, img_height);
             this.resources.add(label);
             layeredPane.add(label);
@@ -77,11 +78,11 @@ public class ShelfOnlyView extends JPanel {
         this.add(layeredPane);
     }
 
-    private ImageIcon scaleImage(String image, int width, int height) {
+    private ImageIcon scaleImage(URL image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(image));
+            img = ImageIO.read(image);
         } catch (IOException e) {
             e.printStackTrace();
         }

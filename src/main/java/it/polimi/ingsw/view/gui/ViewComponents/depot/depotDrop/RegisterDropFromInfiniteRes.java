@@ -31,20 +31,5 @@ public class RegisterDropFromInfiniteRes implements RegisterDropInterface {
 
         //Updates the DropTarget about what drop has been made
         dropTarget.addDecision(dropTarget.getDropInfo(), imageType);
-
-        /*switch (icon.toString()){
-            case "src/main/resources/coins small.png":
-                dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.COIN);
-                break;
-            case "src/main/resources/servant small.png":
-                dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.SERVANT);
-                break;
-            case "src/main/resources/shield small.png":
-                dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.SHIELD);
-                break;
-            case "src/main/resources/stone small.png":
-                dropTarget.addDecision(dropTarget.getShelfNumber(), ResourceType.STONE);
-                break;
-        }*/
     }
 }

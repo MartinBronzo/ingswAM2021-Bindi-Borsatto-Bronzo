@@ -144,7 +144,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(new ImageIcon(getDepotFileName(shelfNumber)).getImage(), 100, 100, null);
+        g.drawImage(new ImageIcon(getClass().getResource(getDepotFileName(shelfNumber))).getImage(), 100, 100, null);
     }
 
     /**
@@ -155,18 +155,14 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     public static String getDepotFileName(int shelf){
         switch (shelf){
             case 1:
-                return "src/main/resources/shelf 1.png";
+                return "/shelf 1.png";
             case 2:
-                return "src/main/resources/shelf 2.png";
+                return "/shelf 2.png";
             case 3:
-                return "src/main/resources/shelf 3.png";
+                return "/shelf 3.png";
         }
         return "";
     }
-
-    /*public List<Pair<Integer, ResourceType>> getResToDepot() {
-        return resToDepot;
-    }*/
 
     /**
      * Returns the type of resource stored onto this shelf
@@ -211,7 +207,7 @@ public class ShelfDrop extends JPanel implements Droppable, DropResettable {
     public void fillShelf(DepotShelf depotShelf) {
         JLabel resource;
         for(int i = 0; i < depotShelf.getQuantity(); i++){
-            ImageIcon image = new ImageIcon(DepotDrop.getImagePathFromResource(depotShelf.getResourceType()));
+            ImageIcon image = new ImageIcon(getClass().getResource(DepotDrop.getImagePathFromResource(depotShelf.getResourceType())));
             image.setDescription("Shelf " + depotShelf.getResourceType() + " " + this.shelfNumber);
             resource = new JLabel(image);
             this.add(resource);

@@ -69,7 +69,7 @@ public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
             label.setTransferHandler(new TransferHandler("label"));
             this.add(label);
         }*/
-        resource = new ImageIcon(DepotDrop.getImagePathFromResource(type));
+        resource = new ImageIcon(getClass().getResource(DepotDrop.getImagePathFromResource(type)));
         resource.setDescription("strongbox " + type);
         label = new JLabel(resource);
         label.setText(String.valueOf(quantity));
