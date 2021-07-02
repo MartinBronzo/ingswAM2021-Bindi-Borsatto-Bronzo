@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class DevSlotCheckBox extends JPanel{
     private List<JCheckBox> checkBoxList;
-    private static final String cardPath = "src/main/resources/Masters of Renaissance_Cards_FRONT/";
+    private static final String cardPath = "/Masters of Renaissance_Cards_FRONT/";
 
     /**
      * Constructs a DevSlotCheckBox

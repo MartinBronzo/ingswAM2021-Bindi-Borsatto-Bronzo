@@ -35,7 +35,7 @@ public class LeaderCardDrag extends JPanel implements DragUpdatable, Resettable 
         this.resources = new ArrayList<>();
 
         JLabel label = new JLabel();
-        ImageIcon image = LeaderCardPanel.scaleImage(leader.getUrl(), 100, 150);
+        ImageIcon image = LeaderCardPanel.scaleImage(getClass().getResource(leader.getUrl()), 100, 150);
         //ImageIcon image = new ImageIcon(leader.getUrl());
         label.setIcon(image);
         label.setAlignmentX(LEFT_ALIGNMENT);

@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -44,11 +45,11 @@ public class OthersPlayerLeaderCards extends JPanel {
      * @param height the height the ImageIcon needs to have
      * @return a properly scaled ImageIcon
      */
-    public static ImageIcon scaleImage(String image, int width, int height) {
+    public static ImageIcon scaleImage(URL image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(image));
+            img = ImageIO.read(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,7 +66,7 @@ public class OthersPlayerLeaderCards extends JPanel {
             activeCardPanel.setLayout(new BoxLayout(activeCardPanel, BoxLayout.PAGE_AXIS));
 
             JLabel label = new JLabel();
-            image = scaleImage(leader.getUrl(), 180, 250);
+            image = scaleImage(getClass().getResource(leader.getUrl()), 180, 250);
             label.setIcon(image);
             label.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -82,7 +83,7 @@ public class OthersPlayerLeaderCards extends JPanel {
             cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.PAGE_AXIS));
 
             JLabel label = new JLabel();
-            image = scaleImage(String.valueOf(getClass().getResource("/back/Masters of Renaissance__Cards_BACK_3mmBleed-49-1.png")), 180, 250);
+            image = scaleImage(getClass().getResource("/back/Masters of Renaissance__Cards_BACK_3mmBleed-49-1.png"), 180, 250);
             label.setIcon(image);
             label.setAlignmentX(LEFT_ALIGNMENT);
 
