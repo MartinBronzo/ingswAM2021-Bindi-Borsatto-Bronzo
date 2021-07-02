@@ -11,8 +11,11 @@
 </ul>
 </p>
 <h2>UML e User Diagram</h2>
-
-<a href="UML dopo.pdf"> dopo </a>
+<p>Questi sono gli UML del nostro model:</p>
+<ul>
+	<li><a href="UML prima.pdf"> UML prima della scrittura del codice </a></li>
+	<li><a href="UML dopo.pdf"> UML a svillupo completato </a></li>
+</ul>
 <h2>
   Aspetti salienti
 </h2>
@@ -49,7 +52,7 @@
     <li>Struttura intelligente GUI (panel manager e riutilizzo componenti visivi) </li>
 	<ul>
       <li>La nostra GUI è stata progettata cercando di avere una alta separazione dei compiti: abbiamo una classe, GuiClient, che si occupa solo dell'interazione con il Server (invio e ricezione dei messaggi) e una classe PanelManager che si occupa solo di cambiare le viste per l'utente. Questo ci ha facilitato nella fase di scrittura e di debugging</li>
-      <li>Inoltre, dopo aver pianificato cosa volessimo che l'utente vedesse e potesse fare (tramite <a href="">questo disegno</a> questo disegno), abbiamo creato prima gli oggetti comuni (per es., i Depositi su cui si potessero fare dei drop di risorse, i Depositi da cui fare drag di risorse, etc.) per poter poi ricreare le nostre viste principalmente semplicimente mettendo insieme i vari pezzi che ci servivano </li>
+      <li>Inoltre, dopo aver pianificato cosa volessimo che l'utente vedesse e potesse fare (tramite <a href="Schema per la GUI.png">questo disegno</a> questo disegno), abbiamo creato prima gli oggetti comuni (per es., i Depositi su cui si potessero fare dei drop di risorse, i Depositi da cui fare drag di risorse, etc.) per poter poi ricreare le nostre viste principalmente semplicimente mettendo insieme i vari pezzi che ci servivano </li>
     </ul>
 </ul>
 </p>
