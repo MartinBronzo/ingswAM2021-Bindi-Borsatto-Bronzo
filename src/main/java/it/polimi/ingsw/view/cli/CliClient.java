@@ -28,6 +28,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -52,6 +54,7 @@ public class CliClient implements Runnable, Client {
     private final AtomicBoolean forceLogout;
     private String logoutMessage = "Thanks for Playing, See you next time :D";
     private String cliCommandContent;
+    private ExecutorService writers;
 
 
     /**
@@ -66,6 +69,7 @@ public class CliClient implements Runnable, Client {
         this.forceLogout = new AtomicBoolean();
         this.forceLogout.set(false);
         stdIn = new BufferedReader(new InputStreamReader(System.in));
+        writers = Executors.newCachedThreadPool();
 
         RuntimeTypeAdapterFactory<Requirement> requirementTypeFactory
                 = RuntimeTypeAdapterFactory.of(Requirement.class, "type");
@@ -282,8 +286,12 @@ public class CliClient implements Runnable, Client {
     @Override
     public void sendMessage(Command command) throws NullPointerException {
         if (out == null) throw new NullPointerException("PrintWriter is null");
-        out.println(gson.toJson(command));
-        //System.out.println("Sending:\t" + gson.toJson(command));
+        if (command == null) throw new NullPointerException("Command is null");
+        writers.submit(() -> {
+            out.println(gson.toJson(command));
+            //System.out.println("Sending:\t" + gson.toJson(command));
+        });
+        return;
     }
 
     /**
@@ -609,7 +617,8 @@ public class CliClient implements Runnable, Client {
                             List<Map.Entry<String, Integer>> results = new LinkedList<>(message.getResults().entrySet());
                             results.sort((x, y) -> y.getValue().compareTo(x.getValue()));
                             CliView.printFinalScores(results);
-                            sendMessage(new Command("quit"));
+                            CliView.printInfo(logoutMessage);
+                            System.exit(0);
                         }
                         break;
                    /* case SETBEGINNINGDECISIONS:
@@ -650,7 +659,8 @@ public class CliClient implements Runnable, Client {
                         synchronized (this){
                             SoloGameResultMessage message = gson.fromJson(responseContent, SoloGameResultMessage.class);
                             CliView.printSoloGameScores(message.isVictory(), message.getMessage());
-                            sendMessage(new Command("quit"));
+                            CliView.printInfo(logoutMessage);
+                            System.exit(0);
                         }
 
                         break;

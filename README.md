@@ -11,6 +11,24 @@
 </ul>
 </p>
 <h2>UML e User Diagram</h2>
+<p>Questi sono gli UML del nostro model:</p>
+<ul>
+	<li><a href="Images/UML prima.pdf"> UML prima della scrittura del codice </a></li>
+	<li><a href="Images/UML dopo.pdf"> UML a svillupo completato </a></li>
+</ul>
+<p>Questi sono gli User Diagram che abbiamo preparato per la progettazione della comunicazione tra client e server:</p>
+<ul>
+	<li><a href="Images/Login.png"> Connessione al server e login </a></li>
+	<li><a href="Images/Discard LeaderCard And ExtraResource - Beginning.png"> Scartare le Carte Leader e prendere extra risorse all'inizio del gioco </a></li>
+	<li><a href="Images/BuyFromMarket.png"> Comprare dal Mercato </a></li>
+	<li><a href="Images/BuyDevCard.png"> Comprare una Carta Sviluppo </a></li>
+	<li><a href="Images/ActivateProduction.png"> Attivare la produzione</a></li>
+	<li><a href="Images/Activate LeaderCard.png"> Attivare una Carta Leader</a></li>
+	<li><a href="Images/Discard LeaderCard.png"> Scartare una Carta Leader </a></li>
+	<li><a href="Images/Move Resources.png"> Muovere le risorse</a></li>
+	<li><a href="Images/Ending Turns.png"> Cambio dei turni </a></li>
+	
+</ul>
 <h2>
   Aspetti salienti
 </h2>
@@ -47,7 +65,7 @@
     <li>Struttura intelligente GUI (panel manager e riutilizzo componenti visivi) </li>
 	<ul>
       <li>La nostra GUI è stata progettata cercando di avere una alta separazione dei compiti: abbiamo una classe, GuiClient, che si occupa solo dell'interazione con il Server (invio e ricezione dei messaggi) e una classe PanelManager che si occupa solo di cambiare le viste per l'utente. Questo ci ha facilitato nella fase di scrittura e di debugging</li>
-      <li>Inoltre, dopo aver pianificato cosa volessimo che l'utente vedesse e potesse fare (tramite <a href="">questo disegno</a> questo disegno), abbiamo creato prima gli oggetti comuni (per es., i Depositi su cui si potessero fare dei drop di risorse, i Depositi da cui fare drag di risorse, etc.) per poter poi ricreare le nostre viste principalmente semplicimente mettendo insieme i vari pezzi che ci servivano </li>
+      <li>Inoltre, dopo aver pianificato cosa volessimo che l'utente vedesse e potesse fare (tramite <a href="Images/Schema per la GUI.png">questo disegno</a> questo disegno), abbiamo creato prima gli oggetti comuni (per es., i Depositi su cui si potessero fare dei drop di risorse, i Depositi da cui fare drag di risorse, etc.) per poter poi ricreare le nostre viste principalmente semplicimente mettendo insieme i vari pezzi che ci servivano </li>
     </ul>
 </ul>
 </p>

@@ -114,7 +114,7 @@ class stringToMessageTest {
 
     @Test
     void toActivateProductionMessage() {
-        String string = "1, 2, 4; 2 COIN, 1 SERVANT; TRUE, COIN SERVANT, STONE; COIN 2 2, STONE 2 2;  COIN 2, SERVANT 1; STONE 2, SERVANT 2;";
+        String string = "1, 2, 4; 2 COIN, 1 SERVANT; TRUE, COIN SERVANT, STONE; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;";
         ActivateProductionMessage message = StringToMessage.toActivateProductionMessage(string);
         List<Integer> integers = message.getDevCards();
         assertEquals(1, integers.get(0));
