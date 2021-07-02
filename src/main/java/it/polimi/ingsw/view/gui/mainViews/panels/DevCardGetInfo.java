@@ -28,7 +28,7 @@ public class DevCardGetInfo extends JPanel {
     private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
     private int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
     private int panelHeight = PanelManager.getInstance().getGameFrame().getHeight();
-    private final String directoryPath = "src/main/resources/front/";
+    private final String directoryPath = "/front/";
     private JLabel selectedCard;
     private InstructionPanel instructionPanel;
     private CardCheckbox cardCheckboxPanel;
@@ -104,7 +104,7 @@ public class DevCardGetInfo extends JPanel {
         if (devCard == null) throw new NullPointerException("there is no card in the selected cell");
 
         try {
-            img = ImageIO.read(new File(directoryPath + devCard.getUrl()));
+            img = ImageIO.read(getClass().getResource(directoryPath + devCard.getUrl()));
             dimg = img.getScaledInstance(333, 555, Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(dimg);
             selectedCard.setIcon(imageIcon);

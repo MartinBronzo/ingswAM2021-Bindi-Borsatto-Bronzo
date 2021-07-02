@@ -28,7 +28,7 @@ public class DevSlotOnlyView extends JPanel {
      * @param devSlot the DevSlot whose visual presentation is going to be displayed onto this panel
      */
     public DevSlotOnlyView(DevSlot devSlot) {
-        String path = "src/main/resources/Masters of Renaissance_Cards_FRONT/";
+        String path = "/Masters of Renaissance_Cards_FRONT/";
         labelList = new ArrayList<>();
 
         DevCard devCard;

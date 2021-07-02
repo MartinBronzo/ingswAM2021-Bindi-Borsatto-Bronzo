@@ -40,7 +40,7 @@ public class CardComboBox extends JPanel {
             //scale image
             BufferedImage img = null;
             try {
-                img = ImageIO.read(new File(leader));
+                img = ImageIO.read(getClass().getResource(leader));
             } catch (IOException e) {
                 e.printStackTrace();
             }

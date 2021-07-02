@@ -31,7 +31,7 @@ public class BuyFromMarketPanel extends JPanel {
     private static final int panelYPosition = PanelManager.getInstance().getGameFrame().getY();
     private int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
     private int panelHeight = PanelManager.getInstance().getGameFrame().getHeight();
-    private final String infoPath ="src/main/resources/PUNCHBOARD/infoBiglie.png";
+    private final String infoPath ="/PUNCHBOARD/infoBiglie.png";
     private JPanel market;
     private JLabel instructionLabel;
     private JButton cancelButton;
@@ -60,7 +60,7 @@ public class BuyFromMarketPanel extends JPanel {
         JLabel info = new JLabel();
         //info.setSize(400, 200);
         try {
-            Image img = ImageIO.read(new File(infoPath));
+            Image img = ImageIO.read(getClass().getResource(infoPath));
             Image dimg = img.getScaledInstance(600, 200, Image.SCALE_SMOOTH);
             //Image dimg = img.getScaledInstance(400, info.getHeight(), Image.SCALE_SMOOTH);
 

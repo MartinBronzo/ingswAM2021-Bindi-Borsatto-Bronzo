@@ -16,7 +16,7 @@ import java.io.IOException;
 public class ImageInfoDialog extends InfoDialog{
 
     private JLabel image;
-    private static String punchBoardDir ="src/main/resources/PUNCHBOARD/";
+    private static String punchBoardDir ="/PUNCHBOARD/";
 
     /**
      * Constructs an ImageInfoDialog
@@ -37,7 +37,8 @@ public class ImageInfoDialog extends InfoDialog{
         Image dimg;
         ImageIcon imageIcon;
         try {
-            img = ImageIO.read(new File(punchBoardDir+path));
+            String string = punchBoardDir + path;
+            img = ImageIO.read(getClass().getResource(string));
             dimg = img.getScaledInstance(65, 65, Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(dimg);
             this.image.setIcon(imageIcon);
