@@ -33,8 +33,8 @@ public class FaithTrackOnlyView extends JPanel {
     }
 
     private void addFaithTrack() {
-        String[] popeUrlsFront = {"src/main/resources/PUNCHBOARD/pope_favor1_front.png", "src/main/resources/PUNCHBOARD/pope_favor2_front.png", "src/main/resources/PUNCHBOARD/pope_favor3_front.png"};
-        String[] popeUrlsBack = {"src/main/resources/PUNCHBOARD/pope_favor1_back.png", "src/main/resources/PUNCHBOARD/pope_favor2_back.png", "src/main/resources/PUNCHBOARD/pope_favor3_back.png"};
+        String[] popeUrlsFront = {"/PUNCHBOARD/pope_favor1_front.png", "/PUNCHBOARD/pope_favor2_front.png", "/PUNCHBOARD/pope_favor3_front.png"};
+        String[] popeUrlsBack = {"/PUNCHBOARD/pope_favor1_back.png", "/PUNCHBOARD/pope_favor2_back.png", "/PUNCHBOARD/pope_favor3_back.png"};
         final int height = 70;
         final int width = 70;
 
@@ -56,10 +56,10 @@ public class FaithTrackOnlyView extends JPanel {
         for (PopeTile popeTile : list) {
             JLabel popeLabel = new JLabel();
             if (popeTile.isActivated()) { //if the tile is activated
-                popeLabel.setIcon(scaleImage(popeUrlsFront[i], width, height));
+                popeLabel.setIcon(scaleImage(String.valueOf(getClass().getResource(popeUrlsFront[i])), width, height));
             } else if (!popeTile.isDiscarded()) { //if the tile is on the board but isn't activated
                 popeLabel = new JLabel();
-                popeLabel.setIcon(scaleImage(popeUrlsBack[i], width, height));
+                popeLabel.setIcon(scaleImage(String.valueOf(getClass().getResource(popeUrlsBack[i])), width, height));
             }
             infoPanel.add(popeLabel);
             i++;
@@ -67,7 +67,7 @@ public class FaithTrackOnlyView extends JPanel {
         container.add(infoPanel);
 
         JLabel faithTrack = new JLabel();
-        faithTrack.setIcon(scaleImage("src/main/resources/faithTrack.png", 1000, 150));
+        faithTrack.setIcon(scaleImage(String.valueOf(getClass().getResource("/faithTrack.png")), 1000, 150));
         faithTrack.setAlignmentX(CENTER_ALIGNMENT);
         container.add(faithTrack);
 

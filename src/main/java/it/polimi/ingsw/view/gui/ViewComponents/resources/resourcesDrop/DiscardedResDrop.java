@@ -111,7 +111,7 @@ public class DiscardedResDrop extends JPanel implements Droppable, DropResettabl
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(new ImageIcon("src/main/resources/trashcan medium.png").getImage(), 100, 100, null);
+        g.drawImage(new ImageIcon(getClass().getResource("/trashcan medium.png")).getImage(), 100, 100, null);
     }
 
     @Override

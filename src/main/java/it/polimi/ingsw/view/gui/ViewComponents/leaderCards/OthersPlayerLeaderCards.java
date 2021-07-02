@@ -82,7 +82,7 @@ public class OthersPlayerLeaderCards extends JPanel {
             cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.PAGE_AXIS));
 
             JLabel label = new JLabel();
-            image = scaleImage("src/main/resources/back/Masters of Renaissance__Cards_BACK_3mmBleed-49-1.png", 180, 250);
+            image = scaleImage(String.valueOf(getClass().getResource("/back/Masters of Renaissance__Cards_BACK_3mmBleed-49-1.png")), 180, 250);
             label.setIcon(image);
             label.setAlignmentX(LEFT_ALIGNMENT);
 

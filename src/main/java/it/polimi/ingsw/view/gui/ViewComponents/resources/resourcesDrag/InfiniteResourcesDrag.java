@@ -27,22 +27,22 @@ public class InfiniteResourcesDrag extends JPanel {
         ImageIcon image;
 
         //COIN
-        image = new ImageIcon("src/main/resources/coins small.png");
+        image = new ImageIcon(getClass().getResource("/coins small.png"));
         image.setDescription("InfiniteRes " + ResourceType.COIN);
         this.label1 = new JLabel(image);
 
         //SERVANT
-        image = new ImageIcon("src/main/resources/servant small.png");
+        image = new ImageIcon(getClass().getResource("/servant small.png"));
         image.setDescription("InfiniteRes " + ResourceType.SERVANT);
         this.label2 = new JLabel(image);
 
         //SHIELD
-        image = new ImageIcon("src/main/resources/shield small.png");
+        image = new ImageIcon(getClass().getResource("/shield small.png"));
         image.setDescription("InfiniteRes " + ResourceType.SHIELD);
         this.label3 = new JLabel(image);
 
         //STONE
-        image = new ImageIcon("src/main/resources/stone small.png");
+        image = new ImageIcon(getClass().getResource("/stone small.png"));
         image.setDescription("InfiniteRes " + ResourceType.STONE);
         this.label4 = new JLabel(image);
 

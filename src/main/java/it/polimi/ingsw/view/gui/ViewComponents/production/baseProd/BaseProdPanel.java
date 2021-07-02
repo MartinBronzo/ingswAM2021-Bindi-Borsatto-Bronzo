@@ -20,7 +20,7 @@ public class BaseProdPanel extends JPanel implements Resettable {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-        this.add(new JLabel(new ImageIcon("src/main/resources/genericMarble.png")));
+        this.add(new JLabel(new ImageIcon(getClass().getResource("/genericMarble.png"))));
 
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
@@ -68,7 +68,7 @@ public class BaseProdPanel extends JPanel implements Resettable {
         resource = null;
         //removes the previous image of the resource and repaints the panel
         this.remove(getComponentCount()-1);
-        this.add(new JLabel(new ImageIcon("src/main/resources/genericMarble.png")));
+        this.add(new JLabel(new ImageIcon(getClass().getResource("/genericMarble.png"))));
         this.revalidate();
         this.repaint();
     }
