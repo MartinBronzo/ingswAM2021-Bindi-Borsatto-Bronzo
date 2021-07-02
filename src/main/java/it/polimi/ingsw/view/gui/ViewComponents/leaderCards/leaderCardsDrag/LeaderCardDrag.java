@@ -54,7 +54,7 @@ public class LeaderCardDrag extends JPanel implements DragUpdatable, Resettable 
         JLabel label;
         DragSource ds;
         for(int i = 0; i < alreadyStoredRes; i++){
-            resource = new ImageIcon(DepotDrop.getImagePathFromResource(this.resStored));
+            resource = new ImageIcon(getClass().getResource(DepotDrop.getImagePathFromResource(this.resStored)));
             resource.setDescription("leaderCard " + this.resStored);
             label = new JLabel(resource);
             this.resources.add(label);

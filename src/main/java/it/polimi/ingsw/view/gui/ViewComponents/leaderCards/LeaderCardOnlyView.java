@@ -33,7 +33,7 @@ public class LeaderCardOnlyView extends JPanel {
     private void fillLeaderCard(ResourceType resourceType, int alreadyPresent){
         JLabel resource;
         for(int i = 0; i < alreadyPresent; i++){
-            resource = new JLabel(new ImageIcon(DepotDrop.getImagePathFromResource(resourceType)));
+            resource = new JLabel(new ImageIcon(getClass().getResource(DepotDrop.getImagePathFromResource(resourceType))));
             this.add(resource);
         }
     }
