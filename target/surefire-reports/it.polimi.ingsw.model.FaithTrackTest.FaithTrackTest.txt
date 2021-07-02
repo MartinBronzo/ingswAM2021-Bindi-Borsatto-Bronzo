@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: it.polimi.ingsw.model.FaithTrackTest.FaithTrackTest
 -------------------------------------------------------------------------------
-Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.136 s - in it.polimi.ingsw.model.FaithTrackTest.FaithTrackTest
+Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.218 s - in it.polimi.ingsw.model.FaithTrackTest.FaithTrackTest
