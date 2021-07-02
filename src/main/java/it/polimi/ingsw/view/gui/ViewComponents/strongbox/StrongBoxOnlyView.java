@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class StrongBoxOnlyView extends JPanel {
         backgroundPane.setPreferredSize(new Dimension(width, height));
 
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(scaleImage(String.valueOf(getClass().getResource("/strongboxOnlyView.png")), width, height));
+        backgroundLabel.setIcon(scaleImage(getClass().getResource("/strongboxOnlyView.png"), width, height));
         backgroundLabel.setBounds(0, 0, width, height);
         backgroundPane.add(backgroundLabel, new Integer(-1));
 
@@ -62,11 +63,11 @@ public class StrongBoxOnlyView extends JPanel {
 
     }
 
-    private ImageIcon scaleImage(String image, int width, int height) {
+    private ImageIcon scaleImage(URL image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(image));
+            img = ImageIO.read(image);
         } catch (IOException e) {
             e.printStackTrace();
         }

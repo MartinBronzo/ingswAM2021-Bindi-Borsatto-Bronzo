@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +57,10 @@ public class FaithTrackOnlyView extends JPanel {
         for (PopeTile popeTile : list) {
             JLabel popeLabel = new JLabel();
             if (popeTile.isActivated()) { //if the tile is activated
-                popeLabel.setIcon(scaleImage(String.valueOf(getClass().getResource(popeUrlsFront[i])), width, height));
+                popeLabel.setIcon(scaleImage(getClass().getResource(popeUrlsFront[i]), width, height));
             } else if (!popeTile.isDiscarded()) { //if the tile is on the board but isn't activated
                 popeLabel = new JLabel();
-                popeLabel.setIcon(scaleImage(String.valueOf(getClass().getResource(popeUrlsBack[i])), width, height));
+                popeLabel.setIcon(scaleImage(getClass().getResource(popeUrlsBack[i]), width, height));
             }
             infoPanel.add(popeLabel);
             i++;
@@ -67,18 +68,18 @@ public class FaithTrackOnlyView extends JPanel {
         container.add(infoPanel);
 
         JLabel faithTrack = new JLabel();
-        faithTrack.setIcon(scaleImage(String.valueOf(getClass().getResource("/faithTrack.png")), 1000, 150));
+        faithTrack.setIcon(scaleImage(getClass().getResource("/faithTrack.png"), 1000, 150));
         faithTrack.setAlignmentX(CENTER_ALIGNMENT);
         container.add(faithTrack);
 
         this.add(container);
     }
 
-    private ImageIcon scaleImage(String image, int width, int height) {
+    private ImageIcon scaleImage(URL image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(image));
+            img = ImageIO.read(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
