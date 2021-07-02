@@ -1,6 +1,6 @@
 <h1>ingswAM2021-Bindi-Borsatto-Bronzo</h1>
 <h2> Recap </h2>
-<p> Questa applicazione è la nostra versione software del gioco da tavolo <i> Maestri del Rinascimento</i>.
+<p> Questa applicazione è la nostra versione software del gioco da tavolo <i> Maestri del Rinascimento</i>.</p>
   Abbiamo applicato le seguenti funzionalità:
   <ul>
     <li>Regole complete (partita solitario inclusa)</li>
@@ -9,18 +9,17 @@
     <li>Partite multiple</li>
     <li>Resilienza alle disconnessioni</li>
 </ul>
-</p>
 <h2>UML e User Diagram</h2>
 <p>Questi sono gli UML del nostro model:</p>
 <ul>
-	<li><a href="UML prima.pdf"> UML prima della scrittura del codice </a></li>
-	<li><a href="UML dopo.pdf"> UML a svillupo completato </a></li>
+	<li><a href="Images/UML%20prima.pdf"> UML prima della scrittura del codice </a></li>
+	<li><a href="Images/UML%20dopo.pdf"> UML a svillupo completato </a></li>
 </ul>
 <h2>
   Aspetti salienti
 </h2>
 <p>
- Vogliamo evidenziare le seguenti parti della nostra realizzazione dell'applicazione:
+ Vogliamo evidenziare le seguenti parti della nostra realizzazione dell'applicazione:</p>
   <ul>
    	<li>Lettura degli elementi del gioco da file XML:</li>
     <ul>
@@ -52,10 +51,9 @@
     <li>Struttura intelligente GUI (panel manager e riutilizzo componenti visivi) </li>
 	<ul>
       <li>La nostra GUI è stata progettata cercando di avere una alta separazione dei compiti: abbiamo una classe, GuiClient, che si occupa solo dell'interazione con il Server (invio e ricezione dei messaggi) e una classe PanelManager che si occupa solo di cambiare le viste per l'utente. Questo ci ha facilitato nella fase di scrittura e di debugging</li>
-      <li>Inoltre, dopo aver pianificato cosa volessimo che l'utente vedesse e potesse fare (tramite <a href="Schema per la GUI.png">questo disegno</a> questo disegno), abbiamo creato prima gli oggetti comuni (per es., i Depositi su cui si potessero fare dei drop di risorse, i Depositi da cui fare drag di risorse, etc.) per poter poi ricreare le nostre viste principalmente semplicimente mettendo insieme i vari pezzi che ci servivano </li>
+      <li>Inoltre, dopo aver pianificato cosa volessimo che l'utente vedesse e potesse fare (tramite <a href="Images/Schema%20per%20la%20GUI.png">questo disegno</a> questo disegno), abbiamo creato prima gli oggetti comuni (per es., i Depositi su cui si potessero fare dei drop di risorse, i Depositi da cui fare drag di risorse, etc.) per poter poi ricreare le nostre viste principalmente semplicimente mettendo insieme i vari pezzi che ci servivano </li>
     </ul>
 </ul>
-</p>
 
 <h2>
   Comandi da utilizzare
