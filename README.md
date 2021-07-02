@@ -70,6 +70,9 @@
 </ul>
 </p>
 
+<h2>Cheats</h2>
+Abbiamo implementato un comando di cheat (da CLI scrivere "CHEAT", da GUI cliccare sul bottone "Cheat") che permette di guadagnare risorse e depositarle nel deposito senza prenderle dal Mercato o attivando la produzione.
+
 <h2>
   Comandi da utilizzare
 </h2>
