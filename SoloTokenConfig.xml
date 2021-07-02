@@ -6,41 +6,41 @@
     <DiscardToken>
         <Color>GREEN</Color>
         <NumCards>2</NumCards>
-        <Url>src/main/resources/PUNCHBOARD/cerchio2.png</Url>
+        <Url>/PUNCHBOARD/cerchio2.png</Url>
     </DiscardToken>
 
     <!--TOKEN-->
     <DiscardToken>
         <Color>YELLOW</Color>
         <NumCards>2</NumCards>
-        <Url>src/main/resources/PUNCHBOARD/cerchio4.png</Url>
+        <Url>/PUNCHBOARD/cerchio4.png</Url>
     </DiscardToken>
 
     <!--TOKEN-->
     <DiscardToken>
         <Color>PURPLE</Color>
         <NumCards>2</NumCards>
-        <Url>src/main/resources/PUNCHBOARD/cerchio3.png</Url>
+        <Url>/PUNCHBOARD/cerchio3.png</Url>
     </DiscardToken>
 
     <!--TOKEN-->
     <DiscardToken>
         <Color>BLUE</Color>
         <NumCards>2</NumCards>
-        <Url>src/main/resources/PUNCHBOARD/cerchio1.png</Url>
+        <Url>/PUNCHBOARD/cerchio1.png</Url>
     </DiscardToken>
 
     <!--TOKEN-->
     <FaithPointToken>
         <NumPoints>2</NumPoints>
         <Shuffle>false</Shuffle>
-        <Url>src/main/resources/PUNCHBOARD/cerchio6.png</Url>
+        <Url>/PUNCHBOARD/cerchio6.png</Url>
     </FaithPointToken>
 
     <!--TOKEN-->
     <FaithPointToken>
         <NumPoints>1</NumPoints>
         <Shuffle>true</Shuffle>
-        <Url>src/main/resources/PUNCHBOARD/cerchio7.png</Url>
+        <Url>/PUNCHBOARD/cerchio7.png</Url>
     </FaithPointToken>
 </SoloTokenConfig>

@@ -134,7 +134,7 @@ public enum AnsiCommands {
      * @return the \n string
      */
     public static String clearLine() {
-        return "\33[1A\33[2K";
+        return "\n";
     }
 
     /**

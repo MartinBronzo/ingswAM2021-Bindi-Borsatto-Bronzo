@@ -17,7 +17,7 @@ import java.io.IOException;
 public class DevGridPanel extends JPanel{
     //DevCard[][] devGrid;
     private final Board mainBoard;
-    private final String directoryPath = "src/main/resources/front/";
+    private final String directoryPath = "/front/";
 
     /**
      * Constructs a DevGridPanel

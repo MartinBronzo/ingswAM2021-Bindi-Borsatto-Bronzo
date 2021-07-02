@@ -19,7 +19,7 @@ public class EntryViewPanel extends JPanel {
     private static final int panelHeight = PanelManager.getInstance().getGameFrame().getHeight();
     private static final int panelWidth = PanelManager.getInstance().getGameFrame().getWidth();
     private final ImageIcon logo;
-    private final String logoPath = "src/main/resources/logo.png";
+    private final String logoPath = "/logo.png";
     //private final Image logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
     private final JTextPane entryPane;
     private final JTextPane instruction;
@@ -86,7 +86,7 @@ public class EntryViewPanel extends JPanel {
         this.add(instruction, BorderLayout.PAGE_END);
         instruction.setVisible(true);
 
-        logo = new ImageIcon(logoPath);
+        logo = new ImageIcon(getClass().getResource(logoPath));
         imageLabel = new JLabel("", logo, JLabel.CENTER);
         imageLabel.setBounds(0, 0, panelWidth, panelHeight-200);
         imageLabel.setSize(600, 400);

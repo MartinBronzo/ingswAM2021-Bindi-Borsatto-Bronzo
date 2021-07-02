@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -68,7 +69,7 @@ public class OthersPlayerPlayerBoardPanel extends JPanel {
 
         JLabel baseProdLabel = new JLabel();
         //baseProdLabel.setBorder(new TitledBorder("baseProdLabel"));
-        baseProdLabel.setIcon(scaleImage("src/main/resources/baseProd.png", 150, 400));
+        baseProdLabel.setIcon(scaleImage(getClass().getResource("/baseProd.png"), 150, 400));
         baseProdLabel.setAlignmentX(LEFT_ALIGNMENT);
         baseProdLabel.setAlignmentY(TOP_ALIGNMENT);
 
@@ -98,11 +99,11 @@ public class OthersPlayerPlayerBoardPanel extends JPanel {
         this.validate();
     }*/
 
-    private ImageIcon scaleImage(String image, int width, int height) {
+    private ImageIcon scaleImage(URL image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(image));
+            img = ImageIO.read(image);
         } catch (IOException e) {
             e.printStackTrace();
         }

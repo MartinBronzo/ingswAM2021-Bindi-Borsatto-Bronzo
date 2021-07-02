@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * This dialog is used to see Lorenzo's actions in a Solo Game.
@@ -82,15 +83,15 @@ public class LorenzoDialog extends JDialog {
      * @param path the path of the Lorenzo's token which has been just used
      */
     public void setTokenImage(String path){
-        image.setIcon(scaleImage(path, 100, 100));
+        image.setIcon(scaleImage(getClass().getResource(path), 100, 100));
         image.setVisible(true);
     }
 
-    private ImageIcon scaleImage(String image, int width, int height) {
+    private ImageIcon scaleImage(URL image, int width, int height) {
         //scale image
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(image));
+            img = ImageIO.read(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
