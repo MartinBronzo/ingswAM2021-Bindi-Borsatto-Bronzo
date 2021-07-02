@@ -198,15 +198,6 @@ public class GameController {
                     }
                 break;
         }
-
-
-        /*for (Pair<ClientHandler, PlayerBoard> e : players) {
-            if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
-                newClientHandler.setPlayerState(PlayerState.WAITING4TURN);
-                e.setKey(newClientHandler);
-                return true;
-            }
-        }*/
         return false;
     }
 
@@ -609,7 +600,6 @@ public class GameController {
      *
      * @return true if the method finishes correctly
      */
-    //Tested
     public boolean showLeaderCardAtBeginning() {
         mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
 
@@ -649,7 +639,6 @@ public class GameController {
      *
      * @return true if the method finishes correctly
      */
-    //Tested
     public boolean sendNumExtraResBeginning() {
         //Randomly chooses a first player
         this.firstPlayer = mainBoard.getFirstPlayerRandomly();
@@ -717,7 +706,6 @@ public class GameController {
      * @throws IllegalArgumentException if there is an error in the choices format
      * @throws IllegalActionException   if the player cannot make a choice
      */
-    //Tested
     public boolean discardLeaderAndExtraResBeginning(DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         for (Integer i : discardLeaderCardBeginning.getLeaderCard())
@@ -787,7 +775,6 @@ public class GameController {
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
      */
-    //Tested
     public boolean discardLeader(LeaderMessage discardLeader, ClientHandler clientHandler) throws IllegalArgumentException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         if (discardLeader.getLeader() < 0)
@@ -814,7 +801,7 @@ public class GameController {
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setFaithPosition(playerBoard.getPositionOnFaithTrack());
         player.setPopeTiles(playerBoard.getPopeTile());
-        int vp = playerBoard.partialVictoryPoints();
+        int vp = playerBoard.calculateVictoryPoints();
         //int vp = e.getValue().calculateVictoryPoints();
         player.setVictoryPoints(vp);
         game.addPlayer(player);
@@ -834,7 +821,6 @@ public class GameController {
      * @throws IllegalArgumentException if there is an error in the choices format
      * @throws IllegalActionException   if the player cannot make a choice
      */
-    //Tested
     public boolean activateLeader(LeaderMessage activateLeader, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
         if (activateLeader.getLeader() < 0)
@@ -857,7 +843,7 @@ public class GameController {
         player.setPlayerState(clientHandler.getPlayerState());
         player.setUnUsedLeaders(playerBoard.getNotPlayedLeaderCards());
         player.setUsedLeaders(playerBoard.getActiveLeaderCards());
-        int vp = playerBoard.partialVictoryPoints();
+        int vp = playerBoard.calculateVictoryPoints();
         //int vp = e.getValue().calculateVictoryPoints();
         player.setVictoryPoints(vp);
         game.addPlayer(player);
@@ -876,7 +862,6 @@ public class GameController {
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
      */
-    //Tested
     public boolean getResFromMkt(GetFromMatrixMessage resFromMkt, ClientHandler clientHandler) throws IllegalArgumentException {
         if (resFromMkt.getRow() != 0 && resFromMkt.getCol() != 0)
             throw new IllegalArgumentException("Specify only a column or row!");
@@ -945,7 +930,6 @@ public class GameController {
      * @throws IllegalActionException   if the player cannot make a choice
      * @throws IllegalArgumentException if there is an error in the choices format
      */
-    //Tested
     public boolean buyFromMarket(BuyFromMarketMessage buyFromMarket, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         System.out.println(buyFromMarket.toString());
 
@@ -1121,7 +1105,6 @@ public class GameController {
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
      */
-    //Tested
     public boolean getCardCost(GetFromMatrixMessage devCardMessage, ClientHandler clientHandler) throws IllegalArgumentException {
         DevCard devCard;
         HashMap<ResourceType, Integer> cost;
@@ -1192,7 +1175,7 @@ public class GameController {
         player.setDevSlots(playerBoard.getDevSlots());
         setDepotInClientModel(player, playerBoard);
         player.setStrongBox(playerBoard.getStrongboxMap());
-        int vp = playerBoard.partialVictoryPoints();
+        int vp = playerBoard.calculateVictoryPoints();
         player.setVictoryPoints(vp);
         game.addPlayer(player);
         if (numberOfPlayers == 1)
@@ -1285,7 +1268,6 @@ public class GameController {
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
      */
-    //Tested
     public boolean getProductionCost(GetProductionCostMessage getProductionCostMessage, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
         HashMap<ResourceType, Integer> prodCost;
         PlayerBoard playerBoard = this.getPlayerBoardOfPlayer(clientHandler);
@@ -1806,11 +1788,6 @@ public class GameController {
             if (e.getKey() != disconnectedPlayer)
                 e.getKey().send(broadcastMessage);
     }
-
-    /*private boolean sendErrorToClientHandler(ClientHandler clientHandler, String message) {
-        //TODO: mandare un messaggio al client handler in questione passandogli il messaggio d'errore
-        return false;
-    }*/
 
     /**
      * Saves the inner state of the Model by saving a copy of the MainBoard (and, therefore, a copy of all the PlayerBoards).

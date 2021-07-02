@@ -71,11 +71,8 @@ public class GameControllerStateTest {
         gameController.setPlayerOld(c2);
         gameController.setPlayerOld(c3);
         gameController.setPlayerOld(c4);
-
-        //TODO: far mandare a tutte le risorse che devono e poi controllare che il game sia in INSESSION
     }*/
 
-    //TODO: controllare cosa succede quando qualcuno si disconnette
 
 
 }

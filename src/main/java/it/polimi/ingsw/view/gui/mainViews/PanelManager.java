@@ -255,9 +255,9 @@ public final class PanelManager {
      * method to be called when in a panel is called the quitCommand or the game ends*
      */
     public void manageLogoutCommand() {
-        writeMessage(new Command("quit"));
-        gui.quitCommand();
         //writeMessage(new Command("quit"));
+        gui.quitCommand();
+        writeMessage(new Command("quit"));
     }
 
     /**

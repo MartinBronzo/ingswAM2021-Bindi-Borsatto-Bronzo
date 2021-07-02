@@ -133,8 +133,7 @@ public class BuyFromMarketPanel extends JPanel {
         if (player == null || board == null)
             throw new NullPointerException("missing parameters to setup the panel");
 
-        //TODO we can see only DiscountLeaderEffect adding a filter with instaceof but doing this lose the control of the getusedLeaers index to send to the controller, we should change cardComboBoxPanel
-        List<String> leaderCardsPath = player.getUsedLeaders().stream()./*filter(card -> card.getEffect() instanceof DiscountLeaderEffect).*/map(card -> card.getUrl()).collect(Collectors.toList());
+        List<String> leaderCardsPath = player.getUsedLeaders().stream().map(card -> card.getUrl()).collect(Collectors.toList());
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i <5; i++)
             list.add(i);

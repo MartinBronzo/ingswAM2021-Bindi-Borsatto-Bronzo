@@ -150,6 +150,3 @@ public class ExtraProductionLeaderEffect extends Effect {
         return false;
     }
 }
-
-
-//TODO: controllare che per tutti i metodi i cui input ricevo dall'utente ci siano gli opportuni controlli per lanciare eccezioni se gli input sono sbagliati
