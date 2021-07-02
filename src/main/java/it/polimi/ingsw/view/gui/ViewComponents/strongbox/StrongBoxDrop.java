@@ -99,7 +99,7 @@ public class StrongBoxDrop extends JPanel implements Droppable, DropResettable {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(new ImageIcon("src/main/resources/strongbox medium.png").getImage(), 100, 100, null);
+        g.drawImage(new ImageIcon(getClass().getResource("/strongbox medium.png")).getImage(), 100, 100, null);
     }
 
     @Override

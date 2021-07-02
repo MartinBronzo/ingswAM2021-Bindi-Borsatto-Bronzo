@@ -55,7 +55,7 @@ public class DragAndDropBaseProd extends JPanel implements Resettable {
 
         prodPanel.add(inputPanel);
         prodPanel.add(Box.createRigidArea(new Dimension(20,0)));
-        prodPanel.add(new JLabel(new ImageIcon("src/main/resources/brackets.png")));
+        prodPanel.add(new JLabel(new ImageIcon(getClass().getResource("/brackets.png"))));
         prodPanel.add(Box.createRigidArea(new Dimension(20,0)));
 
         output = new BaseProdPanel();

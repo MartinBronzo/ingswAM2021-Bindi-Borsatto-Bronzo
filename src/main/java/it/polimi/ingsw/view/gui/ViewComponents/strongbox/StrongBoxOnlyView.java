@@ -38,7 +38,7 @@ public class StrongBoxOnlyView extends JPanel {
         backgroundPane.setPreferredSize(new Dimension(width, height));
 
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(scaleImage("src/main/resources/strongboxOnlyView.png", width, height));
+        backgroundLabel.setIcon(scaleImage(String.valueOf(getClass().getResource("/strongboxOnlyView.png")), width, height));
         backgroundLabel.setBounds(0, 0, width, height);
         backgroundPane.add(backgroundLabel, new Integer(-1));
 

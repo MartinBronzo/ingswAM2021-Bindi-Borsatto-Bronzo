@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class MarketGridPanel extends JPanel{
     private final Board mainBoard;
-    private final String directoryPath = "src/main/resources/front/";
+    private final String directoryPath = "/front/";
 
     /**
      * Constructs a MarketGridPanel

@@ -13,8 +13,13 @@
 <h2>UML e User Diagram</h2>
 <p>Questi sono gli UML del nostro model:</p>
 <ul>
-	<li><a href="Images/UML prima.pdf"> UML prima della scrittura del codice </a></li>
-	<li><a href="Images/UML dopo.pdf"> UML a svillupo completato </a></li>
+	<li><a href="Images/ClassDiagramStarting.png"> UML prima della scrittura del codice </a></li>
+	<li><a href="Images/ClassDiagramDef.png"> UML a svillupo completato </a></li>
+	<li><a href="Images/Model auto-generato.png"> UML a sviluppo completato generato automaticamente </a></li>
+</ul>
+<p>Questo è l'UML del Controller:</p>
+<ul>
+	<li><a href="Images/Server UML def.png">Controller a sviluppo completato </a></li>
 </ul>
 <p>Questi sono gli User Diagram che abbiamo preparato per la progettazione della comunicazione tra client e server:</p>
 <ul>
@@ -70,12 +75,20 @@
 </ul>
 </p>
 
+<h2>Cheats</h2>
+Abbiamo implementato un comando di cheat (da CLI scrivere "CHEAT", da GUI cliccare sul bottone "Cheat") che permette di guadagnare risorse e depositarle nel deposito senza prenderle dal Mercato o attivando la produzione.
+
 <h2>
   Comandi da utilizzare
 </h2>
+<p>Per runnare il programma da CLI:</p>
+<span> java -jar NOMEJAR -cli -IP 127.0.0.1 9047</br>java -jar NOMEJAR -c -IP 127.0.0.1 9047</span>
+
+<p></br>Per runnare il programma da GUI:</p>
+<p> java -jar NOMEJAR -IP 127.0.0.1 9047</p>
 
 <h2>Creatori</h2>
 Made with love by (in ordine alfabetico)</br>
 Ludovica Bindi (10619971)</br>
-Andrea Borsatto </br>
-Martin Bronzo </br>
+Andrea Borsatto (10628989)</br>
+Martin Bronzo (10619358)</br>
