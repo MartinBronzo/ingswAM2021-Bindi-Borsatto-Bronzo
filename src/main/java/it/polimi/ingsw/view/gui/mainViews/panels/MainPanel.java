@@ -124,67 +124,6 @@ public class MainPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     }
 
-   /* public void setMainPanel(List<String> playersNicks, Player actualPlayer, Game game){
-        this.created = true;
-
-        String actualPlayerName = actualPlayer.getNickName();
-        JPanel playerBoardPanel = new JPanel();
-        playerBoardPanel.setLayout(new CardLayout());
-
-        JPanel controlPanel = new JPanel();
-        controlPanel.setBorder(new TitledBorder("ControlPanel"));
-        controlPanel.setAlignmentX(CENTER_ALIGNMENT);
-
-        stateLabel = new JLabel();
-        stateLabel.setText(actualPlayer.getPlayerState().name());
-        stateLabel.setBorder(new TitledBorder("PlayerState"));
-        stateLabel.setAlignmentX(LEFT_ALIGNMENT);
-        controlPanel.add(stateLabel);
-
-        JButton actionButton = new JButton("Choose main action");
-        actionButton.setAlignmentX(LEFT_ALIGNMENT);
-        controlPanel.add(actionButton);
-
-        JButton endButton = new JButton("End turn");
-        endButton.setAlignmentX(RIGHT_ALIGNMENT);
-        controlPanel.add(endButton);
-
-        JComboBox<String> comboBox = new JComboBox<>(playersNicks.toArray(new String[0]));
-        comboBox.setEditable(false);
-        comboBox.addItemListener(e -> {
-            CardLayout cl = (CardLayout) (playerBoardPanel.getLayout());
-            cl.show(playerBoardPanel, (String) e.getItem());
-        });
-        comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxx");
-        comboBox.setAlignmentX(RIGHT_ALIGNMENT);
-        comboBox.setSelectedItem(actualPlayer.getNickName());
-        controlPanel.add(comboBox);
-
-        this.add(controlPanel);
-
-        //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
-        //adds first the actual player because this is the default value of the component
-
-        actualPlayerBoardPanel = new ActualPlayerBoardPanel(game.getMainBoard(), (ArrayList<LeaderCard>) actualPlayer.getUsedLeaders(), (ArrayList<LeaderCard>) actualPlayer.getUnUsedLeaders() );
-        playerBoardPanel.add(actualPlayerBoardPanel, actualPlayerName);
-
-        for (String playerName : playersNicks) {
-            //TODO: AGGIUNGERE QUANDO LE CLASSI SONO FATTE
-            if (!playerName.equals(actualPlayerName)) {
-                /*OthersPlayerBoardPanel othersPlayerBoardPanel = new OthersPlayerBoardPanel();
-                playerBoardPanel.add(othersPlayerBoardPanel, playerName);*/
-/*
-                //TODO: questa è una prova, cancellabile
-                JPanel prova1 = new JPanel();
-                prova1.add(new JLabel("prova panel 1"));
-                playerBoardPanel.add(prova1, playerName);
-            }
-        }
-
-        this.add(playerBoardPanel);
-        this.validate();
-    }*/
-
     /*public synchronized void updateMainPanel(Game game){
         String nickname;
         nickname = PanelManager.getInstance().getNickname();

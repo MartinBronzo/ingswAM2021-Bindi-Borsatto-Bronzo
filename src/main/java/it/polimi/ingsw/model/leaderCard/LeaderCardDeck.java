@@ -29,7 +29,7 @@ import java.util.List;
  * This card holds all the LeaderCards the MainBoard has at the beginning of the game.
  */
 public class LeaderCardDeck implements Deck {
-    List<LeaderCard> leaderCards;
+    private List<LeaderCard> leaderCards;
 
     /**
      * Constructs an empty deck of LeaderCards

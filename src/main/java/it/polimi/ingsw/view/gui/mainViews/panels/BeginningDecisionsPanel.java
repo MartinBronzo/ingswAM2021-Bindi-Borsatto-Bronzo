@@ -15,7 +15,6 @@ import java.util.ArrayList;
  * This panel enables the player to make their begging of the game decisions, that is, discarding LeaderCards and, eventually,
  * to get extra resources.
  */
-//TODO: MAGARI CAMBIARE A DIALOG
 public class BeginningDecisionsPanel extends JPanel {
 
     /**

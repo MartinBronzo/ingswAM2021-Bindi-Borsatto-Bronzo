@@ -23,7 +23,7 @@ import java.util.Map;
 public class StrongBoxDrag extends JPanel implements DragUpdatable, Resettable {
     private List<JLabel> resources;
     //DragGestureListenerOneShot dlistener;
-    MyDragGestureListener dlistener;
+    private MyDragGestureListener dlistener;
     private HashMap<ResourceType, Integer> storedHere;
 
     /**

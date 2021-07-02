@@ -11,7 +11,7 @@ import java.util.List;
  * This ActionListener resets all the states of all the components it takes track of and which implement the Resettable interface.
  */
 public class ResetState implements ActionListener {
-    List<Resettable> resettables;
+    private List<Resettable> resettables;
 
     /**
      * Constructs an empty ResetState object (that is, it is not referring to any Resettable object)

@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.ViewComponents.leaderCards;
 
 import it.polimi.ingsw.controller.Command;
 import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leaderCard.leaderEffects.ExtraSlotLeaderEffect;
 import it.polimi.ingsw.network.messages.fromClient.LeaderMessage;
 import it.polimi.ingsw.view.gui.mainViews.PanelManager;
 import it.polimi.ingsw.view.lightModel.Player;
@@ -66,12 +67,18 @@ public class LeaderCardPanel extends JPanel {
             JPanel activeCardPanel = new JPanel();
             activeCardPanel.setLayout(new BoxLayout(activeCardPanel, BoxLayout.PAGE_AXIS));
 
-            JLabel label = new JLabel();
-            image = scaleImage(leader.getUrl(), 180, 250);
-            label.setIcon(image);
-            label.setAlignmentX(LEFT_ALIGNMENT);
+            if (leader.getEffect() instanceof  ExtraSlotLeaderEffect){
+                LeaderCardOnlyView label = new LeaderCardOnlyView(leader, PanelManager.getInstance().getAlreadyStoredInLeaderSlot(leader.getEffect().extraSlotGetType()));
+                activeCardPanel.add(label);
+            }
+            else {
+                JLabel label = new JLabel();
+                image = scaleImage(leader.getUrl(), 180, 250);
+                label.setIcon(image);
+                label.setAlignmentX(LEFT_ALIGNMENT);
+                activeCardPanel.add(label);
+            }
 
-            activeCardPanel.add(label);
             activeCardPanel.setAlignmentX(LEFT_ALIGNMENT);
             //panelList.add(activeCardPanel);
             this.add(activeCardPanel);

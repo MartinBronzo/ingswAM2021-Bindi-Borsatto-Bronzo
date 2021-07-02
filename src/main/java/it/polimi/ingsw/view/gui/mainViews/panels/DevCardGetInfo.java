@@ -55,13 +55,9 @@ public class DevCardGetInfo extends JPanel {
 
         instructionPanel = new InstructionPanel(true);
         instructionPanel.setConfirmActionListener(e -> {
-            //System.out.println(row+1+" "+column+1+" "+cardCheckboxPanel.getSelectedLeaderIndexes());
             PanelManager.getInstance().manageGetCardCost(row, column, cardCheckboxPanel.getSelectedLeaderIndexes());
-            //this.setVisible(false);
-            //TODO idk if there is the need to print something else
         });
         instructionPanel.setCancelActionListener(e -> {
-            //TODO: idk if there is the need to print something else
             PanelManager.getInstance().displayDevGrid();
             this.setVisible(false);
         });

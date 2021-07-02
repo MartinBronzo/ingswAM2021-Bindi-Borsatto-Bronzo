@@ -23,11 +23,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This panel lets the player specify which resources they want to use in order to pay for the DevGrid they want to buy. The resources
+ * This panel lets the player specify which resources they want to use in order to pay for the DevCard they want to buy. The resources
  * can come from the player's Depot, StrongBox, and, eventually, the ExtraSlot LeaderCards.
  */
 public class DevGridPayingCost extends JPanel {
-    boolean created;
+    private boolean created;
 
     /**
      * Constructs a dumb DevGridPayingCost
@@ -165,9 +165,6 @@ public class DevGridPayingCost extends JPanel {
             result[i] = image;
             i++;
         }
-
-        //TODO: perché non stampa le immagini? Se riesco,
-
         return result;
     }
 

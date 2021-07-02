@@ -12,7 +12,6 @@ public interface Observer {
 
     //Usato solo a fine di testing
     //boolean update(boolean tmp, ReportNum reportNum);
-    //TODO: l'update dovrebbe non avere parametri, semmai è il concrete observer che chiede lo stato
     /**
      * Updates the Observer that the state of the Subject has changed
      * @param object an object which can contain useful information for the Observer on the changed state of the Subject

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.view.cli.CliViewTest" time="0.164" tests="62" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.view.cli.CliViewTest" time="0.403" tests="62" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="15"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IT"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-15.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter6232212991232975745.jar /Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire 2021-06-25T19-05-00_817-jvmRun1 surefire7862712460215349608tmp surefire_014012558601888244575tmp"/>
+    <property name="sun.java.command" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter16695079572961716531.jar /Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire 2021-07-01T11-27-39_208-jvmRun1 surefire14202275003645880999tmp surefire_04911114749291118858tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/test-classes:/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/classes:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter/5.7.1/junit-jupiter-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.7.1/junit-jupiter-params-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.7.1/junit-jupiter-engine-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-engine/1.7.1/junit-platform-engine-1.7.1.jar:/Users/Ekraar/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/Users/Ekraar/.m2/repository/org/danilopianini/gson-extras/0.2.2/gson-extras-0.2.2.jar:/Users/Ekraar/.m2/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Users/Ekraar/.m2/repository/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar:/Users/Ekraar/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/Ekraar/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-commons/1.7.1/junit-platform-commons-1.7.1.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter6232212991232975745.jar"/>
+    <property name="surefire.real.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter16695079572961716531.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="15+36-1562"/>
     <property name="user.name" value="Ekraar"/>
@@ -51,66 +51,66 @@
     <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
     <property name="java.class.version" value="59.0"/>
   </properties>
-  <testcase name="printDiscardTokenYellow" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printDiscardTokenGreenCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
-  <testcase name="printGameState" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printPlayerLeftGame" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printDepotSecondEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printDevSlotsWithTwoUnusedCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.004"/>
-  <testcase name="printInfo" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
-  <testcase name="printFaithPointTokenTwoPoints" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printDiscardTokenBlue" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printOtherNicknames" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printResourcesMap" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
-  <testcase name="printWaiting4BeginningDecisions" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
-  <testcase name="printHolpMessage" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.014"/>
-  <testcase name="printFaithTrack" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printDiscardTokenYellowCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printDepotThirdEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printUsedLeaderCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printOthersPlayerBoard" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.011"/>
+  <testcase name="printDiscardTokenYellow" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.017"/>
+  <testcase name="printDiscardTokenGreenCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.006"/>
+  <testcase name="printGameState" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
+  <testcase name="printPlayerLeftGame" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.005"/>
+  <testcase name="printDepotSecondEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.008"/>
+  <testcase name="printDevSlotsWithTwoUnusedCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.01"/>
+  <testcase name="printInfo" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.006"/>
+  <testcase name="printFaithPointTokenTwoPoints" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printDiscardTokenBlue" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printOtherNicknames" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printResourcesMap" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.004"/>
+  <testcase name="printWaiting4BeginningDecisions" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.007"/>
+  <testcase name="printHolpMessage" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.024"/>
+  <testcase name="printFaithTrack" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.007"/>
+  <testcase name="printDiscardTokenYellowCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.005"/>
+  <testcase name="printDepotThirdEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
+  <testcase name="printUsedLeaderCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.006"/>
+  <testcase name="printOthersPlayerBoard" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.024"/>
   <testcase name="printShuffleToken" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
-  <testcase name="printPlayerState" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.016"/>
-  <testcase name="printFaithPointTokenOnePoint" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
+  <testcase name="printPlayerState" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.027"/>
+  <testcase name="printFaithPointTokenOnePoint" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
   <testcase name="printDepotThirdTwoEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printOtherNicknameWhenPlayingAgainstLorenzo" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
+  <testcase name="printOtherNicknameWhenPlayingAgainstLorenzo" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
   <testcase name="printGeneralInfo" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printBaseProduction" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printPlaying" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.019"/>
-  <testcase name="printDepotThirdOneEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printWaitingForTurn" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printSoloScoreLorenzoWins" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.004"/>
-  <testcase name="printPlayerBoardNicer" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.01"/>
-  <testcase name="printDepotFirstEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printWaiting4GameEnd" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printDiscardTokenGreen" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printError" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printDepotSecondOneEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printWaiting4TurnState" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printDiscardTokenBlueCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
+  <testcase name="printBaseProduction" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.004"/>
+  <testcase name="printPlaying" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.036"/>
+  <testcase name="printDepotThirdOneEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
+  <testcase name="printWaitingForTurn" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.008"/>
+  <testcase name="printSoloScoreLorenzoWins" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.006"/>
+  <testcase name="printPlayerBoardNicer" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.017"/>
+  <testcase name="printDepotFirstEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
+  <testcase name="printWaiting4GameEnd" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printDiscardTokenGreen" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printError" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
+  <testcase name="printDepotSecondOneEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
+  <testcase name="printWaiting4TurnState" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printDiscardTokenBlueCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
   <testcase name="printWaiting4LastTurnState" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
   <testcase name="printDepotFull" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
   <testcase name="printResourcesOnALine" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printSoloScoreLorenzoLoses" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printSoloScoreLorenzoLoses" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
   <testcase name="printDiscardTokenPurpleCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printPlayingLastTurn" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.008"/>
-  <testcase name="printFinalScores" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printMarketTest" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printLeaderCard" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printUnusedLeaderCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printCommonParts" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
+  <testcase name="printPlayingLastTurn" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.037"/>
+  <testcase name="printFinalScores" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printMarketTest" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.007"/>
+  <testcase name="printLeaderCard" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
+  <testcase name="printUnusedLeaderCards" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
+  <testcase name="printCommonParts" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.004"/>
   <testcase name="printDevSlots" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printMyPlayerBoard" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.005"/>
-  <testcase name="printLeaderDepot" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
+  <testcase name="printMyPlayerBoard" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.013"/>
+  <testcase name="printLeaderDepot" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
   <testcase name="printStrongBox" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printWelcome" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
-  <testcase name="printPlayerBackInTheGame" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
+  <testcase name="printWelcome" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.005"/>
+  <testcase name="printPlayerBackInTheGame" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
   <testcase name="printDevSlotsWithOneUnusedCard" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printWaiting4GameStart" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
+  <testcase name="printWaiting4GameStart" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
   <testcase name="printDevCard" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printDiscardTokenPurple" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
-  <testcase name="printDepotAllEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
+  <testcase name="printDiscardTokenPurple" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.002"/>
+  <testcase name="printDepotAllEmpty" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.001"/>
   <testcase name="printDepotSomethingInside" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0"/>
-  <testcase name="printSetUpView" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.005"/>
-  <testcase name="printDevSlotsWithThreeFullSlots" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.003"/>
+  <testcase name="printSetUpView" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.015"/>
+  <testcase name="printDevSlotsWithThreeFullSlots" classname="it.polimi.ingsw.view.cli.CliViewTest" time="0.006"/>
 </testsuite>

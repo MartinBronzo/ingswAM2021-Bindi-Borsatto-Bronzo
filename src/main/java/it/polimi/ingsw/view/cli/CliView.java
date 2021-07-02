@@ -409,7 +409,6 @@ public class CliView {
      * @param player the player which belongs to the CliClient which called this method
      * @param lorenzoPosition Lorenzo's position onto the FaithTrack or a meaningless number if the Game isn't a SoloGame
      */
-    //TODO: controllare che cosa viene spedito per la posizione di Lorenzo se non siamo in SoloGame
     public static void printPlayerBoardWithFrame(Player player, int lorenzoPosition) {
         System.out.print(AnsiCommands.clear());
         System.out.print(AnsiCommands.BLUE.getTextColor());

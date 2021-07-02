@@ -122,8 +122,6 @@ public class GameController {
     public synchronized boolean substitutesClient(ClientHandler newClientHandler) throws IllegalActionException {
         //Case gameState == STARTED when disconnection happend
         //If the player was adding the resources and discarding the leaderCards at the beginning of the game, before disconnecting
-
-        ////TODO: se lui è prima dell'active player deve essere a gameend (NOT TESTED)
         if (state == GameState.LASTTURN)
             if (this.disconnectedBeforeStarting.contains(newClientHandler)) {
                 for (Pair<ClientHandler, PlayerBoard> e : players)
@@ -135,6 +133,7 @@ public class GameController {
                         e.setKey(newClientHandler);
                         newClientHandler.send(new GeneralInfoStringMessage("You are back in the game!"));
 
+                        disconnectedBeforeStarting.remove(newClientHandler);
                         newClientHandler.send(this.getWholeMessageUpdateToClient());
                         updatesAfterDisconnection(newClientHandler, true);
                         return true;
@@ -148,12 +147,9 @@ public class GameController {
                     for (Pair<ClientHandler, PlayerBoard> e : players)
                         if (e.getKey().getNickname().equals(newClientHandler.getNickname()))
                             e.setKey(newClientHandler);
-
+                    disconnectedBeforeStarting.remove(newClientHandler);
                     newClientHandler.send(this.getWholeMessageUpdateToClient());
                     this.sendNumExtraResBeginningToDisconnectedPlayer(newClientHandler);
-                    //TODO:QUESTO NON DOVREBBE PIù SERVIRE
-                    //updates all the other clients that tha player has reconnected
-                    //updatesAfterDisconnection(newClientHandler);
                     return true;
                 }
             }
@@ -171,7 +167,6 @@ public class GameController {
                     }
                 break;
 
-            //TODO: CASE NOT TESTED
             case WAITING4PLAYERS:
                 for (Pair<ClientHandler, PlayerBoard> e : players)
                     if (e.getKey().getNickname().equals(newClientHandler.getNickname())) {
@@ -379,25 +374,8 @@ public class GameController {
                 activePlayer.send(new ErrorMessage("Turn timer elapsed; Your turn is ended"));
                 specifyNextPlayer(activePlayer);
             }
-        }, 120000); //TODO: DECIDERE QUANTO FAR DURARE IL TURNO
+        }, 150000);
     }
-
-    /*private void checkIfGameMustBegin() {
-        synchronized (this.howManyPlayersReady) {
-            //TODO: fare un lock unico e metterlo anche dall'altra parte
-            synchronized (this.disconnectedBeforeStarting) {
-                //We may end up here if a player send their beginning decisions after the game has become INSESSION
-                if (!(this.state.equals(GameState.STARTED)))
-                    return;
-                this.howManyPlayersReady++;
-                if (this.howManyPlayersReady + this.disconnectedBeforeStarting.size() == this.numberOfPlayers) {
-                    this.state = GameState.INSESSION;//This player is the last one who's adding stuff so the players can play in turns
-                    this.sendBroadcastUpdate(new GeneralInfoStringMessage("Now turns will begin!"));
-                    this.updatesTurnAndSendInfo(this.firstPlayer);
-                }
-            }
-        }
-    }*/
 
     /**
      * Communicates to the GameController that the specified player (represented by their ClientHandler) has been found disconnected before they were able to
@@ -560,6 +538,7 @@ public class GameController {
 
     /**
      * Returns the reference to the safe copy of the Model stored in this GameController
+     *
      * @return the reference to the safe copy of the Model stored in this GameController
      */
     //Used for testing purposes
@@ -569,6 +548,7 @@ public class GameController {
 
     /**
      * Returns the reference to the MainBoard of this game stored in this GameController
+     *
      * @return the reference to the MainBoard of this game stored in this GameController
      */
     //Used for testing purposes
@@ -578,6 +558,7 @@ public class GameController {
 
     /**
      * Returns the reference to the safe copy of the ClientHandler in this game stored in this GameController
+     *
      * @return the reference to the safe copy of the ClientHandler in this game stored in this GameController
      */
     //Used for testing purposes
@@ -587,6 +568,7 @@ public class GameController {
 
     /**
      * Returns the reference to the safe copy of the GameState of this game stored in this GameController
+     *
      * @return the reference to the safe copy of the GameState of this game stored in this GameController
      */
     //Used for testing purposes
@@ -624,6 +606,7 @@ public class GameController {
 
     /**
      * Sends the first update of the game to the players. It contains the LeaderCards the players receive at the beginning of the game
+     *
      * @return true if the method finishes correctly
      */
     //Tested
@@ -663,6 +646,7 @@ public class GameController {
 
     /**
      * Manages the begging of the game by giving to the player their extra FaithPoints and by telling them how many resources they can get
+     *
      * @return true if the method finishes correctly
      */
     //Tested
@@ -692,6 +676,7 @@ public class GameController {
     /**
      * Sends to a disconnected player their begging of the game information (the amount of resources to get and of LeaderCards to discard, and their order in the game) if they haven't received
      * this information yet
+     *
      * @param usedToBeDisconnected the ClientHandler of the player which was disconnected and now is back in the game
      * @return true if the method finishes correctly
      * @throws IllegalActionException if the player has already given their beginning of the game choices
@@ -725,11 +710,12 @@ public class GameController {
 
     /**
      * Communicates to the Model the beginning of the game decisions of the specified player
+     *
      * @param discardLeaderCardBeginning the message containing the player's information
-     * @param clientHandler the player who's made the specified choices
+     * @param clientHandler              the player who's made the specified choices
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
-     * @throws IllegalActionException if the player cannot make a choice
+     * @throws IllegalActionException   if the player cannot make a choice
      */
     //Tested
     public boolean discardLeaderAndExtraResBeginning(DiscardLeaderAndExtraResBeginningMessage discardLeaderCardBeginning, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
@@ -796,6 +782,7 @@ public class GameController {
 
     /**
      * Communicates to the Model that a player wants to discard a LeaderCard during the game
+     *
      * @param discardLeader the message containing the player's information
      * @param clientHandler the player who's made the specified choices
      * @return true if the method finishes correctly
@@ -841,11 +828,12 @@ public class GameController {
 
     /**
      * Communicates to the Model that a player wants to activate a LeaderCard during the game
+     *
      * @param activateLeader the message containing the player's information
-     * @param clientHandler the player who's made the specified choices
+     * @param clientHandler  the player who's made the specified choices
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
-     * @throws IllegalActionException if the player cannot make a choice
+     * @throws IllegalActionException   if the player cannot make a choice
      */
     //Tested
     public boolean activateLeader(LeaderMessage activateLeader, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
@@ -883,7 +871,8 @@ public class GameController {
     /**
      * Communicates to the Model that the player is interested in buying from the Market and sends what is the possible outputs
      * they would get back to the player
-     * @param resFromMkt the message containing the player's information
+     *
+     * @param resFromMkt    the message containing the player's information
      * @param clientHandler the player who's made the specified choices
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
@@ -918,7 +907,7 @@ public class GameController {
                         throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
                 }
 
-            }else {
+            } else {
                 if (resFromMkt.getCol() != 0) {
                     for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInTheColumn(resFromMkt.getCol() - 1); j++)
                         effects.add(new Effect());
@@ -950,10 +939,11 @@ public class GameController {
     /**
      * Communicates to the Model that the player has decided to buy from the Market and the Model changes accordingly to this
      * choice
+     *
      * @param buyFromMarket the message containing the player's information
      * @param clientHandler the player who's made the specified choices
      * @return true if the method finishes correctly
-     * @throws IllegalActionException if the player cannot make a choice
+     * @throws IllegalActionException   if the player cannot make a choice
      * @throws IllegalArgumentException if there is an error in the choices format
      */
     //Tested
@@ -992,7 +982,7 @@ public class GameController {
                             throw new IllegalArgumentException("You must specify your LeaderCard with a WhiteMarble effect!");
                     }
 
-                }else {
+                } else {
                     if (buyFromMarket.getCol() != 0) {
                         for (int j = 0; j < mainBoard.getNumberOfWhiteMarbleInTheColumn(buyFromMarket.getCol() - 1); j++)
                             effects.add(new Effect());
@@ -1126,8 +1116,9 @@ public class GameController {
     /**
      * Communicates to the Model that the player is interested in buying a DevCard and sends the cost of this card back to
      * player
+     *
      * @param devCardMessage the message containing the player's information
-     * @param clientHandler the player who's made the specified choices
+     * @param clientHandler  the player who's made the specified choices
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
      */
@@ -1149,10 +1140,11 @@ public class GameController {
 
     /**
      * Communicates to the Model that the player has decided to buy a DevCard and the Model changes accordingly to this choice
-     * @param buyDevCard the message containing the player's information
+     *
+     * @param buyDevCard    the message containing the player's information
      * @param clientHandler the player who's made the specified choices
      * @return true if the method finishes correctly
-     * @throws IllegalActionException if the player cannot make a choice
+     * @throws IllegalActionException   if the player cannot make a choice
      * @throws IllegalArgumentException if there is an error in the choices format
      */
     public boolean buyDevCard(BuyDevCardMessage buyDevCard, ClientHandler clientHandler) throws IllegalActionException, IllegalArgumentException {
@@ -1186,7 +1178,7 @@ public class GameController {
             playerBoard.addCardToDevSlot(buyDevCard.getDevSlot() - 1, devCard);
         } catch (EndOfGameException e) {
             this.setLastTurn();
-        } catch (IllegalArgumentException e ){
+        } catch (IllegalArgumentException e) {
             this.rollbackState();
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -1213,8 +1205,9 @@ public class GameController {
 
     /**
      * Communicates to the Model that the player has decided to move resources between shelves and the Model changes accordingly to this choice
+     *
      * @param moveBtwShelvesMessage the message containing the player's information
-     * @param clientHandler the player who's made the specified choices
+     * @param clientHandler         the player who's made the specified choices
      * @return true if the method finishes correctly
      * @throws IllegalActionException if the player cannot make a choice
      */
@@ -1238,8 +1231,9 @@ public class GameController {
 
     /**
      * Communicates to the Model that the player has decided to move resources from a Depot shelf to the ExtraSlot LeaderCards and the Model changes accordingly to this choice
+     *
      * @param moveShelfToLeaderMessage the message containing the player's information
-     * @param clientHandler the player who's made the specified choices
+     * @param clientHandler            the player who's made the specified choices
      * @return true if the method finishes correctly
      * @throws IllegalActionException if the player cannot make a choice
      */
@@ -1262,8 +1256,9 @@ public class GameController {
 
     /**
      * Communicates to the Model that the player has decided to move resources from the ExtraSlot LeaderCards to a Depot shelf and the Model changes accordingly to this choice
+     *
      * @param moveLeaderToShelfMessage the message containing the player's information
-     * @param clientHandler the player who's made the specified choices
+     * @param clientHandler            the player who's made the specified choices
      * @return true if the method finishes correctly
      * @throws IllegalActionException if the player cannot make a choice
      */
@@ -1285,8 +1280,9 @@ public class GameController {
     /**
      * Communicates to the Model that the player is interested in activating production methods and sends the cost of these productions back to
      * player
+     *
      * @param getProductionCostMessage the message containing the player's information
-     * @param clientHandler the player who's made the specified choices
+     * @param clientHandler            the player who's made the specified choices
      * @return true if the method finishes correctly
      * @throws IllegalArgumentException if there is an error in the choices format
      */
@@ -1319,10 +1315,11 @@ public class GameController {
 
     /**
      * Communicates to the Model that the player has decided to buy activate production methods and the Model changes accordingly to this choice
+     *
      * @param activateProductionMessage the message containing the player's information
-     * @param clientHandler the player who's made the specified choices
+     * @param clientHandler             the player who's made the specified choices
      * @return true if the method finishes correctly
-     * @throws IllegalActionException if the player cannot make a choice
+     * @throws IllegalActionException   if the player cannot make a choice
      * @throws IllegalArgumentException if there is an error in the choices format
      */
     public boolean activateProduction(ActivateProductionMessage activateProductionMessage, ClientHandler clientHandler) throws IllegalArgumentException, IllegalActionException {
@@ -1401,8 +1398,8 @@ public class GameController {
     private void removeSelectedResources(HashMap<ResourceType, Integer> cost, PlayerBoard playerBoard, List<DepotParams> depotRes, HashMap<ResourceType, Integer> resToLeader, HashMap<ResourceType, Integer> strongboxRes) throws IllegalActionException {
         //check if depot params are correct
         System.out.println("COST\n");
-        for(Map.Entry<ResourceType, Integer> e : cost.entrySet())
-            System.out.println(e.getKey() + " "  + e.getValue());
+        for (Map.Entry<ResourceType, Integer> e : cost.entrySet())
+            System.out.println(e.getKey() + " " + e.getValue());
         for (DepotParams e : depotRes) {
             if (cost.get(e.getResourceType()) == null || cost.get(e.getResourceType()) < e.getQt()) {
                 this.rollbackState();
@@ -1473,6 +1470,7 @@ public class GameController {
 
     /**
      * Makes the Model make a Lorenzo's action and communicates the result back to the player
+     *
      * @param clientHandler the player in the game
      */
     public void drawSoloToken(ClientHandler clientHandler) {
@@ -1547,7 +1545,7 @@ public class GameController {
             player.setPlayerState(playerInGame.getPlayerState());
             game.addPlayer(player);
         }
-        if(isReconnected)
+        if (isReconnected)
             this.sendBroadcastUpdate(new PlayerConnectionsUpdate(game, disconnectedPlayer.getNickname()));
         else
             this.sendBroadcastUpdate(new PlayerConnectionsUpdate(game, disconnectedPlayer.getNickname()), disconnectedPlayer);
@@ -1628,6 +1626,7 @@ public class GameController {
     /**
      * Sends to the only player plaing a Solo game an update containing the player's state and Lorenzo's position onto the
      * FaithTrack
+     *
      * @param soloPlayer the player in the game
      */
     public void sendUpdateSolo(ClientHandler soloPlayer) {
@@ -1646,13 +1645,13 @@ public class GameController {
         this.distributeFinalPoints();
         GamesManagerSingleton.getInstance().deleteGame(this);
         this.setState(GameState.ENDED);
-        for(Pair<ClientHandler, PlayerBoard> player : players){
+        for (Pair<ClientHandler, PlayerBoard> player : players) {
             player.getKey().setGameEnded();
         }
         //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
-    public void endGameSolo(){
+    public void endGameSolo() {
         final int faithCells = 24;
         final int devCardNumber = 7;
         SoloBoard soloBoard = (SoloBoard) mainBoard;
@@ -1660,32 +1659,35 @@ public class GameController {
 
         PlayerBoard playerBoard = null;
         for (Pair<ClientHandler, PlayerBoard> e : players)
-            if(e.getKey().getNickname().equals(activePlayer.getNickname()))
+            if (e.getKey().getNickname().equals(activePlayer.getNickname()))
                 playerBoard = e.getValue();
 
         //check if one of the column in dev grid is empty
-        for(DevCardColour color : DevCardColour.values()){
-            if(soloBoard.isDevCardColumnEmpty(color)){
+        for (DevCardColour color : DevCardColour.values()) {
+            if (soloBoard.isDevCardColumnEmpty(color)) {
                 soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo bought an entire column of dev cards!");
                 activePlayer.send(soloGameResultMessage);
+                GamesManagerSingleton.getInstance().deleteGame(this);
+                this.setState(GameState.ENDED);
                 return;
             }
         }
 
-        if(soloBoard.getLorenzoFaithTrackPosition() == faithCells) {
+        if (soloBoard.getLorenzoFaithTrackPosition() == faithCells) {
             soloGameResultMessage = new SoloGameResultMessage(false, "You lost! Lorenzo made his last vatican report!");
             activePlayer.send(soloGameResultMessage);
+            GamesManagerSingleton.getInstance().deleteGame(this);
+            this.setState(GameState.ENDED);
             return;
         }
 
-        if (playerBoard.getPositionOnFaithTrack() == faithCells || playerBoard.getDevSlots().getAllDevCards().size() == devCardNumber){
+        if (playerBoard.getPositionOnFaithTrack() == faithCells || playerBoard.getDevSlots().getAllDevCards().size() == devCardNumber) {
             soloGameResultMessage = new SoloGameResultMessage(true, "You won against Lorenzo the Magnificent! Your score is: " + playerBoard.calculateVictoryPoints() + " points!");
             activePlayer.send(soloGameResultMessage);
         }
 
         GamesManagerSingleton.getInstance().deleteGame(this);
         this.setState(GameState.ENDED);
-        //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
     private void distributeFinalPoints() {
@@ -1711,6 +1713,7 @@ public class GameController {
 
     /**
      * Creates a ModelUpdate message ready to be sent containing all the information about the game
+     *
      * @return a ModelUpdate message containing all the information about the game
      */
     public ModelUpdate getWholeMessageUpdateToClient() {
@@ -1800,8 +1803,8 @@ public class GameController {
         this.modelCopy = mainBoard.getClone();
 
         System.out.println("SAVE STATE\nDEVGRID");
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 4; j++)
                 System.out.println(modelCopy.getDevMatrix()[i][j]);
 
 
@@ -1826,8 +1829,8 @@ public class GameController {
             i++;
         }
         System.out.println("RESET STATE\nDEVGRID");
-        for(int k = 0; k < 3; k++)
-            for(int j = 0; j < 4; j++)
+        for (int k = 0; k < 3; k++)
+            for (int j = 0; j < 4; j++)
                 System.out.println(modelCopy.getDevMatrix()[k][j]);
 
         //Changes back the values of the players

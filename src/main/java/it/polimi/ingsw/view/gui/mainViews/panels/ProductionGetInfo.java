@@ -50,7 +50,6 @@ public class ProductionGetInfo extends JPanel {
         upperPanel.add(dragAndDropBaseProd);
         upperPanel.add(Box.createHorizontalGlue());
 
-        //TODO: add info text and JButtons functions
         String info = "Select the desired dev and leader cards, move resources to activate baseProd and then press submit";
         JButton back = new BackButton();
         back.setText("Back");
@@ -61,7 +60,6 @@ public class ProductionGetInfo extends JPanel {
         reset.setText("Reset");
         reset.addActionListener(e -> {
             dragAndDropBaseProd.resetState();
-            //TODO: ci sono altre cose da resettare?
         });
 
         JButton submit = new SubmitButton();
@@ -122,13 +120,10 @@ public class ProductionGetInfo extends JPanel {
         dragAndDropBaseProd.setCheckDropFunction(new CheckBaseProd(dragAndDropBaseProd));
         upperPanel.add(dragAndDropBaseProd);
         upperPanel.add(Box.createHorizontalGlue());
-        //TODO aggiungi lavoro bottoni
         instructionPanel = new InstructionPanel(true);
         instructionPanel.setConfirmActionListener(e -> {
-            //TODO idk if there is the need to print something else
         });
         instructionPanel.setCancelActionListener(e -> {
-            //TODO: idk if there is the need to print something else
         });
         instructionPanel.setLabelText("Press submit to get the final CardCost after selecting the leader Cards");
         upperPanel.add(instructionPanel);

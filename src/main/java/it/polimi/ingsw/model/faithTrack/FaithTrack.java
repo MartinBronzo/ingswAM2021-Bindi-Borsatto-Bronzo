@@ -51,7 +51,6 @@ public class FaithTrack {
      *
      * @param config the file where to read the design of the track
      */
-    //Forse è meglio che venga anche inizializzato automaticamente il reportNumOrder una volta lette le celle (si capisce leggendo come è l'ordine dei report che va nel report num order)
     private FaithTrack(File config) throws IOException, SAXException, ParserConfigurationException {
         this.track = new ArrayList<>();
         this.initTrack(config);
@@ -241,7 +240,6 @@ public class FaithTrack {
     public boolean callCellEffect(int position) throws LastVaticanReportException {
         if (position < track.size() - 1)
             return track.get(position).effect();
-        //TODO: come estendere in modo tale che non è sempre detto l'ultima cella è la ultima cella papale
         throw new LastVaticanReportException("Last Vatican Report was activated!", track.get(position).effect());
     }
 

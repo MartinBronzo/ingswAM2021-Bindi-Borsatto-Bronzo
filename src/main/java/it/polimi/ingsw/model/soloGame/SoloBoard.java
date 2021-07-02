@@ -143,7 +143,7 @@ public class SoloBoard extends MainBoard {
     }
 
     /**
-     * Returns if the column of the specified color in devGrid is empty
+     * Returns if the column of the specified color in devGrid is empty, checking the deck in the first row of the grid
      *
      * @param colour: the color of the column
      * @return true if the column of the specified color in devGrid is empty
@@ -153,7 +153,7 @@ public class SoloBoard extends MainBoard {
     }
 
     /**
-     * Returns if the column of the specified color in devGrid is empty
+     * Returns if the entire column of the specified color in devGrid is empty
      *
      * @param colour: the color of the column
      * @return true if the column of the specified color in devGrid is empty
