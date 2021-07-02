@@ -76,9 +76,14 @@ Abbiamo implementato un comando di cheat (da CLI scrivere "CHEAT", da GUI clicca
 <h2>
   Comandi da utilizzare
 </h2>
+<p>Per runnare il programma da CLI:</p>
+<span> java -jar NOMEJAR -cli -IP 127.0.0.1 9047</br>java -jar NOMEJAR -c -IP 127.0.0.1 9047</span>
+
+<p></br>Per runnare il programma da GUI:</p>
+<p> java -jar NOMEJAR -IP 127.0.0.1 9047</p>
 
 <h2>Creatori</h2>
 Made with love by (in ordine alfabetico)</br>
 Ludovica Bindi (10619971)</br>
-Andrea Borsatto </br>
-Martin Bronzo </br>
+Andrea Borsatto (10628989)</br>
+Martin Bronzo (10619358)</br>
