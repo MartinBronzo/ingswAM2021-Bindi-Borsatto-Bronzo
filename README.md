@@ -76,16 +76,16 @@
 </p>
 
 <h2>Cheats</h2>
-Abbiamo implementato un comando di cheat (da CLI scrivere "CHEAT", da GUI cliccare sul bottone "Cheat") che permette di guadagnare risorse e depositarle nel deposito senza prenderle dal Mercato o attivando la produzione.
+Abbiamo implementato un comando di cheat (da CLI scrivere "CHEAT", da GUI cliccare sul bottone "Cheat") che permette di guadagnare risorse e depositarle nel deposito senza prenderle dal Mercato o attivando la produzione. Le risorse vengono distribuite a tutti i giocatori.
 
 <h2>
   Comandi da utilizzare
 </h2>
 <p>Per runnare il programma da CLI:</p>
-<span> java -jar NOMEJAR -cli -IP 127.0.0.1 9047</br>java -jar NOMEJAR -c -IP 127.0.0.1 9047</span>
+<span> java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar --cli --IP 127.0.0.1 9047</br>java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar -c --IP 127.0.0.1 9047</span>
 
 <p></br>Per runnare il programma da GUI:</p>
-<p> java -jar NOMEJAR -IP 127.0.0.1 9047</p>
+<p> java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar -IP 127.0.0.1 9047</p>
 
 <h2>Creatori</h2>
 Made with love by (in ordine alfabetico)</br>
