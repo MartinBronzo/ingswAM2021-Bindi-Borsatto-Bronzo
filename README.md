@@ -13,8 +13,13 @@
 <h2>UML e User Diagram</h2>
 <p>Questi sono gli UML del nostro model:</p>
 <ul>
-	<li><a href="Images/UML prima.pdf"> UML prima della scrittura del codice </a></li>
-	<li><a href="Images/UML dopo.pdf"> UML a svillupo completato </a></li>
+	<li><a href="Images/ClassDiagramStarting.png"> UML prima della scrittura del codice </a></li>
+	<li><a href="Images/ClassDiagramDef.png"> UML a svillupo completato </a></li>
+	<li><a href="Images/Model auto-generato.png"> UML a sviluppo completato generato automaticamente </a></li>
+</ul>
+<p>Questo è l'UML del Controller:</p>
+<ul>
+	<li><a href="Images/Server UML def.png">Controller a sviluppo completato </a></li>
 </ul>
 <p>Questi sono gli User Diagram che abbiamo preparato per la progettazione della comunicazione tra client e server:</p>
 <ul>
