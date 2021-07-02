@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 @Deprecated
-//TODO: questa classe sarà da togliere quando avremo tutto pronto perché solo serve per testing purposes
 public class CollectCostsChoices implements ActionListener {
     private PanelDrop panelDrop;
 
@@ -28,7 +27,6 @@ public class CollectCostsChoices implements ActionListener {
         if(!panelDrop.hasPlayerSpecifiedEverything()) {
             System.out.println(panelDrop.hasPlayerSpecifiedEverything());
             //PanelManager.getInstance().printError("You must select all the resources you are supposed to!");
-            //TODO: perché non va con il printError?
             JOptionPane.showMessageDialog(null, "You must select all the resources you are supposed to!");
             return;
         }
@@ -54,7 +52,6 @@ public class CollectCostsChoices implements ActionListener {
         for(Map.Entry<ResourceType, Integer> el: fromLeaderCards.entrySet())
             System.out.println(el.getValue() + " " + el.getKey());
 
-        //TODO: ci sarà da creare messaggio ad hoc per i vari casi: magari fare un collect cost per card e per prod oppure fare diventare
         //questa classe un wrapper che contiene una classe ad hoc che differisce per il tipo di messaggio
 
     }

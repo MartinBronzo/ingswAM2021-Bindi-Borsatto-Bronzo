@@ -215,9 +215,9 @@ public class GuiClient implements Runnable, Client {
                 forceLogout.set(true);
                 threadReader.interrupt();
             } finally {
-                /*//TODO: DA TOGLIERE QUESTO IF
-                if (responseMessage.getResponseType() != ResponseType.PING)*/
-                    System.out.println("Received:\t" + response);
+                /*
+                if (responseMessage.getResponseType() != ResponseType.PING)
+                    System.out.println("Received:\t" + response);*/
                 switch (responseMessage.getResponseType()){
                     case PING:
                         sendMessage(new Command("pingResponse"));

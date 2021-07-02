@@ -504,9 +504,8 @@ public class CliClient implements Runnable, Client {
                  */
             }
             try {
-                //TODO: DA TOGLIERE QUESTO IF
-                if (responseMessage.getResponseType() != ResponseType.PING)
-                    System.out.println("Received:\t" + response);
+                /*if (responseMessage.getResponseType() != ResponseType.PING)
+                    System.out.println("Received:\t" + response);*/
                 responseContent = responseMessage.getResponseContent();
                 switch (responseMessage.getResponseType()) {
                     case PING:

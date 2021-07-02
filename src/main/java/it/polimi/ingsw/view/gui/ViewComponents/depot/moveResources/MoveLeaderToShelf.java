@@ -37,7 +37,6 @@ public class MoveLeaderToShelf extends JPanel {
         this.activeLeader = PanelManager.getInstance().getExtraSlotActiveLeaderCards();
         List<DepotShelf> shelves = PanelManager.getInstance().getDepotShelves();
 
-        //TODO: questo controllo non dovrebbe essere fatto prima di chiamare il pannello
         if(!activeLeader.isEmpty()) {
             JPanel cardPanel = new JPanel();
             cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.X_AXIS));
@@ -50,11 +49,6 @@ public class MoveLeaderToShelf extends JPanel {
             }
             this.add(cardPanel, BorderLayout.CENTER);
         }
-        //TODO: DECIDERE SE METTERLO
-        /*else{
-            JLabel errorMessage = new JLabel("You don't have any Extra Slot Leader Card activated");
-            this.add(errorMessage);
-        }*/
 
         //Creating the drop-down menu for the res choice
         String [] resChoice = this.createResChoice(PanelManager.getInstance().getLeaderSlots());

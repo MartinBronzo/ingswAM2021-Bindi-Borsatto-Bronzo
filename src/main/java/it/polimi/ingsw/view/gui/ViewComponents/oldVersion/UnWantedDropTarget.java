@@ -43,7 +43,6 @@ public class UnWantedDropTarget extends DropTargetAdapter {
                 if (ico != null) {
                     ImageIcon image = (ImageIcon) ico;
                     /*switch (image.getDescription()){
-                        //TODO: questo metodo dipende molto dal fatto che su i singoli shelf ci siano solo risorse dello stesso tipo, come renderlo più estendibile?
                         //Guarda setResourceVisibleInShelf(): cerca un qualsiasi elemento invisibile e lo setta a true, se ci fossero elementi di tipi diversi questo
                         //darebbe problemi. Questa soluzione non è molto omogenea perché da altri parti NON abbiamo supposto che su un solo scaffale ci potessero
                         //stare risorse diverse

@@ -42,9 +42,8 @@ public class CollectMoveShelfToLeader implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(quantity == null){
-            //PanelManager.getInstance().printError("You must pick a shelf first!");
-            //TODO: decomenttare quando ci sarà il panel manager runnante
-            JOptionPane.showMessageDialog(null, "You must pick a shelf first!");
+            PanelManager.getInstance().printError("You must pick a shelf first!");
+            //JOptionPane.showMessageDialog(null, "You must pick a shelf first!");
             return;
         }
         int shelfChosen = Integer.parseInt(shelf.getSelectedItem().toString().split(" ")[1]);
