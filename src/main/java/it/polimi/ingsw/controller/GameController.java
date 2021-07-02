@@ -776,7 +776,6 @@ public class GameController {
                 this.disconnectedBeforeStarting.remove(clientHandler);
         }
         clientHandler.send(new BeggingDecisionsConfirmationMessage());
-        //this.checkIfGameMustBegin();
         return true;
     }
 
@@ -1702,6 +1701,25 @@ public class GameController {
             if (!(e.getKey().getPlayerState() == PlayerState.DISCONNECTED || e.getKey().getPlayerState() == PlayerState.WAITING4GAMEEND))
                 return false;
         return true;
+    }
+
+    /**
+     * Adds the specified number of resources to the strongbox, for every type of resource
+     *
+     * @param numRes number of resources to add
+     */
+    public void activateCheat(int numRes){
+        HashMap<ResourceType, Integer> resMap = new HashMap<>();
+        resMap.put(ResourceType.COIN, numRes);
+        resMap.put(ResourceType.SERVANT, numRes);
+        resMap.put(ResourceType.STONE, numRes);
+        resMap.put(ResourceType.SHIELD, numRes);
+
+        for(Pair<ClientHandler, PlayerBoard> player : players){
+            player.getValue().addResourcesToStrongbox(resMap);
+        }
+
+        this.sendBroadcastUpdate(this.getWholeMessageUpdateToClient());
     }
 
 

@@ -18,6 +18,7 @@ import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
 import it.polimi.ingsw.network.messages.fromClient.BaseProductionParams;
+import it.polimi.ingsw.network.messages.fromClient.CheatMessage;
 import it.polimi.ingsw.network.messages.fromClient.GetFromMatrixMessage;
 import it.polimi.ingsw.network.messages.fromClient.GetProductionCostMessage;
 import it.polimi.ingsw.network.messages.sendToClient.*;
@@ -254,8 +255,9 @@ public final class PanelManager {
      * method to be called when in a panel is called the quitCommand or the game ends*
      */
     public void manageLogoutCommand() {
-        gui.quitCommand();
         writeMessage(new Command("quit"));
+        gui.quitCommand();
+        //writeMessage(new Command("quit"));
     }
 
     /**
@@ -619,6 +621,13 @@ public final class PanelManager {
         this.lastSelectedLeaderList = leaderList;
         System.out.println((lastSelectedRow + 1) + " " + (lastSelectedCol + 1) + " " + lastSelectedLeaderList);
         writeMessage(new Command("getCardCost", new GetFromMatrixMessage(lastSelectedRow + 1, lastSelectedCol + 1, lastSelectedLeaderList)));
+    }
+
+    /**
+     * Sends a message to the server to activate cheats
+     */
+    public void manageCheat(){
+        writeMessage(new Command("activateCheat", new CheatMessage(99)));
     }
 
     /**

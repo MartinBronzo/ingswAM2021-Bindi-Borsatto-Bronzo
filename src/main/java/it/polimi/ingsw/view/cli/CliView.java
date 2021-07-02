@@ -1610,6 +1610,8 @@ public class CliView {
         printCommandAndString(CliCommandType.SEEOTHERSPLAYERSNAMES, ": tells your your competitors' names", AnsiCommands.BLUE.getTextColor());
             printCommandExampleNoRule("SEEOTHERSPLAYERSNAMES", AnsiCommands.BLUE.getTextColor());
         //printCommandAndString(CliCommandType.MOVESHELFTOLEADER, ": moves resources from Depot shelves to the Leader Depots", AnsiCommands.BLUE.getTextColor());
+        printCommandAndString(CliCommandType.CHEAT, ": makes you cheat", AnsiCommands.BLUE.getTextColor());
+            printCommandExampleNoRule("CHEAT", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.HELP, ": less cool way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());
             printCommandExampleNoRule("HELP", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.HOLP, ": cooler way to ask for this awesome guide", AnsiCommands.BLUE.getTextColor());

@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.soloGame.DiscardToken;
 import it.polimi.ingsw.model.soloGame.FaithPointToken;
 import it.polimi.ingsw.model.soloGame.ShuffleToken;
 import it.polimi.ingsw.model.soloGame.SoloActionToken;
+import it.polimi.ingsw.network.messages.fromClient.CheatMessage;
 import it.polimi.ingsw.network.messages.fromClient.LoginMessage;
 import it.polimi.ingsw.network.messages.sendToClient.*;
 import it.polimi.ingsw.view.Client;
@@ -244,6 +245,9 @@ public class CliClient implements Runnable, Client {
                             else
                                 CliView.printInfo("It can't be printed yet");
                         }
+                        break;
+                    case CHEAT:
+                        sendMessage(new Command("activateCheat", new CheatMessage(99)));
                         break;
                     case HELP:
                     case HOLP:

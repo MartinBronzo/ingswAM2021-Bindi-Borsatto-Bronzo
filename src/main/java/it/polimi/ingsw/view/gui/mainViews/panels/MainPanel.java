@@ -94,6 +94,11 @@ public class MainPanel extends JPanel {
         quitButton.setAlignmentX(LEFT_ALIGNMENT);
         controlPanel.add(quitButton);
 
+        JButton cheatButton = new JButton("Cheat");
+        cheatButton.addActionListener((event -> PanelManager.getInstance().manageCheat()));
+        cheatButton.setAlignmentX(LEFT_ALIGNMENT);
+        controlPanel.add(cheatButton);
+
         this.add(controlPanel);
 
         //adds first the actual player because this is the default value of the component

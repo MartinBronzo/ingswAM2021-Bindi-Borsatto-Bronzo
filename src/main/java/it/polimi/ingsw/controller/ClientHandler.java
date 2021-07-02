@@ -240,7 +240,7 @@ public class ClientHandler implements Runnable {
         Command command;
 
         Timer pingTimer = new Timer();
-        //Creates a timer that pings the client every 10 sec
+        //Creates a timer that pings the client every 5 sec
         if (startTimer) {
             pingTimer.schedule(new TimerTask() {
                 @Override
@@ -584,6 +584,10 @@ public class ClientHandler implements Runnable {
                 mainActionDone = false;
                 break;
 
+            case "activateCheat":
+                activateCheat(command);
+                break;
+
             case "moveBetweenShelves":
                 moveBetweenShelves(command);
                 break;
@@ -608,6 +612,12 @@ public class ClientHandler implements Runnable {
                 this.send(new ErrorMessage("No command found"));
                 break;
         }
+    }
+
+    public void activateCheat(Command command){
+        CheatMessage cheatMessage = gson.fromJson(command.getParameters(), CheatMessage.class);
+
+        game.activateCheat(cheatMessage.getNumRes());
     }
 
     /**

@@ -557,9 +557,7 @@ public class PlayerBoard {
      *
      * @param resMap the map with the resource to add
      * @return true if the action is performed without errors
-     * @deprecated resources to strongbox can be added exclusively using activate production method
      */
-    @Deprecated
     public boolean addResourcesToStrongbox(HashMap<ResourceType, Integer> resMap) {
         return strongbox.addResource(resMap);
     }

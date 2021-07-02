@@ -87,5 +87,9 @@ public enum CliCommandType {
     /**
      * The player wants to print the holp message.
      */
-    HOLP
+    HOLP,
+    /**
+     * The player wants to cheat
+     */
+    CHEAT
 }
