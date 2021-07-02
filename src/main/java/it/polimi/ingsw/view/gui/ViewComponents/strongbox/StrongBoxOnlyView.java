@@ -25,14 +25,6 @@ public class StrongBoxOnlyView extends JPanel {
     private final int height = 180;
     private String nickname;
 
-    /*public StrongBoxOnlyView(){
-        super();
-        this.setBorder(new TitledBorder("Your StrongBox"));
-        this.resources = new ArrayList<>();
-
-        this.fillStrongBox();
-    }*/
-
     /**
      * Constructs the StrongBoxOnlyView which represents the StrongBox of the specified player
      * @param nickname a player's nickname
@@ -80,28 +72,5 @@ public class StrongBoxOnlyView extends JPanel {
         }
         Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(dimg);
-        //ImageIcon icon = new ImageIcon(leader);
     }
-
-    /*private void fillStrongBox(){
-        HashMap<ResourceType, Integer> resources = PanelManager.getInstance().getStrongBox();
-        for(Map.Entry<ResourceType, Integer> e: resources.entrySet())
-            this.addOneKindRes(e.getKey(), e.getValue());
-    }
-
-    private void addOneKindRes(ResourceType type, int quantity){
-        ImageIcon resource = new ImageIcon(DepotDrop.getImagePathFromResource(type));;
-        JLabel label = new JLabel(resource);
-        label.setText(String.valueOf(quantity));
-        label.setFont(new Font("Serif", Font.BOLD, 20));
-        label.setForeground(Color.BLUE);
-        this.resources.add(label);
-        this.add(label);
-    }*/
-
-    /*@Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(new ImageIcon("src/main/resources/strongbox medium.png").getImage(), 100, 100, null);
-    }*/
 }

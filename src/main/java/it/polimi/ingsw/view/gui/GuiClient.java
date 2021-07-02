@@ -178,12 +178,14 @@ public class GuiClient implements Runnable, Client {
      * Set up everything to end the connection and the program
      */
     public void quitCommand(){
-        threadReader.interrupt();
-        PanelManager.getInstance().printLogout("Thanks for playing");
-        forceLogout.set(true);
+        try {
+            threadReader.interrupt();
+            PanelManager.getInstance().printLogout("Thanks for playing");
+            forceLogout.set(true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
-
-
 
     /**
      * When an object implementing interface {@code Runnable} is used
