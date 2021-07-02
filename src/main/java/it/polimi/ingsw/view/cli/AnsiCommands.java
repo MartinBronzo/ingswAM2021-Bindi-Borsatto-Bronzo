@@ -138,10 +138,10 @@ public enum AnsiCommands {
     }
 
     /**
-     * Returns the clr string
-     * @return the clr string
+     * Returns the \n string
+     * @return the \n string
      */
     public static String clear() {
-        return "\033[H\033[2J";
+        return "\n";
     }
 }
