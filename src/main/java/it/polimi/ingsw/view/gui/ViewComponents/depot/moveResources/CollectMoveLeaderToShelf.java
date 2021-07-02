@@ -53,9 +53,8 @@ public class CollectMoveLeaderToShelf implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(quantity == null || shelf == null){
-            //PanelManager.getInstance().printError("You must pick a shelf first!");
-            //TODO: decomenttare quando ci sarà il panel manager runnante
-            JOptionPane.showMessageDialog(null, "You must pick a resource type first!");
+            PanelManager.getInstance().printError("You must pick a shelf first!");
+            //JOptionPane.showMessageDialog(null, "You must pick a resource type first!");
             return;
         }
 

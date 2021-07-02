@@ -1,5 +1,5 @@
 package it.polimi.ingsw.view.GUI.panels;
-
+/*
 import it.polimi.ingsw.exceptions.NegativeQuantityException;
 import it.polimi.ingsw.model.leaderCard.LeaderCard;
 import it.polimi.ingsw.model.leaderCard.LeaderCardRequirements.CardRequirementResource;
@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.ParserConfigurationException;*/
 
 /**
  * THIS IS A TEST FOR THE BEGINNING DECISIONS DEPOT DRAG & DROP
@@ -1139,7 +1139,6 @@ public class Test {}
         frame.setVisible(true);
     }
 
-    //TODO: test
     public static void checkPlacingResourceFull(){
         //Setting up the frame
         JFrame frame = new JFrame();
@@ -1566,7 +1565,7 @@ class ShelfDrop extends JPanel{
      * In each depot panel we have this resToDepot list which takes track of all the resources moved to this depot. When  the confirm
      * button is clicked then all the list from all the three depot panels must be collected and sent to the model somehow
      */
-//TODO: on submit click fondere le varie liste in depot params
+
     /*private List<Pair<Integer, ResourceType>> resToDepot;
 
     class Pair<Integer, ResourceType> {

@@ -23,7 +23,6 @@ public class CollectMoveToLeaderOld implements ActionListener {
 
         if(leaderCard == null) {
             //PanelManager.getInstance().printError("You must move at least one resource!");
-            //TODO: perché non funziona con il panel manager?
             JOptionPane.showMessageDialog(null, "You must move at least one resource!");
             return;
         }
@@ -31,7 +30,5 @@ public class CollectMoveToLeaderOld implements ActionListener {
         Message message = new MoveShelfToLeaderMessage(leaderCard.getShelf(), leaderCard.getQuantity());
         //PanelManager.getInstance().writeMessage(new Command("moveShelfToLeader", message));
         System.out.println("FROM SHELF " + leaderCard.getShelf() + ", " + leaderCard.getQuantity() + " resources!");
-
-        //TODO: reset the state
     }
 }

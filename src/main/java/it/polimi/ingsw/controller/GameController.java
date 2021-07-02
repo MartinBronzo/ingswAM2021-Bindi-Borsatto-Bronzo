@@ -416,7 +416,6 @@ public class GameController {
             }
             if (index == tmp)
                 //Then we have gone through the whole list without finding any player who wasn't active
-                //TODO: chiudiamo tutto (al massimo mettere uno stato che dice gioco è morto e nella substitue non aggiungiamo giocatori a giochi morti)
                 GamesManagerSingleton.getInstance().deleteGame(this);
         }
 
@@ -605,28 +604,8 @@ public class GameController {
     public boolean showLeaderCardAtBeginning() {
         mainBoard.giveLeaderCardsToPlayerAtGameBeginning();
 
-        /*Game game = new Game();
-        Player player;
-        for (int i = 0; i < this.numberOfPlayers; i++) {
-            player = new Player();
-            player.setNickName(players.get(i).getKey().getNickname());
-            player.setPlayerState(players.get(i).getKey().getPlayerState());
-            player.setUnUsedLeaders(players.get(i).getValue().getNotPlayedLeaderCards());
-            game.addPlayer(player);
-        }
-        //Sends the DevGrid and the Market for the first time
-        Board board = new Board();
-        board.setDevMatrix(mainBoard.getDevMatrix());
-        board.setMarketMatrix(mainBoard.getMarketMatrixWithMarbleType());
-        board.setMarbleOnSlide(mainBoard.getMarbleOnSlideWithMarbleType());
-        game.setMainBoard(board);
-
-
-        this.sendBroadcastUpdate(new ModelUpdate(game));*/
-
         this.sendBroadcastUpdate(this.getWholeMessageUpdateToClient());
 
-        //TODO: controllare se va bene
         synchronized (this) {
             for (Pair<ClientHandler, PlayerBoard> e : players)
                 if (e.getKey().getPlayerState() == PlayerState.DISCONNECTED)
@@ -651,7 +630,6 @@ public class GameController {
         } catch (LastVaticanReportException e) {
             //this.setLastTurn();
             System.out.println("FATAL ERROR");
-            //todo: si scrive fatal error ma non si fa nulla. una system exit?
         }
 
         //For each player in the game computes how many extra resources they get, how many leader they have to discard at the beginning, and their order in the game.
@@ -697,7 +675,7 @@ public class GameController {
     ###########################################################################################################
      */
 
-    //TODO: i numeri che il client passa degli indici NON sono da informatici (devono essere decrementati per accedere agli indici effettivi delle matrici, delle liste, etc.)
+    //i numeri che il client passa degli indici NON sono da informatici (devono essere decrementati per accedere agli indici effettivi delle matrici, delle liste, etc.)
 
     /**
      * Communicates to the Model the beginning of the game decisions of the specified player
@@ -1631,7 +1609,6 @@ public class GameController {
         for (Pair<ClientHandler, PlayerBoard> player : players) {
             player.getKey().setGameEnded();
         }
-        //TODO: ci sarà da chiudere le socket o tanto quando viene mandato la fine del gioco il Client non fa più mandare niente di altro?
     }
 
     public void endGameSolo() {

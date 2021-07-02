@@ -34,7 +34,6 @@ public class MoveShelfToLeader extends JPanel {
         List<LeaderCard> activeLeader = PanelManager.getInstance().getExtraSlotActiveLeaderCards();
         this.shelves = PanelManager.getInstance().getDepotShelves();
 
-        //TODO: questo controllo non dovrebbe essere fatto prima di chiamare il pannello
         if(!activeLeader.isEmpty()) {
             JPanel cardPanel = new JPanel();
             cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.X_AXIS));
@@ -115,8 +114,4 @@ public class MoveShelfToLeader extends JPanel {
 
         return result;
     }
-
-    //TODO: controllare che funzioni
-
-
 }

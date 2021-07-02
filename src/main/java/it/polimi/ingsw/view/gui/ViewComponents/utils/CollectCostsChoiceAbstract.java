@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.ViewComponents.utils;
 import it.polimi.ingsw.model.resources.ResourceType;
 import it.polimi.ingsw.network.messages.fromClient.DepotParams;
 import it.polimi.ingsw.view.gui.ViewComponents.resources.resourcesDrop.PanelDrop;
+import it.polimi.ingsw.view.gui.mainViews.PanelManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -24,9 +25,8 @@ public abstract class CollectCostsChoiceAbstract implements ActionListener {
         //Controls whether the player has specified all the resources they are supposed to
         if(!panelDrop.hasPlayerSpecifiedEverything()) {
             System.out.println(panelDrop.hasPlayerSpecifiedEverything());
-            //PanelManager.getInstance().printError("You must select all the resources you are supposed to!");
-            //TODO: perché non va con il printError?
-            JOptionPane.showMessageDialog(null, "You must select all the resources you are supposed to!");
+            PanelManager.getInstance().printError("You must select all the resources you are supposed to!");
+            //JOptionPane.showMessageDialog(null, "You must select all the resources you are supposed to!");
             return;
         }
 

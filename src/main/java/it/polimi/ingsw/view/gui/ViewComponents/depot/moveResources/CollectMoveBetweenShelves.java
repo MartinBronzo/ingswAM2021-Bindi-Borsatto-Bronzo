@@ -36,9 +36,9 @@ public class CollectMoveBetweenShelves implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(destShelf == null){
-            //PanelManager.getInstance().printError("You must pick a source shelf first!");
-            //TODO: decomenttare quando ci sarà il panel manager runnante
-            JOptionPane.showMessageDialog(null, "You must pick a source shelf first!");
+            PanelManager.getInstance().printError("You must pick a source shelf first!");
+
+            //JOptionPane.showMessageDialog(null, "You must pick a source shelf first!");
             return;
         }
 

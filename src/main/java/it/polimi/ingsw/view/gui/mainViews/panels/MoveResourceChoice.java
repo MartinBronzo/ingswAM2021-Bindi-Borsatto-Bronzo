@@ -39,7 +39,6 @@ public class MoveResourceChoice extends JPanel {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new CardLayout());
 
-        //TODO: MANCANO I LISTENER
         MoveBetweenShelves moveBetweenShelvesPanel = new MoveBetweenShelves();
         MoveLeaderToShelf moveLeaderToShelfPanel = new MoveLeaderToShelf();
         MoveShelfToLeader moveShelfToLeaderPanel = new MoveShelfToLeader();
