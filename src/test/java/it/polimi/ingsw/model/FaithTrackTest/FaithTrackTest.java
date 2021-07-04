@@ -133,7 +133,7 @@ public class FaithTrackTest {
     //implement the actual configuration via file
     public void ctrlTrackCreationWithConfigFile() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
-        File config = new File("FaithTrackConfig.xml");
+        File config = new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile());
         FaithTrack faithTrack = FaithTrack.instance(config);
 
         //REPORT1
@@ -226,7 +226,7 @@ public class FaithTrackTest {
     //Tests that the ReportNumOrder is correctly set via configuration file
     public void ctrlReportNumOrderViaFile() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
-        File config = new File("FaithTrackConfig.xml");
+        File config = new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile());
         FaithTrack faithTrack = FaithTrack.instance(config);
         ReportNumOrder reportNumOrder = faithTrack.getReportNumOrder();
 
@@ -263,7 +263,7 @@ public class FaithTrackTest {
     //Tests that, once set, the ReportNumOrder can't be changed: FaithTrack created with the configuration file
     public void ctrlReportNumOrderNotSettingWithConfigFile() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
-        File config = new File("FaithTrackConfig.xml");
+        File config = new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile());
         FaithTrack faithTrack = FaithTrack.instance(config);
 
         assertTrue(faithTrack.isReportNumOrderSet());
@@ -343,7 +343,7 @@ public class FaithTrackTest {
     //Tests that the observer are attached with the specific method
     public void ctrlObserverAttachment() throws IOException, SAXException, ParserConfigurationException {
         FaithTrack.deleteState();
-        FaithTrack fT = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack fT = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
 
         PopeCell p1 = (PopeCell) fT.getCellNotSame(8);
         PopeCell p2 = (PopeCell) fT.getCellNotSame(16);
@@ -383,8 +383,8 @@ public class FaithTrackTest {
     @Test
     //Checks that multiple FaithTrack objects can be made: it uses the configuration file
     public void ctrlMultipleInstancesWithConfigFile() throws ParserConfigurationException, IOException, SAXException {
-        FaithTrack ft1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
-        FaithTrack ft2 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack ft1 = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
+        FaithTrack ft2 = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
 
         assertNotSame(ft1, ft2);
     }
@@ -392,8 +392,8 @@ public class FaithTrackTest {
 
     @Test
     public void ctrlEqualsTrue() throws ParserConfigurationException, IOException, SAXException {
-        FaithTrack f1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
-        FaithTrack f2 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f1 = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
+        FaithTrack f2 = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
 
         assertNotSame(f1, f2);
         assertEquals(f1, f2);
@@ -402,8 +402,8 @@ public class FaithTrackTest {
     @Test
     //The FaithTrack differ for the different observers attached to the PopeTiles
     public void ctrlEqualsFalse() throws ParserConfigurationException, IOException, SAXException {
-        FaithTrack f1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
-        FaithTrack f2 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f1 = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
+        FaithTrack f2 = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
 
         f1.attachObserverToPopeTiles(new PopeCellObserver(new MainBoard(4)));
 
@@ -412,7 +412,7 @@ public class FaithTrackTest {
 
     @Test
     public void ctrlFaithTrackCloning() throws ParserConfigurationException, IOException, SAXException {
-        FaithTrack f1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f1 = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
         FaithTrack f2 = new FaithTrack(f1);
 
         assertNotSame(f1, f2);
@@ -421,7 +421,7 @@ public class FaithTrackTest {
 
     @Test
     public void ctrlGettingCellSafe() throws ParserConfigurationException, IOException, SAXException {
-        FaithTrack f1 = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f1 = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
 
         Cell cell = f1.getCell(4);
 
@@ -432,7 +432,7 @@ public class FaithTrackTest {
 
     @Test
     public void ctrlAttachingObservers() throws ParserConfigurationException, IOException, SAXException {
-        FaithTrack f = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
         PopeCellObserver p = new PopeCellObserver(new MainBoard(1));
         f.attachObserverToPopeTiles(p);
 
@@ -447,7 +447,7 @@ public class FaithTrackTest {
 
     @Test
     public void ctrlDetachingObservers() throws ParserConfigurationException, IOException, SAXException {
-        FaithTrack f = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack f = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
         PopeCellObserver p = new PopeCellObserver(new MainBoard(1));
         f.attachObserverToPopeTiles(p);
 

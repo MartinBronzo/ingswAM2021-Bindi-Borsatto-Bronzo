@@ -122,7 +122,7 @@ class DevGridTest {
 
     @BeforeEach
     void setUp() throws ParserConfigurationException, NegativeQuantityException, SAXException, IllegalArgumentException, IOException {
-        xmlDevCardsConfig = new File("DevCardConfig.xsd.xml");
+        xmlDevCardsConfig = new File(this.getClass().getResource("/XMLs/DevCardConfig.xsd.xml").getFile());
         devGrid = new DevGrid(xmlDevCardsConfig);
         deckGreen1 = devGrid.getDevDeckInTheGrid(2, 0);
         assertEquals(4, deckGreen1.size());

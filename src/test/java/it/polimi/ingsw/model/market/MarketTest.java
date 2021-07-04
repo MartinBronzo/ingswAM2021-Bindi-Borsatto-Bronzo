@@ -36,7 +36,7 @@ class MarketTest {
     void setUp() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
         effect = new Effect();
         effects = new ArrayList<>();
-        MarketConfigFile = new File("MarketConfig.xsd.xml");
+        MarketConfigFile = new File(this.getClass().getResource("/XMLs/MarketConfig.xsd.xml").getFile());
         market = new Market(MarketConfigFile);
         rnd = new Random();
 

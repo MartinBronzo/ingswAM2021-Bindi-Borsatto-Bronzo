@@ -16,7 +16,7 @@ class SoloActionDeckTest {
         DiscardTokenObserver discardTokenObserver = new DiscardTokenObserver(soloBoard);
         FaithPointTokenObserver faithPointTokenObserver = new FaithPointTokenObserver(soloBoard);
 
-        File xmlTokenConfig = new File("SoloTokenConfig.xml");
+        File xmlTokenConfig = new File(this.getClass().getResource("/XMLs/SoloTokenConfig.xml").getFile());
         SoloActionDeck deck = new SoloActionDeck(xmlTokenConfig, discardTokenObserver, faithPointTokenObserver);
 
         assertEquals(deck.size(), 6);

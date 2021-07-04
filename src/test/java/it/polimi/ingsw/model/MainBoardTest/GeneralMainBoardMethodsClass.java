@@ -49,7 +49,7 @@ public class GeneralMainBoardMethodsClass {
     //Tests that MainBoard is created correctly: the FaithTrack is the right one
     public void ctrlCreationFaithTrack() throws ParserConfigurationException, IOException, SAXException {
         FaithTrack inMainBoard = mainBoard.getFaithTrack();
-        FaithTrack usualFaithTrack = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack usualFaithTrack = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
 
         assertTrue(inMainBoard.lighterEquals(usualFaithTrack));
     }
@@ -58,7 +58,7 @@ public class GeneralMainBoardMethodsClass {
     //Tests that MainBoard is created correctly: the LeaderCards are the right one
     public void ctrlCreationLeaderCards() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
         LeaderCardDeck inMB = (LeaderCardDeck) mainBoard.getLeaderCardsDeck();
-        LeaderCardDeck usual = new LeaderCardDeck(LeaderCardDeck.initLeaderCards(new File("LeaderCardConfig.xml")));
+        LeaderCardDeck usual = new LeaderCardDeck(LeaderCardDeck.initLeaderCards(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile())));
 
         assertEquals(inMB, usual);
     }
@@ -123,7 +123,7 @@ public class GeneralMainBoardMethodsClass {
     @Test
     //Tests that MainBoard is created correctly: all the player get the right FaithTrack
     public void ctrlPlayerBoardsFaithTrack() throws ParserConfigurationException, IOException, SAXException {
-        FaithTrack usual = FaithTrack.instance(new File("FaithTrackConfig.xml"));
+        FaithTrack usual = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
         for (int i = 0; i < 4; i++)
             assertTrue(mainBoard.getPlayerBoard(i).getFaithTrack().lighterEquals(usual));
     }

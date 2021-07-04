@@ -16,8 +16,8 @@ public class LeaderCardDeckTest {
 
     @Test
     public void ctrlEqualsTrue() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
-        LeaderCardDeck l1 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
-        LeaderCardDeck l2 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        LeaderCardDeck l1 = new LeaderCardDeck(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile()));
+        LeaderCardDeck l2 = new LeaderCardDeck(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile()));
 
         assertNotSame(l1, l2);
         assertEquals(l1, l2);
@@ -25,8 +25,8 @@ public class LeaderCardDeckTest {
 
     @Test
     public void ctrlEqualsFalse() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
-        LeaderCardDeck l1 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
-        LeaderCardDeck l2 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        LeaderCardDeck l1 = new LeaderCardDeck(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile()));
+        LeaderCardDeck l2 = new LeaderCardDeck(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile()));
 
         l2.drawFromDeck();
 
@@ -36,7 +36,7 @@ public class LeaderCardDeckTest {
 
     @Test
     public void ctrlCloning() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
-        LeaderCardDeck l1 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        LeaderCardDeck l1 = new LeaderCardDeck(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile()));
         LeaderCardDeck l2 = new LeaderCardDeck(l1);
 
         assertNotSame(l1, l2);
@@ -46,7 +46,7 @@ public class LeaderCardDeckTest {
     @Test
     //Now the deck we compare are not in the original configuration because a card has been drawn before the cloning operation
     public void ctrlCloningAfterDrawnCard() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
-        LeaderCardDeck l1 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        LeaderCardDeck l1 = new LeaderCardDeck(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile()));
         l1.drawFromDeck();
         LeaderCardDeck l2 = new LeaderCardDeck(l1);
 
@@ -56,7 +56,7 @@ public class LeaderCardDeckTest {
 
     @Test
     public void ctrlReadingTheUrl() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
-        LeaderCardDeck l1 = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        LeaderCardDeck l1 = new LeaderCardDeck(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile()));
         for(LeaderCard leaderCard : l1.getCopyLeaderCards()) {
             //assertFalse(leaderCard.getUrl().isEmpty());
             assertNotNull(leaderCard.getUrl());

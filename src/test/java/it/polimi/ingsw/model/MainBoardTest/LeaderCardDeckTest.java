@@ -162,7 +162,7 @@ public class LeaderCardDeckTest {
     @Test
     //The file read contains an example of four LeaderCards
     public void ctrlCreationWithConfigFile() throws ParserConfigurationException, NegativeQuantityException, SAXException, IOException {
-        leaderCardDeck = new LeaderCardDeck(new File("LeaderCardConfig.xml"));
+        leaderCardDeck = new LeaderCardDeck(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile()));
         tmp = new ArrayList<>();
 
         List<Requirement> reqList = new ArrayList<>();
