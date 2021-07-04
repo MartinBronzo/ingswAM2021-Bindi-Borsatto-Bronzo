@@ -6,6 +6,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,7 +17,7 @@ class SoloActionDeckTest {
         DiscardTokenObserver discardTokenObserver = new DiscardTokenObserver(soloBoard);
         FaithPointTokenObserver faithPointTokenObserver = new FaithPointTokenObserver(soloBoard);
 
-        File xmlTokenConfig = new File(this.getClass().getResource("/XMLs/SoloTokenConfig.xml").getFile());
+        InputStream xmlTokenConfig = this.getClass().getResourceAsStream("/XMLs/SoloTokenConfig.xml");
         SoloActionDeck deck = new SoloActionDeck(xmlTokenConfig, discardTokenObserver, faithPointTokenObserver);
 
         assertEquals(deck.size(), 6);

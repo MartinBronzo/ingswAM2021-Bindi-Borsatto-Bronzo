@@ -2,55 +2,60 @@
 <testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.model.marble.BlueMarbleTest" time="0.001" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="15"/>
-    <property name="sun.jnu.encoding" value="UTF-8"/>
-    <property name="java.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/test-classes:/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/classes:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter/5.7.1/junit-jupiter-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.7.1/junit-jupiter-params-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.7.1/junit-jupiter-engine-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-engine/1.7.1/junit-platform-engine-1.7.1.jar:/Users/Ekraar/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/Users/Ekraar/.m2/repository/org/danilopianini/gson-extras/0.2.2/gson-extras-0.2.2.jar:/Users/Ekraar/.m2/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Users/Ekraar/.m2/repository/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar:/Users/Ekraar/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/Ekraar/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-commons/1.7.1/junit-platform-commons-1.7.1.jar:"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\target\test-classes;C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\target\classes;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter\5.7.1\junit-jupiter-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.7.1\junit-jupiter-params-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.7.1\junit-jupiter-engine-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\platform\junit-platform-engine\1.7.1\junit-platform-engine-1.7.1.jar;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.8.6\gson-2.8.6.jar;C:\Users\User\.m2\repository\org\danilopianini\gson-extras\0.2.2\gson-extras-0.2.2.jar;C:\Users\User\.m2\repository\javax\annotation\jsr250-api\1.0\jsr250-api-1.0.jar;C:\Users\User\.m2\repository\org\jetbrains\annotations\20.1.0\annotations-20.1.0.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.7.1\junit-jupiter-api-5.7.1.jar;C:\Users\User\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\User\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\User\.m2\repository\org\junit\platform\junit-platform-commons\1.7.1\junit-platform-commons-1.7.1.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
-    <property name="os.name" value="Mac OS X"/>
+    <property name="user.timezone" value="Europe/Rome"/>
+    <property name="os.name" value="Windows 10"/>
     <property name="java.vm.specification.version" value="15"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IT"/>
-    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-15.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter11992238406918925748.jar /Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire 2021-07-02T21-02-25_117-jvmRun1 surefire11248942291213269653tmp surefire_015024030968476641075tmp"/>
+    <property name="sun.boot.library.path" value="C:\Users\User\.jdks\openjdk-15\bin"/>
+    <property name="sun.java.command" value="C:\Users\User\AppData\Local\Temp\surefire10186492922951377457\surefirebooter5658685974360406270.jar C:\Users\User\AppData\Local\Temp\surefire10186492922951377457 2021-07-04T18-31-00_518-jvmRun1 surefire14599177384250650285tmp surefire_02965642669148592120tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/test-classes:/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/classes:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter/5.7.1/junit-jupiter-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.7.1/junit-jupiter-params-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.7.1/junit-jupiter-engine-5.7.1.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-engine/1.7.1/junit-platform-engine-1.7.1.jar:/Users/Ekraar/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/Users/Ekraar/.m2/repository/org/danilopianini/gson-extras/0.2.2/gson-extras-0.2.2.jar:/Users/Ekraar/.m2/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Users/Ekraar/.m2/repository/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar:/Users/Ekraar/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar:/Users/Ekraar/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/Ekraar/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/Ekraar/.m2/repository/org/junit/platform/junit-platform-commons/1.7.1/junit-platform-commons-1.7.1.jar:"/>
+    <property name="surefire.test.class.path" value="C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\target\test-classes;C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo\target\classes;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter\5.7.1\junit-jupiter-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.7.1\junit-jupiter-params-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.7.1\junit-jupiter-engine-5.7.1.jar;C:\Users\User\.m2\repository\org\junit\platform\junit-platform-engine\1.7.1\junit-platform-engine-1.7.1.jar;C:\Users\User\.m2\repository\com\google\code\gson\gson\2.8.6\gson-2.8.6.jar;C:\Users\User\.m2\repository\org\danilopianini\gson-extras\0.2.2\gson-extras-0.2.2.jar;C:\Users\User\.m2\repository\javax\annotation\jsr250-api\1.0\jsr250-api-1.0.jar;C:\Users\User\.m2\repository\org\jetbrains\annotations\20.1.0\annotations-20.1.0.jar;C:\Users\User\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.7.1\junit-jupiter-api-5.7.1.jar;C:\Users\User\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\User\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\User\.m2\repository\org\junit\platform\junit-platform-commons\1.7.1\junit-platform-commons-1.7.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
-    <property name="user.home" value="/Users/Ekraar"/>
+    <property name="user.home" value="C:\Users\User"/>
     <property name="user.language" value="it"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="java.version.date" value="2020-09-15"/>
-    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk-15.jdk/Contents/Home"/>
-    <property name="file.separator" value="/"/>
-    <property name="basedir" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo"/>
+    <property name="java.home" value="C:\Users\User\.jdks\openjdk-15"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo/target/surefire/surefirebooter11992238406918925748.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\User\AppData\Local\Temp\surefire10186492922951377457\surefirebooter5658685974360406270.jar"/>
+    <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="15+36-1562"/>
-    <property name="user.name" value="Ekraar"/>
-    <property name="path.separator" value=":"/>
-    <property name="os.version" value="10.16"/>
-    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="file.encoding" value="UTF-8"/>
-    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="localRepository" value="/Users/Ekraar/.m2/repository"/>
+    <property name="user.name" value="User"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\User\.m2\repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="java.io.tmpdir" value="/var/folders/49/fq5zrc5j7_x40t1mxrl_h_0h0000gn/T/"/>
-    <property name="idea.version" value="2021.1.1"/>
+    <property name="java.io.tmpdir" value="C:\Users\User\AppData\Local\Temp\"/>
+    <property name="idea.version" value="2020.2.4"/>
     <property name="java.version" value="15"/>
-    <property name="user.dir" value="/Users/Ekraar/Library/Mobile Documents/com~apple~CloudDocs/Polimi/A.A. 20-21/Progetto ing.Soft/ingswAM2021-Bindi-Borsatto-Bronzo"/>
-    <property name="os.arch" value="x86_64"/>
+    <property name="user.dir" value="C:\Users\User\IdeaProjects\ingswAM2021-Bindi-Borsatto-Bronzo"/>
+    <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="java.library.path" value="/Users/Ekraar/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="java.library.path" value="C:\Users\User\.jdks\openjdk-15\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\User\AppData\Local\Microsoft\WindowsApps;;."/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="java.vendor" value="Oracle Corporation"/>
     <property name="java.vm.version" value="15+36-1562"/>
-    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="59.0"/>
   </properties>
   <testcase name="onActivateLegalTest" classname="it.polimi.ingsw.model.marble.BlueMarbleTest" time="0"/>
-  <testcase name="onActivateIllegalTest" classname="it.polimi.ingsw.model.marble.BlueMarbleTest" time="0.001"/>
+  <testcase name="onActivateIllegalTest" classname="it.polimi.ingsw.model.marble.BlueMarbleTest" time="0"/>
 </testsuite>

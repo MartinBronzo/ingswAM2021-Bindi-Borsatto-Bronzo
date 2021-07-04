@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -32,7 +33,7 @@ public class SoloActionDeck implements Deck {
      * @throws IOException if an IO operations fails
      * @throws SAXException if there is a general SAX error or warning
      */
-    public SoloActionDeck(File configFile, DiscardTokenObserver discardTokenObserver, FaithPointTokenObserver faithPointTokenObserver) throws ParserConfigurationException, IOException, SAXException {
+    public SoloActionDeck(InputStream configFile, DiscardTokenObserver discardTokenObserver, FaithPointTokenObserver faithPointTokenObserver) throws ParserConfigurationException, IOException, SAXException {
         soloDeck = createDeck(configFile, discardTokenObserver, faithPointTokenObserver);
         Collections.shuffle(soloDeck);
     }
@@ -63,7 +64,7 @@ public class SoloActionDeck implements Deck {
      * @throws IOException                  if the read of the xml file has errors
      * @throws SAXException                 if the read of the xml file has errors
      */
-    private LinkedList<SoloActionToken> createDeck(File configFile, DiscardTokenObserver discardTokenObserver, FaithPointTokenObserver faithPointTokenObserver) throws ParserConfigurationException, IOException, SAXException {
+    private LinkedList<SoloActionToken> createDeck(InputStream configFile, DiscardTokenObserver discardTokenObserver, FaithPointTokenObserver faithPointTokenObserver) throws ParserConfigurationException, IOException, SAXException {
         LinkedList<SoloActionToken> deck = new LinkedList<>();
 
         //variables for xml read

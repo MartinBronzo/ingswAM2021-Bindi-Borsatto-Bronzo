@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class FaithTrack {
      *
      * @param config the file where to read the design of the track
      */
-    private FaithTrack(File config) throws IOException, SAXException, ParserConfigurationException {
+    private FaithTrack(InputStream config) throws IOException, SAXException, ParserConfigurationException {
         this.track = new ArrayList<>();
         this.initTrack(config);
         this.isReportNumOrderSet = true;
@@ -74,7 +75,7 @@ public class FaithTrack {
      * @param config the file where to read the description of the FaithTrack
      * @return a FaithTrack object
      */
-    public static FaithTrack instance(File config) throws ParserConfigurationException, SAXException, IOException {
+    public static FaithTrack instance(InputStream config) throws ParserConfigurationException, SAXException, IOException {
         return new FaithTrack(config);
     }
 
@@ -135,7 +136,7 @@ public class FaithTrack {
      * @param config the file where to retrieve the information for the configuration
      * @return true if the initiation went fine
      */
-    private boolean initTrack(File config) throws ParserConfigurationException, IOException, SAXException {
+    private boolean initTrack(InputStream config) throws ParserConfigurationException, IOException, SAXException {
         Node elementNode;
         NodeList cellsList;
         Element el;
@@ -155,7 +156,6 @@ public class FaithTrack {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(config);
         doc.getDocumentElement().normalize();
-
 
         NodeList nodeList = doc.getElementsByTagName("Report");
 

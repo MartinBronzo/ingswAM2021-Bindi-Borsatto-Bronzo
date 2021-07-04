@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -76,7 +77,7 @@ public class DevGrid {
      * @throws IllegalArgumentException     if it's present a devCard configuration bad syntax in xml config File
      * @throws NegativeQuantityException    if it's present a devCard configuration bad syntax in xml config File. Resource tag contains a negative quantity tag associated
      */
-    public DevGrid(File config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
+    public DevGrid(InputStream config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
         this.devDecksGrid = new DevDeck[3][4];
         ArrayList<DevCard> devCards = createConfigurationList(config);
         for (int i = 0; i < devDecksGrid.length; i++) {
@@ -99,7 +100,7 @@ public class DevGrid {
 
     //This method creates a DevGrid by reading the DevCard from a file as the DevGrid(File config) does but this method doesn't shuffle the cards
     //This method is used only for testing purposes: by using this method we are able to test the equals method
-    public DevGrid createDevGridWithoutShuffling(File config) throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
+    public DevGrid createDevGridWithoutShuffling(InputStream config) throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
         DevGrid result = new DevGrid();
         ArrayList<DevCard> devCards = createConfigurationList(config);
         for (int i = 0; i < result.devDecksGrid.length; i++) {
@@ -131,7 +132,7 @@ public class DevGrid {
      * @param config xml File containing DevCard configurations.
      * @return The List of DevCards described in the xml File
      */
-    private ArrayList<DevCard> createConfigurationList(File config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
+    private ArrayList<DevCard> createConfigurationList(InputStream config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
         ArrayList<DevCard> devCards = new ArrayList<>();
         DevCard devCard;
 

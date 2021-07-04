@@ -15,6 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -114,7 +115,7 @@ public class Market {
      * @throws IllegalArgumentException     if a negative number of a marble is used in the xmlFile
      * @throws NegativeQuantityException    if the sum of the marbles is not 13
      */
-    public Market(File config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
+    public Market(InputStream config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
         List<Marble> configurationList = createConfigurationList(config);
         if (configurationList.size() != 13)
             throw new IllegalArgumentException("Market: number of Marbles is " + configurationList.size());
@@ -306,7 +307,7 @@ public class Market {
         return configurationList;
     }
 
-    private List<Marble> createConfigurationList(File config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
+    private List<Marble> createConfigurationList(InputStream config) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException, NegativeQuantityException {
         LinkedList<Marble> marbles = new LinkedList<>();
         Marble marble;
         int quantity;

@@ -487,18 +487,18 @@ public class MainBoard {
             throw new IllegalArgumentException("The number of players is illegal!");
 
         //this.faithTrack = FaithTrack.instance(new File("FaithTrackConfig.xml"));
-        this.faithTrack = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
+        this.faithTrack = FaithTrack.instance((this.getClass().getResourceAsStream("/XMLs/FaithTrackConfig.xml")));
         //this.popeTiles = PopeTile.popeTileConfig(new File("PopeTileConfig.xml"), this.faithTrack.getReportNumOrder());
-        this.popeTiles = PopeTile.popeTileConfig(new File(this.getClass().getResource("/XMLs/PopeTileConfig.xml").getFile()), this.faithTrack.getReportNumOrder());
+        this.popeTiles = PopeTile.popeTileConfig(this.getClass().getResourceAsStream("/XMLs/PopeTileConfig.xml"), this.faithTrack.getReportNumOrder());
 
         try {
             //this.leaderCardsDeck = new LeaderCardDeck(LeaderCardDeck.initLeaderCards(new File("LeaderCardConfig.xml")));
-            this.leaderCardsDeck = new LeaderCardDeck(LeaderCardDeck.initLeaderCards(new File(this.getClass().getResource("/XMLs/LeaderCardConfig.xml").getFile())));
+            this.leaderCardsDeck = new LeaderCardDeck(LeaderCardDeck.initLeaderCards(this.getClass().getResourceAsStream("/XMLs/LeaderCardConfig.xml")));
 
             //this.devGrid = new DevGrid(new File("DevCardConfig.xsd.xml"));
-            this.devGrid = new DevGrid(new File(this.getClass().getResource("/XMLs/DevCardConfig.xsd.xml").getFile()));
+            this.devGrid = new DevGrid(this.getClass().getResourceAsStream("/XMLs/DevCardConfig.xsd.xml"));
             //this.market = new Market(new File("MarketConfig.xsd.xml"));
-            this.market = new Market(new File(this.getClass().getResource("/XMLs/MarketConfig.xsd.xml").getFile()));
+            this.market = new Market(this.getClass().getResourceAsStream("/XMLs/MarketConfig.xsd.xml"));
 
         } catch (NegativeQuantityException e) {
             throw new IllegalArgumentException("The given configuration file is wrong: " + e.getMessage());

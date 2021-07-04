@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ test the correct behaviour of the HashMap and to string to see the correct trans
 class MarketTest {
     Effect effect;
     List<Effect> effects;
-    File MarketConfigFile;
+    InputStream MarketConfigFile;
     Market market;
     Random rnd;
     final ResourceType coin = ResourceType.COIN;
@@ -36,7 +37,7 @@ class MarketTest {
     void setUp() throws NegativeQuantityException, ParserConfigurationException, IOException, SAXException {
         effect = new Effect();
         effects = new ArrayList<>();
-        MarketConfigFile = new File(this.getClass().getResource("/XMLs/MarketConfig.xsd.xml").getFile());
+        MarketConfigFile = this.getClass().getResourceAsStream("/XMLs/MarketConfig.xsd.xml");
         market = new Market(MarketConfigFile);
         rnd = new Random();
 

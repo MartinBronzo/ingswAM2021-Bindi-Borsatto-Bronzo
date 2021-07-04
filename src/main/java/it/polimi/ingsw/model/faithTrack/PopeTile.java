@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,7 +175,7 @@ public class PopeTile {
      * @throws SAXException                 if there is a general SAX error or warning
      * @throws IllegalArgumentException     if the order of ReportNums in the file differs from the one given by the specified ReportNumOrder
      */
-    public static List<List<PopeTile>> popeTileConfig(File config, ReportNumOrder reportNumOrderToCompare) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException {
+    public static List<List<PopeTile>> popeTileConfig(InputStream config, ReportNumOrder reportNumOrderToCompare) throws ParserConfigurationException, IOException, SAXException, IllegalArgumentException {
         Node elementNode;
         NodeList tilesList;
         Element el;

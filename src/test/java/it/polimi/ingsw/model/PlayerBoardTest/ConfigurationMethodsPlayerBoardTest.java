@@ -31,7 +31,7 @@ public class ConfigurationMethodsPlayerBoardTest {
     @BeforeEach
     public void setup() throws ParserConfigurationException, IOException, SAXException {
         playerBoard = new PlayerBoard();
-        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile())));
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(this.getClass().getResourceAsStream("/XMLs/FaithTrackConfig.xml")));
         resources = new ArrayList<>();
         resources.add(ResourceType.COIN);
         resources.add(ResourceType.STONE);
@@ -104,7 +104,7 @@ public class ConfigurationMethodsPlayerBoardTest {
     @Test
     public void ctrlPlayerBoardCloning() throws IllegalActionException, NegativeQuantityException, EndOfGameException, ParserConfigurationException, IOException, SAXException {
         playerBoard.addResourceToDepot(ResourceType.COIN, 1, 1);
-        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile())));
+        playerBoard.setPlayerFaithLevelFaithTrack(FaithTrack.instance(this.getClass().getResourceAsStream("/XMLs/FaithTrackConfig.xml")));
         playerBoard.addCardToDevSlot(1, new DevCard(1, DevCardColour.PURPLE, 1, new HashMap<>(), new HashMap<>(), new HashMap<>(), "url"));
 
         PlayerBoard copy = new PlayerBoard(playerBoard);

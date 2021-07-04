@@ -20,6 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -56,7 +57,7 @@ public class LeaderCardDeck implements Deck {
      * @throws SAXException                 if there is a general SAX error or warning
      * @throws IOException                  if an IO operations fails
      */
-    public LeaderCardDeck(File configFile) throws NegativeQuantityException, ParserConfigurationException, SAXException, IOException {
+    public LeaderCardDeck(InputStream configFile) throws NegativeQuantityException, ParserConfigurationException, SAXException, IOException {
         this.leaderCards = this.initLeaderCards(configFile);
         this.shuffle();
     }
@@ -167,7 +168,7 @@ public class LeaderCardDeck implements Deck {
      * @throws SAXException if an error appeared parsing xmlFile
      * @throws NegativeQuantityException if the file contains a value with a negative quantity associated
      */
-    public static LinkedList<LeaderCard> initLeaderCards(File configFile) throws ParserConfigurationException, IOException, SAXException, NegativeQuantityException {
+    public static LinkedList<LeaderCard> initLeaderCards(InputStream configFile) throws ParserConfigurationException, IOException, SAXException, NegativeQuantityException {
         LinkedList<LeaderCard> deck = new LinkedList<>();
 
         NodeList nodeLeaderCardList;

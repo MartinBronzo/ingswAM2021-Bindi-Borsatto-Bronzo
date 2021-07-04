@@ -10,15 +10,16 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 class MarketGridPanelTest {
     Board board;
     Market market;
-    File xmlMarketConfig;
+    InputStream xmlMarketConfig;
 
     @BeforeEach
      void Setup() throws IOException, NegativeQuantityException, ParserConfigurationException, SAXException {
-        xmlMarketConfig = new File("MarketConfig.xsd.xml");
+        xmlMarketConfig = getClass().getResourceAsStream("/XMLs/MarketConfig.xsd.xml");
         market = new Market(xmlMarketConfig);
         MarbleType[][] marbleMatrix = market.getMarketMatrixWithMarbleType();
         MarbleType marbleOnSlide = market.getMarbleOnSlideWithMarbleType();

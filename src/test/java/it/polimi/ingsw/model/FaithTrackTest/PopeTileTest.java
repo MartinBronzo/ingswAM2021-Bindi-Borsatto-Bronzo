@@ -237,9 +237,9 @@ public class PopeTileTest {
     @Test
     //Tests that the correct tiles are configured via configuration file
     public void ctrlConfigurationViaFile() throws ParserConfigurationException, IOException, SAXException, IllegalActionException {
-        FaithTrack faithTrack = FaithTrack.instance(new File(this.getClass().getResource("/XMLs/FaithTrackConfig.xml").getFile()));
+        FaithTrack faithTrack = FaithTrack.instance((this.getClass().getResourceAsStream("/XMLs/FaithTrackConfig.xml")));
         ReportNumOrder reportNumOrder = faithTrack.getReportNumOrder();
-        List<List<PopeTile>> tiles = PopeTile.popeTileConfig(new File(this.getClass().getResource("/XMLs/PopeTileConfig.xml").getFile()), reportNumOrder);
+        List<List<PopeTile>> tiles = PopeTile.popeTileConfig(this.getClass().getResourceAsStream("/XMLs/PopeTileConfig.xml"), reportNumOrder);
         List<PopeTile> tmp;
 
         assertEquals(tiles.size(), 3);

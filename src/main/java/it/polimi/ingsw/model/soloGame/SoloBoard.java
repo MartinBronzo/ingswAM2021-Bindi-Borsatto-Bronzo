@@ -48,7 +48,7 @@ public class SoloBoard extends MainBoard {
         faithPointTokenObserver = new FaithPointTokenObserver(this);
         this.lorenzosTrack = new FaithLevelBasic(this.faithTrack);
         //this.tokenDeck = new SoloActionDeck(new File("SoloTokenConfig.xml"), discardTokenObserver, faithPointTokenObserver);
-        this.tokenDeck = new SoloActionDeck(new File(this.getClass().getResource("/XMLs/SoloTokenConfig.xml").getFile()), discardTokenObserver, faithPointTokenObserver);
+        this.tokenDeck = new SoloActionDeck(this.getClass().getResourceAsStream("/XMLs/SoloTokenConfig.xml"), discardTokenObserver, faithPointTokenObserver);
     }
 
     /**
