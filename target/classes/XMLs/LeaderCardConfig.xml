@@ -1,0 +1,329 @@
+<LeaderCardConfig>
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>2</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>YELLOW</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>GREEN</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <DiscountEffect>
+            <Resource>SERVANT</Resource>
+            <Discount>1</Discount>
+        </DiscountEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-49-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>2</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>BLUE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>PURPLE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <DiscountEffect>
+            <Resource>SHIELD</Resource>
+            <Discount>1</Discount>
+        </DiscountEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-50-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>2</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>GREEN</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>BLUE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <DiscountEffect>
+            <Resource>STONE</Resource>
+            <Discount>1</Discount>
+        </DiscountEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-51-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>2</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>YELLOW</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>PURPLE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <DiscountEffect>
+            <Resource>COIN</Resource>
+            <Discount>1</Discount>
+        </DiscountEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-52-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>3</VictoryPoints>
+        <Requirementlist>
+            <ResourceRequirement>
+                <Resource>COIN</Resource>
+                <Quantity>5</Quantity>
+            </ResourceRequirement>
+        </Requirementlist>
+
+        <ExtraSlotEffect>
+            <Resource>STONE</Resource>
+            <Quantity>2</Quantity>
+        </ExtraSlotEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>3</VictoryPoints>
+        <Requirementlist>
+            <ResourceRequirement>
+                <Resource>STONE</Resource>
+                <Quantity>5</Quantity>
+            </ResourceRequirement>
+        </Requirementlist>
+
+        <ExtraSlotEffect>
+            <Resource>SERVANT</Resource>
+            <Quantity>2</Quantity>
+        </ExtraSlotEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-54-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>3</VictoryPoints>
+        <Requirementlist>
+            <ResourceRequirement>
+                <Resource>SERVANT</Resource>
+                <Quantity>5</Quantity>
+            </ResourceRequirement>
+        </Requirementlist>
+
+        <ExtraSlotEffect>
+            <Resource>SHIELD</Resource>
+            <Quantity>2</Quantity>
+        </ExtraSlotEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-55-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>3</VictoryPoints>
+        <Requirementlist>
+            <ResourceRequirement>
+                <Resource>SHIELD</Resource>
+                <Quantity>5</Quantity>
+            </ResourceRequirement>
+        </Requirementlist>
+
+        <ExtraSlotEffect>
+            <Resource>COIN</Resource>
+            <Quantity>2</Quantity>
+        </ExtraSlotEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-56-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>5</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>YELLOW</Color>
+                <Quantity>2</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>BLUE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <WhiteMarbleEffect>
+            <Resource>SERVANT</Resource>
+        </WhiteMarbleEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-57-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>5</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>GREEN</Color>
+                <Quantity>2</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>PURPLE</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <WhiteMarbleEffect>
+            <Resource>SHIELD</Resource>
+        </WhiteMarbleEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-58-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>5</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>BLUE</Color>
+                <Quantity>2</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>YELLOW</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <WhiteMarbleEffect>
+            <Resource>STONE</Resource>
+        </WhiteMarbleEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-59-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>5</VictoryPoints>
+        <Requirementlist>
+            <ColorRequirement>
+                <Color>PURPLE</Color>
+                <Quantity>2</Quantity>
+            </ColorRequirement>
+
+            <ColorRequirement>
+                <Color>GREEN</Color>
+                <Quantity>1</Quantity>
+            </ColorRequirement>
+        </Requirementlist>
+
+        <WhiteMarbleEffect>
+            <Resource>COIN</Resource>
+        </WhiteMarbleEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-60-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>4</VictoryPoints>
+        <Requirementlist>
+            <ColorAndLevelRequirement>
+                <Color>YELLOW</Color>
+                <Level>2</Level>
+                <Quantity>1</Quantity>
+            </ColorAndLevelRequirement>
+        </Requirementlist>
+
+        <ExtraProductionEffect>
+            <Resource>SHIELD</Resource>
+            <Quantity>1</Quantity>
+        </ExtraProductionEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-61-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>4</VictoryPoints>
+        <Requirementlist>
+            <ColorAndLevelRequirement>
+                <Color>BLUE</Color>
+                <Level>2</Level>
+                <Quantity>1</Quantity>
+            </ColorAndLevelRequirement>
+        </Requirementlist>
+
+        <ExtraProductionEffect>
+            <Resource>SERVANT</Resource>
+            <Quantity>1</Quantity>
+        </ExtraProductionEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-62-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>4</VictoryPoints>
+        <Requirementlist>
+            <ColorAndLevelRequirement>
+                <Color>PURPLE</Color>
+                <Level>2</Level>
+                <Quantity>1</Quantity>
+            </ColorAndLevelRequirement>
+        </Requirementlist>
+
+        <ExtraProductionEffect>
+            <Resource>STONE</Resource>
+            <Quantity>1</Quantity>
+        </ExtraProductionEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-63-1.png</Url>
+    </LeaderCard>
+
+    <!--LeaderCard-->
+    <LeaderCard>
+        <VictoryPoints>4</VictoryPoints>
+        <Requirementlist>
+            <ColorAndLevelRequirement>
+                <Color>GREEN</Color>
+                <Level>2</Level>
+                <Quantity>1</Quantity>
+            </ColorAndLevelRequirement>
+        </Requirementlist>
+
+        <ExtraProductionEffect>
+            <Resource>COIN</Resource>
+            <Quantity>1</Quantity>
+        </ExtraProductionEffect>
+
+        <Url>/Masters of Renaissance_Cards_FRONT/Masters of Renaissance_Cards_FRONT_3mmBleed_1-64-1.png</Url>
+    </LeaderCard>
+</LeaderCardConfig>

@@ -1,0 +1,28 @@
+<MarketConfig
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="MarketConfig.xsd">
+    <marble>
+        <Type>WHITEMARBLE</Type>
+        <quantity>4</quantity>
+    </marble>
+    <marble>
+        <Type>BLUEMARBLE</Type>
+        <quantity>2</quantity>
+    </marble>
+    <marble>
+        <Type>GREYMARBLE</Type>
+        <quantity>2</quantity>
+    </marble>
+    <marble>
+        <Type>YELLOWMARBLE</Type>
+        <quantity>2</quantity>
+    </marble>
+    <marble>
+        <Type>PURPLEMARBLE</Type>
+        <quantity>2</quantity>
+    </marble>
+    <marble>
+        <Type>REDMARBLE</Type>
+        <quantity>1</quantity>
+    </marble>
+</MarketConfig>

@@ -1390,8 +1390,9 @@ public class GameController {
             }
 
             cost.put(e.getKey(), cost.get(e.getKey()) - e.getValue()); //Updates the cost map
-            playerBoard.removeResourcesFromStrongbox(strongboxRes);
         }
+        playerBoard.removeResourcesFromStrongbox(strongboxRes);
+
 
         //final check
         for (Map.Entry<ResourceType, Integer> e : cost.entrySet()) {

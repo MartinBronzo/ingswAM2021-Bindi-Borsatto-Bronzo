@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Locale;
 
 /**
  * This dialog is used to ask the player their nicknames.
@@ -43,7 +44,7 @@ public class LoginDialog extends JDialog {
             if (textField.getText().equals(""))
                 PanelManager.getInstance().printError("Nick can't be empty");
             else
-                PanelManager.getInstance().writeMessage(new Command("login", new LoginMessage(textField.getText())));
+                PanelManager.getInstance().writeMessage(new Command("login", new LoginMessage(textField.getText().trim().toUpperCase(Locale.ROOT))));
         });
 
         this.setLayout( new FlowLayout() );

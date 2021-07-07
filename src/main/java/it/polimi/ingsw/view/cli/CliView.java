@@ -1584,7 +1584,7 @@ public class CliView {
         printCommandAndString(CliCommandType.BUYFROMMARKET, ": gets you the resources from the market", AnsiCommands.BLUE.getTextColor());
             printCommandExample("BUYFROMMARKET: row/column NUM_ROW/COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];", "BUYFROMMARKET: row 3; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.GETDEVCARDCOST, ": tells you how much a DevCard would cost", AnsiCommands.BLUE.getTextColor());
-            printCommandExample("GETDEVCARDCOST: NUM_COLUMN; NUM_ROW; [LEADER_CARD_LIST];", "GETDEVCARDCOST: 3; 2; 1, 2, 4;", AnsiCommands.BLUE.getTextColor());
+            printCommandExample("GETDEVCARDCOST: NUM_ROW; NUM_COLUMN; [LEADER_CARD_LIST];", "GETDEVCARDCOST: 3; 2; 1, 2, 4;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.BUYDEVCARD, ": buys a DevCard", AnsiCommands.BLUE.getTextColor());
             printCommandExample("BUYDEVCARD: NUM_ROW; COLUMN; [LEADER_CARD_LIST]; DEPOT_RESOURCES QUANTITY SHELF_NUM [, ...]; LEADER_DEPOT_RESOURCE QUANTITY [, ...]; DISCARDED_RESOURCES QUANTITY [, ...];", "BUYDEVCARD: 3; 1; 1, 2, 4; COIN 2 2, STONE 2 2; COIN 2, SERVANT 1; STONE 2, SERVANT 2;", AnsiCommands.BLUE.getTextColor());
         printCommandAndString(CliCommandType.GETPRODUCTIONCOST, ": tells you how much producing would cost you", AnsiCommands.BLUE.getTextColor());

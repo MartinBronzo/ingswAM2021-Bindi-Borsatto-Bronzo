@@ -56,6 +56,7 @@ public final class GamesManagerSingleton {
     public synchronized GameController joinOrCreateNewGame(ClientHandler client) throws InterruptedException, NotAvailableNicknameException, IllegalActionException {
         if (client == null) throw new NullPointerException("client is null");
         try {
+            System.out.println("xx"+client.getNickname()+"xx");
             GameController gameWithThatNickname = searchPlayerInGames(client.getNickname());
             client.send(new LoginConfirmationMessage(client.getNickname()));
             gameWithThatNickname.substitutesClient(client);

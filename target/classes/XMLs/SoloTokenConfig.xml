@@ -1,0 +1,46 @@
+<SoloTokenConfig
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="SoloTokenConfig.xsd">
+
+    <!--TOKEN-->
+    <DiscardToken>
+        <Color>GREEN</Color>
+        <NumCards>2</NumCards>
+        <Url>/PUNCHBOARD/cerchio2.png</Url>
+    </DiscardToken>
+
+    <!--TOKEN-->
+    <DiscardToken>
+        <Color>YELLOW</Color>
+        <NumCards>2</NumCards>
+        <Url>/PUNCHBOARD/cerchio4.png</Url>
+    </DiscardToken>
+
+    <!--TOKEN-->
+    <DiscardToken>
+        <Color>PURPLE</Color>
+        <NumCards>2</NumCards>
+        <Url>/PUNCHBOARD/cerchio3.png</Url>
+    </DiscardToken>
+
+    <!--TOKEN-->
+    <DiscardToken>
+        <Color>BLUE</Color>
+        <NumCards>2</NumCards>
+        <Url>/PUNCHBOARD/cerchio1.png</Url>
+    </DiscardToken>
+
+    <!--TOKEN-->
+    <FaithPointToken>
+        <NumPoints>2</NumPoints>
+        <Shuffle>false</Shuffle>
+        <Url>/PUNCHBOARD/cerchio6.png</Url>
+    </FaithPointToken>
+
+    <!--TOKEN-->
+    <FaithPointToken>
+        <NumPoints>1</NumPoints>
+        <Shuffle>true</Shuffle>
+        <Url>/PUNCHBOARD/cerchio7.png</Url>
+    </FaithPointToken>
+</SoloTokenConfig>
