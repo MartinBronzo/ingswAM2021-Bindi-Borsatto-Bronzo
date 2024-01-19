@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: it.polimi.ingsw.controller.GameControllerTest.GameControllerTest
--------------------------------------------------------------------------------
-Tests run: 35, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.478 s - in it.polimi.ingsw.controller.GameControllerTest.GameControllerTest
