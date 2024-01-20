@@ -1,6 +1,19 @@
-<h1>ingswAM2021-Bindi-Borsatto-Bronzo</h1>
+<h1>Final Project Software Engineering Politecnico di Milano (accademic year 2020/21)</h1>
+<h2>Introduction</h2>
+
+Welcome to our Software Engineering 1 final project, undertaken as part of the academic year 2020-2021 coursework, earning us 3CFU (academic credits). This project represents the culmination of our efforts in the course, showcasing our skills and understanding of software engineering principles.
+
+<h2>Project Overview</h2>
+
+Our endeavor focuses on the digital adaptation of the board game *Maestri del Rinascimento* (Masters of Renaissance). This strategic board game, set in the Renaissance era, challenges players to navigate the intricacies of commerce, resource management, and strategic decision-making. Our software implementation aims to faithfully recreate the engaging gameplay experience of the physical board game in a digital format.
+<h2>Creators</h2>
+<a href="https://github.com/LudovicaBindi">Ludovica Bindi</a></br>
+<a href="https://github.com/BorsattoAndrea">Andrea Borsatto</a></br>
+<a href="https://github.com/MartinBronzo">Martin Bronzo</a></br>
+
+<h1>Project Delivery (In Italian) - ingswAM2021-Bindi-Borsatto-Bronzo</h1>
 <h2> Recap </h2>
-<p> Questa applicazione è la nostra versione software del gioco da tavolo <i> Maestri del Rinascimento</i>.
+Questa applicazione è la nostra versione software del gioco da tavolo <i> Maestri del Rinascimento</i>.
   Abbiamo applicato le seguenti funzionalità:
   <ul>
     <li>Regole complete (partita solitario inclusa)</li>
@@ -9,7 +22,6 @@
     <li>Partite multiple</li>
     <li>Resilienza alle disconnessioni</li>
 </ul>
-</p>
 <h2>UML e User Diagram</h2>
 <p>Questi sono gli UML del nostro model:</p>
 <ul>
@@ -37,7 +49,7 @@
 <h2>
   Aspetti salienti
 </h2>
-<p>
+
  Vogliamo evidenziare le seguenti parti della nostra realizzazione dell'applicazione:
   <ul>
    	<li>Lettura degli elementi del gioco da file XML:</li>
@@ -73,7 +85,6 @@
       <li>Inoltre, dopo aver pianificato cosa volessimo che l'utente vedesse e potesse fare (tramite <a href="Images/Schema per la GUI.png">questo disegno</a>), abbiamo creato prima gli oggetti comuni (per es., i Depositi su cui si potessero fare dei drop di risorse, i Depositi da cui fare drag di risorse, etc.) per poter poi ricreare le nostre viste  semplicemente mettendo insieme i vari pezzi che ci servivano </li>
     </ul>
 </ul>
-</p>
 
 <h2>Cheats</h2>
 Abbiamo implementato un comando di cheat (da CLI scrivere "CHEAT", da GUI cliccare sul bottone "Cheat") che permette di guadagnare risorse e depositarle nel Forziere senza prenderle dal Mercato o attivando la produzione. Le risorse vengono distribuite a tutti i giocatori.
@@ -83,11 +94,11 @@ Abbiamo implementato un comando di cheat (da CLI scrivere "CHEAT", da GUI clicca
 </h2>
 <p>Per runnare la nostra applicazione, prima bisogna far partire il server tramite </p>
 <p> java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar --server 9047 </p>
-<p>Purtroppo abbiamo avuto problemi con la creazione del JAR del server perché questo non riesce a trovare dinamicamente i file XML di configurazione descritti sopra. Se il server viene fatto partire da Intellij e si fa partire il client pure da JAR, si può usare traquillamente l'applicativo.</br></p>
+<p>Purtroppo abbiamo avuto problemi con la creazione del JAR del server perché questo non riesce a trovare dinamicamente i file XML di configurazione descritti sopra. Se il server viene fatto partire da Intellij e si fa partire il client pure da JAR, si può usare traquillamente l'applicativo.</p>
 <p>Successivamente si può utilizzare la CLI:</p>
 <span> java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar --cli --IP 127.0.0.1 9047</br>java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar -c --IP 127.0.0.1 9047</span>
 
-<p></br>O la GUI:</p>
+<p>O la GUI:</p>
 <p> java -jar AM52-1.0-SNAPSHOT-jar-with-dependencies.jar --IP 127.0.0.1 9047</p>
 
 <h2>Creatori</h2>
