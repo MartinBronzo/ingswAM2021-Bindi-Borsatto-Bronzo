@@ -1,4 +1,4 @@
-<h1>Final Project Software Engineering Politecnico di Milano (accademic year 2020/21)</h1>
+<h1>Final Project Software Engineering Politecnico di Milano (academic year 2020/21)</h1>
 <h2>Introduction</h2>
 
 Welcome to our Software Engineering 1 final project, undertaken as part of the academic year 2020-2021 coursework, earning us 3CFU (academic credits). This project represents the culmination of our efforts in the course, showcasing our skills and understanding of software engineering principles.
